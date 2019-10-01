@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Gazzit</string>
+    <string name="to_use_app_you_need_to_authorize">To use this app you need to authorize on Reddit</string>
+    <string name="authorize">Authorize</string>
+</resources>

@@ -1,0 +1,11 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/tundora</item>
+        <item name="colorPrimaryDark">@color/mineShaft</item>
+        <item name="colorAccent">@color/amber</item>
+    </style>
+
+</resources>
