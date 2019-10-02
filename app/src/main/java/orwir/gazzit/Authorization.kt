@@ -1,6 +1,5 @@
 package orwir.gazzit
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import java.util.*
@@ -32,24 +31,24 @@ enum class Scope {
     wikiread
 }
 
-fun authorize(context: Context, state: String) {
+fun authorize(state: String, openOAuth: (intent: Intent) -> Unit) {
     authorize(
-        context = context,
         clientId = "we9xZjW_b19qKQ",
         state = state,
         redirectUri = "gazzit://oauth",
         duration = Duration.permanent,
-        scope = listOf(Scope.identity)
+        scope = listOf(Scope.identity),
+        openOAuth = openOAuth
     )
 }
 
 fun authorize(
-    context: Context,
     clientId: String,
     state: String,
     redirectUri: String,
     duration: Duration,
-    scope: List<Scope>
+    scope: List<Scope>,
+    openOAuth: (intent: Intent) -> Unit
 ) {
     Uri.Builder()
         .apply {
@@ -64,5 +63,5 @@ fun authorize(
             appendQueryParameter("scope", scope.joinToString { it.name.toLowerCase(Locale.ENGLISH) })
         }
         .build()
-        .let { context.startActivity(Intent(Intent.ACTION_VIEW, it)) }
+        .let { openOAuth(Intent(Intent.ACTION_VIEW, it)) }
 }

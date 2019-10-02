@@ -37,10 +37,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loginViewModel.authorizeEvent.observe(viewLifecycleOwner, Observer {
-            context?.run { authorize(this, "abc") }
+            authViewModel.authorize { context?.startActivity(it) }
         })
-
-        authViewModel.log()
     }
 }
 
