@@ -3,6 +3,7 @@ package orwir.gazzit.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import orwir.gazzit.authorize
@@ -43,6 +44,7 @@ class AuthViewModel : ViewModel() {
     fun verify(uri: Uri) {
         if (uri.getQueryParameter("state") == requestState) {
             code = uri.getQueryParameter("code")!!
+            Log.d("!!!!!!", uri.toString())
         }
     }
 

@@ -4,32 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import java.util.*
 
-enum class Duration {
-    temporary,
-    permanent
-}
 
-enum class Scope {
-    identity,
-    edit,
-    flair,
-    history,
-    modconfig,
-    modflair,
-    modlog,
-    modposts,
-    modwiki,
-    mysubreddits,
-    privatemessages,
-    read,
-    report,
-    save,
-    submit,
-    subscribe,
-    vote,
-    wikiedit,
-    wikiread
-}
+
+
 
 fun authorize(state: String, openOAuth: (intent: Intent) -> Unit) {
     authorize(
