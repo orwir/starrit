@@ -8,20 +8,23 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import orwir.gazzit.R
-import orwir.gazzit.databinding.FragmentSplashBinding
+import orwir.gazzit.databinding.FragmentItemBinding
 import orwir.gazzit.util.provide
 
-class SplashFragment : Fragment() {
+class ItemFragment : Fragment() {
 
-    private val viewModel: SplashViewModel by provide()
+    private val viewModel: ItemViewModel by provide()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = DataBindingUtil
-        .inflate<FragmentSplashBinding>(inflater, R.layout.fragment_splash, container, false)
+        .inflate<FragmentItemBinding>(inflater, R.layout.fragment_item, container, false)
+        .also {
+            it.viewModel = viewModel
+        }
         .root
 }
 
-class SplashViewModel : ViewModel()
+class ItemViewModel : ViewModel()

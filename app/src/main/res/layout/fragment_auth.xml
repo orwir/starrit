@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
-            type="orwir.gazzit.ui.LoginViewModel" />
+            type="orwir.gazzit.ui.AuthViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,23 +18,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/to_use_app_you_need_to_authorize"
-            android:layout_marginBottom="@dimen/spaceX2"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/authorize"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <Button
             android:id="@+id/authorize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/authorize"
+            android:layout_marginTop="@dimen/spaceX2"
             android:onClick="@{() -> viewModel.authorize()}"
-            app:layout_constraintTop_toBottomOf="@id/description"
+            android:text="@string/authorize"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
