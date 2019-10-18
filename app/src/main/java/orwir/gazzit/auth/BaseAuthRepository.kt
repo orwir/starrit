@@ -3,10 +3,11 @@ package orwir.gazzit.auth
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import orwir.gazzit.source.Authorization
+import orwir.gazzit.source.AuthService
 import java.util.*
+import java.util.concurrent.Executors
 
-class BaseAuthRepository : AuthRepository {
+class BaseAuthRepository(private val authService: AuthService) : AuthRepository {
 
     override val token: LiveData<Token?> = MutableLiveData(null)
     private var state = ""
@@ -34,8 +35,13 @@ class BaseAuthRepository : AuthRepository {
             val state = uri.getQueryParameter("state")
             require(state == this.state) { "Request state [${this.state}] and response state [${state}] don't much" }
 
-            val code = uri.getQueryParameter("code")
-            (token as MutableLiveData).postValue(Token("", "", 1, "", ""))
+            val code = uri.getQueryParameter("code")!!
+            Executors.newSingleThreadExecutor().execute {
+                authService.accessToken(code)
+                    .execute()
+                    .body()
+                    ?.let((token as MutableLiveData)::postValue)
+            }
         }
     }
 }

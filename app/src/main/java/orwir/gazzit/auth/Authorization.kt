@@ -6,7 +6,7 @@ import com.squareup.moshi.Json
 import org.koin.dsl.module
 
 val authorizationModule = module {
-    single<AuthRepository> { BaseAuthRepository() }
+    single<AuthRepository> { BaseAuthRepository(get()) }
 }
 
 internal const val CLIENT_ID = "we9xZjW_b19qKQ"
