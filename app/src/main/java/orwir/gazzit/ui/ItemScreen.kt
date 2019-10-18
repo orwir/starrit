@@ -7,13 +7,19 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.dsl.module
 import orwir.gazzit.R
 import orwir.gazzit.databinding.FragmentItemBinding
-import orwir.gazzit.util.provide
+
+val itemScreenModule = module {
+    viewModel { ItemViewModel() }
+}
 
 class ItemFragment : Fragment() {
 
-    private val viewModel: ItemViewModel by provide()
+    private val viewModel: ItemViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,

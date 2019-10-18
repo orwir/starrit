@@ -6,18 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
+import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.dsl.module
 import orwir.gazzit.R
+import orwir.gazzit.auth.AuthRepository
 import orwir.gazzit.databinding.FragmentSplashBinding
 import orwir.gazzit.util.SingleLiveEvent
-import orwir.gazzit.util.provide
+
+val splashScreenModule = module {
+    viewModel { SplashViewModel(get()) }
+}
 
 class SplashFragment : Fragment() {
 
-    private val viewModel: SplashViewModel by provide()
+    private val viewModel: SplashViewModel by viewModel()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.navigationEvent.observe(this, Observer {
+            findNavController().navigate(it)
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,22 +43,17 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.navigationEvent.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(it)
-        })
-
-        view.postDelayed({ viewModel.verifyAuthorization() }, 2000)
+        view.postDelayed( viewModel::verifyAuthorization, 1000)
     }
 }
 
-class SplashViewModel : ViewModel() {
+class SplashViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
     val navigationEvent = SingleLiveEvent<Int>()
 
     fun verifyAuthorization() {
         navigationEvent.postValue(
-            if (Math.random() > 0.5) {
+            if (authRepository.token.value == null) {
                 R.id.action_splashFragment_to_authFragment
             } else {
                 R.id.action_splashFragment_to_feedFragment

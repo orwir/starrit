@@ -7,13 +7,19 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.dsl.module
 import orwir.gazzit.R
 import orwir.gazzit.databinding.FragmentFeedBinding
-import orwir.gazzit.util.provide
+
+val feedScreenModule = module {
+    viewModel { FeedViewModel() }
+}
 
 class FeedFragment : Fragment() {
 
-    private val viewModel: FeedViewModel by provide()
+    private val viewModel: FeedViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
