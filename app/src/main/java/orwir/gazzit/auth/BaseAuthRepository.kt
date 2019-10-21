@@ -1,6 +1,7 @@
 package orwir.gazzit.auth
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import orwir.gazzit.source.AuthService
@@ -40,6 +41,9 @@ class BaseAuthRepository(private val authService: AuthService) : AuthRepository 
                 authService.accessToken(code)
                     .execute()
                     .body()
+                    .also {
+                        Log.d("!!!", it.toString())
+                    }
                     ?.let((token as MutableLiveData)::postValue)
             }
         }

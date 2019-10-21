@@ -10,7 +10,7 @@ val authorizationModule = module {
 }
 
 internal const val CLIENT_ID = "we9xZjW_b19qKQ"
-internal const val CLIENT_ID64 = "d2U5eFpqV19iMTlxS1E"
+internal const val CLIENT_ID64 = "d2U5eFpqV19iMTlxS1E6"
 internal const val AUTHORITY = "oauth"
 internal const val REDIRECT_URI = "gazzit://${AUTHORITY}"
 
