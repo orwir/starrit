@@ -2,8 +2,9 @@ package orwir.gazzit.source
 
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
-import orwir.gazzit.auth.CLIENT_ID
+import orwir.gazzit.auth.CLIENT_ID64
 import orwir.gazzit.auth.REDIRECT_URI
 import orwir.gazzit.auth.Token
 import retrofit2.Call
@@ -11,7 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
 
 val remoteSourceModule = module {
@@ -28,6 +29,9 @@ fun buildMoshi(): Moshi =
 
 fun buildOkHttp(): OkHttpClient =
     OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        })
         .build()
 
 fun buildRetrofit(): Retrofit =
@@ -40,15 +44,12 @@ fun buildRetrofit(): Retrofit =
 fun <T> createService(retrofit: Retrofit, service: Class<T>): T = retrofit.create(service)
 
 interface AuthService {
-
     @FormUrlEncoded
-    @POST("$REDDIT_OAUTH_URL/api/v1/access_token")
+    @Headers("Authorization: Basic $CLIENT_ID64")
+    @POST("/api/v1/access_token")
     fun accessToken(
         @Field("code") code: String,
         @Field("grant_type") type: String = "authorization_code",
-        @Field("redirect_uri") uri: String = REDIRECT_URI,
-        @Header("user") user: String = CLIENT_ID,
-        @Header("password") password: String = ""
+        @Field("redirect_uri") uri: String = REDIRECT_URI
     ): Call<Token>
-
 }
