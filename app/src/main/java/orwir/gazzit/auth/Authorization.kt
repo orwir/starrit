@@ -15,30 +15,30 @@ internal const val AUTHORITY = "oauth"
 internal const val REDIRECT_URI = "gazzit://${AUTHORITY}"
 
 enum class Duration {
-    temporary,
-    permanent
+    Temporary,
+    Permanent
 }
 
 enum class Scope {
-    identity,
-    edit,
-    flair,
-    history,
-    modconfig,
-    modflair,
-    modlog,
-    modposts,
-    modwiki,
-    mysubreddits,
-    privatemessages,
-    read,
-    report,
-    save,
-    submit,
-    subscribe,
-    vote,
-    wikiedit,
-    wikiread
+    Identity,
+    Edit,
+    Flair,
+    History,
+    Modconfig,
+    Modflair,
+    Modlog,
+    Modposts,
+    Modwiki,
+    Mysubreddits,
+    Privatemessages,
+    Read,
+    Report,
+    Save,
+    Submit,
+    Subscribe,
+    Vote,
+    Wikiedit,
+    Wikiread
 }
 
 data class Token(

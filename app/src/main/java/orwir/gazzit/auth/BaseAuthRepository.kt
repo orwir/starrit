@@ -1,10 +1,9 @@
 package orwir.gazzit.auth
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import orwir.gazzit.source.AuthService
+import orwir.gazzit.source.remote.AuthService
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -12,7 +11,9 @@ class BaseAuthRepository(private val authService: AuthService) : AuthRepository 
 
     override val token: LiveData<Token?> = MutableLiveData(null)
     private var state = ""
-    private val scope = listOf(Scope.identity).joinToString(separator = " ") { it.name }
+    private val scope = listOf(
+        Scope.Identity
+    ).joinToString(separator = " ") { it.name.toLowerCase() }
 
     override fun buildAuthUri(): Uri {
         state = UUID.randomUUID().toString()
@@ -25,7 +26,7 @@ class BaseAuthRepository(private val authService: AuthService) : AuthRepository 
                 appendQueryParameter("response_type", "code")
                 appendQueryParameter("state", state)
                 appendQueryParameter("redirect_uri", REDIRECT_URI)
-                appendQueryParameter("duration", Duration.permanent.name)
+                appendQueryParameter("duration", Duration.Permanent.name.toLowerCase())
                 appendQueryParameter("scope", scope)
             }
             .build()
@@ -41,9 +42,6 @@ class BaseAuthRepository(private val authService: AuthService) : AuthRepository 
                 authService.accessToken(code)
                     .execute()
                     .body()
-                    .also {
-                        Log.d("!!!", it.toString())
-                    }
                     ?.let((token as MutableLiveData)::postValue)
             }
         }

@@ -1,6 +1,7 @@
-package orwir.gazzit.source
+package orwir.gazzit.source.remote
 
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -21,10 +22,10 @@ val remoteSourceModule = module {
 }
 
 const val REDDIT_URL = "https://www.reddit.com"
-const val REDDIT_OAUTH_URL = "https://oauth.reddit.com"
 
 fun buildMoshi(): Moshi =
     Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
         .build()
 
 fun buildOkHttp(): OkHttpClient =
@@ -42,14 +43,3 @@ fun buildRetrofit(): Retrofit =
         .build()
 
 fun <T> createService(retrofit: Retrofit, service: Class<T>): T = retrofit.create(service)
-
-interface AuthService {
-    @FormUrlEncoded
-    @Headers("Authorization: Basic $CLIENT_ID64")
-    @POST("/api/v1/access_token")
-    fun accessToken(
-        @Field("code") code: String,
-        @Field("grant_type") type: String = "authorization_code",
-        @Field("redirect_uri") uri: String = REDIRECT_URI
-    ): Call<Token>
-}

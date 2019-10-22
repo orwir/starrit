@@ -5,7 +5,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import orwir.gazzit.auth.authorizationModule
 import orwir.gazzit.source.localSourceModule
-import orwir.gazzit.source.remoteSourceModule
+import orwir.gazzit.source.remote.remoteSourceModule
 import orwir.gazzit.ui.authScreenModule
 import orwir.gazzit.ui.feedScreenModule
 import orwir.gazzit.ui.itemScreenModule
