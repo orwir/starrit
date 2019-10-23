@@ -6,6 +6,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import orwir.gazzit.authorization.authorizationModule
+import orwir.gazzit.profile.profileModule
 
 @ExperimentalCoroutinesApi
 class GazzitApplication : Application() {
@@ -18,7 +19,8 @@ class GazzitApplication : Application() {
             modules(
                 listOf(
                     networkModule,
-                    authorizationModule
+                    authorizationModule,
+                    profileModule
                 )
             )
         }

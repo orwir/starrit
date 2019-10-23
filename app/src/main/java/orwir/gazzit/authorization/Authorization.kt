@@ -3,16 +3,12 @@ package orwir.gazzit.authorization
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import retrofit2.Retrofit
+import orwir.gazzit.lazyService
 
 @ExperimentalCoroutinesApi
 val authorizationModule = module {
 
-    single<Lazy<AuthorizationService>> {
-        lazy {
-            get<Retrofit>().create(AuthorizationService::class.java)
-        }
-    }
+    single<Lazy<AuthorizationService>> { lazyService(get(), AuthorizationService::class.java) }
 
     single { AuthorizationRepository(get()) }
 

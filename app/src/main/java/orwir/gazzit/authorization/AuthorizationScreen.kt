@@ -11,6 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
+import orwir.gazzit.authorization.model.Step
 import orwir.gazzit.databinding.FragmentAuthorizationBinding
 
 @ExperimentalCoroutinesApi
