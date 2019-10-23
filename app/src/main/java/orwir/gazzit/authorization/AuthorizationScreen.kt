@@ -7,11 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
-import orwir.gazzit.authorization.databinding.FragmentAuthorizationBinding
+import orwir.gazzit.authorization.inner.AuthorizationRepository
+import orwir.gazzit.authorization.inner.Step
+import orwir.gazzit.databinding.FragmentAuthorizationBinding
 
+@ExperimentalCoroutinesApi
 class AuthorizationFragment : Fragment() {
 
     private val viewModel: AuthorizationViewModel by viewModel()
@@ -19,10 +23,12 @@ class AuthorizationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.authorizationState.observe(this, Observer {
-            when(it) {
+            when (it) {
                 is Step.Init -> startActivity(Intent(Intent.ACTION_VIEW, it.uri))
-                is Step.Success -> {}
-                is Step.Failure -> {}
+                is Step.Success -> {
+                }
+                is Step.Failure -> {
+                }
             }
         })
     }
@@ -38,13 +44,16 @@ class AuthorizationFragment : Fragment() {
         .root
 }
 
-class AuthorizationViewModel(private val flow: RequestToken) : ViewModel() {
+@ExperimentalCoroutinesApi
+class AuthorizationViewModel(private val repository: AuthorizationRepository) : ViewModel() {
 
     val authorizationState: LiveData<Step> = MutableLiveData()
 
     fun authorize() {
         viewModelScope.launch {
-            flow().collect { (authorizationState as MutableLiveData).postValue(it) }
+            repository.startAuthRequest().collect {
+                (authorizationState as MutableLiveData).postValue(it)
+            }
         }
     }
 

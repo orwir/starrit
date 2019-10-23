@@ -1,10 +1,13 @@
-package orwir.gazzit.authorization
+package orwir.gazzit.authorization.inner
 
 import android.net.Uri
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import orwir.gazzit.authorization.AUTHORITY
+import orwir.gazzit.authorization.CLIENT_ID
+import orwir.gazzit.authorization.REDIRECT_URI
 import orwir.gazzit.authorization.model.Duration
 import orwir.gazzit.authorization.model.Scope
 import orwir.gazzit.authorization.model.Token
@@ -17,7 +20,7 @@ sealed class Step {
 }
 
 @ExperimentalCoroutinesApi
-class AuthorizationRepository(private val authorizationService: AuthorizationService) {
+class AuthorizationRepository(private val authorizationService: Lazy<AuthorizationService>) {
 
     private var token: Token? = null
     private var callback: Callback? = null
@@ -71,7 +74,7 @@ class AuthorizationRepository(private val authorizationService: AuthorizationSer
             if (state == callback?.state) {
                 val code = uri.getQueryParameter("code")!!
                 try {
-                    token = authorizationService.accessToken(code)
+                    token = authorizationService.value.accessToken(code)
                     callback?.onSuccess()
                 } catch (e: Exception) {
                     callback?.onError(e)

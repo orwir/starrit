@@ -1,2 +1,2 @@
-include ':app', ':authorization', ':common'
+include ':app'
 rootProject.name='gazit'
