@@ -1,4 +1,4 @@
-package orwir.gazzit.authorization.inner
+package orwir.gazzit.authorization
 
 import orwir.gazzit.REDDIT_BASE_URL
 import orwir.gazzit.authorization.CREDENTIALS_B64

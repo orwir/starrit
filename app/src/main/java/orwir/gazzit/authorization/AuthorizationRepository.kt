@@ -1,13 +1,10 @@
-package orwir.gazzit.authorization.inner
+package orwir.gazzit.authorization
 
 import android.net.Uri
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import orwir.gazzit.authorization.AUTHORITY
-import orwir.gazzit.authorization.CLIENT_ID
-import orwir.gazzit.authorization.REDIRECT_URI
 import orwir.gazzit.authorization.model.Duration
 import orwir.gazzit.authorization.model.Scope
 import orwir.gazzit.authorization.model.Token

@@ -1,4 +1,4 @@
-package orwir.gazzit.authorization.inner
+package orwir.gazzit.authorization
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Interceptor

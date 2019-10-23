@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
-import orwir.gazzit.authorization.inner.AuthorizationRepository
+import orwir.gazzit.authorization.AuthorizationRepository
 
 @ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {

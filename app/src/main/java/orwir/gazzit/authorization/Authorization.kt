@@ -3,9 +3,6 @@ package orwir.gazzit.authorization
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import orwir.gazzit.authorization.inner.AuthorizationInterceptor
-import orwir.gazzit.authorization.inner.AuthorizationRepository
-import orwir.gazzit.authorization.inner.AuthorizationService
 import retrofit2.Retrofit
 
 @ExperimentalCoroutinesApi
