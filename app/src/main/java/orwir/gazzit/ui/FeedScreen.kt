@@ -12,9 +12,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.dsl.module
 import orwir.gazzit.R
 import orwir.gazzit.databinding.FragmentFeedBinding
+import orwir.gazzit.feed.FeedRepository
 
 val feedScreenModule = module {
-    viewModel { FeedViewModel() }
+    viewModel { FeedViewModel(get()) }
 }
 
 class FeedFragment : Fragment() {
@@ -31,6 +32,17 @@ class FeedFragment : Fragment() {
             it.viewModel = viewModel
         }
         .root
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.feed()
+    }
 }
 
-class FeedViewModel : ViewModel()
+class FeedViewModel(private val feedRepository: FeedRepository) : ViewModel() {
+
+    fun feed() {
+        feedRepository.best()
+    }
+
+}

@@ -14,7 +14,7 @@ private const val GRANT_TYPE = "authorization_code"
 interface AuthService {
     @FormUrlEncoded
     @Headers("Authorization: Basic $CLIENT_ID64")
-    @POST("/api/v1/access_token")
+    @POST("https://www.reddit.com/api/v1/access_token")
     fun accessToken(
         @Field("code") code: String,
         @Field("grant_type") type: String = GRANT_TYPE,

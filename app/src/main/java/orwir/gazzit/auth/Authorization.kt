@@ -4,8 +4,10 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.squareup.moshi.Json
 import org.koin.dsl.module
+import java.util.*
 
 val authorizationModule = module {
+    single { AuthInterceptor(get()) }
     single<AuthRepository> { BaseAuthRepository(get()) }
 }
 
@@ -16,7 +18,9 @@ internal const val REDIRECT_URI = "gazzit://${AUTHORITY}"
 
 enum class Duration {
     Temporary,
-    Permanent
+    Permanent;
+
+    fun asParameter() = name.toLowerCase(Locale.ENGLISH)
 }
 
 enum class Scope {
@@ -38,7 +42,9 @@ enum class Scope {
     Subscribe,
     Vote,
     Wikiedit,
-    Wikiread
+    Wikiread;
+
+    fun asParameter() = name.toLowerCase(Locale.ENGLISH)
 }
 
 data class Token(

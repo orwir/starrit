@@ -11,14 +11,13 @@ class BaseAuthRepository(private val authService: AuthService) : AuthRepository 
 
     override val token: LiveData<Token?> = MutableLiveData(null)
     private var state = ""
-    private val scope = listOf(
-        Scope.Identity
-    ).joinToString(separator = " ") { it.name.toLowerCase() }
+    private val scope = listOf(Scope.Identity).joinToString(separator = " ") { it.asParameter() }
 
-    override fun buildAuthUri(): Uri {
-        state = UUID.randomUUID().toString()
-        return Uri.Builder()
+    override fun buildAuthUri(): Uri =
+        Uri.Builder()
             .apply {
+                state = UUID.randomUUID().toString()
+
                 scheme("https")
                 authority("www.reddit.com")
                 path("api/v1/authorize.compact")
@@ -26,11 +25,10 @@ class BaseAuthRepository(private val authService: AuthService) : AuthRepository 
                 appendQueryParameter("response_type", "code")
                 appendQueryParameter("state", state)
                 appendQueryParameter("redirect_uri", REDIRECT_URI)
-                appendQueryParameter("duration", Duration.Permanent.name.toLowerCase())
+                appendQueryParameter("duration", Duration.Permanent.asParameter())
                 appendQueryParameter("scope", scope)
             }
             .build()
-    }
 
     override fun handleAuthCode(uri: Uri) {
         if (uri.authority == AUTHORITY) {

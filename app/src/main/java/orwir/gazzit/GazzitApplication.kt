@@ -4,6 +4,7 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import orwir.gazzit.auth.authorizationModule
+import orwir.gazzit.feed.feedModule
 import orwir.gazzit.source.localSourceModule
 import orwir.gazzit.source.remote.remoteSourceModule
 import orwir.gazzit.ui.authScreenModule
@@ -19,9 +20,10 @@ class GazzitApplication : Application() {
             androidContext(this@GazzitApplication)
             modules(
                 listOf(
+                    authorizationModule,
                     remoteSourceModule,
                     localSourceModule,
-                    authorizationModule,
+                    feedModule,
                     splashScreenModule,
                     authScreenModule,
                     feedScreenModule,

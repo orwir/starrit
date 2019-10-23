@@ -5,6 +5,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
+import orwir.gazzit.auth.AuthInterceptor
 import orwir.gazzit.auth.CLIENT_ID64
 import orwir.gazzit.auth.REDIRECT_URI
 import orwir.gazzit.auth.Token
@@ -17,29 +18,29 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 val remoteSourceModule = module {
-    single { buildRetrofit() }
+    single { buildRetrofit(get()) }
     single { createService(get(), AuthService::class.java) }
+    single { createService(get(), FeedService::class.java) }
 }
 
-const val REDDIT_URL = "https://www.reddit.com"
-
-fun buildMoshi(): Moshi =
+internal fun buildMoshi(): Moshi =
     Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
 
-fun buildOkHttp(): OkHttpClient =
+internal fun buildOkHttp(authInterceptor: AuthInterceptor): OkHttpClient =
     OkHttpClient.Builder()
+        .addInterceptor(authInterceptor)
         .addInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         })
         .build()
 
-fun buildRetrofit(): Retrofit =
+internal fun buildRetrofit(authInterceptor: AuthInterceptor): Retrofit =
     Retrofit.Builder()
-        .client(buildOkHttp())
-        .baseUrl(REDDIT_URL)
+        .client(buildOkHttp(authInterceptor))
+        .baseUrl("https://oauth.reddit.com")
         .addConverterFactory(MoshiConverterFactory.create(buildMoshi()))
         .build()
 
-fun <T> createService(retrofit: Retrofit, service: Class<T>): T = retrofit.create(service)
+internal fun <T> createService(retrofit: Retrofit, service: Class<T>): T = retrofit.create(service)
