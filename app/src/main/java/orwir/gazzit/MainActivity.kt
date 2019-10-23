@@ -3,12 +3,16 @@ package orwir.gazzit
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import orwir.gazzit.auth.AuthRepository
+import orwir.gazzit.authorization.CompleteTokenRequest
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
-    private val authRepository: AuthRepository by inject()
+    private val authCompleter: CompleteTokenRequest by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +21,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.data?.run(authRepository::handleAuthCode)
+        intent?.data?.let {
+            launch(Dispatchers.IO) { authCompleter(it) }
+        }
     }
 
 }

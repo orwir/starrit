@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">authorization</string>
+    <string name="to_use_the_app_you_need_to_authorize">To use the app you need to authorize on Reddit</string>
+    <string name="authorize">Authorize</string>
 </resources>

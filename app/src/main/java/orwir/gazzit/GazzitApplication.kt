@@ -1,17 +1,13 @@
 package orwir.gazzit
 
 import android.app.Application
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import orwir.gazzit.auth.authorizationModule
-import orwir.gazzit.feed.feedModule
-import orwir.gazzit.source.localSourceModule
-import orwir.gazzit.source.remote.remoteSourceModule
-import orwir.gazzit.ui.authScreenModule
-import orwir.gazzit.ui.feedScreenModule
-import orwir.gazzit.ui.itemScreenModule
-import orwir.gazzit.ui.splashScreenModule
+import orwir.gazzit.authorization.authorizationModule
+import orwir.gazzit.common.networkModule
 
+@ExperimentalCoroutinesApi
 class GazzitApplication : Application() {
 
     override fun onCreate() {
@@ -20,14 +16,8 @@ class GazzitApplication : Application() {
             androidContext(this@GazzitApplication)
             modules(
                 listOf(
-                    authorizationModule,
-                    remoteSourceModule,
-                    localSourceModule,
-                    feedModule,
-                    splashScreenModule,
-                    authScreenModule,
-                    feedScreenModule,
-                    itemScreenModule
+                    networkModule,
+                    authorizationModule
                 )
             )
         }
