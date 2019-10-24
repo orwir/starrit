@@ -18,8 +18,11 @@ class AuthorizationRepository(private val authorizationService: Lazy<Authorizati
     private var callback: Callback? = null
     private val scope = listOf(Scope.Identity).joinToString { it.asParameter() }
 
-    fun validToken(): Token {
+    fun hasToken(): Boolean = token != null
+
+    suspend fun obtainToken(): Token {
         require(token != null)
+        // TODO: refresh token if necessary
         return token!!
     }
 
@@ -71,6 +74,8 @@ class AuthorizationRepository(private val authorizationService: Lazy<Authorizati
                 } catch (e: Exception) {
                     callback?.onError(e)
                 }
+            } else {
+                callback?.onError(IllegalStateException("Response state is not matched with the request"))
             }
         }
     }
