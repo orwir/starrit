@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_authorization.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -27,10 +28,10 @@ class AuthorizationFragment : Fragment() {
                     startActivity(Intent(Intent.ACTION_VIEW, it.uri))
                 }
                 is Step.Success -> {
-
+                    Snackbar.make(view!!, "token received", Snackbar.LENGTH_LONG).show()
                 }
                 is Step.Failure -> {
-                    // todo: show error message
+                    Snackbar.make(view!!, it.exception.toString(), Snackbar.LENGTH_LONG).show()
                     enableUI(true)
                 }
             }

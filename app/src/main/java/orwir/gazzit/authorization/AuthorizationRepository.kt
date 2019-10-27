@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import orwir.gazzit.BuildConfig
 import orwir.gazzit.authorization.model.Duration
 import orwir.gazzit.authorization.model.Scope
@@ -15,10 +17,11 @@ import orwir.gazzit.authorization.model.Step
 import orwir.gazzit.authorization.model.Token
 import java.util.*
 
-class AuthorizationRepository(private val authorizationService: Lazy<AuthorizationService>) {
+class AuthorizationRepository : KoinComponent {
 
     private var token: Token? = null
     private var callback: Callback? = null
+    private val authorizationService: AuthorizationService by inject()
     private val scope = listOf(Scope.Identity).joinToString { it.asParameter() }
 
     fun hasToken(): Boolean = token != null
@@ -62,13 +65,13 @@ class AuthorizationRepository(private val authorizationService: Lazy<Authorizati
     }
 
     fun completeAuthorization(uri: Uri) {
-        if (uri.authority == AUTHORITY) {
+        if (uri.authority == BuildConfig.HOST) {
             GlobalScope.launch {
                 val state = uri.getQueryParameter("state")
                 if (state == callback?.state) {
                     val code = uri.getQueryParameter("code")!!
                     try {
-                        token = authorizationService.value.accessToken(code)
+                        token = authorizationService.accessToken(code)
                         callback?.onSuccess()
                     } catch (e: Exception) {
                         callback?.onError(e)

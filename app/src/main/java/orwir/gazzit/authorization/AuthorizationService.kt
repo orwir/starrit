@@ -15,7 +15,7 @@ interface AuthorizationService {
     @POST("${REDDIT_BASE_URL}/api/v1/access_token")
     suspend fun accessToken(
         @Field("code") code: String,
-        @Field("grant_type") type: String = GRANT_TYPE,
+        @Field("grant_type") type: String = "authorization_code",
         @Field("redirect_uri") uri: String = REDIRECT_URI
     ): Token
 

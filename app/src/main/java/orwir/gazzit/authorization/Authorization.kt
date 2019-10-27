@@ -2,20 +2,19 @@ package orwir.gazzit.authorization
 
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import orwir.gazzit.lazyService
+import orwir.gazzit.BuildConfig
+import orwir.gazzit.service
 
 val authorizationModule = module {
 
-    single<Lazy<AuthorizationService>> { lazyService(get(), AuthorizationService::class.java) }
+    single { service(get(), AuthorizationService::class.java) }
 
-    single { AuthorizationRepository(get()) }
+    single { AuthorizationRepository() }
 
-    single { AuthorizationInterceptor(get()) }
+    single { AuthorizationInterceptor() }
 
     viewModel { AuthorizationViewModel(get()) }
 
 }
 
-internal const val AUTHORITY = "oauth"
-internal const val REDIRECT_URI = "gazzit://$AUTHORITY"
-internal const val GRANT_TYPE = "authorization_code"
+internal const val REDIRECT_URI = "${BuildConfig.SCHEMA}://${BuildConfig.HOST}"

@@ -2,7 +2,6 @@ package orwir.gazzit
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -37,9 +36,7 @@ val networkModule = module {
 
 }
 
-fun <T> service(retrofit: Retrofit, service: Class<T>) = retrofit.create(service)
-
-fun <T> lazyService(retrofit: Retrofit, service: Class<T>) = lazy { retrofit.create(service) }
+fun <T> service(retrofit: Retrofit, service: Class<T>): T = retrofit.create(service)
 
 const val REDDIT_BASE_URL = "https://www.reddit.com"
 const val REDDIT_AUTH_URL = "https://oauth.reddit.com"
