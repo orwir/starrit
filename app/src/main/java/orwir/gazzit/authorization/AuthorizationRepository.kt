@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import orwir.gazzit.BuildConfig
 import orwir.gazzit.authorization.model.Duration
 import orwir.gazzit.authorization.model.Scope
 import orwir.gazzit.authorization.model.Step
@@ -99,7 +100,7 @@ internal fun buildAuthorizationUri(state: String, scope: String) =
             scheme("https")
             authority("www.reddit.com")
             path("api/v1/authorize.compact")
-            appendQueryParameter("client_id", CLIENT_ID)
+            appendQueryParameter("client_id", BuildConfig.GAZZIT_CLIENT_ID)
             appendQueryParameter("response_type", "code")
             appendQueryParameter("state", state)
             appendQueryParameter("redirect_uri", REDIRECT_URI)

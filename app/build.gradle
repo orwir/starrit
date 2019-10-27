@@ -13,6 +13,9 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName '1.0'
+
+        buildConfigField 'String', 'GAZZIT_CLIENT_ID', "\"${System.getenv('GAZZIT_CLIENT_ID')}\""
+        buildConfigField 'String', 'GAZZIT_CREDENTIALS_B64', "\"${System.getenv('GAZZIT_CREDENTIALS_B64')}\""
     }
 
     buildTypes {
