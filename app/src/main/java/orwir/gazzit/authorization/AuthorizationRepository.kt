@@ -2,16 +2,18 @@ package orwir.gazzit.authorization
 
 import android.net.Uri
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import orwir.gazzit.authorization.model.Duration
 import orwir.gazzit.authorization.model.Scope
 import orwir.gazzit.authorization.model.Step
 import orwir.gazzit.authorization.model.Token
 import java.util.*
 
-@ExperimentalCoroutinesApi
 class AuthorizationRepository(private val authorizationService: Lazy<AuthorizationService>) {
 
     private var token: Token? = null
@@ -20,30 +22,23 @@ class AuthorizationRepository(private val authorizationService: Lazy<Authorizati
 
     fun hasToken(): Boolean = token != null
 
-    suspend fun obtainToken(): Token {
+    fun obtainToken(): Token = runBlocking {
         require(token != null)
         // TODO: refresh token if necessary
-        return token!!
+        token!!
     }
 
-    fun startAuthRequest(): Flow<Step> = channelFlow {
+    @ExperimentalCoroutinesApi
+    fun authorizationFlow(): Flow<Step> = channelFlow {
         val state = UUID.randomUUID().toString()
-        val uri = Uri.Builder()
-            .apply {
-                scheme("https")
-                authority("www.reddit.com")
-                path("api/v1/authorize.compact")
-                appendQueryParameter("client_id", CLIENT_ID)
-                appendQueryParameter("response_type", "code")
-                appendQueryParameter("state", state)
-                appendQueryParameter("redirect_uri", REDIRECT_URI)
-                appendQueryParameter("duration", Duration.Permanent.asParameter())
-                appendQueryParameter("scope", scope)
-            }
-            .build()
+
         callback = object : Callback {
 
             override val state: String = state
+
+            override fun onStart() {
+                offer(Step.Start(buildAuthorizationUri(state, scope)))
+            }
 
             override fun onSuccess() {
                 offer(Step.Success)
@@ -56,38 +51,59 @@ class AuthorizationRepository(private val authorizationService: Lazy<Authorizati
             }
         }
 
-        offer(Step.Init(uri))
-
         awaitClose {
             callback = null
         }
     }
 
-    suspend fun completeAuthRequest(uri: Uri) {
+    fun startAuthorization() {
+        callback?.onStart()
+    }
+
+    fun completeAuthorization(uri: Uri) {
         if (uri.authority == AUTHORITY) {
-            val state = uri.getQueryParameter("state")
-            if (state == callback?.state) {
-                val code = uri.getQueryParameter("code")!!
-                try {
-                    token = authorizationService.value.accessToken(code)
-                    callback?.onSuccess()
-                } catch (e: Exception) {
-                    callback?.onError(e)
+            GlobalScope.launch {
+                val state = uri.getQueryParameter("state")
+                if (state == callback?.state) {
+                    val code = uri.getQueryParameter("code")!!
+                    try {
+                        token = authorizationService.value.accessToken(code)
+                        callback?.onSuccess()
+                    } catch (e: Exception) {
+                        callback?.onError(e)
+                    }
+                } else {
+                    callback?.onError(IllegalStateException("Response state is not matched with the request"))
                 }
-            } else {
-                callback?.onError(IllegalStateException("Response state is not matched with the request"))
             }
         }
     }
 
 }
 
-private interface Callback {
+internal interface Callback {
 
     val state: String
+
+    fun onStart()
 
     fun onSuccess()
 
     fun onError(exception: Exception)
 
 }
+
+internal fun buildAuthorizationUri(state: String, scope: String) =
+    Uri.Builder()
+        .apply {
+            scheme("https")
+            authority("www.reddit.com")
+            path("api/v1/authorize.compact")
+            appendQueryParameter("client_id", CLIENT_ID)
+            appendQueryParameter("response_type", "code")
+            appendQueryParameter("state", state)
+            appendQueryParameter("redirect_uri", REDIRECT_URI)
+            appendQueryParameter("duration", Duration.Permanent.asParameter())
+            appendQueryParameter("scope", scope)
+        }
+        .build()

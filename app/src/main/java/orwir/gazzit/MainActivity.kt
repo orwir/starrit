@@ -3,12 +3,10 @@ package orwir.gazzit
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 import orwir.gazzit.authorization.AuthorizationRepository
 
-@ExperimentalCoroutinesApi
-class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
+class MainActivity : AppCompatActivity() {
 
     private val authorizationRepository: AuthorizationRepository by inject()
 
@@ -19,11 +17,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.data?.let {
-            launch(Dispatchers.IO) {
-                authorizationRepository.completeAuthRequest(it)
-            }
-        }
+        intent?.data?.let(authorizationRepository::completeAuthorization)
     }
 
 }

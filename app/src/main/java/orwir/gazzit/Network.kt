@@ -10,7 +10,6 @@ import orwir.gazzit.authorization.AuthorizationInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-@ExperimentalCoroutinesApi
 val networkModule = module {
 
     single {
