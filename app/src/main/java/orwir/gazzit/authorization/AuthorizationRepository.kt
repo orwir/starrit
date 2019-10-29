@@ -21,7 +21,7 @@ class AuthorizationRepository : KoinComponent {
 
     private var token: Token? = null
     private var callback: Callback? = null
-    private val authorizationService: AuthorizationService by inject()
+    private val service: AuthorizationService by inject()
     private val scope = listOf(Scope.Identity).joinToString { it.asParameter() }
 
     fun hasToken(): Boolean = token != null
@@ -55,6 +55,8 @@ class AuthorizationRepository : KoinComponent {
             }
         }
 
+        offer(Step.Idle)
+
         awaitClose {
             callback = null
         }
@@ -71,7 +73,7 @@ class AuthorizationRepository : KoinComponent {
                 if (state == callback?.state) {
                     val code = uri.getQueryParameter("code")!!
                     try {
-                        token = authorizationService.accessToken(code)
+                        token = service.accessToken(code)
                         callback?.onSuccess()
                     } catch (e: Exception) {
                         callback?.onError(e)

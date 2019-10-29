@@ -12,7 +12,7 @@ class AuthorizationInterceptor : Interceptor, KoinComponent {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        if (request.url.host == REDDIT_AUTH_URL) {
+        if (request.url.toString().startsWith(REDDIT_AUTH_URL)) {
             val token = repository.obtainToken()
             request = request.newBuilder()
                 .addHeader("Authorization", "${token.type} ${token.access}")
@@ -20,5 +20,4 @@ class AuthorizationInterceptor : Interceptor, KoinComponent {
         }
         return chain.proceed(request)
     }
-
 }

@@ -6,6 +6,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import orwir.gazzit.authorization.authorizationModule
 import orwir.gazzit.profile.profileModule
+import orwir.gazzit.splash.splashModule
 
 class GazzitApplication : Application() {
 
@@ -17,6 +18,7 @@ class GazzitApplication : Application() {
             modules(
                 listOf(
                     networkModule,
+                    splashModule,
                     authorizationModule,
                     profileModule
                 )

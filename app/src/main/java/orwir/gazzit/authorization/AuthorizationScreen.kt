@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_authorization.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
+import orwir.gazzit.R
 import orwir.gazzit.authorization.model.Step
 import orwir.gazzit.databinding.FragmentAuthorizationBinding
 
@@ -24,15 +26,13 @@ class AuthorizationFragment : Fragment() {
         viewModel.authorizationState.observe(this, Observer {
             when (it) {
                 is Step.Start -> {
-                    enableUI(false)
                     startActivity(Intent(Intent.ACTION_VIEW, it.uri))
                 }
                 is Step.Success -> {
-                    Snackbar.make(view!!, "token received", Snackbar.LENGTH_LONG).show()
+                    findNavController().navigate(R.id.action_authorizationFragment_to_profileFragment)
                 }
                 is Step.Failure -> {
                     Snackbar.make(view!!, it.exception.toString(), Snackbar.LENGTH_LONG).show()
-                    enableUI(true)
                 }
             }
         })
@@ -47,10 +47,6 @@ class AuthorizationFragment : Fragment() {
             it.viewModel = viewModel
         }
         .root
-
-    private fun enableUI(enable: Boolean) {
-        authorize.isEnabled = enable
-    }
 }
 
 class AuthorizationViewModel(private val repository: AuthorizationRepository) : ViewModel() {
@@ -59,6 +55,8 @@ class AuthorizationViewModel(private val repository: AuthorizationRepository) : 
     val authorizationState: LiveData<Step> = repository
         .authorizationFlow()
         .asLiveData(context = viewModelScope.coroutineContext)
+    @ExperimentalCoroutinesApi
+    val requestInProgress: LiveData<Boolean> = authorizationState.map { it is Step.Start }
 
     fun authorize() {
         repository.startAuthorization()
