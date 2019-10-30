@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="orwir.gazzit.authorization.AuthorizationViewModel" />
@@ -32,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spaceX2"
+            android:enabled="@{!viewModel.requestInProgress}"
             android:onClick="@{() -> viewModel.authorize()}"
             android:text="@string/authorize"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -43,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spaceX2"
+            android:visibility="@{viewModel.requestInProgress ? View.VISIBLE : View.GONE, default=gone}"
             app:layout_constraintBottom_toBottomOf="@id/authorize"
             app:layout_constraintStart_toEndOf="@id/authorize"
             app:layout_constraintTop_toTopOf="@id/authorize" />

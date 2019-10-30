@@ -15,11 +15,14 @@ import orwir.gazzit.authorization.model.Duration
 import orwir.gazzit.authorization.model.Scope
 import orwir.gazzit.authorization.model.Step
 import orwir.gazzit.authorization.model.Token
+import orwir.gazzit.util.KoinedShareable
+import orwir.gazzit.util.Shareable
+import orwir.gazzit.util.objPref
 import java.util.*
 
-class AuthorizationRepository : KoinComponent {
+class AuthorizationRepository : KoinComponent, Shareable by KoinedShareable() {
 
-    private var token: Token? = null
+    private var token: Token? by objPref(null)
     private var callback: Callback? = null
     private val service: AuthorizationService by inject()
     private val scope = listOf(Scope.Identity).joinToString { it.asParameter() }

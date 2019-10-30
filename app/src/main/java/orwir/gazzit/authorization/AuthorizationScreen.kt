@@ -45,6 +45,7 @@ class AuthorizationFragment : Fragment() {
     ): View = FragmentAuthorizationBinding.inflate(inflater, container, false)
         .also {
             it.viewModel = viewModel
+            it.lifecycleOwner = viewLifecycleOwner
         }
         .root
 }
