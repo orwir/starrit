@@ -30,9 +30,14 @@ class AuthorizationRepository : KoinComponent, Shareable by KoinedShareable() {
     fun hasToken(): Boolean = token != null
 
     fun obtainToken(): Token = runBlocking {
-        require(token != null)
-        // TODO: refresh token if necessary
-        token!!
+        token?.let {
+            if (it.obtained + it.expires >= System.currentTimeMillis()) {
+                token = service.refreshToken(it.refresh).copy(refresh = it.refresh)
+                token
+            } else {
+                it
+            }
+        } ?: throw IllegalStateException("Token not found!")
     }
 
     @ExperimentalCoroutinesApi

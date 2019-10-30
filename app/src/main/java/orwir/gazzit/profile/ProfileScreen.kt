@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
+import orwir.gazzit.UiResponse
 import orwir.gazzit.databinding.FragmentProfileBinding
-import java.lang.Exception
+import orwir.gazzit.profile.model.Profile
+import orwir.gazzit.util.handleException
 
 class ProfileFragment : Fragment() {
 
@@ -24,25 +25,36 @@ class ProfileFragment : Fragment() {
     ): View = FragmentProfileBinding.inflate(inflater, container, false)
         .also {
             it.viewModel = viewModel
+            it.lifecycleOwner = viewLifecycleOwner
         }
         .root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.test()
+        viewModel.profile.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is UiResponse.Success -> {
+                    Log.d("!!!!", it.result.toString())
+                }
+                is UiResponse.Failure -> handleException(it.exception)
+            }
+        })
+
+        viewModel.requestProfile()
     }
 }
 
 class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewModel() {
 
-    fun test() {
+    val profile: LiveData<UiResponse<Profile>> = MutableLiveData()
+
+    fun requestProfile() {
         viewModelScope.launch {
             try {
-                val profile = profileRepository.profile()
-                Log.d("!!!!", profile.toString())
-            } catch (e: Exception) {
-                Log.d("!!!!", e.message)
-            }
+                UiResponse.Success(profileRepository.profile())
+            } catch (exception: Exception) {
+                UiResponse.Failure<Profile>(exception)
+            }.let((profile as MutableLiveData)::postValue)
         }
     }
 

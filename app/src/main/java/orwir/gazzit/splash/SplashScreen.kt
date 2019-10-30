@@ -26,6 +26,7 @@ class SplashFragment : Fragment() {
     ): View = FragmentSplashBinding.inflate(inflater, container, false)
         .also {
             it.viewModel = viewModel
+            it.lifecycleOwner = viewLifecycleOwner
         }
         .root
 

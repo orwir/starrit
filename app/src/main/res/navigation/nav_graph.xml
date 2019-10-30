@@ -5,6 +5,12 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/splashFragment">
 
+    <action
+        android:id="@+id/action_global_authorizationFragment"
+        app:destination="@id/authorizationFragment"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/splashFragment"
         android:name="orwir.gazzit.splash.SplashFragment"
@@ -13,12 +19,12 @@
         <action
             android:id="@+id/action_splashFragment_to_authorizationFragment"
             app:destination="@id/authorizationFragment"
-            app:popUpTo="@id/splashFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_profileFragment"
             app:destination="@id/profileFragment"
-            app:popUpTo="@id/splashFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -30,7 +36,7 @@
         <action
             android:id="@+id/action_authorizationFragment_to_profileFragment"
             app:destination="@id/profileFragment"
-            app:popUpTo="@id/authorizationFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
