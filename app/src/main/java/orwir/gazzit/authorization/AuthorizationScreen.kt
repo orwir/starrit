@@ -29,7 +29,7 @@ class AuthorizationFragment : Fragment() {
                     startActivity(Intent(Intent.ACTION_VIEW, it.uri))
                 }
                 is Step.Success -> {
-                    findNavController().navigate(R.id.action_authorizationFragment_to_profileFragment)
+                    findNavController().navigate(R.id.action_authorizationFragment_to_feedFragment)
                 }
                 is Step.Failure -> {
                     Snackbar.make(view!!, it.exception.toString(), Snackbar.LENGTH_LONG).show()

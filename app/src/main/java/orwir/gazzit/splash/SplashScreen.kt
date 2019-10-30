@@ -37,7 +37,7 @@ class SplashFragment : Fragment() {
             delay(1000)
             findNavController().navigate(
                 if (viewModel.isAuthorized()) {
-                    R.id.action_splashFragment_to_profileFragment
+                    R.id.action_splashFragment_to_feedFragment
                 } else {
                     R.id.action_splashFragment_to_authorizationFragment
                 }
