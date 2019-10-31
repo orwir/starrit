@@ -8,7 +8,7 @@ import org.koin.dsl.module
 val localModule = module {
 
     single<SharedPreferences> {
-        get<Application>().getSharedPreferences("GazzitApplication", Context.MODE_PRIVATE)
+        get<Application>().getSharedPreferences("GazzitPreferences", Context.MODE_PRIVATE)
     }
 
 }

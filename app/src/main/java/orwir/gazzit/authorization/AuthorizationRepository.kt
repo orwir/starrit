@@ -25,13 +25,13 @@ class AuthorizationRepository : KoinComponent, Shareable by KoinedShareable() {
     private var token: Token? by objPref(null)
     private var callback: Callback? = null
     private val service: AuthorizationService by inject()
-    private val scope = listOf(Scope.Identity).joinToString { it.asParameter() }
+    private val scope = listOf(Scope.Identity, Scope.Read).joinToString { it.asParameter() }
 
     fun hasToken(): Boolean = token != null
 
     fun obtainToken(): Token = runBlocking {
         token?.let {
-            if ((it.obtained + it.expires - 2000) >= System.currentTimeMillis()) {
+            if ((it.obtained + it.expires - 5000) >= System.currentTimeMillis()) {
                 token = service.refreshToken(it.refresh).copy(refresh = it.refresh)
                 token
             } else {

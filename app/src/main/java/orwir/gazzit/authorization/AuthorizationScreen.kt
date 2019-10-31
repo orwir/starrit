@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_authorization.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
 import orwir.gazzit.R
 import orwir.gazzit.authorization.model.Step
 import orwir.gazzit.databinding.FragmentAuthorizationBinding
+import orwir.gazzit.util.handleException
 
 class AuthorizationFragment : Fragment() {
 
@@ -32,7 +31,7 @@ class AuthorizationFragment : Fragment() {
                     findNavController().navigate(R.id.action_authorizationFragment_to_feedFragment)
                 }
                 is Step.Failure -> {
-                    Snackbar.make(view!!, it.exception.toString(), Snackbar.LENGTH_LONG).show()
+                    handleException(it.exception)
                 }
             }
         })

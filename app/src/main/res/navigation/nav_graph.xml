@@ -23,7 +23,9 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
+            app:destination="@id/feedFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -33,7 +35,9 @@
         tools:layout="@layout/fragment_authorization">
         <action
             android:id="@+id/action_authorizationFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
+            app:destination="@id/feedFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
