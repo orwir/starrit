@@ -1,11 +1,11 @@
-package orwir.gazzit.feed.source
+package orwir.gazzit.listing.source
 
-import orwir.gazzit.feed.model.Listing
+import orwir.gazzit.listing.model.Listing
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface FeedService {
+interface ListingService {
 
     @GET("/best")
     suspend fun best(
@@ -14,9 +14,10 @@ interface FeedService {
         @Query("limit") limit: Int = 15
     ): Listing
 
-    @GET("/r/{subreddit}/hot")
-    suspend fun hot(
+    @GET("/r/{subreddit}/{type}")
+    suspend fun listing(
         @Path("subreddit") subreddit: String,
+        @Path("type") type: String = "hot",
         @Query("after") after: String? = null,
         @Query("before") before: String? = null,
         @Query("limit") limit: Int = 15

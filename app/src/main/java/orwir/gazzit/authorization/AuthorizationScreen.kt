@@ -13,7 +13,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import orwir.gazzit.R
 import orwir.gazzit.authorization.model.Step
 import orwir.gazzit.databinding.FragmentAuthorizationBinding
-import orwir.gazzit.util.handleException
+import orwir.gazzit.common.handleException
 
 class AuthorizationFragment : Fragment() {
 

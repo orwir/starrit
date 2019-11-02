@@ -3,7 +3,8 @@ package orwir.gazzit.authorization
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import orwir.gazzit.BuildConfig
-import orwir.gazzit.service
+import orwir.gazzit.common.AuthorizationInterceptor
+import orwir.gazzit.common.service
 
 val authorizationModule = module {
 
@@ -11,7 +12,7 @@ val authorizationModule = module {
 
     single { AuthorizationRepository() }
 
-    single { AuthorizationInterceptor() }
+    single<AuthorizationInterceptor> { RedditAuthorizationInterceptor() }
 
     viewModel { AuthorizationViewModel(get()) }
 

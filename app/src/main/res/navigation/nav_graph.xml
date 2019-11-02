@@ -42,8 +42,8 @@
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="orwir.gazzit.feed.FeedFragment"
+        android:name="orwir.gazzit.listing.ListingFragment"
         android:label="FeedFragment"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_listing" />
 
 </navigation>

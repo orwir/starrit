@@ -1,14 +1,14 @@
 package orwir.gazzit.authorization
 
 import orwir.gazzit.BuildConfig
-import orwir.gazzit.REDDIT_BASE_URL
+import orwir.gazzit.common.REDDIT_BASE_URL
 import orwir.gazzit.authorization.model.Token
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-private const val TOKEN_URL = "${REDDIT_BASE_URL}/api/v1/access_token"
+private const val TOKEN_URL = "$REDDIT_BASE_URL/api/v1/access_token"
 private const val BASIC_AUTH = "Authorization: Basic ${BuildConfig.GAZZIT_CREDENTIALS_B64}"
 
 interface AuthorizationService {

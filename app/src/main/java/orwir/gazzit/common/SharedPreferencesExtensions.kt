@@ -1,4 +1,4 @@
-package orwir.gazzit.util
+package orwir.gazzit.common
 
 import android.content.SharedPreferences
 import com.squareup.moshi.Moshi

@@ -1,4 +1,4 @@
-package orwir.gazzit
+package orwir.gazzit.common
 
 import android.app.Application
 import android.content.Context

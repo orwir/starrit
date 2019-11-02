@@ -1,13 +1,13 @@
-package orwir.gazzit.feed
+package orwir.gazzit.listing
 
 import android.util.Log
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.gazzit.feed.source.FeedService
+import orwir.gazzit.listing.source.ListingService
 
-class FeedRepository : KoinComponent {
+class ListingRepository : KoinComponent {
 
-    private val service: FeedService by inject()
+    private val service: ListingService by inject()
 
     suspend fun best() {
         val data = service.best()

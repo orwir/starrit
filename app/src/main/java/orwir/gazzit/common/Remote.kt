@@ -1,21 +1,12 @@
-package orwir.gazzit
+package orwir.gazzit.common
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
-import orwir.gazzit.authorization.AuthorizationInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-val networkModule = module {
-
-    single {
-        Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-    }
+val remoteModule = module {
 
     single {
         OkHttpClient.Builder()

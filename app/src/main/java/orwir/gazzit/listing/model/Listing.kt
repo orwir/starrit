@@ -1,4 +1,4 @@
-package orwir.gazzit.feed.model
+package orwir.gazzit.listing.model
 
 import com.squareup.moshi.Json
 

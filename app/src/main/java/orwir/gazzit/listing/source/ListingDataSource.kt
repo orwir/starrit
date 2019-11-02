@@ -1,45 +1,57 @@
-package orwir.gazzit.feed.source
+package orwir.gazzit.listing.source
 
 import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import androidx.paging.PagedList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.gazzit.feed.model.Post
+import orwir.gazzit.listing.model.Post
 
-class SubredditDataSourceFactory(
-    private val subreddit: String
+val pageConfig = PagedList.Config.Builder()
+    .setPageSize(15)
+    .setInitialLoadSizeHint(15 * 3)
+    .build()
+
+class ListingDataSourceFactory(
+    private val subreddit: String,
+    private val scope: CoroutineScope
 ) : DataSource.Factory<String, Post>() {
-    override fun create(): DataSource<String, Post> = SubredditDataSource(subreddit)
+    override fun create(): DataSource<String, Post> = ListingDataSource(subreddit, scope)
 }
 
-class SubredditDataSource(
-    private val subreddit: String
+class ListingDataSource(
+    private val subreddit: String,
+    private val scope: CoroutineScope
 ) : PageKeyedDataSource<String, Post>(), KoinComponent {
 
-    private val service: FeedService by inject()
+    private val service: ListingService by inject()
 
     override fun loadInitial(
         params: LoadInitialParams<String>,
         callback: LoadInitialCallback<String, Post>
-    ) = runBlocking {
-        try {
-            val listing = service.hot(subreddit = subreddit, limit = params.requestedLoadSize)
-            val posts = listing.data.children.map { it.data }
-            callback.onResult(posts, listing.data.before, listing.data.after)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            // todo: handle exception
+    ) {
+        scope.launch {
+            try {
+                val listing = service.listing(
+                    subreddit = subreddit,
+                    limit = params.requestedLoadSize
+                )
+                val posts = listing.data.children.map { it.data }
+                callback.onResult(posts, listing.data.before, listing.data.after)
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+                // todo: handle exception
+            }
         }
     }
 
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, Post>) {
-        GlobalScope.launch(Dispatchers.IO) {
+        scope.launch {
             try {
-                val listing = service.hot(
+                val listing = service.listing(
                     subreddit = subreddit,
                     after = params.key,
                     limit = params.requestedLoadSize
@@ -54,9 +66,9 @@ class SubredditDataSource(
     }
 
     override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, Post>) {
-        GlobalScope.launch(Dispatchers.IO) {
+        scope.launch {
             try {
-                val listing = service.hot(
+                val listing = service.listing(
                     subreddit = subreddit,
                     before = params.key,
                     limit = params.requestedLoadSize
@@ -68,5 +80,10 @@ class SubredditDataSource(
                 // todo: handle exception
             }
         }
+    }
+
+    override fun invalidate() {
+        super.invalidate()
+        scope.cancel()
     }
 }

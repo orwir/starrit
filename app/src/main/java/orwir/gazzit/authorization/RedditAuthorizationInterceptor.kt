@@ -4,9 +4,10 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.gazzit.REDDIT_AUTH_URL
+import orwir.gazzit.common.AuthorizationInterceptor
+import orwir.gazzit.common.REDDIT_AUTH_URL
 
-class AuthorizationInterceptor : Interceptor, KoinComponent {
+class RedditAuthorizationInterceptor : AuthorizationInterceptor, KoinComponent {
 
     private val repository: AuthorizationRepository by inject()
 

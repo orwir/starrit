@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="orwir.gazzit.feed.FeedViewModel" />
+            type="orwir.gazzit.listing.ListingViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

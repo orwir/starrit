@@ -2,7 +2,7 @@ package orwir.gazzit.profile
 
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import orwir.gazzit.service
+import orwir.gazzit.common.service
 
 val profileModule = module {
 
