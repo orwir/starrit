@@ -20,12 +20,6 @@ data class Child(
 
 data class Post(
     val id: String,
-    val permalink: String,
     @Json(name = "subreddit_name_prefixed") val subreddit: String,
-    val author: String,
-    val title: String,
-    val selftext: String,
-    val clicked: Boolean,
-    @Json(name = "over_18") val over18: Boolean,
-    val visited: Boolean
+    val title: String
 )

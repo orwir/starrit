@@ -39,4 +39,53 @@
         app:layout_constraintTop_toBottomOf="@id/subreddit_icon"
         tools:text="Post title" />
 
+    <ImageView
+        android:id="@+id/vote_up"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/space"
+        android:src="@drawable/ic_arrow_up"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space"
+        app:layout_constraintBottom_toBottomOf="@id/vote_up"
+        app:layout_constraintStart_toEndOf="@id/vote_up"
+        app:layout_constraintTop_toTopOf="@id/vote_up"
+        tools:text="n/a" />
+
+    <ImageView
+        android:id="@+id/vote_down"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/space"
+        android:src="@drawable/ic_arrow_down"
+        app:layout_constraintBottom_toBottomOf="@id/vote_up"
+        app:layout_constraintStart_toEndOf="@id/score"
+        app:layout_constraintTop_toTopOf="@id/vote_up" />
+
+    <ImageView
+        android:id="@+id/comments"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/spaceX2"
+        android:src="@drawable/ic_comment"
+        app:layout_constraintTop_toTopOf="@id/vote_up"
+        app:layout_constraintBottom_toBottomOf="@id/vote_up"
+        app:layout_constraintStart_toEndOf="@id/vote_down"/>
+
+    <TextView
+        android:id="@+id/comments_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space"
+        app:layout_constraintBottom_toBottomOf="@id/vote_up"
+        app:layout_constraintStart_toEndOf="@id/comments"
+        app:layout_constraintTop_toTopOf="@id/vote_up"
+        tools:text="n/a" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
