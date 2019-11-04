@@ -31,11 +31,12 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
 }
 
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private val icon = view.subreddit_icon
+    private val section = view.subreddit_title
     private val title = view.title
-    private val content = view.content
 
     fun bind(post: Post) {
+        section.text = post.subreddit
         title.text = post.title
-        content.text = post.selftext
     }
 }

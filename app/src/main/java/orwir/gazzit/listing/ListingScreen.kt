@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
+import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_listing.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import orwir.gazzit.databinding.FragmentListingBinding
@@ -35,6 +36,7 @@ class ListingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         posts.adapter = adapter
+        posts.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         viewModel.posts.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)

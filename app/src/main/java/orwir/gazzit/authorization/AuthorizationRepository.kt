@@ -31,7 +31,7 @@ class AuthorizationRepository : KoinComponent, Shareable by KoinedShareable() {
 
     fun obtainToken(): Token = runBlocking {
         token?.let {
-            if ((it.obtained + it.expires - 5000) >= System.currentTimeMillis()) {
+            if (System.currentTimeMillis() >= (it.obtained + it.expires + 5000)) {
                 token = service.refreshToken(it.refresh).copy(refresh = it.refresh)
                 token
             } else {
