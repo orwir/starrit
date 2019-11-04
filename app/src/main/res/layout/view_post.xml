@@ -72,6 +72,7 @@
         android:id="@+id/comments"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:scaleType="centerInside"
         android:layout_marginStart="@dimen/spaceX2"
         android:src="@drawable/ic_comment"
         app:layout_constraintTop_toTopOf="@id/vote_up"
