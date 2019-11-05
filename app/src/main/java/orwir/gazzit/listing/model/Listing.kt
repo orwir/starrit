@@ -21,5 +21,9 @@ data class Child(
 data class Post(
     val id: String,
     @Json(name = "subreddit_name_prefixed") val subreddit: String,
-    val title: String
+    val title: String,
+    val score: Int,
+    @Json(name = "num_comments") val comments: Int,
+    val author: String,
+    @Json(name = "created_utc") val created: Long
 )

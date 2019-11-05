@@ -8,27 +8,55 @@
 
     <ImageView
         android:id="@+id/subreddit_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="@id/author"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/subreddit_title"
         tools:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/subreddit_title"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space"
         android:ellipsize="end"
         android:maxLines="1"
-        app:layout_constraintBottom_toBottomOf="@id/subreddit_icon"
+        app:layout_constraintBottom_toTopOf="@id/author"
         app:layout_constraintStart_toEndOf="@id/subreddit_icon"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="/r/subreddit" />
+        tools:text="r/subreddit" />
+
+    <TextView
+        android:id="@+id/author"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space"
+        android:layout_marginEnd="@dimen/space"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@id/created"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/subreddit_icon"
+        app:layout_constraintTop_toBottomOf="@id/subreddit_title"
+        tools:text="u/author" />
+
+    <TextView
+        android:id="@+id/created"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/author"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/author"
+        app:layout_constraintTop_toTopOf="@id/author"
+        tools:text="11.10 19:34" />
 
     <TextView
         android:id="@+id/title"
-        style="@style/TextAppearance.AppCompat.Medium"
+        style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space"
@@ -36,23 +64,34 @@
         android:maxLines="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/subreddit_icon"
+        app:layout_constraintTop_toBottomOf="@id/author"
         tools:text="Post title" />
+
+    <androidx.constraintlayout.widget.Placeholder
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <ImageView
         android:id="@+id/vote_up"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="@dimen/space"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/vote_up"
+        android:focusable="true"
         android:src="@drawable/ic_arrow_up"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintTop_toBottomOf="@id/content" />
 
     <TextView
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space"
         app:layout_constraintBottom_toBottomOf="@id/vote_up"
         app:layout_constraintStart_toEndOf="@id/vote_up"
         app:layout_constraintTop_toTopOf="@id/vote_up"
@@ -62,7 +101,10 @@
         android:id="@+id/vote_down"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="@dimen/space"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/vote_down"
+        android:focusable="true"
         android:src="@drawable/ic_arrow_down"
         app:layout_constraintBottom_toBottomOf="@id/vote_up"
         app:layout_constraintStart_toEndOf="@id/score"
@@ -72,21 +114,38 @@
         android:id="@+id/comments"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:scaleType="centerInside"
         android:layout_marginStart="@dimen/spaceX2"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/comments"
+        android:focusable="true"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_comment"
-        app:layout_constraintTop_toTopOf="@id/vote_up"
         app:layout_constraintBottom_toBottomOf="@id/vote_up"
-        app:layout_constraintStart_toEndOf="@id/vote_down"/>
+        app:layout_constraintStart_toEndOf="@id/vote_down"
+        app:layout_constraintTop_toTopOf="@id/vote_up" />
 
     <TextView
         android:id="@+id/comments_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space"
         app:layout_constraintBottom_toBottomOf="@id/vote_up"
         app:layout_constraintStart_toEndOf="@id/comments"
         app:layout_constraintTop_toTopOf="@id/vote_up"
         tools:text="n/a" />
+
+    <ImageView
+        android:id="@+id/more"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/more"
+        android:focusable="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_more_vert"
+        app:layout_constraintBottom_toBottomOf="@id/vote_up"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/vote_up" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,17 @@
 <resources>
+    <!-- Global -->
     <string name="app_name">Gazzit</string>
+
+    <!-- Authorization Screen -->
     <string name="to_use_the_app_you_need_to_authorize">To use the app you need to authorize on Reddit</string>
     <string name="authorize">Authorize</string>
+
+    <!-- Listing Screen -->
+    <string name="author">u/%1$s</string>
+    <string name="subreddit_icon">Subreddit icon</string>
+    <string name="vote_up">Vote Up</string>
+    <string name="vote_down">Vote Down</string>
+    <string name="comments">Comments</string>
+    <string name="more">More</string>
+
 </resources>
