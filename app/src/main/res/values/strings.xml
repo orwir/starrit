@@ -7,7 +7,8 @@
     <string name="authorize">Authorize</string>
 
     <!-- Listing Screen -->
-    <string name="author">u/%1$s</string>
+    <string name="subbreddit">/r/%1$s</string>
+    <string name="author">/u/%1$s</string>
     <string name="subreddit_icon">Subreddit icon</string>
     <string name="vote_up">Vote Up</string>
     <string name="vote_down">Vote Down</string>

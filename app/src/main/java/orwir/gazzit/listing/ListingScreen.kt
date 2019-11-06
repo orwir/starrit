@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_listing.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import orwir.gazzit.databinding.FragmentListingBinding
-import orwir.gazzit.listing.model.Post
 import orwir.gazzit.listing.source.ListingDataSourceFactory
 import orwir.gazzit.listing.source.pageConfig
 

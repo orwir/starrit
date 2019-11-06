@@ -1,4 +1,4 @@
-package orwir.gazzit.listing.model
+package orwir.gazzit.listing
 
 import com.squareup.moshi.Json
 
@@ -20,7 +20,7 @@ data class Child(
 
 data class Post(
     val id: String,
-    @Json(name = "subreddit_name_prefixed") val subreddit: String,
+    val subreddit: String,
     val title: String,
     val score: Int,
     @Json(name = "num_comments") val comments: Int,

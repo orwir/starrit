@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_post.view.*
 import orwir.gazzit.R
 import orwir.gazzit.common.squeezeFormat
-import orwir.gazzit.listing.model.Post
 
 class ListingAdapter : PagedListAdapter<Post, ViewHolder>(PostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -42,7 +41,7 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val comments = view.comments_count
 
     fun bind(post: Post) {
-        subreddit.text = post.subreddit
+        subreddit.text = itemView.resources.getString(R.string.subbreddit, post.subreddit)
         author.text = itemView.resources.getString(R.string.author, post.author)
         created.text = DateUtils.getRelativeDateTimeString(
             itemView.context,
