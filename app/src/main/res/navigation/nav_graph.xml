@@ -6,7 +6,7 @@
     app:startDestination="@id/splashFragment">
 
     <action
-        android:id="@+id/action_global_authorizationFragment"
+        android:id="@+id/global_to_authorization"
         app:destination="@id/authorizationFragment"
         app:popUpTo="@id/nav_graph"
         app:popUpToInclusive="true" />
@@ -17,12 +17,12 @@
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
-            android:id="@+id/action_splashFragment_to_authorizationFragment"
+            android:id="@+id/to_authorization"
             app:destination="@id/authorizationFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_splashFragment_to_feedFragment"
+            android:id="@+id/to_listing"
             app:destination="@id/listingFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
@@ -34,7 +34,7 @@
         android:label="AuthorizationFragment"
         tools:layout="@layout/fragment_authorization">
         <action
-            android:id="@+id/action_authorizationFragment_to_feedFragment"
+            android:id="@+id/to_listing"
             app:destination="@id/listingFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
@@ -50,7 +50,7 @@
             android:defaultValue="best"
             app:argType="string" />
         <action
-            android:id="@+id/action_listingFragment_to_searchFragment"
+            android:id="@+id/to_search"
             app:destination="@id/searchFragment" />
     </fragment>
 
@@ -60,7 +60,7 @@
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_searchFragment_to_listingFragment"
+            android:id="@+id/to_listing"
             app:destination="@id/listingFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />

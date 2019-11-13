@@ -10,6 +10,7 @@ import orwir.gazzit.common.localModule
 import orwir.gazzit.common.remoteModule
 import orwir.gazzit.listing.listingModule
 import orwir.gazzit.profile.profileModule
+import orwir.gazzit.search.searchModule
 import orwir.gazzit.splash.splashModule
 
 class GazzitApplication : Application() {
@@ -27,6 +28,7 @@ class GazzitApplication : Application() {
                     splashModule,
                     authorizationModule,
                     listingModule,
+                    searchModule,
                     profileModule
                 )
             )

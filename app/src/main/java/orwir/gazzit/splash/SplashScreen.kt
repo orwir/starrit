@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import orwir.gazzit.R
 import orwir.gazzit.authorization.AuthorizationRepository
 import orwir.gazzit.databinding.FragmentSplashBinding
 
@@ -35,13 +34,12 @@ class SplashFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             delay(1000)
-            findNavController().navigate(
-                if (viewModel.isAuthorized()) {
-                    R.id.action_splashFragment_to_feedFragment
-                } else {
-                    R.id.action_splashFragment_to_authorizationFragment
-                }
-            )
+            val direction = if (viewModel.isAuthorized()) {
+                SplashFragmentDirections.toListing()
+            } else {
+                SplashFragmentDirections.toAuthorization()
+            }
+            findNavController().navigate(direction)
         }
     }
 }

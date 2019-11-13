@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LivePagedListBuilder
 import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_listing.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import orwir.gazzit.R
+import orwir.gazzit.common.SingleLiveEvent
 import orwir.gazzit.databinding.FragmentListingBinding
 import orwir.gazzit.listing.source.ListingDataSourceFactory
 import orwir.gazzit.listing.source.pageConfig
@@ -46,9 +48,13 @@ class ListingFragment : Fragment() {
         viewModel.posts.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
+
+        viewModel.searchClick.observe(viewLifecycleOwner, Observer {
+            findNavController().navigate(ListingFragmentDirections.toSearch())
+        })
     }
 
-    private fun ListingType.toTitle() = when(this) {
+    private fun ListingType.toTitle() = when (this) {
         is ListingType.Subreddit -> getString(R.string.subreddit, this.subreddit)
         is ListingType.Best -> getString(R.string.best)
     }
@@ -61,8 +67,10 @@ class ListingViewModel(listing: ListingType) : ViewModel() {
         pageConfig
     ).build()
 
-    fun openSearch() {
+    val searchClick = SingleLiveEvent<Unit>()
 
+    fun openSearch() {
+        searchClick.call()
     }
 
 }

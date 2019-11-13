@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(), AuthorizationHolder {
     }
 
     override fun request() {
-        findNavController(android.R.id.content).navigate(R.id.action_global_authorizationFragment)
+        findNavController(android.R.id.content).navigate(NavGraphDirections.globalToAuthorization())
     }
 
 }

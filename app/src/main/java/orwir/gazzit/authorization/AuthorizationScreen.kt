@@ -10,10 +10,9 @@ import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import orwir.gazzit.R
 import orwir.gazzit.authorization.model.Step
-import orwir.gazzit.databinding.FragmentAuthorizationBinding
 import orwir.gazzit.common.handleException
+import orwir.gazzit.databinding.FragmentAuthorizationBinding
 
 class AuthorizationFragment : Fragment() {
 
@@ -28,7 +27,7 @@ class AuthorizationFragment : Fragment() {
                     startActivity(Intent(Intent.ACTION_VIEW, it.uri))
                 }
                 is Step.Success -> {
-                    findNavController().navigate(R.id.action_authorizationFragment_to_feedFragment)
+                    findNavController().navigate(AuthorizationFragmentDirections.toListing())
                 }
                 is Step.Failure -> {
                     handleException(it.exception)
