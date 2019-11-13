@@ -8,6 +8,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import orwir.gazzit.listing.ListingType
 import orwir.gazzit.listing.Post
 
 val pageConfig = PagedList.Config.Builder()
@@ -16,14 +17,14 @@ val pageConfig = PagedList.Config.Builder()
     .build()
 
 class ListingDataSourceFactory(
-    private val subreddit: String,
+    private val listing: ListingType,
     private val scope: CoroutineScope
 ) : DataSource.Factory<String, Post>() {
-    override fun create(): DataSource<String, Post> = ListingDataSource(subreddit, scope)
+    override fun create(): DataSource<String, Post> = ListingDataSource(listing, scope)
 }
 
 class ListingDataSource(
-    private val subreddit: String,
+    private val listing: ListingType,
     private val scope: CoroutineScope
 ) : PageKeyedDataSource<String, Post>(), KoinComponent {
 
@@ -35,10 +36,13 @@ class ListingDataSource(
     ) {
         scope.launch {
             try {
-                val listing = service.listing(
-                    subreddit = subreddit,
-                    limit = params.requestedLoadSize
-                )
+                val listing = when (listing) {
+                    is ListingType.Subreddit -> service.subreddit(
+                        subreddit = listing.subreddit,
+                        limit = params.requestedLoadSize
+                    )
+                    is ListingType.Best -> service.best(limit = params.requestedLoadSize)
+                }
                 val posts = listing.data.children.map { it.data }
                 callback.onResult(posts, listing.data.before, listing.data.after)
             } catch (ex: Exception) {
@@ -51,11 +55,17 @@ class ListingDataSource(
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, Post>) {
         scope.launch {
             try {
-                val listing = service.listing(
-                    subreddit = subreddit,
-                    after = params.key,
-                    limit = params.requestedLoadSize
-                )
+                val listing = when (listing) {
+                    is ListingType.Subreddit -> service.subreddit(
+                        subreddit = listing.subreddit,
+                        after = params.key,
+                        limit = params.requestedLoadSize
+                    )
+                    is ListingType.Best -> service.best(
+                        after = params.key,
+                        limit = params.requestedLoadSize
+                    )
+                }
                 val posts = listing.data.children.map { it.data }
                 callback.onResult(posts, listing.data.after)
             } catch (ex: Exception) {
@@ -68,11 +78,17 @@ class ListingDataSource(
     override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, Post>) {
         scope.launch {
             try {
-                val listing = service.listing(
-                    subreddit = subreddit,
-                    before = params.key,
-                    limit = params.requestedLoadSize
-                )
+                val listing = when (listing) {
+                    is ListingType.Subreddit -> service.subreddit(
+                        subreddit = listing.subreddit,
+                        before = params.key,
+                        limit = params.requestedLoadSize
+                    )
+                    is ListingType.Best -> service.best(
+                        before = params.key,
+                        limit = params.requestedLoadSize
+                    )
+                }
                 val posts = listing.data.children.map { it.data }
                 callback.onResult(posts, listing.data.before)
             } catch (ex: Exception) {

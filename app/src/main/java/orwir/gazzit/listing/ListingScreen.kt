@@ -11,14 +11,19 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_listing.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import orwir.gazzit.R
 import orwir.gazzit.databinding.FragmentListingBinding
 import orwir.gazzit.listing.source.ListingDataSourceFactory
 import orwir.gazzit.listing.source.pageConfig
 
+private const val ARG_LISTING = "listing"
+
 class ListingFragment : Fragment() {
 
-    private val viewModel: ListingViewModel by viewModel()
+    private val listing by lazy { ListingType.parse(arguments!![ARG_LISTING] as String) }
+    private val viewModel: ListingViewModel by viewModel { parametersOf(listing) }
     private val adapter = ListingAdapter()
 
     override fun onCreateView(
@@ -27,6 +32,7 @@ class ListingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = FragmentListingBinding.inflate(inflater, container, false)
         .also {
+            it.listing = listing.toTitle()
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
         }
@@ -41,13 +47,22 @@ class ListingFragment : Fragment() {
             adapter.submitList(it)
         })
     }
+
+    private fun ListingType.toTitle() = when(this) {
+        is ListingType.Subreddit -> getString(R.string.subreddit, this.subreddit)
+        is ListingType.Best -> getString(R.string.best)
+    }
 }
 
-class ListingViewModel(private val repository: ListingRepository) : ViewModel() {
+class ListingViewModel(listing: ListingType) : ViewModel() {
 
     val posts = LivePagedListBuilder<String, Post>(
-        ListingDataSourceFactory("aww", viewModelScope),
+        ListingDataSourceFactory(listing, viewModelScope),
         pageConfig
     ).build()
+
+    fun openSearch() {
+
+    }
 
 }

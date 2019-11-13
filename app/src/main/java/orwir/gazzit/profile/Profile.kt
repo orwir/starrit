@@ -1,6 +1,6 @@
 package orwir.gazzit.profile
 
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import orwir.gazzit.common.service
 

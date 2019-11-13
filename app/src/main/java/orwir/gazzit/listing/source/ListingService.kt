@@ -15,7 +15,7 @@ interface ListingService {
     ): Listing
 
     @GET("/r/{subreddit}/{type}")
-    suspend fun listing(
+    suspend fun subreddit(
         @Path("subreddit") subreddit: String,
         @Path("type") type: String = "hot",
         @Query("after") after: String? = null,

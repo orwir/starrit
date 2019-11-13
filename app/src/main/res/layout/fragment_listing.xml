@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="listing"
+            type="String" />
 
         <variable
             name="viewModel"
@@ -31,11 +36,22 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="snap|scroll|enterAlways">
 
-                <EditText
-                    android:id="@+id/subreddit"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal" />
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_open_in_new"
+                    android:drawablePadding="@dimen/space"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/spaceX2"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:onClick="@{() -> viewModel.openSearch()}"
+                    android:text="@{listing}"
+                    tools:text="r/aww" />
 
             </androidx.appcompat.widget.Toolbar>
 

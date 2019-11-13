@@ -1,6 +1,5 @@
 package orwir.gazzit.profile
 
-import orwir.gazzit.profile.model.Profile
 import retrofit2.http.GET
 
 interface ProfileService {

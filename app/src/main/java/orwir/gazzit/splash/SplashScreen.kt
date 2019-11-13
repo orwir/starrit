@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.gazzit.R
 import orwir.gazzit.authorization.AuthorizationRepository
 import orwir.gazzit.databinding.FragmentSplashBinding

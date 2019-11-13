@@ -41,7 +41,7 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val comments = view.comments_count
 
     fun bind(post: Post) {
-        subreddit.text = itemView.resources.getString(R.string.subbreddit, post.subreddit)
+        subreddit.text = itemView.resources.getString(R.string.subreddit, post.subreddit)
         author.text = itemView.resources.getString(R.string.author, post.author)
         created.text = DateUtils.getRelativeDateTimeString(
             itemView.context,
