@@ -1,35 +1,35 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId 'orwir.gazzit'
+        applicationId "orwir.gazzit"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
-        versionName '1.0'
+        versionName "1.0"
 
         manifestPlaceholders = [
-                schema: 'gazzit',
-                host: 'oauth2'
+                schema: "gazzit",
+                host: "oauth2"
         ]
 
-        buildConfigField 'String', 'SCHEMA', '"gazzit"'
-        buildConfigField 'String', 'HOST', '"oauth2"'
-        buildConfigField 'String', 'GAZZIT_CLIENT_ID', "\"${System.getenv('GAZZIT_CLIENT_ID')}\""
-        buildConfigField 'String', 'GAZZIT_CREDENTIALS_B64', "\"${System.getenv('GAZZIT_CREDENTIALS_B64')}\""
+        buildConfigField "String", "SCHEMA", '"gazzit"'
+        buildConfigField "String", "HOST", '"oauth2"'
+        buildConfigField "String", "GAZZIT_CLIENT_ID", '"${System.getenv("GAZZIT_CLIENT_ID")}"'
+        buildConfigField "String", "GAZZIT_CREDENTIALS_B64", '"${System.getenv("GAZZIT_CREDENTIALS_B64")}"'
     }
 
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 
@@ -49,31 +49,31 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2"
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc02'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc02'
-    implementation 'androidx.paging:paging-runtime:2.1.0'
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.constraintlayout:constraintlayout:1.1.3"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.1.0"
+    implementation "androidx.navigation:navigation-ui-ktx:2.1.0"
+    implementation "androidx.core:core-ktx:1.1.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc02"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc02"
+    implementation "androidx.paging:paging-runtime:2.1.0"
 
-    implementation 'org.koin:koin-core:2.0.1'
-    implementation 'org.koin:koin-android:2.0.1'
-    implementation 'org.koin:koin-android-scope:2.0.1'
-    implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
-    implementation 'org.koin:koin-androidx-scope:2.0.1'
+    implementation "org.koin:koin-core:2.0.1"
+    implementation "org.koin:koin-android:2.0.1"
+    implementation "org.koin:koin-android-scope:2.0.1"
+    implementation "org.koin:koin-androidx-viewmodel:2.0.1"
+    implementation "org.koin:koin-androidx-scope:2.0.1"
 
-    implementation 'com.squareup.okhttp3:okhttp:4.2.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
-    implementation 'com.squareup.moshi:moshi:1.8.0'
-    implementation 'com.squareup.moshi:moshi-kotlin:1.8.0'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-moshi:2.6.2'
+    implementation "com.squareup.okhttp3:okhttp:4.2.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
+    implementation "com.squareup.moshi:moshi:1.8.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.8.0"
+    implementation "com.squareup.retrofit2:retrofit:2.6.2"
+    implementation "com.squareup.retrofit2:converter-moshi:2.6.2"
 }

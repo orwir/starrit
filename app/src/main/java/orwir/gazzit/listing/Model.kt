@@ -38,5 +38,8 @@ data class Post(
     val score: Int,
     @Json(name = "num_comments") val comments: Int,
     val author: String,
-    @Json(name = "created_utc") val created: Long
+    @Json(name = "created_utc") val created: Long,
+    val domain: String,
+    @Json(name = "over_18") val over18: Boolean
+
 )
