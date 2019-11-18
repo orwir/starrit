@@ -4,6 +4,15 @@ apply plugin: "kotlin-android-extensions"
 apply plugin: "kotlin-kapt"
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+}
+
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"

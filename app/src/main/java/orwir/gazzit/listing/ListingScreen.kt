@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_listing.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import orwir.gazzit.R
-import orwir.gazzit.common.SingleLiveEvent
+import orwir.gazzit.common.view.SingleLiveEvent
 import orwir.gazzit.databinding.FragmentListingBinding
 import orwir.gazzit.listing.source.ListingDataSourceFactory
 import orwir.gazzit.listing.source.pageConfig

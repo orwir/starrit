@@ -1,4 +1,4 @@
-package orwir.gazzit.common
+package orwir.gazzit.common.view
 
 /*
  *  Copyright 2017 Google Inc.
