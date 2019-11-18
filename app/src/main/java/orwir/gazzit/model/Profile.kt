@@ -1,4 +1,4 @@
-package orwir.gazzit.profile
+package orwir.gazzit.model
 
 import com.squareup.moshi.Json
 

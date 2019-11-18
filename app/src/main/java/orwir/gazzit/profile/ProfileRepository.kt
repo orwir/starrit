@@ -2,6 +2,7 @@ package orwir.gazzit.profile
 
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import orwir.gazzit.model.Profile
 
 class ProfileRepository : KoinComponent {
 

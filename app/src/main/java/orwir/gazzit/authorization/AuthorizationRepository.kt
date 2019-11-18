@@ -11,10 +11,10 @@ import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import orwir.gazzit.BuildConfig
-import orwir.gazzit.authorization.model.Duration
-import orwir.gazzit.authorization.model.Scope
-import orwir.gazzit.authorization.model.Step
-import orwir.gazzit.authorization.model.Token
+import orwir.gazzit.model.Duration
+import orwir.gazzit.model.Scope
+import orwir.gazzit.model.Step
+import orwir.gazzit.model.Token
 import orwir.gazzit.common.KoinedShareable
 import orwir.gazzit.common.Shareable
 import orwir.gazzit.common.objPref

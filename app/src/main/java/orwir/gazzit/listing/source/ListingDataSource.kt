@@ -8,8 +8,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.gazzit.listing.ListingType
-import orwir.gazzit.listing.Post
+import orwir.gazzit.model.ListingType
+import orwir.gazzit.model.Post
 
 val pageConfig = PagedList.Config.Builder()
     .setPageSize(15)

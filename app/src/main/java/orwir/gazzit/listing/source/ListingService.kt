@@ -1,6 +1,6 @@
 package orwir.gazzit.listing.source
 
-import orwir.gazzit.listing.Listing
+import orwir.gazzit.model.Listing
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

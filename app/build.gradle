@@ -22,8 +22,8 @@ android {
 
         buildConfigField "String", "SCHEMA", '"gazzit"'
         buildConfigField "String", "HOST", '"oauth2"'
-        buildConfigField "String", "GAZZIT_CLIENT_ID", '"${System.getenv("GAZZIT_CLIENT_ID")}"'
-        buildConfigField "String", "GAZZIT_CREDENTIALS_B64", '"${System.getenv("GAZZIT_CREDENTIALS_B64")}"'
+        buildConfigField "String", "GAZZIT_CLIENT_ID", "\"${System.getenv("GAZZIT_CLIENT_ID")}\""
+        buildConfigField "String", "GAZZIT_CREDENTIALS_B64", "\"${System.getenv("GAZZIT_CREDENTIALS_B64")}\""
     }
 
     buildTypes {

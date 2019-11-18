@@ -9,9 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import orwir.gazzit.common.UiResponse
+import orwir.gazzit.model.UiResponse
 import orwir.gazzit.common.handleException
 import orwir.gazzit.databinding.FragmentProfileBinding
+import orwir.gazzit.model.Profile
 
 class ProfileFragment : Fragment() {
 

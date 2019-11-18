@@ -1,4 +1,4 @@
-package orwir.gazzit.common
+package orwir.gazzit.model
 
 sealed class UiResponse<T> {
     data class Success<T>(val result: T) : UiResponse<T>()

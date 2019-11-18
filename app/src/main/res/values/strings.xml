@@ -16,5 +16,7 @@
     <string name="more">More</string>
     <string name="share">Share</string>
     <string name="best">Best</string>
+    <string name="nsfw">💋💀</string>
+    <string name="score_hidden">⏳</string>
 
 </resources>

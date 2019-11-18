@@ -2,7 +2,7 @@ package orwir.gazzit.authorization
 
 import orwir.gazzit.BuildConfig
 import orwir.gazzit.common.REDDIT_BASE_URL
-import orwir.gazzit.authorization.model.Token
+import orwir.gazzit.model.Token
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Headers

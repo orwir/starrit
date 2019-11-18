@@ -67,13 +67,35 @@
         app:layout_constraintTop_toBottomOf="@id/author"
         tools:text="Post title" />
 
-    <androidx.constraintlayout.widget.Placeholder
+    <TextView
+        android:id="@+id/nsfw"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/space"
+        android:text="@string/nsfw"
+        app:layout_constraintEnd_toStartOf="@id/domain"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+        android:id="@+id/domain"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/nsfw"
+        app:layout_constraintTop_toTopOf="@id/nsfw"
+        tools:text="i.reddit.com" />
+
+    <FrameLayout
         android:id="@+id/content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        android:layout_marginTop="@dimen/space"
+        app:layout_constraintTop_toBottomOf="@id/domain" />
 
     <ImageView
         android:id="@+id/vote_up"
@@ -138,15 +160,15 @@
         android:id="@+id/share"
         android:layout_width="@dimen/button_size"
         android:layout_height="@dimen/button_size"
-        android:contentDescription="@string/share"
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_marginEnd="@dimen/spaceX2"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
+        android:contentDescription="@string/share"
         android:focusable="true"
-        android:src="@drawable/ic_share"
         android:scaleType="centerInside"
+        android:src="@drawable/ic_share"
         app:layout_constraintEnd_toStartOf="@id/more"
-        app:layout_constraintTop_toTopOf="@id/vote_up"/>
+        app:layout_constraintTop_toTopOf="@id/vote_up" />
 
     <ImageView
         android:id="@+id/more"

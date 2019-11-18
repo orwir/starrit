@@ -1,4 +1,4 @@
-package orwir.gazzit.listing
+package orwir.gazzit.model
 
 import com.squareup.moshi.Json
 
@@ -32,14 +32,24 @@ data class Child(
 )
 
 data class Post(
-    val id: String,
-    val subreddit: String,
-    val title: String,
-    val score: Int,
+    @Json(name = "id") val id: String,
+    @Json(name = "subreddit") val subreddit: String,
+    @Json(name = "title") val title: String,
+    @Json(name = "score") val score: Int,
     @Json(name = "num_comments") val comments: Int,
-    val author: String,
+    @Json(name = "author") val author: String,
     @Json(name = "created_utc") val created: Long,
-    val domain: String,
-    @Json(name = "over_18") val over18: Boolean
-
+    @Json(name = "domain") val domain: String,
+    @Json(name = "over_18") val nsfw: Boolean,
+    @Json(name = "hide_score") val hideScore: Boolean,
+    @Json(name = "post_hint") val postHint: String?,
+    @Json(name = "url") val url: String,
+    @Json(name = "selftext") val text: String?
 )
+
+enum class PostType {
+    Link,
+    Text,
+    Image,
+    Unknown
+}

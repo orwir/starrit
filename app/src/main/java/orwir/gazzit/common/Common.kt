@@ -22,9 +22,9 @@ private val squeeze_suffixes: NavigableMap<Long, String> = TreeMap(
     )
 )
 
-fun Long.squeezeFormat(): String {
-    if (this == Long.MIN_VALUE) return (Long.MIN_VALUE + 1).squeezeFormat()
-    if (this < 0) return "-${(-this).squeezeFormat()}"
+fun Long.squeeze(): String {
+    if (this == Long.MIN_VALUE) return (Long.MIN_VALUE + 1).squeeze()
+    if (this < 0) return "-${(-this).squeeze()}"
     if (this < 1_000) return this.toString()
 
     val entry = squeeze_suffixes.floorEntry(this) ?: return this.toString()
@@ -38,4 +38,4 @@ fun Long.squeezeFormat(): String {
     }
 }
 
-fun Int.squeezeFormat(): String = this.toLong().squeezeFormat()
+fun Int.squeeze(): String = this.toLong().squeeze()

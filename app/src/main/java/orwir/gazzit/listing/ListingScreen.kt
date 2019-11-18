@@ -19,6 +19,8 @@ import orwir.gazzit.common.SingleLiveEvent
 import orwir.gazzit.databinding.FragmentListingBinding
 import orwir.gazzit.listing.source.ListingDataSourceFactory
 import orwir.gazzit.listing.source.pageConfig
+import orwir.gazzit.model.ListingType
+import orwir.gazzit.model.Post
 
 private const val ARG_LISTING = "listing"
 
