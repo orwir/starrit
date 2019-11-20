@@ -2,22 +2,21 @@ package orwir.gazzit.listing
 
 import android.text.format.DateUtils
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import orwir.gazzit.R
 import orwir.gazzit.common.squeeze
+import orwir.gazzit.databinding.ContentImageBinding
+import orwir.gazzit.databinding.ContentLinkBinding
 import orwir.gazzit.databinding.ContentTextBinding
 import orwir.gazzit.databinding.ViewPostBinding
 import orwir.gazzit.model.Post
-import orwir.gazzit.model.PostType
 
 class ListingAdapter : PagedListAdapter<Post, ViewHolder>(PostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewPostBinding
-        .inflate(LayoutInflater.from(parent.context))
+        .inflate(LayoutInflater.from(parent.context), parent, false)
         .run(::ViewHolder)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -52,28 +51,36 @@ class ViewHolder(private val binding: ViewPostBinding) : RecyclerView.ViewHolder
                 post.score.squeeze()
             }
             commentsCount.text = post.comments.squeeze()
+
             content.removeAllViews()
-
-            post.content(itemView as ViewGroup)?.also { (type, view) ->
-                when (type) {
-                    PostType.Text -> (view as TextView).text = post.text
-                }
-                content.addView(view)
-            }
+            val inflater = LayoutInflater.from(itemView.context)
+            when {
+                post.isText() -> resolveText(post, inflater)
+                post.isLink() -> resolveLink(post, inflater)
+                post.isImage() -> resolveImage(post, inflater)
+                else -> null
+            }?.let(content::addView)
         }
     }
 
-    private fun Post.content(viewGroup: ViewGroup): Pair<PostType, View>? {
-        val type = when {
-            text?.isNotBlank() ?: false -> PostType.Text
-            else -> return null
-        }
-        val inflater = LayoutInflater.from(viewGroup.context)
-        val layout = when (type) {
-            PostType.Text -> ContentTextBinding.inflate(inflater).root
-            else -> return null
-        }
+    private fun Post.isText() = text?.isNotBlank() ?: false
 
-        return type to layout
-    }
+    private fun Post.isLink() = hint == "link" && !domain.startsWith("i.")
+
+    private fun Post.isImage() = hint == "image" || (hint == "link" && domain.startsWith("i."))
+
+    private fun resolveText(post: Post, inflater: LayoutInflater) = ContentTextBinding
+        .inflate(inflater)
+        .also { it.post = post }
+        .root
+
+    private fun resolveLink(post: Post, inflater: LayoutInflater) = ContentLinkBinding
+        .inflate(inflater)
+        .also { it.post = post }
+        .root
+
+    private fun resolveImage(post: Post, inflater: LayoutInflater) = ContentImageBinding
+        .inflate(inflater)
+        .also { it.post = post }
+        .root
 }

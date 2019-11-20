@@ -3,12 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="post"
+            type="orwir.gazzit.model.Post" />
+    </data>
+
     <TextView
         android:id="@+id/text"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
+        android:text="@{post.text}"
         android:textAppearance="?attr/textAppearanceBody2"
         app:maxLinesToggle="@{4}"
         tools:text="Text content placeholder" />

@@ -41,15 +41,10 @@ data class Post(
     @Json(name = "created_utc") val created: Long,
     @Json(name = "domain") val domain: String,
     @Json(name = "over_18") val nsfw: Boolean,
+    @Json(name = "spoiler") val spoiler: Boolean,
     @Json(name = "hide_score") val hideScore: Boolean,
-    @Json(name = "post_hint") val postHint: String?,
+    @Json(name = "post_hint") val hint: String?,
+    @Json(name = "selftext") val text: String?,
     @Json(name = "url") val url: String,
-    @Json(name = "selftext") val text: String?
+    @Json(name = "thumbnail") val thumbnail: String
 )
-
-enum class PostType {
-    Link,
-    Text,
-    Image,
-    Unknown
-}

@@ -78,6 +78,9 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"
     implementation "org.koin:koin-androidx-scope:2.0.1"
 
+    implementation "io.coil-kt:coil:0.8.0"
+    implementation "io.coil-kt:coil-gif:0.8.0"
+
     implementation "com.squareup.okhttp3:okhttp:4.2.1"
     implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
     implementation "com.squareup.moshi:moshi:1.8.0"

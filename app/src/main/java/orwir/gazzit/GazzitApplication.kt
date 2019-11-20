@@ -1,6 +1,11 @@
 package orwir.gazzit
 
 import android.app.Application
+import coil.Coil
+import coil.ImageLoader
+import coil.util.CoilUtils
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,6 +22,7 @@ class GazzitApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         startKoin {
             androidLogger()
             androidContext(this@GazzitApplication)
@@ -32,6 +38,20 @@ class GazzitApplication : Application() {
                     profileModule
                 )
             )
+        }
+
+        Coil.setDefaultImageLoader {
+            ImageLoader(this@GazzitApplication) {
+                crossfade(true)
+                okHttpClient {
+                    OkHttpClient.Builder()
+                        .addInterceptor(HttpLoggingInterceptor().apply {
+                            level = HttpLoggingInterceptor.Level.BODY
+                        })
+                        .cache(CoilUtils.createDefaultCache(this@GazzitApplication))
+                        .build()
+                }
+            }
         }
     }
 }

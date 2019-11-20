@@ -12,11 +12,13 @@
     <string name="subreddit_icon">Subreddit icon</string>
     <string name="vote_up">Vote Up</string>
     <string name="vote_down">Vote Down</string>
+    <string name="image_content">Image content</string>
     <string name="comments">Comments</string>
     <string name="more">More</string>
     <string name="share">Share</string>
     <string name="best">Best</string>
     <string name="nsfw">💋💀</string>
+    <string name="spoiler">⚡</string>
     <string name="score_hidden">⏳</string>
 
 </resources>
