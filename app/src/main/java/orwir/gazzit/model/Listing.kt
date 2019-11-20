@@ -46,5 +46,12 @@ data class Post(
     @Json(name = "post_hint") val hint: String?,
     @Json(name = "selftext") val text: String?,
     @Json(name = "url") val url: String,
-    @Json(name = "thumbnail") val thumbnail: String
+    @Json(name = "thumbnail") val thumbnail: String,
+    @Json(name = "preview") val preview: Preview?
 )
+
+data class Preview(val images: List<PostImage>, val enabled: Boolean)
+
+data class PostImage(val source: ImagePreview, val resolutions: List<ImagePreview>)
+
+data class ImagePreview(val url: String, val width: Int, val height: Int)

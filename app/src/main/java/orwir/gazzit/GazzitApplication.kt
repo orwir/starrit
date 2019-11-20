@@ -3,6 +3,7 @@ package orwir.gazzit
 import android.app.Application
 import coil.Coil
 import coil.ImageLoader
+import coil.decode.GifDecoder
 import coil.util.CoilUtils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -50,6 +51,9 @@ class GazzitApplication : Application() {
                         })
                         .cache(CoilUtils.createDefaultCache(this@GazzitApplication))
                         .build()
+                }
+                componentRegistry {
+                    add(GifDecoder())
                 }
             }
         }
