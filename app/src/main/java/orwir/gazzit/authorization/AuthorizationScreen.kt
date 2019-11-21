@@ -1,18 +1,18 @@
 package orwir.gazzit.authorization
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import orwir.gazzit.model.Step
 import orwir.gazzit.common.handleException
 import orwir.gazzit.databinding.FragmentAuthorizationBinding
+import orwir.gazzit.model.Step
 
 class AuthorizationFragment : Fragment() {
 
@@ -24,7 +24,7 @@ class AuthorizationFragment : Fragment() {
         viewModel.authorizationState.observe(this, Observer {
             when (it) {
                 is Step.Start -> {
-                    startActivity(Intent(Intent.ACTION_VIEW, it.uri))
+                    CustomTabsIntent.Builder().build().launchUrl(context, it.uri)
                 }
                 is Step.Success -> {
                     findNavController().navigate(AuthorizationFragmentDirections.toListing())
