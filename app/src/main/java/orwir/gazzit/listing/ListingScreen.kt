@@ -15,7 +15,9 @@ import kotlinx.android.synthetic.main.fragment_listing.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import orwir.gazzit.R
-import orwir.gazzit.common.view.SingleLiveEvent
+import orwir.gazzit.common.livedata.OnlineLiveData
+import orwir.gazzit.common.livedata.SingleLiveEvent
+import orwir.gazzit.common.livedata.throttle
 import orwir.gazzit.databinding.FragmentListingBinding
 import orwir.gazzit.listing.source.ListingDataSourceFactory
 import orwir.gazzit.listing.source.pageConfig
@@ -38,6 +40,7 @@ class ListingFragment : Fragment() {
         .also {
             it.listing = listing.toTitle()
             it.viewModel = viewModel
+            it.online = OnlineLiveData(context!!).throttle(2000)
             it.lifecycleOwner = viewLifecycleOwner
         }
         .root

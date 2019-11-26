@@ -9,7 +9,7 @@ import coil.api.load
 import orwir.gazzit.R
 
 @BindingAdapter("visibleOrGone")
-fun View.setVisibleOrGone(show: Boolean) {
+fun View.setVisibleOrGone(show: Boolean = false) {
     visibility = if (show) VISIBLE else GONE
 }
 

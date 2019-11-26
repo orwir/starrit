@@ -10,6 +10,10 @@
             type="String" />
 
         <variable
+            name="online"
+            type="androidx.lifecycle.LiveData&lt;Boolean>" />
+
+        <variable
             name="viewModel"
             type="orwir.gazzit.listing.ListingViewModel" />
     </data>
@@ -44,16 +48,20 @@
                     android:clickable="true"
                     android:drawableStart="@drawable/ic_open_in_new"
                     android:drawablePadding="@dimen/space"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="@dimen/spaceX2"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:onClick="@{() -> viewModel.openSearch()}"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/spaceX2"
                     android:text="@{listing}"
                     tools:text="r/aww" />
 
             </androidx.appcompat.widget.Toolbar>
+
+            <include
+                layout="@layout/view_nointernet"
+                app:online="@{online}" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
