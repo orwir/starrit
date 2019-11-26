@@ -47,7 +47,8 @@ data class Post(
     @Json(name = "selftext") val text: String?,
     @Json(name = "url") val url: String,
     @Json(name = "thumbnail") val thumbnail: String,
-    @Json(name = "preview") val preview: Preview?
+    @Json(name = "preview") val preview: Preview?,
+    @Json(name = "media") val media: Media?
 ) {
     val previewThumb = preview
         ?.images
@@ -72,3 +73,7 @@ data class Preview(val images: List<PostImage>, val enabled: Boolean)
 data class PostImage(val source: ImagePreview, val resolutions: List<ImagePreview>)
 
 data class ImagePreview(val url: String, val width: Int, val height: Int)
+
+data class Media(val oembed: MediaOembed?)
+
+data class MediaOembed(@Json(name = "thumbnail_url") val thumbnail: String)

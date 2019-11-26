@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import orwir.gazzit.R
 import orwir.gazzit.common.squeeze
 import orwir.gazzit.databinding.ViewPostBinding
+import orwir.gazzit.listing.content.inflateContentLayout
 import orwir.gazzit.model.Post
 
 class ListingAdapter : PagedListAdapter<Post, ViewHolder>(PostDiffCallback()) {
@@ -47,7 +48,7 @@ class ViewHolder(private val binding: ViewPostBinding) : RecyclerView.ViewHolder
             commentsCount.text = post.comments.squeeze()
 
             content.removeAllViews()
-            content.addView(post.contentLayout(LayoutInflater.from(itemView.context)))
+            content.addView(post.inflateContentLayout(LayoutInflater.from(itemView.context)))
         }
     }
 
