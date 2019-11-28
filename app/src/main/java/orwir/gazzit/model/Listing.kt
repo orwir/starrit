@@ -76,4 +76,4 @@ data class ImagePreview(val url: String, val width: Int, val height: Int)
 
 data class Media(val oembed: MediaOembed?)
 
-data class MediaOembed(@Json(name = "thumbnail_url") val thumbnail: String)
+data class MediaOembed(@Json(name = "thumbnail_url") val thumbnail: String?)

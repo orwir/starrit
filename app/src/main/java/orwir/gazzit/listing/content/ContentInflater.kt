@@ -8,5 +8,6 @@ fun Post.inflateContentLayout(inflater: LayoutInflater): View = when {
     isText() -> inflateTextContent(this, inflater)
     isImage() -> inflateImageContent(this, inflater)
     isGif() -> inflateGifContent(this, inflater)
+    isVideo() -> inflateVideoContent(this, inflater)
     else -> inflateLinkContent(this, inflater)
 }

@@ -10,10 +10,6 @@
             type="String" />
 
         <variable
-            name="online"
-            type="androidx.lifecycle.LiveData&lt;Boolean>" />
-
-        <variable
             name="viewModel"
             type="orwir.gazzit.listing.ListingViewModel" />
     </data>
@@ -58,10 +54,6 @@
                     tools:text="r/aww" />
 
             </androidx.appcompat.widget.Toolbar>
-
-            <include
-                layout="@layout/view_nointernet"
-                app:online="@{online}" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

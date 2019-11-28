@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,18 +10,35 @@
             type="orwir.gazzit.model.Post" />
     </data>
 
-    <TextView
+    <FrameLayout
         android:id="@+id/link"
-        style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
-        android:ellipsize="end"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:text="@{post.url}"
-        android:textColor="@color/amber"
-        tools:text="https://example.com" />
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{post.thumbnail}"
+            tools:src="@drawable/ic_image_placeholder" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:drawableEnd="@drawable/ic_open_in_new"
+            android:ellipsize="end"
+            android:background="#77000000"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@{post.url}"
+            android:textColor="@color/amber"
+            tools:text="https://example.com" />
+
+    </FrameLayout>
 </layout>
