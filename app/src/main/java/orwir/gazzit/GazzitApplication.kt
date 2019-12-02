@@ -18,6 +18,7 @@ import orwir.gazzit.listing.listingModule
 import orwir.gazzit.profile.profileModule
 import orwir.gazzit.search.searchModule
 import orwir.gazzit.splash.splashModule
+import orwir.gazzit.videoplayer.videoPlayerModule
 
 class GazzitApplication : Application() {
 
@@ -32,6 +33,7 @@ class GazzitApplication : Application() {
                     commonModule,
                     localModule,
                     remoteModule,
+                    videoPlayerModule,
                     splashModule,
                     authorizationModule,
                     listingModule,

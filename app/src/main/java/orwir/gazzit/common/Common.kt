@@ -1,8 +1,5 @@
 package orwir.gazzit.common
 
-import android.app.Application
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.ExoPlayerFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.dsl.module
@@ -15,8 +12,6 @@ val commonModule = module {
             .add(KotlinJsonAdapterFactory())
             .build()
     }
-
-    single { ExoPlayerFactory.newSimpleInstance(get<Application>()) as ExoPlayer }
 
 }
 
