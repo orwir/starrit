@@ -35,7 +35,7 @@ class SplashFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             delay(1000)
             val direction = if (viewModel.isAuthorized()) {
-                SplashFragmentDirections.toListing()
+                SplashFragmentDirections.toListing("r/gifs")
             } else {
                 SplashFragmentDirections.toAuthorization()
             }

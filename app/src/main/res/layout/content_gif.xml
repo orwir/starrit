@@ -23,7 +23,7 @@
             android:layout_width="64dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:background="@drawable/bg_gif"
+            android:background="@drawable/bg_play"
             android:src="@drawable/ic_gif" />
     </FrameLayout>
 </layout>
