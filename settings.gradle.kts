@@ -1,3 +1,3 @@
 rootProject.name = "gazzit"
 
-include(":app")
+include(":app", ":videoplayer")

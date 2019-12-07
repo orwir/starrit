@@ -2,11 +2,11 @@ object Build {
 
     object Version {
         const val kotlin = "1.3.61"
-        const val buildTools = "3.5.3"
+        const val buildTools = "28.0.3"
     }
 
     object Dependency {
-        const val androidGradle = "com.android.tools.build:gradle:${Version.buildTools}"
+        const val androidGradle = "com.android.tools.build:gradle:3.5.3"
         const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Version.kotlin}"
         const val navigationSafeArgs =
             "androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0"

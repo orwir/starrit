@@ -60,8 +60,10 @@ android {
 }
 
 dependencies {
-    implementation(Library.Kotlin.std)
+    implementation(kotlin("stdlib-jdk8", Build.Version.kotlin))
     implementation(Library.Kotlin.coroutines)
+
+    implementation(project(":videoplayer"))
 
     implementation(Library.AndroidX.core)
     implementation(Library.AndroidX.lifecycleExtensions)
