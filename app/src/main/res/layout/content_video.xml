@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
-        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground">
-
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/playerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:resize_mode="fixed_width"
-            app:use_controller="false" />
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/thumb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/image_content"
-            tools:src="@drawable/ic_image_placeholder" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
+        <orwir.videoplayer.PlayerView
+            android:id="@+id/media"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
+
 </layout>

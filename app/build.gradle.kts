@@ -92,6 +92,4 @@ dependencies {
     kapt(Library.Squareup.moshiKotlinCodgen)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.retrofitMoshiConverter)
-
-    implementation(Library.exoPlayer)
 }

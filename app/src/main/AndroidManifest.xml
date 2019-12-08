@@ -32,10 +32,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".videoplayer.VideoPlayerActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
-
     </application>
 
 </manifest>
