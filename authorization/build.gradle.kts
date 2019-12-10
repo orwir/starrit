@@ -26,7 +26,7 @@ android {
         stringField("HOST", host)
         stringField("REDIRECT_URI", "$schema://$host")
         stringField("CLIENT_ID", gradleProperty("clientID"))
-        stringField("SCHEMA", gradleProperty("credentialB64"))
+        stringField("SCHEMA", gradleProperty("credentialsB64"))
     }
 
     sourceSets["main"].java.srcDir("src/main/kotlin")
