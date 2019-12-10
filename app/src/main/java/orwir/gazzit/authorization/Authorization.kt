@@ -12,7 +12,7 @@ val authorizationModule = module {
 
     single { AuthorizationRepository() }
 
-    single<AuthorizationInterceptor> { RedditAuthorizationInterceptor() }
+    single { RedditAuthorizationInterceptor() as AuthorizationInterceptor }
 
     viewModel { AuthorizationViewModel(get()) }
 

@@ -1,7 +1,6 @@
 package orwir.gazzit.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import orwir.gazzit.model.UiResponse
 import orwir.gazzit.common.handleException
 import orwir.gazzit.databinding.FragmentProfileBinding
 import orwir.gazzit.model.Profile
+import orwir.gazzit.model.UiResponse
 
 class ProfileFragment : Fragment() {
 
@@ -34,7 +33,6 @@ class ProfileFragment : Fragment() {
         viewModel.profile.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is UiResponse.Success -> {
-                    Log.d("!!!!", it.result.toString())
                 }
                 is UiResponse.Failure -> handleException(it.exception)
             }

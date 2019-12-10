@@ -49,7 +49,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -92,4 +91,5 @@ dependencies {
     kapt(Library.Squareup.moshiKotlinCodgen)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.retrofitMoshiConverter)
+    implementation(Library.timber)
 }

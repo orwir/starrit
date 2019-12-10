@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.gazzit.authorization.AuthorizationRepository
@@ -29,13 +28,11 @@ class SplashFragment : Fragment() {
         }
         .root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            delay(1000)
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
             val direction = if (viewModel.isAuthorized()) {
-                SplashFragmentDirections.toListing("r/gifs")
+                SplashFragmentDirections.toListing()
             } else {
                 SplashFragmentDirections.toAuthorization()
             }
