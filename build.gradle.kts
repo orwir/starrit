@@ -7,9 +7,9 @@ buildscript {
     }
 
     dependencies {
-        classpath(Build.Dependency.androidGradle)
-        classpath(Build.Dependency.kotlinGradle)
-        classpath(Build.Dependency.navigationSafeArgs)
+        classpath(Build.Library.androidGradle)
+        classpath(Build.Library.kotlinGradle)
+        classpath(Build.Library.navSafeArgs)
     }
 }
 
@@ -20,6 +20,6 @@ allprojects {
     }
 }
 
-tasks.register("clean").configure {
-    delete("build")
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }

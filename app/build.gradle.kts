@@ -1,24 +1,21 @@
 plugins {
-    id(Build.Plugin.androidApplication)
-    id(Build.Plugin.kotlinAndroid)
-    id(Build.Plugin.kotlinAndroidExtensions)
-    id(Build.Plugin.navigationKotlinSafeArgs)
-}
-
-androidExtensions {
-    isExperimental = true
+    id("com.android.application")
+    kotlin("android")
+    kotlin("android.extensions")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-    compileSdkVersion(AndroidSdk.compile)
-    buildToolsVersion = Build.Version.buildTools
+    compileSdkVersion(Android.Sdk.compile)
+    buildToolsVersion = Android.buildToolsVersion
 
     defaultConfig {
-        applicationId = "orwir.gazzit"
-        minSdkVersion(AndroidSdk.min)
-        targetSdkVersion(AndroidSdk.target)
-        versionCode = 1
-        versionName = "1.0.0"
+        applicationId = Android.Application.id
+        versionCode = Android.Application.versionCode(project)
+        versionName = Android.Application.versionName(project)
+
+        minSdkVersion(Android.Sdk.min)
+        targetSdkVersion(Android.Sdk.target)
 
         manifestPlaceholders = mapOf(
             "schema" to "gazzit",
@@ -39,12 +36,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = Android.javaVersion
+        targetCompatibility = Android.javaVersion
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = Android.javaVersion.toString()
     }
 
     dataBinding {
@@ -52,10 +49,11 @@ android {
     }
 }
 
-dependencies {
-    implementation(kotlin("stdlib-jdk8", Build.Version.kotlin))
-    implementation(Library.Kotlin.coroutines)
+androidExtensions {
+    isExperimental = true
+}
 
+dependencies {
     implementation(project(":common"))
     implementation(project(":videoplayer"))
 

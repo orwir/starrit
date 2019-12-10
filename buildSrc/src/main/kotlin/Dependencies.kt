@@ -1,36 +1,6 @@
-object Build {
-
-    object Version {
-        const val kotlin = "1.3.61"
-        const val buildTools = "28.0.3"
-    }
-
-    object Dependency {
-        const val androidGradle = "com.android.tools.build:gradle:3.5.3"
-        const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Version.kotlin}"
-        const val navigationSafeArgs =
-            "androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0"
-    }
-
-    object Plugin {
-        const val androidApplication = "com.android.application"
-        const val androidLibrary = "com.android.library"
-        const val kotlinAndroid = "kotlin-android"
-        const val kotlinAndroidExtensions = "kotlin-android-extensions"
-        const val kotlinKapt = "kotlin-kapt"
-        const val navigationKotlinSafeArgs = "androidx.navigation.safeargs.kotlin"
-    }
-}
-
-object AndroidSdk {
-    const val min = 23
-    const val compile = 29
-    const val target = compile
-}
-
 object Library {
     object Kotlin {
-        const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Build.Version.kotlin}"
+        const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Build.kotlinVersion}"
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2"
     }
 

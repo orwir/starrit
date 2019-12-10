@@ -1,3 +1,8 @@
 rootProject.name = "gazzit"
 
-include(":app", ":common", ":videoplayer")
+include(
+    ":app",
+    ":common",
+    ":videoplayer",
+    ":authorization"
+)

@@ -1,8 +1,38 @@
+import com.android.build.gradle.internal.dsl.DefaultConfig
+
 plugins {
-    id(Build.Plugin.androidLibrary)
-    id(Build.Plugin.kotlinAndroid)
-    id(Build.Plugin.kotlinAndroidExtensions)
-    id(Build.Plugin.kotlinKapt)
+    id("com.android.library")
+    kotlin("android")
+    kotlin("android.extensions")
+    kotlin("kapt")
+}
+
+android {
+    compileSdkVersion(Android.Sdk.compile)
+    buildToolsVersion = Android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion(Android.Sdk.min)
+        targetSdkVersion(Android.Sdk.target)
+
+        stringField("REDDIT_BASE_URL", "https://www.reddit.com")
+        stringField("REDDIT_AUTH_URL", "https://oauth.reddit.com")
+    }
+
+    sourceSets["main"].java.srcDir("src/main/kotlin")
+
+    compileOptions {
+        sourceCompatibility = Android.javaVersion
+        targetCompatibility = Android.javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = Android.javaVersion.toString()
+    }
+
+    dataBinding {
+        isEnabled = true
+    }
 }
 
 kapt {
@@ -14,37 +44,9 @@ androidExtensions {
     isExperimental = true
 }
 
-android {
-    compileSdkVersion(AndroidSdk.compile)
-    buildToolsVersion = Build.Version.buildTools
-
-    defaultConfig {
-        minSdkVersion(AndroidSdk.min)
-        targetSdkVersion(AndroidSdk.target)
-
-        buildConfigField("String", "REDDIT_BASE_URL", "\"https://www.reddit.com\"")
-        buildConfigField("String", "REDDIT_AUTH_URL", "\"https://oauth.reddit.com\"")
-    }
-
-    sourceSets["main"].java.srcDir("src/main/kotlin")
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    dataBinding {
-        isEnabled = true
-    }
-}
-
 dependencies {
-    implementation(kotlin("stdlib-jdk8", Build.Version.kotlin))
-
+    api(Library.Kotlin.std)
+    api(Library.Kotlin.coroutines)
     api(Library.AndroidX.core)
     api(Library.AndroidX.appCompat)
     api(Library.AndroidX.lifecycleRuntime)
@@ -66,4 +68,8 @@ dependencies {
     kapt(Library.Squareup.moshiKotlinCodgen)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.retrofitMoshiConverter)
+}
+
+fun DefaultConfig.stringField(name: String, value: String) {
+    buildConfigField("String", name, "\"$value\"")
 }

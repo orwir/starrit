@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.dsl.DefaultConfig
+
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -11,6 +13,20 @@ android {
     defaultConfig {
         minSdkVersion(Android.Sdk.min)
         targetSdkVersion(Android.Sdk.target)
+
+        val schema = "gazzit"
+        val host = "authorization"
+
+        manifestPlaceholders = mapOf(
+            "schema" to schema,
+            "host" to host
+        )
+
+        stringField("SCHEMA", schema)
+        stringField("HOST", host)
+        stringField("REDIRECT_URI", "$schema://$host")
+        stringField("CLIENT_ID", gradleProperty("clientID"))
+        stringField("SCHEMA", gradleProperty("credentialB64"))
     }
 
     sourceSets["main"].java.srcDir("src/main/kotlin")
@@ -30,11 +46,9 @@ androidExtensions {
 }
 
 dependencies {
-    api(Library.exoPlayer)
+    implementation(project(":common"))
+}
 
-    implementation(Library.Kotlin.std)
-    implementation(Library.AndroidX.core)
-    implementation(Library.AndroidX.appCompat)
-    implementation(Library.AndroidX.constraintLayout)
-    implementation(Library.Coil.coil)
+fun DefaultConfig.stringField(name: String, value: String) {
+    buildConfigField("String", name, "\"$value\"")
 }
