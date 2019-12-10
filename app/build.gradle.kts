@@ -2,13 +2,7 @@ plugins {
     id(Build.Plugin.androidApplication)
     id(Build.Plugin.kotlinAndroid)
     id(Build.Plugin.kotlinAndroidExtensions)
-    id(Build.Plugin.kotlinKapt)
     id(Build.Plugin.navigationKotlinSafeArgs)
-}
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
 }
 
 androidExtensions {
@@ -62,34 +56,12 @@ dependencies {
     implementation(kotlin("stdlib-jdk8", Build.Version.kotlin))
     implementation(Library.Kotlin.coroutines)
 
+    implementation(project(":common"))
     implementation(project(":videoplayer"))
 
-    implementation(Library.AndroidX.core)
-    implementation(Library.AndroidX.lifecycleExtensions)
-    implementation(Library.AndroidX.lifecycleViewModel)
-    implementation(Library.AndroidX.lifecycleRuntime)
-    implementation(Library.AndroidX.lifecycleLivedata)
-    implementation(Library.AndroidX.appCompat)
     implementation(Library.AndroidX.constraintLayout)
     implementation(Library.AndroidX.navigationFragment)
     implementation(Library.AndroidX.navigationUi)
     implementation(Library.AndroidX.paging)
     implementation(Library.AndroidX.browser)
-
-    implementation(Library.Koin.core)
-    implementation(Library.Koin.android)
-    implementation(Library.Koin.androidScope)
-    implementation(Library.Koin.androidViewModel)
-
-    implementation(Library.Coil.coil)
-    implementation(Library.Coil.gif)
-
-    implementation(Library.Squareup.okhttp)
-    implementation(Library.Squareup.logginInterceptor)
-    implementation(Library.Squareup.moshi)
-    implementation(Library.Squareup.moshiKotlin)
-    kapt(Library.Squareup.moshiKotlinCodgen)
-    implementation(Library.Squareup.retrofit)
-    implementation(Library.Squareup.retrofitMoshiConverter)
-    implementation(Library.timber)
 }
