@@ -16,6 +16,8 @@ android {
 
         val schema = "gazzit"
         val host = "authorization"
+        val clientID: String by project
+        val credentialsB64: String by project
 
         manifestPlaceholders = mapOf(
             "schema" to schema,
@@ -25,8 +27,8 @@ android {
         stringField("SCHEMA", schema)
         stringField("HOST", host)
         stringField("REDIRECT_URI", "$schema://$host")
-        stringField("CLIENT_ID", gradleProperty("clientID"))
-        stringField("SCHEMA", gradleProperty("credentialsB64"))
+        stringField("CLIENT_ID", clientID)
+        stringField("CREDENTIALS_B64", credentialsB64)
     }
 
     sourceSets["main"].java.srcDir("src/main/kotlin")
@@ -39,6 +41,11 @@ android {
     kotlinOptions {
         jvmTarget = Android.javaVersion.toString()
     }
+
+    dataBinding {
+        isEnabled = true
+    }
+
 }
 
 androidExtensions {
@@ -47,6 +54,8 @@ androidExtensions {
 
 dependencies {
     implementation(project(":common"))
+    implementation(Library.Squareup.retrofit)
+    implementation(Library.AndroidX.constraintLayout)
 }
 
 fun DefaultConfig.stringField(name: String, value: String) {

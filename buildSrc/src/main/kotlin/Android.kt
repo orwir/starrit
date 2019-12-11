@@ -8,7 +8,7 @@ object Android {
 
     object Application {
         const val id = "orwir.gazzit"
-        fun versionName(project: Project) = project.gradleProperty("versionName", "1.0.0")
+        fun versionName(project: Project) = project.gradleProperty("versionName", "canary")
         fun versionCode(project: Project) = project.gradleProperty("versionCode", 1)
     }
 

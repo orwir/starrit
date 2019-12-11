@@ -5,15 +5,15 @@ import okhttp3.Response
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import orwir.gazzit.common.AuthorizationInterceptor
-import orwir.gazzit.common.REDDIT_AUTH_URL
+import orwir.gazzit.common.BuildConfig
 
-class RedditAuthorizationInterceptor : AuthorizationInterceptor, KoinComponent {
+internal class BasicAuthorizationInterceptor : AuthorizationInterceptor, KoinComponent {
 
     private val repository: AuthorizationRepository by inject()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        if (request.url.toString().startsWith(REDDIT_AUTH_URL)) {
+        if (request.url.toString().startsWith(BuildConfig.REDDIT_AUTH_URL)) {
             val token = repository.obtainToken()
             request = request.newBuilder()
                 .addHeader("Authorization", "${token.type} ${token.access}")

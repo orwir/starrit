@@ -16,16 +16,6 @@ android {
 
         minSdkVersion(Android.Sdk.min)
         targetSdkVersion(Android.Sdk.target)
-
-        manifestPlaceholders = mapOf(
-            "schema" to "gazzit",
-            "host" to "oauth2"
-        )
-
-        buildConfigField("String", "SCHEMA", "\"gazzit\"")
-        buildConfigField("String", "HOST", "\"oauth2\"")
-        buildConfigField("String", "GAZZIT_CLIENT_ID", "\"${System.getenv("GAZZIT_CLIENT_ID")}\"")
-        buildConfigField("String", "GAZZIT_CREDENTIALS_B64", "\"${System.getenv("GAZZIT_CREDENTIALS_B64")}\"")
     }
 
     buildTypes {
@@ -56,6 +46,7 @@ androidExtensions {
 dependencies {
     implementation(project(":common"))
     implementation(project(":videoplayer"))
+    implementation(project(":authorization"))
 
     implementation(Library.AndroidX.constraintLayout)
     implementation(Library.AndroidX.navigationFragment)

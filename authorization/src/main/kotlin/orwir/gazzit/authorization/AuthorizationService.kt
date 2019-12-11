@@ -8,9 +8,9 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 private const val TOKEN_URL = "$REDDIT_BASE_URL/api/v1/access_token"
-private const val BASIC_AUTH = "Authorization: Basic ${BuildConfig.GAZZIT_CREDENTIALS_B64}"
+private const val BASIC_AUTH = "Authorization: Basic ${BuildConfig.CREDENTIALS_B64}"
 
-interface AuthorizationService {
+internal interface AuthorizationService {
 
     @FormUrlEncoded
     @Headers(BASIC_AUTH)
@@ -18,7 +18,7 @@ interface AuthorizationService {
     suspend fun accessToken(
         @Field("code") code: String,
         @Field("grant_type") type: String = "authorization_code",
-        @Field("redirect_uri") uri: String = REDIRECT_URI
+        @Field("redirect_uri") uri: String = BuildConfig.REDIRECT_URI
     ): Token
 
     @FormUrlEncoded
