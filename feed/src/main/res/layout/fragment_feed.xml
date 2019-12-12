@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="orwir.gazzit.listing.ListingViewModel" />
+            type="orwir.gazzit.feed.FeedViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

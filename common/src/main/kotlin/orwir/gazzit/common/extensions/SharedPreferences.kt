@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import timber.log.Timber
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -17,7 +18,7 @@ class KoinedShareable : KoinComponent, Shareable {
     override val moshi: Moshi by inject()
 }
 
-inline fun <reified T> Shareable.objPref(defaultValue: T) =
+inline fun <reified T> Shareable.objPref(defaultValue: T?) =
     objPref(prefs, moshi, defaultValue)
 
 inline fun <reified T> Shareable.pref(defaultValue: T = defaultForType()) =
@@ -31,20 +32,20 @@ inline fun <reified T> Shareable.pref(defaultValue: T = defaultForType()) =
  * @param defaultValue is used if property not set
  * @return wrapper for property accessors
  */
-inline fun <reified T> objPref(prefs: SharedPreferences, moshi: Moshi, defaultValue: T) =
-    object : ReadWriteProperty<Any, T> {
+inline fun <reified T> objPref(prefs: SharedPreferences, moshi: Moshi, defaultValue: T?) =
+    object : ReadWriteProperty<Any, T?> {
         private val adapter = moshi.adapter<T>(T::class.java)
 
-        override fun getValue(thisRef: Any, property: KProperty<*>): T {
+        override fun getValue(thisRef: Any, property: KProperty<*>): T? {
             val raw = prefs[getKey(thisRef, property), ""]
             return if (raw.isNotBlank()) {
-                adapter.fromJson(raw)!!
+                adapter.fromJson(raw) ?: defaultValue
             } else {
                 defaultValue
             }
         }
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+        override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
             prefs[getKey(thisRef, property)] = adapter.toJson(value)
         }
 

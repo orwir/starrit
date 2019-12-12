@@ -108,10 +108,10 @@ internal class BasicAuthorizationRepository :
     }
 }
 
-private const val ADDITIONAL_THRESHOLD_MS = 5000L
+private const val ADDITIONAL_THRESHOLD_S = 5
 
 private fun Token.isExpired() =
-    System.currentTimeMillis() >= (obtained + expires + ADDITIONAL_THRESHOLD_MS)
+    System.currentTimeMillis() / 1000 >= (obtained + expires + ADDITIONAL_THRESHOLD_S)
 
 private interface Callback {
     fun onStart()

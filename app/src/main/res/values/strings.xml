@@ -1,25 +1,3 @@
 <resources>
-    <!-- Global -->
     <string name="app_name">Gazzit</string>
-    <string name="no_internet">📴Internet unstable or lost</string>
-
-    <!-- Authorization Screen -->
-    <string name="to_use_the_app_you_need_to_authorize">To use the app you need to authorize on Reddit</string>
-    <string name="authorize">Authorize</string>
-
-    <!-- Listing Screen -->
-    <string name="subreddit">r/%1$s</string>
-    <string name="author">u/%1$s</string>
-    <string name="subreddit_icon">Subreddit icon</string>
-    <string name="vote_up">Vote Up</string>
-    <string name="vote_down">Vote Down</string>
-    <string name="image_content">Image content</string>
-    <string name="comments">Comments</string>
-    <string name="more">More</string>
-    <string name="share">Share</string>
-    <string name="best">Best</string>
-    <string name="nsfw">💋💀</string>
-    <string name="spoiler">⚡</string>
-    <string name="score_hidden">⏳</string>
-
 </resources>

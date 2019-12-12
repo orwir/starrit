@@ -49,7 +49,7 @@
             app:layout_constraintBottom_toBottomOf="@id/authorize"
             app:layout_constraintStart_toEndOf="@id/authorize"
             app:layout_constraintTop_toTopOf="@id/authorize"
-            app:visibleOrGone="@{viewModel.inProgress, default=false}" />
+            app:visibleOrGone="@{viewModel.inProgress}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

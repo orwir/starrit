@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="${host}"
+                    android:host="${authorizationHost}"
                     android:scheme="${schema}" />
             </intent-filter>
         </activity>

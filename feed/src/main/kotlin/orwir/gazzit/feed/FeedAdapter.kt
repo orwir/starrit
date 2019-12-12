@@ -48,8 +48,8 @@ internal class ViewHolder(
             }
             commentsCount.text = post.comments.squeeze()
 
-            content.removeAllViews()
-            content.addView(post.inflateContentLayout(LayoutInflater.from(itemView.context)))
+//            content.removeAllViews()
+//            content.addView(post.inflateContentLayout(LayoutInflater.from(itemView.context)))
         }
     }
 

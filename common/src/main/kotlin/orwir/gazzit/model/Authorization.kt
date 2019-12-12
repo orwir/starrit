@@ -48,5 +48,5 @@ data class Token(
     @Json(name = "expires_in") val expires: Long,
     @Json(name = "scope") val scope: String,
     @Json(name = "refresh_token") val refresh: String = "",
-    val obtained: Long = System.currentTimeMillis()
+    val obtained: Long = System.currentTimeMillis() / 1000
 )

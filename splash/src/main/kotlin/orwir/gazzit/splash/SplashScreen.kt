@@ -34,9 +34,9 @@ class SplashFragment : Fragment() {
         super.onResume()
         lifecycleScope.launch {
             if (viewModel.isAuthorized()) {
-                navigation.openFeed()
+                navigation.openLatestFeed()
             } else {
-                navigation.openAuthorization()
+                navigation.requestAuthorization()
             }
         }
     }

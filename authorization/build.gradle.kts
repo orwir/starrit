@@ -14,15 +14,10 @@ android {
         minSdkVersion(Android.Sdk.min)
         targetSdkVersion(Android.Sdk.target)
 
-        val schema = "gazzit"
-        val host = "authorization"
+        val schema = Android.Application.schema
+        val host = Android.Application.authorizationHost
         val clientID: String by project
         val credentialsB64: String by project
-
-        manifestPlaceholders = mapOf(
-            "schema" to schema,
-            "host" to host
-        )
 
         stringField("SCHEMA", schema)
         stringField("HOST", host)

@@ -8,9 +8,7 @@ import orwir.gazzit.authorization.authorizationModule
 import orwir.gazzit.common.KoinedLogger
 import orwir.gazzit.common.commonModule
 import orwir.gazzit.common.initializeCoil
-import orwir.gazzit.listing.listingModule
-import orwir.gazzit.profile.profileModule
-import orwir.gazzit.search.searchModule
+import orwir.gazzit.feed.feedModule
 import orwir.gazzit.splash.splashModule
 import timber.log.Timber
 
@@ -31,9 +29,8 @@ class GazzitApplication : Application(), KoinComponent {
                     commonModule,
                     splashModule,
                     authorizationModule,
-                    listingModule,
-                    searchModule,
-                    profileModule
+                    feedModule,
+                    appModule
                 )
             )
         }

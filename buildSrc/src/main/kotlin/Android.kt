@@ -8,6 +8,8 @@ object Android {
 
     object Application {
         const val id = "orwir.gazzit"
+        const val schema = "gazzit"
+        const val authorizationHost = "authorization"
         fun versionName(project: Project) = project.gradleProperty("versionName", "canary")
         fun versionCode(project: Project) = project.gradleProperty("versionCode", 1)
     }

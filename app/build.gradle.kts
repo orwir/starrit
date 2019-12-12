@@ -16,14 +16,19 @@ android {
 
         minSdkVersion(Android.Sdk.min)
         targetSdkVersion(Android.Sdk.target)
+
+        manifestPlaceholders = mapOf(
+            "schema" to Android.Application.schema,
+            "authorizationHost" to Android.Application.authorizationHost
+        )
     }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
+//    buildTypes {
+//        getByName("release") {
+//            isMinifyEnabled = true
+//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+//        }
+//    }
 
     compileOptions {
         sourceCompatibility = Android.javaVersion
@@ -48,10 +53,9 @@ dependencies {
     implementation(project(":videoplayer"))
     implementation(project(":authorization"))
     implementation(project(":splash"))
+    implementation(project(":feed"))
 
-    implementation(Library.AndroidX.constraintLayout)
     implementation(Library.AndroidX.navigationFragment)
     implementation(Library.AndroidX.navigationUi)
-    implementation(Library.AndroidX.paging)
     implementation(Library.AndroidX.browser)
 }

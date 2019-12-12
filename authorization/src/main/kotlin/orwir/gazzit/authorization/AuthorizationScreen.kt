@@ -31,7 +31,7 @@ class AuthorizationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.state.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is Step.Start -> navigation.openAuthorizationUri(it.uri)
+                is Step.Start -> navigation.openBrowser(it.uri)
                 is Step.Success -> navigation.openFeed()
                 is Step.Failure -> TODO("Not implemented yet! e:[${it.exception}]")
             }
