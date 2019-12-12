@@ -1,10 +1,13 @@
 package orwir.gazzit.authorization
 
 import android.net.Uri
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import orwir.gazzit.common.extensions.KoinedShareable
@@ -28,8 +31,8 @@ internal class BasicAuthorizationRepository :
     private val service: AuthorizationService by inject()
     private val scope = listOf(Scope.Identity, Scope.Read).joinToString { it.asParameter() }
 
-    override fun obtainToken(): Token = runBlocking {
-        token?.let {
+    override suspend fun obtainToken(): Token {
+        return token?.let {
             if (it.isExpired()) {
                 try {
                     token = service.refreshToken(it.refresh).copy(refresh = it.refresh)

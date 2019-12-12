@@ -7,7 +7,7 @@ import orwir.gazzit.model.Step
 import orwir.gazzit.model.Token
 
 interface AuthorizationRepository {
-    fun obtainToken(): Token
+    suspend fun obtainToken(): Token
     fun authorizationFlow(): Flow<Step>
     fun authorizationFlowStart()
     fun authorizationFlowComplete(response: Uri)

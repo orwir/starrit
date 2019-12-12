@@ -7,15 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.gazzit.authorization.AuthorizationRepository
-import orwir.gazzit.databinding.FragmentSplashBinding
+import orwir.gazzit.authorization.TokenException
+import orwir.gazzit.splash.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
 
-    val viewModel: SplashViewModel by viewModel()
+    private val viewModel: SplashViewModel by viewModel()
+    private val navigation: SplashNavigation by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,18 +33,25 @@ class SplashFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch {
-            val direction = if (viewModel.isAuthorized()) {
-                SplashFragmentDirections.toListing()
+            if (viewModel.isAuthorized()) {
+                navigation.openFeed()
             } else {
-                SplashFragmentDirections.toAuthorization()
+                navigation.openAuthorization()
             }
-            findNavController().navigate(direction)
         }
     }
 }
 
-class SplashViewModel(private val authorizationRepository: AuthorizationRepository) : ViewModel() {
+internal class SplashViewModel(
+    private val authorizationRepository: AuthorizationRepository
+) : ViewModel() {
 
-    fun isAuthorized(): Boolean = authorizationRepository.hasToken()
+    suspend fun isAuthorized(): Boolean =
+        try {
+            authorizationRepository.obtainToken()
+            true
+        } catch (e: TokenException) {
+            false
+        }
 
 }

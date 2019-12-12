@@ -1,8 +1,7 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     kotlin("android")
     kotlin("android.extensions")
-    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -10,20 +9,11 @@ android {
     buildToolsVersion = Android.buildToolsVersion
 
     defaultConfig {
-        applicationId = Android.Application.id
-        versionCode = Android.Application.versionCode(project)
-        versionName = Android.Application.versionName(project)
-
         minSdkVersion(Android.Sdk.min)
         targetSdkVersion(Android.Sdk.target)
     }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
+    sourceSets["main"].java.srcDir("src/main/kotlin")
 
     compileOptions {
         sourceCompatibility = Android.javaVersion
@@ -37,6 +27,7 @@ android {
     dataBinding {
         isEnabled = true
     }
+
 }
 
 androidExtensions {
@@ -46,12 +37,7 @@ androidExtensions {
 dependencies {
     implementation(project(":common"))
     implementation(project(":videoplayer"))
-    implementation(project(":authorization"))
-    implementation(project(":splash"))
-
     implementation(Library.AndroidX.constraintLayout)
-    implementation(Library.AndroidX.navigationFragment)
-    implementation(Library.AndroidX.navigationUi)
     implementation(Library.AndroidX.paging)
-    implementation(Library.AndroidX.browser)
+    implementation(Library.Squareup.retrofit)
 }

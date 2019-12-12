@@ -36,5 +36,5 @@ androidExtensions {
 
 dependencies {
     implementation(project(":common"))
-    implementation(Library.AndroidX.constraintLayout)
+    implementation(project(":authorization"))
 }

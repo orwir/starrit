@@ -4,6 +4,7 @@ include(
     ":app",
     ":common",
     ":videoplayer",
+    ":authorization",
     ":splash",
-    ":authorization"
+    ":feed"
 )
