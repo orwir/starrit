@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import orwir.gazzit.common.extensions.arg
+import orwir.gazzit.common.extensions.injectFromActivityScope
 import orwir.gazzit.feed.databinding.FragmentFeedBinding
 import orwir.gazzit.model.ListingType
 
@@ -18,8 +18,8 @@ private const val ARG_TYPE = "type"
 class FeedFragment : Fragment() {
 
     private val type: ListingType by lazy { ListingType.parse(arg(ARG_TYPE)) }
-    private val navigation: FeedNavigation by inject()
-    private val viewModel: FeedViewModel by viewModel { parametersOf(type, navigation) }
+    private val viewModel: FeedViewModel by viewModel { parametersOf(type) }
+    private val navigation: FeedNavigation by injectFromActivityScope()
     private val adapter = FeedAdapter()
 
     override fun onCreateView(
@@ -54,7 +54,7 @@ class FeedFragment : Fragment() {
     }
 }
 
-class FeedViewModel(type: ListingType, navigation: FeedNavigation) : ViewModel() {
+internal class FeedViewModel(type: ListingType) : ViewModel() {
 
     fun openSearch() {
         TODO("not implemented yet")

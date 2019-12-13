@@ -11,9 +11,7 @@ val feedModule = module {
         service(get(), FeedService::class.java)
     }
 
-    viewModel { (type: ListingType, navigation: FeedNavigation) ->
-        FeedViewModel(type, navigation)
-    }
+    viewModel { (type: ListingType) -> FeedViewModel(type) }
 
 }
 

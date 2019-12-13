@@ -11,40 +11,29 @@ import orwir.gazzit.model.ListingType
 import orwir.gazzit.splash.SplashFragmentDirections
 import orwir.gazzit.splash.SplashNavigation
 
-class Navigator(context: Context, controller: NavController) {
+class Navigator(
+    private val context: Context,
+    private val controller: NavController
+) : SplashNavigation, AuthorizationNavigation, FeedNavigation {
 
-    val splashNavigation: SplashNavigation by lazy {
-        object : SplashNavigation {
-            override fun openLatestFeed() {
-                controller.navigate(SplashFragmentDirections.toListing())
-            }
-
-            override fun requestAuthorization() {
-                controller.navigate(SplashFragmentDirections.toAuthorization())
-            }
-        }
+    override fun openLatestFeed() {
+        controller.navigate(SplashFragmentDirections.toListing())
     }
 
-    val authorizationNavigation: AuthorizationNavigation by lazy {
-        object : AuthorizationNavigation {
-            override fun openBrowser(uri: Uri) {
-                CustomTabsIntent
-                    .Builder()
-                    .build()
-                    .launchUrl(context, uri)
-            }
-
-            override fun openFeed(type: ListingType?) {
-                // todo: implement
-                controller.navigate(AuthorizationFragmentDirections.toListing())
-            }
-        }
+    override fun requestAuthorization() {
+        controller.navigate(SplashFragmentDirections.toAuthorization())
     }
 
-    val feedNavigation: FeedNavigation by lazy {
-        object : FeedNavigation {
+    override fun openBrowser(uri: Uri) {
+        CustomTabsIntent
+            .Builder()
+            .build()
+            .launchUrl(context, uri)
+    }
 
-        }
+    override fun openFeed(type: ListingType?) {
+        // todo: implement
+        controller.navigate(AuthorizationFragmentDirections.toListing())
     }
 
 }

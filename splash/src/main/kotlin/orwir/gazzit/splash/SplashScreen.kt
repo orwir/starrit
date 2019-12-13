@@ -8,16 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.gazzit.authorization.AuthorizationRepository
 import orwir.gazzit.authorization.TokenException
+import orwir.gazzit.common.extensions.injectFromActivityScope
 import orwir.gazzit.splash.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
 
     private val viewModel: SplashViewModel by viewModel()
-    private val navigation: SplashNavigation by inject()
+    private val navigation: SplashNavigation by injectFromActivityScope()
 
     override fun onCreateView(
         inflater: LayoutInflater,

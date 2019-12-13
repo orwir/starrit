@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.gazzit.authorization.databinding.FragmentAuthorizationBinding
+import orwir.gazzit.common.extensions.injectFromActivityScope
 import orwir.gazzit.model.Step
 
 class AuthorizationFragment : Fragment() {
 
     private val viewModel: AuthorizationViewModel by viewModel()
-    private val navigation: AuthorizationNavigation by inject()
+    private val navigation: AuthorizationNavigation by injectFromActivityScope()
 
     override fun onCreateView(
         inflater: LayoutInflater,
