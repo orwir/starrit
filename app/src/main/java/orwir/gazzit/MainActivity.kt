@@ -26,8 +26,4 @@ class MainActivity : AppCompatActivity() {
         intent?.data?.let(authorizationRepository::authorizationFlowComplete)
     }
 
-//    override fun request() {
-//        findNavController(android.R.id.content).navigate(NavGraphDirections.globalToAuthorization())
-//    }
-
 }

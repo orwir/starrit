@@ -10,6 +10,7 @@ fun Context.launchActivity(clazz: Class<out AppCompatActivity>, builder: Intent.
     startActivity(Intent(this, clazz).also(builder))
 }
 
+@Suppress("UNCHECKED_CAST")
 fun <T> Fragment.arg(name: String): T = arguments!![name] as T
 
 inline fun <reified T> Fragment.injectFromActivityScope(): Lazy<T> =
