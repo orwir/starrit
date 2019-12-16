@@ -47,7 +47,6 @@ androidExtensions {
 dependencies {
     api(Library.Kotlin.std)
     api(Library.Kotlin.coroutines)
-    api(Library.Kotlin.reflect)
     api(Library.AndroidX.core)
     api(Library.AndroidX.appCompat)
     api(Library.AndroidX.lifecycleRuntime)
