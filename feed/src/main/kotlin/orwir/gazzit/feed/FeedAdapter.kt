@@ -1,11 +1,13 @@
 package orwir.gazzit.feed
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import orwir.gazzit.common.extensions.squeeze
+import orwir.gazzit.feed.content.*
 import orwir.gazzit.feed.databinding.ViewPostBinding
 import orwir.gazzit.model.Post
 
@@ -48,9 +50,17 @@ internal class ViewHolder(
             }
             commentsCount.text = post.comments.squeeze()
 
-//            content.removeAllViews()
-//            content.addView(post.inflateContentLayout(LayoutInflater.from(itemView.context)))
+            content.removeAllViews()
+            content.addView(inflateContentLayout(post, LayoutInflater.from(itemView.context)))
         }
+    }
+
+    private fun inflateContentLayout(post: Post, inflater: LayoutInflater): View = when {
+        isText(post) -> inflateTextContent(post, inflater)
+        isImage(post) -> inflateImageContent(post, inflater)
+        isGif(post) -> inflateGifContent(post, inflater)
+        isVideo(post) -> inflateVideoContent(post, inflater)
+        else -> inflateLinkContent(post, inflater)
     }
 
 }

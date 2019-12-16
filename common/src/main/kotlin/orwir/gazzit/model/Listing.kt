@@ -49,24 +49,7 @@ data class Post(
     @Json(name = "thumbnail") val thumbnail: String,
     @Json(name = "preview") val preview: Preview?,
     @Json(name = "media") val media: Media?
-) {
-    val previewThumb = preview
-        ?.images
-        ?.get(0)
-        ?.resolutions
-        ?.get(0)
-        ?.url
-        ?.replace("&amp;", "&")
-        ?: thumbnail
-
-    val previewSource = preview
-        ?.images
-        ?.get(0)
-        ?.source
-        ?.url
-        ?.replace("&amp;", "&")
-        ?: url
-}
+)
 
 data class Preview(val images: List<PostImage>, val enabled: Boolean)
 
