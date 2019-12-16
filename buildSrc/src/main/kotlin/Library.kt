@@ -2,6 +2,7 @@ object Library {
     object Kotlin {
         const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Build.kotlinVersion}"
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2"
+        const val reflect = "org.jetbrains.kotlin:kotlin-reflect:${Build.kotlinVersion}"
     }
 
     object AndroidX {
@@ -16,6 +17,7 @@ object Library {
         const val navigationUi = "androidx.navigation:navigation-ui-ktx:2.1.0"
         const val paging = "androidx.paging:paging-runtime:2.1.0"
         const val browser = "androidx.browser:browser:1.0.0"
+        const val preference = "androidx.preference:preference:1.1.0"
     }
 
     object Koin {

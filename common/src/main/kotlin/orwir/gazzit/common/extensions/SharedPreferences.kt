@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import timber.log.Timber
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -18,59 +17,73 @@ class KoinedShareable : KoinComponent, Shareable {
     override val moshi: Moshi by inject()
 }
 
-inline fun <reified T> Shareable.objPref(defaultValue: T?) =
-    objPref(prefs, moshi, defaultValue)
+inline fun <reified T> Shareable.objPref(key: String? = null, defaultValue: T?) =
+    objPref(prefs, moshi, key, defaultValue)
 
-inline fun <reified T> Shareable.pref(defaultValue: T = defaultForType()) =
-    pref(prefs, defaultValue)
+inline fun <reified T : Enum<T>> Shareable.enumPref(
+    key: String? = T::class.simpleName,
+    defaultValue: T = enumValues<T>()[0]
+) = enumPref(prefs, key, defaultValue)
+
+inline fun <reified T> Shareable.pref(key: String? = null, defaultValue: T = defaultForType()) =
+    pref(prefs, key, defaultValue)
+
+// -------------------------------------------------------------------------------------------------
+
+inline fun <reified T : Enum<T>> enumPref(
+    prefs: SharedPreferences,
+    key: String? = null,
+    defaultValue: T = enumValues<T>()[0]
+) = object : ReadWriteProperty<Any, T> {
+    override fun getValue(thisRef: Any, property: KProperty<*>): T =
+        enumValueOf(prefs[key ?: getKey(thisRef, property), defaultValue.name])
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+        prefs[key ?: getKey(thisRef, property)] = value.name
+    }
+}
+
+inline fun <reified T> objPref(
+    prefs: SharedPreferences,
+    moshi: Moshi,
+    key: String? = null,
+    defaultValue: T?
+) = object : ReadWriteProperty<Any, T?> {
+    private val adapter = moshi.adapter<T>(T::class.java)
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): T? {
+        val raw = prefs[key ?: getKey(thisRef, property), ""]
+        return if (raw.isNotBlank()) {
+            adapter.fromJson(raw) ?: defaultValue
+        } else {
+            defaultValue
+        }
+    }
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
+        prefs[key ?: getKey(thisRef, property)] = adapter.toJson(value)
+    }
+}
 
 /**
- * Creates delegate for property from [prefs] with the key presented as className+propertyName
- * As fas as [SharedPreferences] allows only primitives delegate uses [Moshi] to convert
- * object to string and vice versa
+ * Creates delegate for property from [prefs] with the key presented
+ * as className+propertyName if not passed.
  * @param T type of the property
  * @param defaultValue is used if property not set
  * @return wrapper for property accessors
  */
-inline fun <reified T> objPref(prefs: SharedPreferences, moshi: Moshi, defaultValue: T?) =
-    object : ReadWriteProperty<Any, T?> {
-        private val adapter = moshi.adapter<T>(T::class.java)
+inline fun <reified T> pref(
+    prefs: SharedPreferences,
+    key: String? = null,
+    defaultValue: T = defaultForType()
+) = object : ReadWriteProperty<Any, T> {
+    override fun getValue(thisRef: Any, property: KProperty<*>) =
+        prefs[key ?: getKey(thisRef, property), defaultValue]
 
-        override fun getValue(thisRef: Any, property: KProperty<*>): T? {
-            val raw = prefs[getKey(thisRef, property), ""]
-            return if (raw.isNotBlank()) {
-                adapter.fromJson(raw) ?: defaultValue
-            } else {
-                defaultValue
-            }
-        }
-
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-            prefs[getKey(thisRef, property)] = adapter.toJson(value)
-        }
-
-        private fun getKey(thisRef: Any, property: KProperty<*>) =
-            "${thisRef.javaClass.simpleName}.${property.name}"
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+        prefs[key ?: getKey(thisRef, property)] = value
     }
-
-/**
- * Creates delegate for property from [prefs] with the key presented as className+propertyName.
- * @param T type of the property
- * @param defaultValue is used if property not set
- * @return wrapper for property accessors
- */
-inline fun <reified T> pref(prefs: SharedPreferences, defaultValue: T = defaultForType()) =
-    object : ReadWriteProperty<Any, T> {
-        override fun getValue(thisRef: Any, property: KProperty<*>) =
-            prefs[getKey(thisRef, property), defaultValue]
-
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-            prefs[getKey(thisRef, property)] = value
-        }
-
-        private fun getKey(thisRef: Any, property: KProperty<*>) =
-            "${thisRef.javaClass.simpleName}.${property.name}"
-    }
+}
 
 /**
  * Set property [value] to shared preferences by [key].
@@ -122,3 +135,6 @@ inline fun <reified T> defaultForType(): T =
         Long::class -> 0L as T
         else -> throw IllegalArgumentException("Default value not found for type ${T::class}")
     }
+
+fun getKey(thisRef: Any, property: KProperty<*>) =
+    "${thisRef::class.simpleName}.${property.name}"

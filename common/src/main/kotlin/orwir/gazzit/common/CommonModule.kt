@@ -1,8 +1,7 @@
 package orwir.gazzit.common
 
-import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -10,8 +9,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-
-private const val SHARED_STORAGE_NAME = "GazzitPreferences"
 
 val commonModule = module {
 
@@ -22,7 +19,7 @@ val commonModule = module {
     }
 
     single<SharedPreferences> {
-        get<Application>().getSharedPreferences(SHARED_STORAGE_NAME, Context.MODE_PRIVATE)
+        PreferenceManager.getDefaultSharedPreferences(get())
     }
 
     single<OkHttpClient> {
