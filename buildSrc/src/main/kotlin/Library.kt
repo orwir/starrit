@@ -32,7 +32,7 @@ object Library {
     object Coil {
         private const val version = "0.8.0"
 
-        const val coil = "io.coil-kt:coil:$version"
+        const val coil = "io.coil-kt:coil-base:$version"
         const val gif = "io.coil-kt:coil-gif:$version"
     }
 
@@ -52,4 +52,14 @@ object Library {
 
     const val exoPlayer = "com.google.android.exoplayer:exoplayer:2.10.8"
     const val timber = "com.jakewharton.timber:timber:4.7.1"
+
+    object Junit {
+        private const val version = "5.5.2"
+
+        const val api = "org.junit.jupiter:junit-jupiter-api:$version"
+        const val engine = "org.junit.jupiter:junit-jupiter-engine:$version"
+        const val params = "org.junit.jupiter:junit-jupiter-params:$version"
+    }
+
+    const val mockk = "io.mockk:mockk:1.9.3"
 }

@@ -5,7 +5,7 @@ import android.view.View
 import orwir.gazzit.feed.databinding.ViewContentVideoBinding
 import orwir.gazzit.model.Post
 
-fun isVideo(post: Post): Boolean = TODO("not implemented yet")
+fun isVideo(post: Post): Boolean = false
 
 fun inflateVideoContent(post: Post, inflater: LayoutInflater): View =
     ViewContentVideoBinding

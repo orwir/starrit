@@ -7,7 +7,6 @@ import org.koin.core.context.startKoin
 import orwir.gazzit.authorization.authorizationModule
 import orwir.gazzit.common.KoinedLogger
 import orwir.gazzit.common.commonModule
-import orwir.gazzit.common.initializeCoil
 import orwir.gazzit.feed.feedModule
 import orwir.gazzit.splash.splashModule
 import timber.log.Timber
@@ -34,7 +33,5 @@ class GazzitApplication : Application(), KoinComponent {
                 )
             )
         }
-
-        initializeCoil(this)
     }
 }

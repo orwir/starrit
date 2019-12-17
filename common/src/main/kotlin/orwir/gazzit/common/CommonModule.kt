@@ -2,6 +2,9 @@ package orwir.gazzit.common
 
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.util.CoilUtils
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -37,6 +40,22 @@ val commonModule = module {
             .client(get())
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
+    }
+
+    single<ImageLoader> {
+        ImageLoader(get()) {
+            okHttpClient {
+                OkHttpClient.Builder()
+                    .addInterceptor(HttpLoggingInterceptor().apply {
+                        level = HttpLoggingInterceptor.Level.BODY
+                    })
+                    .cache(CoilUtils.createDefaultCache(get()))
+                    .build()
+            }
+            componentRegistry {
+                add(GifDecoder())
+            }
+        }
     }
 
 }

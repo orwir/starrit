@@ -17,15 +17,15 @@ class KoinedShareable : KoinComponent, Shareable {
     override val moshi: Moshi by inject()
 }
 
-inline fun <reified T> Shareable.objPref(key: String? = null, defaultValue: T?) =
+inline fun <reified T> Shareable.objPref(defaultValue: T?, key: String? = null) =
     objPref(prefs, moshi, key, defaultValue)
 
 inline fun <reified T : Enum<T>> Shareable.enumPref(
-    key: String? = T::class.simpleName,
-    defaultValue: T = enumValues<T>()[0]
+    defaultValue: T = enumValues<T>()[0],
+    key: String? = T::class.simpleName
 ) = enumPref(prefs, key, defaultValue)
 
-inline fun <reified T> Shareable.pref(key: String? = null, defaultValue: T = defaultForType()) =
+inline fun <reified T> Shareable.pref(defaultValue: T = defaultForType(), key: String? = null) =
     pref(prefs, key, defaultValue)
 
 // -------------------------------------------------------------------------------------------------

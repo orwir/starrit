@@ -5,7 +5,7 @@ import android.view.View
 import orwir.gazzit.feed.databinding.ViewContentTextBinding
 import orwir.gazzit.model.Post
 
-internal fun isText(post: Post): Boolean = TODO("not implemented yet")
+internal fun isText(post: Post): Boolean = false
 
 internal fun inflateTextContent(post: Post, inflater: LayoutInflater): View =
     ViewContentTextBinding

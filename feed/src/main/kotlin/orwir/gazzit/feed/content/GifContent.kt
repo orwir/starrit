@@ -5,7 +5,7 @@ import android.view.View
 import orwir.gazzit.feed.databinding.ViewContentGifBinding
 import orwir.gazzit.model.Post
 
-internal fun isGif(post: Post): Boolean = TODO("not implemented yet")
+internal fun isGif(post: Post): Boolean = false
 
 internal fun inflateGifContent(post: Post, inflater: LayoutInflater): View =
     ViewContentGifBinding

@@ -5,6 +5,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -20,6 +21,7 @@ android {
     }
 
     sourceSets["main"].java.srcDir("src/main/kotlin")
+    sourceSets["test"].java.srcDir("src/test/kotlin")
 
     compileOptions {
         sourceCompatibility = Android.javaVersion
@@ -32,6 +34,10 @@ android {
 
     dataBinding {
         isEnabled = true
+    }
+
+    packagingOptions {
+        exclude("META-INF/LICENSE*")
     }
 }
 
@@ -47,6 +53,7 @@ androidExtensions {
 dependencies {
     api(Library.Kotlin.std)
     api(Library.Kotlin.coroutines)
+    api(Library.Kotlin.reflect)
     api(Library.AndroidX.core)
     api(Library.AndroidX.appCompat)
     api(Library.AndroidX.lifecycleRuntime)
@@ -69,6 +76,11 @@ dependencies {
     kapt(Library.Squareup.moshiKotlinCodgen)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.retrofitMoshiConverter)
+
+    testImplementation(Library.Junit.api)
+    testImplementation(Library.Junit.params)
+    testRuntimeOnly(Library.Junit.engine)
+    testImplementation(Library.mockk)
 }
 
 fun DefaultConfig.stringField(name: String, value: String) {
