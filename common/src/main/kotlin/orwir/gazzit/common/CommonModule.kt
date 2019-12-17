@@ -47,7 +47,7 @@ val commonModule = module {
             okHttpClient {
                 OkHttpClient.Builder()
                     .addInterceptor(HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
+                        level = HttpLoggingInterceptor.Level.BASIC
                     })
                     .cache(CoilUtils.createDefaultCache(get()))
                     .build()

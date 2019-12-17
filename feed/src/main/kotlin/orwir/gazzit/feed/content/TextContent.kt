@@ -13,7 +13,7 @@ internal fun inflateTextContent(post: Post, inflater: LayoutInflater): View =
     ViewContentTextBinding
         .inflate(inflater)
         .apply {
-            text.text = post.text?.toHtml() ?: ""
+            text = post.text?.toHtml() ?: ""
         }
         .root
 

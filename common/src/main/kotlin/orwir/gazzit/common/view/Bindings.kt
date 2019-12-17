@@ -1,5 +1,6 @@
 package orwir.gazzit.common.view
 
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -14,10 +15,11 @@ fun View.setVisibleOrGone(show: Boolean = false) {
     visibility = if (show) VISIBLE else GONE
 }
 
-@BindingAdapter("imageUrl")
-fun ImageView.loadImage(url: String) {
+@BindingAdapter("imageUrl", "placeholder", requireAll = false)
+fun ImageView.loadImage(url: String, placeholder: Drawable? = null) {
     val loader: ImageLoader = GlobalContext.get().koin.get()
     loader.load(context, url) {
+        placeholder?.let(::placeholder)
         target(this@loadImage)
     }
 }
