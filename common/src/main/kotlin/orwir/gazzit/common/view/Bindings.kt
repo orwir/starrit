@@ -17,9 +17,11 @@ fun View.setVisibleOrGone(show: Boolean = false) {
 
 @BindingAdapter("imageUrl", "placeholder", requireAll = false)
 fun ImageView.loadImage(url: String, placeholder: Drawable? = null) {
-    val loader: ImageLoader = GlobalContext.get().koin.get()
-    loader.load(context, url) {
-        placeholder?.let(::placeholder)
-        target(this@loadImage)
+    if (url.isNotBlank()) {
+        val loader: ImageLoader = GlobalContext.get().koin.get()
+        loader.load(context, url) {
+            placeholder?.let(::placeholder)
+            target(this@loadImage)
+        }
     }
 }

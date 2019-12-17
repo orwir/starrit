@@ -10,6 +10,7 @@ import orwir.gazzit.common.extensions.squeeze
 import orwir.gazzit.feed.content.*
 import orwir.gazzit.feed.databinding.ViewPostBinding
 import orwir.gazzit.model.Post
+import timber.log.Timber
 
 internal class FeedAdapter : PagedListAdapter<Post, ViewHolder>(PostDiffCallback()) {
 
@@ -60,7 +61,10 @@ internal class ViewHolder(
         isImage(post) -> inflateImageContent(post, inflater)
         isGif(post) -> inflateGifContent(post, inflater)
         isVideo(post) -> inflateVideoContent(post, inflater)
-        else -> inflateLinkContent(post, inflater)
+        else -> {
+            Timber.d("[Content] h:[${post.hint}] d:[${post.domain}] u:[${post.url}] o:[$post]")
+            inflateLinkContent(post, inflater)
+        }
     }
 
 }

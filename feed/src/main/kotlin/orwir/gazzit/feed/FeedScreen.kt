@@ -56,7 +56,7 @@ class FeedFragment : Fragment() {
     }
 
     private fun ListingType.toTitle() = when (this) {
-        is ListingType.Subreddit -> getString(R.string.subreddit, this.subreddit)
+        is ListingType.Subreddit -> getString(R.string.subreddit, subreddit)
         is ListingType.Best -> getString(R.string.best)
     }
 }

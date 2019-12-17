@@ -9,9 +9,9 @@ internal fun inflateLinkContent(post: Post, inflater: LayoutInflater): View =
     ViewContentLinkBinding
         .inflate(inflater)
         .apply {
-            // todo: consider image settings
-            this.post = post
-            this.listener = View.OnClickListener {
+            link = post.url
+            image = post.imageUrl()
+            listener = View.OnClickListener {
                 TODO("not implemented yet")
             }
         }

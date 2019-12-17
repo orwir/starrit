@@ -6,8 +6,12 @@
     <data>
 
         <variable
-            name="post"
-            type="orwir.gazzit.model.Post" />
+            name="image"
+            type="String" />
+
+        <variable
+            name="link"
+            type="String" />
 
         <variable
             name="listener"
@@ -20,16 +24,16 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="@{(v) -> listener.onClick(v)}">
+        android:onClick="@{listener::onClick}">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="128dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:imageUrl="@{post.thumbnail}"
-            app:placeholder="@{@drawable/ic_image_placeholder}"
-            tools:src="#F22" />
+            android:src="@drawable/ic_open_in_new"
+            app:imageUrl="@{image}"
+            app:placeholder="@{@drawable/ic_image_placeholder}" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Large"
@@ -43,7 +47,7 @@
             android:maxLines="1"
             android:paddingStart="@dimen/space"
             android:paddingEnd="@dimen/space"
-            android:text="@{post.url}"
+            android:text="@{link}"
             android:textColor="@color/amber"
             tools:text="https://example.com" />
 
