@@ -6,15 +6,15 @@ import orwir.gazzit.common.extensions.enumPref
 import orwir.gazzit.model.AutoPlayVideo
 import orwir.gazzit.model.LoadSourceImage
 
-object Settings : Shareable by KoinedShareable() {
+object Preferences : Shareable by KoinedShareable() {
 
     val loadSourceImage: LoadSourceImage by enumPref(
-        key = "content.load_source_image",
+        key = "load_source_image",
         defaultValue = LoadSourceImage.ByClick
     )
 
     val autoPlayVideo: AutoPlayVideo by enumPref(
-        key = "content.auto_play_video",
+        key = "auto_play_video",
         defaultValue = AutoPlayVideo.Never
     )
 

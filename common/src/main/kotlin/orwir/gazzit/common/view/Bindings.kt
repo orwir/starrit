@@ -20,6 +20,7 @@ fun ImageView.loadImage(url: String, placeholder: Drawable? = null) {
     if (url.isNotBlank()) {
         val loader: ImageLoader = GlobalContext.get().koin.get()
         loader.load(context, url) {
+            crossfade(200)
             placeholder?.let(::placeholder)
             target(this@loadImage)
         }

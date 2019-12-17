@@ -2,7 +2,7 @@ package orwir.gazzit.feed.content
 
 import android.view.LayoutInflater
 import android.view.View
-import orwir.gazzit.common.Settings
+import orwir.gazzit.common.Preferences
 import orwir.gazzit.common.view.loadImage
 import orwir.gazzit.feed.databinding.ViewContentImageBinding
 import orwir.gazzit.model.LoadSourceImage
@@ -15,7 +15,7 @@ internal fun inflateImageContent(post: Post, inflater: LayoutInflater): View =
         .inflate(inflater)
         .apply {
             // todo: implement load by click over wifi if current network is not
-            clickable = Settings.loadSourceImage == LoadSourceImage.ByClick
+            clickable = Preferences.loadSourceImage == LoadSourceImage.ByClick
             listener = View.OnClickListener {
                 image.loadImage(post.imageSource(), image.drawable)
                 image.isEnabled = false
@@ -24,7 +24,7 @@ internal fun inflateImageContent(post: Post, inflater: LayoutInflater): View =
         }
         .root
 
-internal fun Post.imageUrl(): String = when (Settings.loadSourceImage) {
+internal fun Post.imageUrl(): String = when (Preferences.loadSourceImage) {
     LoadSourceImage.ByClick -> imagePreview()
     LoadSourceImage.OverWifi -> TODO("check network state")
     LoadSourceImage.Always -> imageSource()
