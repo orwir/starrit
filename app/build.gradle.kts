@@ -23,6 +23,8 @@ android {
         )
     }
 
+    sourceSets["main"].java.srcDir("src/main/kotlin")
+
 //    buildTypes {
 //        getByName("release") {
 //            isMinifyEnabled = true
