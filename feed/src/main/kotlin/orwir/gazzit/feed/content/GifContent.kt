@@ -13,5 +13,23 @@ internal fun inflateGifContent(post: Post, inflater: LayoutInflater): View =
         .apply {
             // todo: consider image settings and auto-play
             url = post.url
+            /*
+            image.load(post.previewThumb) {
+                placeholder(R.drawable.ic_image_placeholder)
+            }
+            layout.setOnClickListener {
+                if (type.visibility == View.VISIBLE) {
+                    type.visibility = View.GONE
+                    image.load(post.media?.oembed?.thumbnail ?: post.url) {
+                        placeholder(image.drawable)
+                    }
+                } else {
+                    type.visibility = View.VISIBLE
+                    image.load(post.previewThumb) {
+                        placeholder(image.drawable)
+                    }
+                }
+            }
+             */
         }
         .root

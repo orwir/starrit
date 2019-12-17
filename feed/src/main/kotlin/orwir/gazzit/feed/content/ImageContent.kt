@@ -36,16 +36,16 @@ private fun Post.isImgur() = domain == "imgur.com"
 
 private fun Post.imagePreview(): String = preview
     ?.images
-    ?.get(0)
+    ?.let { if (it.isNotEmpty()) it[0] else null }
     ?.resolutions
-    ?.get(0)
+    ?.let { if (it.isNotEmpty()) it[0] else null }
     ?.url
     ?.replace("&amp;", "&")
     ?: if (isJustImage(thumbnail)) thumbnail else ""
 
 private fun Post.imageSource(): String = preview
     ?.images
-    ?.get(0)
+    ?.let { if (it.isNotEmpty()) it[0] else null }
     ?.source
     ?.url
     ?.replace("&amp;", "&")
