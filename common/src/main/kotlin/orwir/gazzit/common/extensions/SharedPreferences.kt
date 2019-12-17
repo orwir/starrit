@@ -61,7 +61,7 @@ inline fun <reified T> objPref(
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-        prefs[key ?: getKey(thisRef, property)] = adapter.toJson(value)
+        prefs[key ?: getKey(thisRef, property)] = if (value != null) adapter.toJson(value) else ""
     }
 }
 

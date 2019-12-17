@@ -27,6 +27,8 @@ internal class BasicAuthorizationRepository :
 
     private var requestState: String? by objPref(null)
     private var requestCallback: Callback? = null
+    private var responseUri: Uri? = null
+
     private var token: Token? by objPref(null)
     private val service: AuthorizationService by inject()
     private val scope = listOf(Scope.Identity, Scope.Read).joinToString { it.asParameter() }
@@ -53,6 +55,7 @@ internal class BasicAuthorizationRepository :
 
                 override fun onStart() {
                     requestState = requestState ?: UUID.randomUUID().toString()
+                    responseUri = null
                     Timber.d("authorization flow started: state=[$requestState]")
                     offer(Step.Start(buildAuthorizationUri(requestState!!, scope)))
                 }
@@ -60,6 +63,8 @@ internal class BasicAuthorizationRepository :
                 override fun onSuccess() {
                     Timber.d("authorization flow completed successfully")
                     offer(Step.Success)
+                    requestState = null
+                    responseUri = null
                     channel.close()
                 }
 
@@ -67,17 +72,21 @@ internal class BasicAuthorizationRepository :
                     Timber.d("authorization flow completed with exception [$exception]")
                     offer(Step.Failure(exception))
                     requestState = null
+                    responseUri = null
                 }
 
             }
             Timber.d("authorization flow callback created")
         }
 
-        offer(Step.Idle)
+        if (responseUri == null) {
+            offer(Step.Idle)
+        } else {
+            authorizationFlowComplete(responseUri!!)
+        }
 
         awaitClose {
             Timber.d("authorization flow closed")
-            requestState = null
             requestCallback = null
         }
     }
@@ -88,21 +97,24 @@ internal class BasicAuthorizationRepository :
 
     override fun authorizationFlowComplete(response: Uri) {
         if (response.authority == BuildConfig.HOST) {
-            val callback =
-                requestCallback ?: throw TokenException("Authorization flow callback not found!")
-            launch {
-                val state = response.getQueryParameter("state")
-                if (state == requestState) {
-                    val code = response.getQueryParameter("code")!!
-                    try {
-                        token = service.accessToken(code)
-                        callback.onSuccess()
-                    } catch (e: Exception) {
-                        callback.onError(e)
+            if (requestCallback != null) {
+                val callback = requestCallback!!
+                launch {
+                    val state = response.getQueryParameter("state")
+                    if (state == requestState) {
+                        val code = response.getQueryParameter("code")!!
+                        try {
+                            token = service.accessToken(code)
+                            callback.onSuccess()
+                        } catch (e: Exception) {
+                            callback.onError(e)
+                        }
+                    } else {
+                        callback.onError(TokenException("Request/Response state mismatch: e:[$requestState], a:[$state]"))
                     }
-                } else {
-                    callback.onError(TokenException("Request/Response state mismatch: e:[$requestState], a:[$state]"))
                 }
+            } else {
+                responseUri = response
             }
         }
     }
