@@ -13,19 +13,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_feed.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import orwir.gazzit.common.extensions.arg
 import orwir.gazzit.common.extensions.injectFromActivityScope
 import orwir.gazzit.common.livedata.SingleLiveEvent
 import orwir.gazzit.feed.databinding.FragmentFeedBinding
-import orwir.gazzit.model.ListingType
-import orwir.gazzit.model.Post
-
-private const val ARG_TYPE = "type"
+import orwir.gazzit.feed.model.FeedType
+import orwir.gazzit.feed.model.Post
 
 class FeedFragment : Fragment() {
 
-    private val type: ListingType by lazy { ListingType.parse(arg(ARG_TYPE)) }
-    private val viewModel: FeedViewModel by viewModel { parametersOf(type) }
+    private val viewModel: FeedViewModel by viewModel { parametersOf(FeedType.Best) }
     private val navigation: FeedNavigation by injectFromActivityScope()
     private val adapter = FeedAdapter()
 
@@ -35,7 +31,7 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = FragmentFeedBinding.inflate(inflater, container, false)
         .also {
-            it.listing = type.toTitle()
+            it.listing = "" // todo: restore it
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
         }
@@ -54,14 +50,9 @@ class FeedFragment : Fragment() {
             TODO("not implemented yet")
         })
     }
-
-    private fun ListingType.toTitle() = when (this) {
-        is ListingType.Subreddit -> getString(R.string.subreddit, subreddit)
-        is ListingType.Best -> getString(R.string.best)
-    }
 }
 
-internal class FeedViewModel(type: ListingType) : ViewModel() {
+internal class FeedViewModel(type: FeedType) : ViewModel() {
 
     val posts = LivePagedListBuilder<String, Post>(
         FeedDataSourceFactory(type, viewModelScope),

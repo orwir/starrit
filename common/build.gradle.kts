@@ -15,6 +15,8 @@ android {
     defaultConfig {
         minSdkVersion(Android.Sdk.min)
         targetSdkVersion(Android.Sdk.target)
+        versionCode = Android.Application.versionCode(project)
+        versionName = Android.Application.versionName(project)
 
         stringField("REDDIT_BASE_URL", "https://www.reddit.com")
         stringField("REDDIT_AUTH_URL", "https://oauth.reddit.com")

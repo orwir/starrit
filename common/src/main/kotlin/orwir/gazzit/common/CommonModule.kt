@@ -10,6 +10,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
+import orwir.gazzit.common.json.KindAdapter
+import orwir.gazzit.common.json.VoteAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -18,6 +20,7 @@ val commonModule = module {
     single<Moshi> {
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
+            .add(KindAdapter())
             .build()
     }
 
@@ -27,6 +30,7 @@ val commonModule = module {
 
     single<OkHttpClient> {
         OkHttpClient.Builder()
+            .addInterceptor(RedditInterceptor())
             .addInterceptor(get<AuthorizationInterceptor>())
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY

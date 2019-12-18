@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import orwir.gazzit.authorization.AuthorizationFragmentDirections
 import orwir.gazzit.authorization.AuthorizationNavigation
 import orwir.gazzit.feed.FeedNavigation
-import orwir.gazzit.model.ListingType
 import orwir.gazzit.splash.SplashFragmentDirections
 import orwir.gazzit.splash.SplashNavigation
 
@@ -31,8 +30,7 @@ class Navigator(
             .launchUrl(context, uri)
     }
 
-    override fun openFeed(type: ListingType?) {
-        // todo: implement
+    override fun openFeed() {
         controller.navigate(AuthorizationFragmentDirections.toListing())
     }
 

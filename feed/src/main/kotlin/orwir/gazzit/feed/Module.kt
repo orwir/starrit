@@ -3,7 +3,7 @@ package orwir.gazzit.feed
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import orwir.gazzit.common.service
-import orwir.gazzit.model.ListingType
+import orwir.gazzit.feed.model.FeedType
 
 val feedModule = module {
 
@@ -11,7 +11,7 @@ val feedModule = module {
         service(get(), FeedService::class.java)
     }
 
-    viewModel { (type: ListingType) -> FeedViewModel(type) }
+    viewModel { (type: FeedType) -> FeedViewModel(type) }
 
 }
 

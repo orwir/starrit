@@ -6,12 +6,8 @@
     <data>
 
         <variable
-            name="image"
-            type="String" />
-
-        <variable
-            name="link"
-            type="String" />
+            name="post"
+            type="orwir.gazzit.feed.model.LinkPost" />
 
         <variable
             name="listener"
@@ -32,7 +28,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_open_in_new"
-            app:imageUrl="@{image}"
+            app:imageUrl="@{post.source}"
             app:placeholder="@{@drawable/ic_image_placeholder}" />
 
         <TextView
@@ -47,7 +43,7 @@
             android:maxLines="1"
             android:paddingStart="@dimen/space"
             android:paddingEnd="@dimen/space"
-            android:text="@{link}"
+            android:text="@{post.link}"
             android:textColor="@color/amber"
             tools:text="https://example.com" />
 

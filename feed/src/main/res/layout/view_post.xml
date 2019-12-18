@@ -7,7 +7,7 @@
 
         <variable
             name="post"
-            type="orwir.gazzit.model.Post" />
+            type="orwir.gazzit.feed.model.Post" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,10 +19,12 @@
             android:id="@+id/subreddit_icon"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:src="@drawable/ic_icon_ghost"
+            app:imageUrl="@{post.subreddit.icon}"
             app:layout_constraintBottom_toBottomOf="@id/author"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/subreddit_title"
-            tools:src="@mipmap/ic_launcher" />
+            app:placeholder="@{@drawable/ic_icon_ghost}" />
 
         <TextView
             android:id="@+id/subreddit_title"
@@ -32,7 +34,7 @@
             android:layout_marginStart="@dimen/space"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{@string/subreddit(post.subreddit)}"
+            android:text="@{@string/subreddit(post.subreddit.name)}"
             app:layout_constraintBottom_toTopOf="@id/author"
             app:layout_constraintStart_toEndOf="@id/subreddit_icon"
             app:layout_constraintTop_toTopOf="parent"
@@ -59,6 +61,7 @@
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{post.created}"
             app:layout_constraintBottom_toBottomOf="@id/author"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/author"
@@ -139,6 +142,7 @@
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{post.score}"
             app:layout_constraintBottom_toBottomOf="@id/vote_up"
             app:layout_constraintStart_toEndOf="@id/vote_up"
             app:layout_constraintTop_toTopOf="@id/vote_up"
@@ -174,6 +178,7 @@
             android:id="@+id/comments_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{post.comments}"
             app:layout_constraintBottom_toBottomOf="@id/vote_up"
             app:layout_constraintStart_toEndOf="@id/comments"
             app:layout_constraintTop_toTopOf="@id/vote_up"

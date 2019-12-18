@@ -5,16 +5,8 @@
     <data>
 
         <variable
-            name="clickable"
-            type="Boolean" />
-
-        <variable
-            name="url"
-            type="String" />
-
-        <variable
-            name="listener"
-            type="android.view.View.OnClickListener" />
+            name="post"
+            type="orwir.gazzit.feed.model.ImagePost" />
     </data>
 
     <ImageView
@@ -22,10 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:clickable="@{clickable}"
-        android:focusable="@{clickable}"
-        android:onClick="@{listener::onClick}"
         android:scaleType="fitXY"
-        app:imageUrl="@{url}"
+        app:imageUrl="@{post.source}"
         app:placeholder="@{@drawable/ic_image_placeholder}" />
+
 </layout>
