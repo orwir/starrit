@@ -3,7 +3,7 @@ package orwir.gazzit.common.extensions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class NumbersTest {
+class SqueezeTest {
 
     @Test
     fun `given 10 when squeeze() then return 10`() {

@@ -1,8 +1,6 @@
-package orwir.gazzit.common.extensions
+package orwir.gazzit.common
 
 import android.content.SharedPreferences
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import io.mockk.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
@@ -96,16 +94,10 @@ class SharedPreferencesTest {
     @Nested
     inner class NullableObjectPrefTest {
 
-        private val adapter: JsonAdapter<TestObject> = mockk(relaxed = true) {
-            every { fromJson(any<String>()) } returns TestObject()
-            every { toJson(any()) } returns "{}"
-        }
-        private val moshi: Moshi = mockk(relaxed = true) {
-            every { adapter(TestObject::class.java) } returns adapter
-        }
+        private val adapter: ObjectAdapter<TestObject> = mockk(relaxed = true)
         private var tested: TestObject? by objPref(
             sharedPrefs,
-            moshi,
+            adapter,
             "nullableObjectPref",
             null
         )
@@ -119,13 +111,12 @@ class SharedPreferencesTest {
             tested = obj
 
             // then
-            verify { moshi.adapter(TestObject::class.java) }
-            verify { adapter.toJson(obj) }
+            verify { adapter.from(obj) }
             verify { sharedPrefs.edit() }
-            verify { editor.putString("nullableObjectPref", "{}") }
+            verify { editor.putString("nullableObjectPref", "") }
             verify { editor.apply() }
 
-            confirmVerified(moshi)
+            confirmVerified(adapter)
             confirmVerified(sharedPrefs)
             confirmVerified(editor)
         }
@@ -136,11 +127,10 @@ class SharedPreferencesTest {
             val actual = tested
 
             // then
-            verify { moshi.adapter(TestObject::class.java) }
             verify { sharedPrefs.getString("nullableObjectPref", "") }
             Assertions.assertEquals(null, actual)
 
-            confirmVerified(moshi)
+            confirmVerified(adapter)
             confirmVerified(sharedPrefs)
             confirmVerified(editor)
         }

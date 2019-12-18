@@ -11,13 +11,13 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.gazzit.authorization.AuthorizationRepository
 import orwir.gazzit.authorization.TokenException
-import orwir.gazzit.common.extensions.injectFromActivityScope
+import orwir.gazzit.common.extensions.activityScope
 import orwir.gazzit.splash.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
 
     private val viewModel: SplashViewModel by viewModel()
-    private val navigation: SplashNavigation by injectFromActivityScope()
+    private val navigation: SplashNavigation by activityScope()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -41,8 +41,7 @@
         tools:layout="@layout/fragment_feed">
         <argument
             android:name="type"
-            android:defaultValue="best"
-            app:argType="string" />
+            app:argType="orwir.gazzit.feed.model.FeedType" />
     </fragment>
 
 </navigation>
