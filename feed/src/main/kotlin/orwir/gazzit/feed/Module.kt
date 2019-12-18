@@ -11,6 +11,14 @@ val feedModule = module {
         service(get(), FeedService::class.java)
     }
 
+    single<PostResolver> {
+        PostResolver(get())
+    }
+
+    single<ContentInflater> {
+        ContentInflater()
+    }
+
     viewModel { (type: FeedType) -> FeedViewModel(type) }
 
 }

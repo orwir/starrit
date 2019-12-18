@@ -8,7 +8,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.gazzit.feed.content.PostResolver
 import orwir.gazzit.feed.model.FeedType
 import orwir.gazzit.feed.model.Post
 import timber.log.Timber
@@ -31,6 +30,7 @@ internal class FeedDataSource(
 ) : PageKeyedDataSource<String, Post>(), KoinComponent {
 
     private val service: FeedService by inject()
+    private val resolver: PostResolver by inject()
 
     override fun loadInitial(
         params: LoadInitialParams<String>,
@@ -79,7 +79,7 @@ internal class FeedDataSource(
                         limit = limit
                     )
                 }
-                val posts = response.data.children.map { PostResolver.resolve(it.data) }
+                val posts = response.data.children.map { resolver.resolve(it.data) }
                 block(posts, response.data.before, response.data.after)
             } catch (e: Exception) {
                 Timber.e(e)

@@ -1,4 +1,4 @@
-package orwir.gazzit.feed.content
+package orwir.gazzit.feed
 
 import orwir.gazzit.model.listing.Submission
 

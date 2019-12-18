@@ -1,7 +1,7 @@
 package orwir.gazzit.feed.model
 
-import orwir.gazzit.feed.content.imageUrlOrNull
-import orwir.gazzit.feed.content.isImageUrl
+import orwir.gazzit.feed.imageUrlOrNull
+import orwir.gazzit.feed.isImageUrl
 import orwir.gazzit.model.listing.Submission
 
 internal interface ImagesData {

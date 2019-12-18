@@ -5,11 +5,9 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import orwir.gazzit.feed.content.inflateImageContent
-import orwir.gazzit.feed.content.inflateLinkContent
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import orwir.gazzit.feed.databinding.ViewPostBinding
-import orwir.gazzit.feed.model.ImagePost
-import orwir.gazzit.feed.model.LinkPost
 import orwir.gazzit.feed.model.Post
 
 internal class FeedAdapter : PagedListAdapter<Post, ViewHolder>(PostDiffCallback()) {
@@ -32,18 +30,15 @@ internal class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
 
 internal class ViewHolder(
     private val binding: ViewPostBinding
-) : RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root), KoinComponent {
 
     private val inflater: LayoutInflater = LayoutInflater.from(itemView.context)
+    private val content: ContentInflater by inject()
 
     fun bind(post: Post) {
         binding.post = post
         binding.content.removeAllViews()
-        binding.content.addView(
-            when (post) {
-                is ImagePost -> inflateImageContent(post, inflater)
-                is LinkPost -> inflateLinkContent(post, inflater)
-            }
-        )
+        binding.content.addView(content.inflate(post, inflater))
     }
+
 }
