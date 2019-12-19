@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.net.Uri
 import androidx.core.net.toUri
 import orwir.gazzit.common.extensions.squeeze
+import orwir.gazzit.common.extensions.toHtml
 import orwir.gazzit.feed.R
 import orwir.gazzit.model.listing.Submission
 import orwir.gazzit.model.listing.Subreddit
@@ -54,4 +55,11 @@ internal class GifPost(
     resources: Resources
 ) : Post(submission, resources), ImagesData by RedditImageData(submission) {
     val gif: String = submission.url
+}
+
+internal class TextPost(
+    submission: Submission,
+    resources: Resources
+) : Post(submission, resources) {
+    val text: CharSequence = (submission.selftextHtml ?: submission.selftext ?: "").toHtml()
 }

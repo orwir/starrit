@@ -16,5 +16,7 @@ data class Submission(
     @Json(name = "domain") val domain: String,
     @Json(name = "url") val url: String,
     @Json(name = "thumbnail") val thumbnail: String,
-    @Json(name = "preview") val preview: Preview?
+    @Json(name = "preview") val preview: Preview?,
+    @Json(name = "selftext") val selftext: String?,
+    @Json(name = "selftext_html") val selftextHtml: String?
 )

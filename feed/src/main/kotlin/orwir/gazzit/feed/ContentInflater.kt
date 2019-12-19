@@ -8,17 +8,15 @@ import orwir.gazzit.common.view.loadImage
 import orwir.gazzit.feed.databinding.ViewContentGifBinding
 import orwir.gazzit.feed.databinding.ViewContentImageBinding
 import orwir.gazzit.feed.databinding.ViewContentLinkBinding
-import orwir.gazzit.feed.model.GifPost
-import orwir.gazzit.feed.model.ImagePost
-import orwir.gazzit.feed.model.LinkPost
-import orwir.gazzit.feed.model.Post
+import orwir.gazzit.feed.databinding.ViewContentTextBinding
+import orwir.gazzit.feed.model.*
 
 internal class ContentInflater {
-
     fun inflate(post: Post, inflater: LayoutInflater): View = when (post) {
+        is TextPost -> inflateTextContent(post, inflater)
+        is GifPost -> inflateGifContent(post, inflater)
         is ImagePost -> inflateImageContent(post, inflater)
         is LinkPost -> inflateLinkContent(post, inflater)
-        is GifPost -> inflateGifContent(post, inflater)
     }
 }
 
@@ -53,4 +51,10 @@ private fun inflateGifContent(post: GifPost, inflater: LayoutInflater): View =
                 }
             }
         }
+        .root
+
+private fun inflateTextContent(post: TextPost, inflater: LayoutInflater): View =
+    ViewContentTextBinding
+        .inflate(inflater)
+        .also { it.post = post }
         .root

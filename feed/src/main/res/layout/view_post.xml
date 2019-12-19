@@ -75,11 +75,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space"
             android:ellipsize="end"
-            android:maxLines="2"
             android:text="@{post.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/author"
+            app:maxLinesToggle="@{2}"
             tools:text="Post title" />
 
         <TextView
