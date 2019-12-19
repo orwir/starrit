@@ -48,3 +48,10 @@ internal class ImagePost(
     submission: Submission,
     resources: Resources
 ) : Post(submission, resources), ImagesData by RedditImageData(submission)
+
+internal class GifPost(
+    submission: Submission,
+    resources: Resources
+) : Post(submission, resources), ImagesData by RedditImageData(submission) {
+    val gif: String = submission.url
+}

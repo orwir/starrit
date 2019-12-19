@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="clickable"
-            type="Boolean" />
+            name="post"
+            type="orwir.gazzit.feed.model.GifPost" />
 
         <variable
             name="playing"
@@ -16,30 +16,26 @@
         <variable
             name="listener"
             type="android.view.View.OnClickListener" />
-
-        <variable
-            name="url"
-            type="String" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="@{clickable}"
-        android:focusable="@{clickable}"
+        android:clickable="true"
+        android:focusable="true"
         android:onClick="@{listener::onClick}">
 
         <ImageView
-            android:id="@+id/content"
+            android:id="@+id/gif"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            app:image="@{url}"
+            app:image="@{post.source}"
             app:placeholder="@{@drawable/ic_image_placeholder}"
             tools:src="@drawable/ic_image_placeholder" />
 
         <ImageView
-            android:id="@+id/gif"
+            android:id="@+id/cap"
             android:layout_width="64dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
