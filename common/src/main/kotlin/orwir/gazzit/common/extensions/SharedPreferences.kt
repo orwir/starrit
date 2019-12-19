@@ -22,9 +22,6 @@ inline fun <reified T> adapter(moshi: Moshi) = object : ObjectAdapter<T> {
     override fun from(obj: T): String = adapter.toJson(obj)
 }
 
-inline fun <reified T> Shareable.pref(defaultValue: T = defaultForType(), key: String? = null) =
-    pref(prefs, key, defaultValue)
-
 inline fun <reified T> Shareable.objPref(defaultValue: T? = null, key: String? = null) =
     objPref(prefs, adapter(moshi), key, defaultValue)
 
@@ -32,3 +29,6 @@ inline fun <reified T : Enum<T>> Shareable.enumPref(
     defaultValue: T = enumValues<T>()[0],
     key: String? = null
 ) = enumPref(prefs, key, defaultValue)
+
+inline fun <reified T> Shareable.pref(defaultValue: T = defaultForType(), key: String? = null) =
+    pref(prefs, key, defaultValue)

@@ -34,7 +34,7 @@ dependencies {
 
     implementation(Library.Kotlin.std)
     implementation(Library.AndroidX.core)
-    implementation(Library.AndroidX.appCompat)
+    implementation(Library.AndroidX.appcompat)
     implementation(Library.AndroidX.constraintLayout)
     implementation(Library.Coil.coil)
 }

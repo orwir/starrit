@@ -1,7 +1,7 @@
 package orwir.gazzit.common
 
+import android.app.Application
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.util.CoilUtils
@@ -24,12 +24,13 @@ val commonModule = module {
     }
 
     single<SharedPreferences> {
-        PreferenceManager.getDefaultSharedPreferences(get())
+        val app: Application = get()
+        app.getSharedPreferences(app::class.qualifiedName, Application.MODE_PRIVATE)
     }
 
     single<OkHttpClient> {
         OkHttpClient.Builder()
-            .addInterceptor(RedditInterceptor())
+            .addInterceptor(get<HeadersInterceptor>())
             .addInterceptor(get<AuthorizationInterceptor>())
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY

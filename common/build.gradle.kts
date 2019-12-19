@@ -15,8 +15,6 @@ android {
     defaultConfig {
         minSdkVersion(Android.Sdk.min)
         targetSdkVersion(Android.Sdk.target)
-        versionCode = Android.Application.versionCode(project)
-        versionName = Android.Application.versionName(project)
 
         stringField("REDDIT_BASE_URL", "https://www.reddit.com")
         stringField("REDDIT_AUTH_URL", "https://oauth.reddit.com")
@@ -57,12 +55,11 @@ dependencies {
     api(Library.Kotlin.coroutines)
     api(Library.Kotlin.reflect)
     api(Library.AndroidX.core)
-    api(Library.AndroidX.appCompat)
+    api(Library.AndroidX.appcompat)
     api(Library.AndroidX.lifecycleRuntime)
     api(Library.AndroidX.lifecycleLivedata)
     api(Library.AndroidX.lifecycleExtensions)
     api(Library.AndroidX.lifecycleViewModel)
-    api(Library.AndroidX.preference)
     api(Library.Koin.core)
     api(Library.Koin.android)
     api(Library.Koin.androidScope)

@@ -10,7 +10,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import orwir.gazzit.common.extensions.activityScope
@@ -19,6 +21,7 @@ import orwir.gazzit.common.livedata.SingleLiveEvent
 import orwir.gazzit.feed.databinding.FragmentFeedBinding
 import orwir.gazzit.feed.model.FeedType
 import orwir.gazzit.feed.model.Post
+import orwir.videoplayer.bindPlayer
 
 private const val TYPE = "type"
 
@@ -28,6 +31,12 @@ class FeedFragment : Fragment() {
     private val viewModel: FeedViewModel by viewModel { parametersOf(type) }
     private val navigation: FeedNavigation by activityScope()
     private val adapter = FeedAdapter()
+    private val player: ExoPlayer by inject()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        bindPlayer(player)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -5,15 +5,13 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.net.toUri
-import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
-import kotlinx.android.synthetic.main.videoplayer.view.*
+import com.google.android.exoplayer2.util.Util
 import java.util.*
 
 class PlayerView @JvmOverloads constructor(
@@ -22,9 +20,6 @@ class PlayerView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
-
-    private var player: ExoPlayer? = null
-    private var url: String? = null
 
     init {
         LayoutInflater
@@ -44,24 +39,24 @@ class PlayerView @JvmOverloads constructor(
             }
         }
 
-        player_root.setOnClickListener {
-            val player = this.player
-                ?: throw IllegalStateException("[player] not set!")
-            val mediaSource = url?.let { buildMediaSource(it.toUri()) }
-                ?: throw IllegalStateException("[url] not set!")
-
-            player_root.isClickable = false
-            player.stop()
-            player_view.player = player
-            player.prepare(mediaSource, true, true)
-            player.playWhenReady = true
-        }
+//        player_root.setOnClickListener {
+//            val player = this.player
+//                ?: throw IllegalStateException("[player] not set!")
+//            val mediaSource = url?.let { buildMediaSource(it.toUri()) }
+//                ?: throw IllegalStateException("[url] not set!")
+//
+//            player_root.isClickable = false
+//            player.stop()
+//            player_view.player = player
+//            player.prepare(mediaSource, true, true)
+//            player.playWhenReady = true
+//        }
     }
 
     private fun buildMediaSource(uri: Uri): MediaSource {
-        val userAgent = BuildConfig.LIBRARY_PACKAGE_NAME
         val type = uri.lastPathSegment?.toLowerCase(Locale.ENGLISH) ?: ""
-        val factory = DefaultHttpDataSourceFactory(userAgent)
+        // todo: pass somehow appname into playerview
+        val factory = DefaultHttpDataSourceFactory(Util.getUserAgent(context, "orwir.gazzit"))
 
         return when {
             type.contains("mp3") || type.contains("mp4") ->

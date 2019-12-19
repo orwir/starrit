@@ -60,7 +60,7 @@ private fun inflateTextContent(post: TextPost, inflater: LayoutInflater): View =
 private fun inflateVideoContent(post: VideoPost, inflater: LayoutInflater): View =
     ViewContentVideoBinding
         .inflate(inflater)
-        .also {
+        .apply {
             // todo: implement video render
         }
         .root

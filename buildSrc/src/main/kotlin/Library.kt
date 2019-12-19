@@ -6,18 +6,23 @@ object Library {
     }
 
     object AndroidX {
+        private const val versionLifecycle = "2.2.0-rc03"
+        private const val versionNavigation = "2.1.0"
+        private const val versionPreference = "1.1.0"
+
         const val core = "androidx.core:core-ktx:1.1.0"
-        const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.1.0"
-        const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
-        const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc02"
-        const val lifecycleLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc02"
-        const val appCompat = "androidx.appcompat:appcompat:1.1.0"
+        const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$versionLifecycle"
+        const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$versionLifecycle"
+        const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:$versionLifecycle"
+        const val lifecycleLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$versionLifecycle"
+        const val appcompat = "androidx.appcompat:appcompat:1.1.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
-        const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:2.1.0"
-        const val navigationUi = "androidx.navigation:navigation-ui-ktx:2.1.0"
-        const val paging = "androidx.paging:paging-runtime:2.1.0"
-        const val browser = "androidx.browser:browser:1.0.0"
-        const val preference = "androidx.preference:preference:1.1.0"
+        const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$versionNavigation"
+        const val navigationUi = "androidx.navigation:navigation-ui-ktx:$versionNavigation"
+        const val paging = "androidx.paging:paging-runtime:2.1.1"
+        const val browser = "androidx.browser:browser:1.2.0"
+        const val preference = "androidx.preference:preference:$versionPreference"
+        const val preferenceKtx = "androidx.preference:preference-ktx:$versionPreference"
     }
 
     object Koin {
@@ -37,9 +42,9 @@ object Library {
     }
 
     object Squareup {
-        private const val versionOkhttp = "4.2.1"
-        private const val versionMoshi = "1.8.0"
-        private const val versionRetrofit = "2.6.2"
+        private const val versionOkhttp = "4.2.2"
+        private const val versionMoshi = "1.9.2"
+        private const val versionRetrofit = "2.6.3"
 
         const val okhttp = "com.squareup.okhttp3:okhttp:$versionOkhttp"
         const val logginInterceptor = "com.squareup.okhttp3:logging-interceptor:$versionOkhttp"
@@ -50,7 +55,7 @@ object Library {
         const val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:$versionRetrofit"
     }
 
-    const val exoPlayer = "com.google.android.exoplayer:exoplayer:2.10.8"
+    const val exoPlayer = "com.google.android.exoplayer:exoplayer:2.11.0"
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
     object Junit {
