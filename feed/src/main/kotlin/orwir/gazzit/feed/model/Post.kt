@@ -27,19 +27,19 @@ internal sealed class Post(submission: Submission, res: Resources) {
 internal class LinkPost(
     submission: Submission,
     resources: Resources,
-    imagesData: ImagesData = RedditImageData(submission)
-) : Post(submission, resources), ImagesData by imagesData {
+    images: Images = RedditImages(submission)
+) : Post(submission, resources), Images by images {
 
     val link: Uri = submission.url.toUri()
 
     val displayLink: String = link.authority ?: submission.url
 
-    override val preview: String = imagesData.preview
+    override val preview: String = images.preview
         .takeUnless { selfDomain }
         ?: subreddit.banner
         ?: ""
 
-    override val source: String = imagesData.source
+    override val source: String = images.source
         .takeUnless { selfDomain }
         ?: subreddit.banner
         ?: ""
@@ -48,12 +48,12 @@ internal class LinkPost(
 internal class ImagePost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), ImagesData by RedditImageData(submission)
+) : Post(submission, resources), Images by RedditImages(submission)
 
 internal class GifPost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), ImagesData by RedditImageData(submission) {
+) : Post(submission, resources), Images by RedditImages(submission) {
     val gif: String = submission.url
 }
 
@@ -63,3 +63,8 @@ internal class TextPost(
 ) : Post(submission, resources) {
     val text: CharSequence = (submission.selftextHtml ?: submission.selftext ?: "").toHtml()
 }
+
+internal class VideoPost(
+    submission: Submission,
+    resources: Resources
+) : Post(submission, resources), Images by RedditImages(submission)

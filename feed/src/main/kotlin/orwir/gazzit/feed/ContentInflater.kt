@@ -5,10 +5,7 @@ import android.view.View
 import orwir.gazzit.common.GlobalNavigation
 import orwir.gazzit.common.extensions.activityScope
 import orwir.gazzit.common.view.loadImage
-import orwir.gazzit.feed.databinding.ViewContentGifBinding
-import orwir.gazzit.feed.databinding.ViewContentImageBinding
-import orwir.gazzit.feed.databinding.ViewContentLinkBinding
-import orwir.gazzit.feed.databinding.ViewContentTextBinding
+import orwir.gazzit.feed.databinding.*
 import orwir.gazzit.feed.model.*
 
 internal class ContentInflater {
@@ -16,6 +13,7 @@ internal class ContentInflater {
         is TextPost -> inflateTextContent(post, inflater)
         is GifPost -> inflateGifContent(post, inflater)
         is ImagePost -> inflateImageContent(post, inflater)
+        is VideoPost -> inflateVideoContent(post, inflater)
         is LinkPost -> inflateLinkContent(post, inflater)
     }
 }
@@ -57,4 +55,12 @@ private fun inflateTextContent(post: TextPost, inflater: LayoutInflater): View =
     ViewContentTextBinding
         .inflate(inflater)
         .also { it.post = post }
+        .root
+
+private fun inflateVideoContent(post: VideoPost, inflater: LayoutInflater): View =
+    ViewContentVideoBinding
+        .inflate(inflater)
+        .also {
+            // todo: implement video render
+        }
         .root

@@ -4,12 +4,12 @@ import orwir.gazzit.feed.imageUrlOrNull
 import orwir.gazzit.feed.isImageUrl
 import orwir.gazzit.model.listing.Submission
 
-internal interface ImagesData {
+internal interface Images {
     val preview: String
     val source: String
 }
 
-internal class RedditImageData(submission: Submission) : ImagesData {
+internal class RedditImages(submission: Submission) : Images {
 
     override val preview: String = submission.preview
         ?.images

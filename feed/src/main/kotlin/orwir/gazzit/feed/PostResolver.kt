@@ -11,6 +11,7 @@ internal class PostResolver(private val context: Context) {
             hasText() -> TextPost(submission, resources)
             hasGif() -> GifPost(submission, resources)
             hasImage() -> ImagePost(submission, resources)
+            hasVideo() -> VideoPost(submission, resources)
             else -> LinkPost(submission, resources)
         }
     }
@@ -22,3 +23,5 @@ private fun Submission.hasText() =
 private fun Submission.hasImage() = imageUrlOrNull() != null
 
 private fun Submission.hasGif() = url.endsWith(".gif")
+
+private fun Submission.hasVideo() = false
