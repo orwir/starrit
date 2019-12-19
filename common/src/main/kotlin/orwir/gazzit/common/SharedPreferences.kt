@@ -5,28 +5,6 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * Creates delegate for enum property in [SharedPreferences].
- * If [key] not passed simpleName+propertyName of holder class will be used.
- * @param T type of the property
- * @param prefs instance of [SharedPreferences]
- * @param key unique identifier
- * @param defaultValue is used if property not set
- * @return property delegate [ReadWriteProperty]
- */
-inline fun <reified T : Enum<T>> enumPref(
-    prefs: SharedPreferences,
-    key: String? = null,
-    defaultValue: T = enumValues<T>().first()
-) = object : ReadWriteProperty<Any, T> {
-    override fun getValue(thisRef: Any, property: KProperty<*>): T =
-        prefs[key ?: getKey(thisRef, property), defaultValue.name].let(::enumValueOf)
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        prefs[key ?: getKey(thisRef, property)] = value.name
-    }
-}
-
-/**
  * Wrapper for converting [T] to/from [String]
  * @param T type of object
  */
@@ -62,6 +40,28 @@ inline fun <reified T> objPref(
         prefs[key ?: getKey(thisRef, property)] = value?.let(adapter::from) ?: ""
     }
 
+}
+
+/**
+ * Creates delegate for enum property in [SharedPreferences].
+ * If [key] not passed simpleName+propertyName of holder class will be used.
+ * @param T type of the property
+ * @param prefs instance of [SharedPreferences]
+ * @param key unique identifier
+ * @param defaultValue is used if property not set
+ * @return property delegate [ReadWriteProperty]
+ */
+inline fun <reified T : Enum<T>> enumPref(
+    prefs: SharedPreferences,
+    key: String? = null,
+    defaultValue: T = enumValues<T>().first()
+) = object : ReadWriteProperty<Any, T> {
+    override fun getValue(thisRef: Any, property: KProperty<*>): T =
+        prefs[key ?: getKey(thisRef, property), defaultValue.name].let(::enumValueOf)
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+        prefs[key ?: getKey(thisRef, property)] = value.name
+    }
 }
 
 /**

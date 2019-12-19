@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 private fun findActivity(context: Context): AppCompatActivity =
     when (context) {
-        is ContextWrapper -> findActivity(context.baseContext)
         is AppCompatActivity -> context
+        is ContextWrapper -> findActivity(context.baseContext)
         else -> throw IllegalStateException()
     }
 

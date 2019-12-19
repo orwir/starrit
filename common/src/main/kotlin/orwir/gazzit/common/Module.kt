@@ -49,9 +49,6 @@ val commonModule = module {
         ImageLoader(get()) {
             okHttpClient {
                 OkHttpClient.Builder()
-                    .addInterceptor(HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BASIC
-                    })
                     .cache(CoilUtils.createDefaultCache(get()))
                     .build()
             }

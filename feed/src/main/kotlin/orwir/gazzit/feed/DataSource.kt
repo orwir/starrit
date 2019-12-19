@@ -68,7 +68,7 @@ internal class FeedDataSource(
             try {
                 val response = when (type) {
                     is FeedType.Subreddit -> service.subreddit(
-                        subreddit = type.url,
+                        subreddit = type.name,
                         before = before,
                         after = after,
                         limit = limit

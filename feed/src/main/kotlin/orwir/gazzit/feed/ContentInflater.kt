@@ -2,6 +2,8 @@ package orwir.gazzit.feed
 
 import android.view.LayoutInflater
 import android.view.View
+import orwir.gazzit.common.GlobalNavigation
+import orwir.gazzit.common.extensions.activityScope
 import orwir.gazzit.feed.databinding.ViewContentImageBinding
 import orwir.gazzit.feed.databinding.ViewContentLinkBinding
 import orwir.gazzit.feed.model.ImagePost
@@ -20,10 +22,9 @@ private fun inflateLinkContent(post: LinkPost, inflater: LayoutInflater): View =
     ViewContentLinkBinding
         .inflate(inflater)
         .also {
+            val navigation: GlobalNavigation by it.activityScope()
             it.post = post
-            it.listener = View.OnClickListener {
-                // todo: implement global navigator
-            }
+            it.listener = View.OnClickListener { navigation.openBrowser(post.link) }
         }
         .root
 

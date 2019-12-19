@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            app:imageUrl="@{url}"
+            app:image="@{url}"
             app:placeholder="@{@drawable/ic_image_placeholder}"
             tools:src="@drawable/ic_image_placeholder" />
 

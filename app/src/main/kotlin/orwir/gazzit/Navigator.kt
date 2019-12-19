@@ -6,17 +6,20 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.navigation.NavController
 import orwir.gazzit.authorization.AuthorizationFragmentDirections
 import orwir.gazzit.authorization.AuthorizationNavigation
+import orwir.gazzit.common.GlobalNavigation
 import orwir.gazzit.feed.FeedNavigation
+import orwir.gazzit.feed.model.FeedType
 import orwir.gazzit.splash.SplashFragmentDirections
 import orwir.gazzit.splash.SplashNavigation
 
 class Navigator(
     private val context: Context,
     private val controller: NavController
-) : SplashNavigation, AuthorizationNavigation, FeedNavigation {
+) : SplashNavigation, AuthorizationNavigation, FeedNavigation, GlobalNavigation {
 
     override fun openLatestFeed() {
-        controller.navigate(SplashFragmentDirections.toListing())
+        // todo: open latest
+        controller.navigate(SplashFragmentDirections.toListing(FeedType.Best))
     }
 
     override fun requestAuthorization() {
@@ -30,8 +33,8 @@ class Navigator(
             .launchUrl(context, uri)
     }
 
-    override fun openFeed() {
-        controller.navigate(AuthorizationFragmentDirections.toListing())
+    override fun openBest() {
+        controller.navigate(AuthorizationFragmentDirections.toListing(FeedType.Best))
     }
 
 }

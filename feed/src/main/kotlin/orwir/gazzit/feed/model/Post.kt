@@ -1,6 +1,8 @@
 package orwir.gazzit.feed.model
 
 import android.content.res.Resources
+import android.net.Uri
+import androidx.core.net.toUri
 import orwir.gazzit.common.extensions.squeeze
 import orwir.gazzit.feed.R
 import orwir.gazzit.model.listing.Submission
@@ -18,13 +20,28 @@ internal sealed class Post(submission: Submission, res: Resources) {
     val score: String =
         if (submission.hideScore) res.getString(R.string.score_hidden) else submission.score.squeeze()
     val domain: String = submission.domain
+    val selfDomain: Boolean = domain.startsWith("self.")
 }
 
 internal class LinkPost(
     submission: Submission,
-    resources: Resources
-) : Post(submission, resources), ImagesData by RedditImageData(submission) {
-    val link: String = submission.url
+    resources: Resources,
+    imagesData: ImagesData = RedditImageData(submission)
+) : Post(submission, resources), ImagesData by imagesData {
+
+    val link: Uri = submission.url.toUri()
+
+    val displayLink: String = link.authority ?: submission.url
+
+    override val preview: String = imagesData.preview
+        .takeUnless { selfDomain }
+        ?: subreddit.banner
+        ?: ""
+
+    override val source: String = imagesData.source
+        .takeUnless { selfDomain }
+        ?: subreddit.banner
+        ?: ""
 }
 
 internal class ImagePost(

@@ -13,16 +13,20 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_feed.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import orwir.gazzit.common.extensions.injectFromActivityScope
+import orwir.gazzit.common.extensions.activityScope
+import orwir.gazzit.common.extensions.argument
 import orwir.gazzit.common.livedata.SingleLiveEvent
 import orwir.gazzit.feed.databinding.FragmentFeedBinding
 import orwir.gazzit.feed.model.FeedType
 import orwir.gazzit.feed.model.Post
 
+private const val TYPE = "type"
+
 class FeedFragment : Fragment() {
 
-    private val viewModel: FeedViewModel by viewModel { parametersOf(FeedType.Best) }
-    private val navigation: FeedNavigation by injectFromActivityScope()
+    private val type: FeedType by argument(TYPE)
+    private val viewModel: FeedViewModel by viewModel { parametersOf(type) }
+    private val navigation: FeedNavigation by activityScope()
     private val adapter = FeedAdapter()
 
     override fun onCreateView(
@@ -31,7 +35,7 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = FragmentFeedBinding.inflate(inflater, container, false)
         .also {
-            it.listing = "" // todo: restore it
+            it.listing = type.toTitle()
             it.viewModel = viewModel
             it.lifecycleOwner = viewLifecycleOwner
         }
@@ -49,6 +53,11 @@ class FeedFragment : Fragment() {
         viewModel.searchEvent.observe(viewLifecycleOwner, Observer {
             TODO("not implemented yet")
         })
+    }
+
+    private fun FeedType.toTitle() = when (this) {
+        is FeedType.Best -> getString(R.string.best)
+        is FeedType.Subreddit -> getString(R.string.subreddit, name)
     }
 }
 

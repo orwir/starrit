@@ -22,8 +22,3 @@ val authorizationModule = module {
     viewModel { AuthorizationViewModel(get()) }
 
 }
-
-class TokenException(
-    message: String? = null,
-    cause: Throwable? = null
-) : IllegalStateException(message, cause)

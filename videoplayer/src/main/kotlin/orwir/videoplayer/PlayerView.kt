@@ -23,8 +23,8 @@ class PlayerView @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    var player: ExoPlayer? = null
-    var url: String? = null
+    private var player: ExoPlayer? = null
+    private var url: String? = null
 
     init {
         LayoutInflater

@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.gazzit.authorization.databinding.FragmentAuthorizationBinding
-import orwir.gazzit.common.extensions.injectFromActivityScope
-import orwir.gazzit.model.Step
+import orwir.gazzit.common.extensions.activityScope
+import orwir.gazzit.model.authorization.Step
 
 class AuthorizationFragment : Fragment() {
 
     private val viewModel: AuthorizationViewModel by viewModel()
-    private val navigation: AuthorizationNavigation by injectFromActivityScope()
+    private val navigation: AuthorizationNavigation by activityScope()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +32,7 @@ class AuthorizationFragment : Fragment() {
         viewModel.state.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Step.Start -> navigation.openBrowser(it.uri)
-                is Step.Success -> navigation.openFeed()
+                is Step.Success -> navigation.openBest()
                 is Step.Failure -> TODO("Not implemented yet! e:[${it.exception}]")
             }
         })

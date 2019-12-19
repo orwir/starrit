@@ -2,9 +2,9 @@ package orwir.gazzit.authorization
 
 import android.net.Uri
 import kotlinx.coroutines.flow.Flow
-import orwir.gazzit.model.Duration
-import orwir.gazzit.model.Step
-import orwir.gazzit.model.Token
+import orwir.gazzit.model.authorization.Duration
+import orwir.gazzit.model.authorization.Step
+import orwir.gazzit.model.authorization.Token
 
 interface AuthorizationRepository {
     suspend fun obtainToken(): Token

@@ -13,9 +13,9 @@ import org.koin.core.inject
 import orwir.gazzit.common.extensions.KoinedShareable
 import orwir.gazzit.common.extensions.Shareable
 import orwir.gazzit.common.extensions.objPref
-import orwir.gazzit.model.Scope
-import orwir.gazzit.model.Step
-import orwir.gazzit.model.Token
+import orwir.gazzit.model.authorization.Scope
+import orwir.gazzit.model.authorization.Step
+import orwir.gazzit.model.authorization.Token
 import timber.log.Timber
 import java.util.*
 
@@ -48,20 +48,16 @@ internal class BasicAuthorizationRepository :
 
     @ExperimentalCoroutinesApi
     override fun authorizationFlow(): Flow<Step> = channelFlow {
-        Timber.d("authorization flow opened")
-
         if (requestCallback == null) {
             requestCallback = object : Callback {
 
                 override fun onStart() {
                     requestState = requestState ?: UUID.randomUUID().toString()
                     responseUri = null
-                    Timber.d("authorization flow started: state=[$requestState]")
                     offer(Step.Start(buildAuthorizationUri(requestState!!, scope)))
                 }
 
                 override fun onSuccess() {
-                    Timber.d("authorization flow completed successfully")
                     offer(Step.Success)
                     requestState = null
                     responseUri = null
@@ -69,14 +65,12 @@ internal class BasicAuthorizationRepository :
                 }
 
                 override fun onError(exception: Exception) {
-                    Timber.d("authorization flow completed with exception [$exception]")
                     offer(Step.Failure(exception))
                     requestState = null
                     responseUri = null
                 }
 
             }
-            Timber.d("authorization flow callback created")
         }
 
         if (responseUri == null) {
@@ -86,7 +80,6 @@ internal class BasicAuthorizationRepository :
         }
 
         awaitClose {
-            Timber.d("authorization flow closed")
             requestCallback = null
         }
     }
