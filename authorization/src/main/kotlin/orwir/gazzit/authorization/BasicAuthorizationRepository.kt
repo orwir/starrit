@@ -16,7 +16,6 @@ import orwir.gazzit.common.extensions.objPref
 import orwir.gazzit.model.authorization.Scope
 import orwir.gazzit.model.authorization.Step
 import orwir.gazzit.model.authorization.Token
-import timber.log.Timber
 import java.util.*
 
 internal class BasicAuthorizationRepository :
@@ -116,7 +115,7 @@ internal class BasicAuthorizationRepository :
 private const val ADDITIONAL_THRESHOLD_S = 5
 
 private fun Token.isExpired() =
-    System.currentTimeMillis() / 1000 >= (obtained + expires + ADDITIONAL_THRESHOLD_S)
+    System.currentTimeMillis() / 1000 >= (obtained + expires - ADDITIONAL_THRESHOLD_S)
 
 private interface Callback {
     fun onStart()

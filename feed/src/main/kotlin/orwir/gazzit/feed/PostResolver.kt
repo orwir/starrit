@@ -24,4 +24,4 @@ private fun Submission.hasImage() = imageUrlOrNull() != null
 
 private fun Submission.hasGif() = url.endsWith(".gif")
 
-private fun Submission.hasVideo() = false
+private fun Submission.hasVideo() = videoOrNull() != null

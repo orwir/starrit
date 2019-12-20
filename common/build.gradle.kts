@@ -56,6 +56,8 @@ dependencies {
     api(Library.Kotlin.reflect)
     api(Library.AndroidX.core)
     api(Library.AndroidX.appcompat)
+    api(Library.AndroidX.recyclerview)
+    api(Library.AndroidX.coordinator)
     api(Library.AndroidX.lifecycleRuntime)
     api(Library.AndroidX.lifecycleLivedata)
     api(Library.AndroidX.lifecycleExtensions)
@@ -64,7 +66,7 @@ dependencies {
     api(Library.Koin.android)
     api(Library.Koin.androidScope)
     api(Library.Koin.androidViewModel)
-    api(Library.Coil.coil)
+    api(Library.Coil.base)
     api(Library.Coil.gif)
     api(Library.timber)
 

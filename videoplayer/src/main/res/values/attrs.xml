@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="PlayerView">
-        <attr name="thumbnail" format="string" />
-        <attr name="url" format="string" />
+        <attr name="coverUrl" format="string" />
+        <attr name="videoUrl" format="string" />
     </declare-styleable>
 </resources>

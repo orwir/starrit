@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import orwir.gazzit.common.GlobalNavigation
 import orwir.gazzit.common.extensions.activityScope
+import orwir.gazzit.common.extensions.get
 import orwir.gazzit.common.view.loadImage
 import orwir.gazzit.feed.databinding.*
 import orwir.gazzit.feed.model.*
@@ -61,6 +62,7 @@ private fun inflateVideoContent(post: VideoPost, inflater: LayoutInflater): View
     ViewContentVideoBinding
         .inflate(inflater)
         .apply {
-            // todo: implement video render
+            this.post = post
+            playerView.player = get()
         }
         .root

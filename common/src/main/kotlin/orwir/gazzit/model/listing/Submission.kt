@@ -18,5 +18,7 @@ data class Submission(
     @Json(name = "thumbnail") val thumbnail: String,
     @Json(name = "preview") val preview: Preview?,
     @Json(name = "selftext") val selftext: String?,
-    @Json(name = "selftext_html") val selftextHtml: String?
+    @Json(name = "selftext_html") val selftextHtml: String?,
+    @Json(name = "secure_media") val secureMedia: SecureMedia?,
+    @Json(name = "crosspost_parent_list") val parents: List<Submission>?
 )

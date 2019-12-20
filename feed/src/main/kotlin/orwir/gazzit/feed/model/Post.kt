@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import orwir.gazzit.common.extensions.squeeze
 import orwir.gazzit.common.extensions.toHtml
 import orwir.gazzit.feed.R
+import orwir.gazzit.feed.videoOrNull
 import orwir.gazzit.model.listing.Submission
 import orwir.gazzit.model.listing.Subreddit
 
@@ -26,23 +27,10 @@ internal sealed class Post(submission: Submission, res: Resources) {
 
 internal class LinkPost(
     submission: Submission,
-    resources: Resources,
-    images: Images = RedditImages(submission)
-) : Post(submission, resources), Images by images {
-
+    resources: Resources
+) : Post(submission, resources), Images by RedditImages(submission) {
     val link: Uri = submission.url.toUri()
-
     val displayLink: String = link.authority ?: submission.url
-
-    override val preview: String = images.preview
-        .takeUnless { selfDomain }
-        ?: subreddit.banner
-        ?: ""
-
-    override val source: String = images.source
-        .takeUnless { selfDomain }
-        ?: subreddit.banner
-        ?: ""
 }
 
 internal class ImagePost(
@@ -67,4 +55,6 @@ internal class TextPost(
 internal class VideoPost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), Images by RedditImages(submission)
+) : Post(submission, resources), Images by RedditImages(submission) {
+    val video: String = submission.videoOrNull() ?: ""
+}

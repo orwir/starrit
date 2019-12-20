@@ -1,18 +1,16 @@
 package orwir.videoplayer
 
 import android.content.Context
-import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
+import coil.api.load
+import coil.request.RequestDisposable
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.dash.DashMediaSource
-import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
-import com.google.android.exoplayer2.util.Util
-import java.util.*
+import kotlinx.android.synthetic.main.videoplayer.view.*
 
 class PlayerView @JvmOverloads constructor(
     context: Context,
@@ -21,11 +19,23 @@ class PlayerView @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    lateinit var player: ExoPlayer
+    var coverUrl: String = ""
+        set(value) {
+            field = value
+            loadCover(value)
+        }
+    var videoUrl: String = ""
+        set(value) {
+            field = value
+            createMediaSource(value)
+        }
+    private lateinit var source: MediaSource
+
     init {
         LayoutInflater
             .from(context)
             .inflate(R.layout.videoplayer, this, true)
-
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.PlayerView,
@@ -33,39 +43,48 @@ class PlayerView @JvmOverloads constructor(
             defStyleRes
         ).apply {
             try {
-                // getString(R.styleable.PlayerView_thumbnail)?.let { player_thumb.load(it) }
+                getString(R.styleable.PlayerView_coverUrl)?.let { coverUrl = it }
+                getString(R.styleable.PlayerView_videoUrl)?.let { videoUrl = it }
             } finally {
                 recycle()
             }
         }
-
-//        player_root.setOnClickListener {
-//            val player = this.player
-//                ?: throw IllegalStateException("[player] not set!")
-//            val mediaSource = url?.let { buildMediaSource(it.toUri()) }
-//                ?: throw IllegalStateException("[url] not set!")
-//
-//            player_root.isClickable = false
-//            player.stop()
-//            player_view.player = player
-//            player.prepare(mediaSource, true, true)
-//            player.playWhenReady = true
-//        }
+        player_root.setOnClickListener {
+            PlayerHolder.swap(this)
+            player_view.visibility = View.VISIBLE // todo: move UI changes to separate method
+            player_play.visibility = View.GONE
+            player_view.player = player
+            player_view.controllerAutoShow = false
+            player.prepare(source, true, true)
+            player.playWhenReady = true
+        }
     }
 
-    private fun buildMediaSource(uri: Uri): MediaSource {
-        val type = uri.lastPathSegment?.toLowerCase(Locale.ENGLISH) ?: ""
-        // todo: pass somehow appname into playerview
-        val factory = DefaultHttpDataSourceFactory(Util.getUserAgent(context, "orwir.gazzit"))
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        PlayerHolder.releaseSelf(this)
+    }
 
-        return when {
-            type.contains("mp3") || type.contains("mp4") ->
-                ProgressiveMediaSource.Factory(factory).createMediaSource(uri)
-            type.contains("m3u8") ->
-                HlsMediaSource.Factory(factory).createMediaSource(uri)
-            else ->
-                DashMediaSource.Factory(DefaultDashChunkSource.Factory(factory), factory)
-                    .createMediaSource(uri)
+    internal fun release() {
+        player.stop(true)
+        player_view.visibility = View.GONE
+        player_play.visibility = View.VISIBLE
+    }
+
+    private fun loadCover(url: String) {
+        if (player_cover.tag is RequestDisposable) {
+            (player_cover.tag as RequestDisposable).dispose()
+        }
+        if (url.isBlank()) {
+            player_cover.setImageDrawable(null)
+        } else {
+            player_cover.tag = player_cover.load(url)
+        }
+    }
+
+    private fun createMediaSource(url: String) {
+        if (url.isNotBlank()) {
+            source = url.toUri().toMediaSource(context)
         }
     }
 

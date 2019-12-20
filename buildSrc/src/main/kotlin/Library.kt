@@ -16,6 +16,8 @@ object Library {
         const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:$versionLifecycle"
         const val lifecycleLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$versionLifecycle"
         const val appcompat = "androidx.appcompat:appcompat:1.1.0"
+        const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
+        const val coordinator = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$versionNavigation"
         const val navigationUi = "androidx.navigation:navigation-ui-ktx:$versionNavigation"
@@ -37,7 +39,8 @@ object Library {
     object Coil {
         private const val version = "0.8.0"
 
-        const val coil = "io.coil-kt:coil-base:$version"
+        const val coil = "io.coil-kt:coil:$version"
+        const val base = "io.coil-kt:coil-base:$version"
         const val gif = "io.coil-kt:coil-gif:$version"
     }
 
