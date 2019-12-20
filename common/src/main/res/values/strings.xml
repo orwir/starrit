@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="df_now">now</string>
+    <string name="df_today">%1$dh ago</string>
+    <string name="df_yesterday">yesterday HH:mm</string>
+    <string name="df_this_year">dd.MM HH:mm</string>
+    <string name="df_fulldate">dd.MM.yyyy HH:mm</string>
+</resources>

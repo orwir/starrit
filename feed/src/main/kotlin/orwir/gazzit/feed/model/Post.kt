@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import orwir.gazzit.common.extensions.squeeze
 import orwir.gazzit.common.extensions.toHtml
 import orwir.gazzit.common.util.createHashCode
+import orwir.gazzit.common.util.prettyDate
 import orwir.gazzit.feed.R
 import orwir.gazzit.feed.util.videoOrNull
 import orwir.gazzit.model.listing.Submission
@@ -15,7 +16,7 @@ internal sealed class Post(submission: Submission, res: Resources) {
     val id: String = submission.id
     val subreddit: Subreddit = submission.subreddit
     val author: String = submission.author
-    val created: String = submission.created.toString() // todo: make it human readable
+    val created: String = prettyDate(submission.created * 1000, res)
     val title: String = submission.title
     val nsfw: Boolean = submission.nsfw
     val spoiler: Boolean = submission.spoiler
