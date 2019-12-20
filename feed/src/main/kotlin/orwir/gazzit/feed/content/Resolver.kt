@@ -1,7 +1,9 @@
-package orwir.gazzit.feed
+package orwir.gazzit.feed.content
 
 import android.content.Context
 import orwir.gazzit.feed.model.*
+import orwir.gazzit.feed.util.imageUrlOrNull
+import orwir.gazzit.feed.util.videoOrNull
 import orwir.gazzit.model.listing.Submission
 
 internal class PostResolver(private val context: Context) {

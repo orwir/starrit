@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import orwir.gazzit.feed.content.ContentInflater
 import orwir.gazzit.feed.databinding.ViewPostBinding
 import orwir.gazzit.feed.model.Post
 
@@ -24,8 +25,7 @@ internal class FeedAdapter : PagedListAdapter<Post, ViewHolder>(PostDiffCallback
 
 internal class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.id == newItem.id
-    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
-        oldItem.id == newItem.id // todo: check it
+    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem == newItem
 }
 
 internal class ViewHolder(

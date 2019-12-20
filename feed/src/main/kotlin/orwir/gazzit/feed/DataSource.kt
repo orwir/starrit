@@ -8,6 +8,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import orwir.gazzit.feed.content.PostResolver
 import orwir.gazzit.feed.model.FeedType
 import orwir.gazzit.feed.model.Post
 import timber.log.Timber

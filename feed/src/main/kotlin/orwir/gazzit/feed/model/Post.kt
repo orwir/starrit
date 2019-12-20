@@ -5,8 +5,9 @@ import android.net.Uri
 import androidx.core.net.toUri
 import orwir.gazzit.common.extensions.squeeze
 import orwir.gazzit.common.extensions.toHtml
+import orwir.gazzit.common.util.createHashCode
 import orwir.gazzit.feed.R
-import orwir.gazzit.feed.videoOrNull
+import orwir.gazzit.feed.util.videoOrNull
 import orwir.gazzit.model.listing.Submission
 import orwir.gazzit.model.listing.Subreddit
 
@@ -19,10 +20,36 @@ internal sealed class Post(submission: Submission, res: Resources) {
     val nsfw: Boolean = submission.nsfw
     val spoiler: Boolean = submission.spoiler
     val comments: String = submission.commentsCount.squeeze()
-    val score: String =
-        if (submission.hideScore) res.getString(R.string.score_hidden) else submission.score.squeeze()
+    val score: String = if (submission.hideScore) res.getString(R.string.score_hidden) else submission.score.squeeze()
     val domain: String = submission.domain
     val selfDomain: Boolean = domain.startsWith("self.")
+
+    override fun equals(other: Any?) =
+        other is Post
+                && other::class == this::class
+                && id == other.id
+                && subreddit == other.subreddit
+                && author == other.author
+                && created == other.created
+                && title == other.title
+                && nsfw == other.nsfw
+                && spoiler == other.spoiler
+                && comments == other.comments
+                && score == other.score
+                && domain == other.domain
+
+    override fun hashCode() = createHashCode(
+        id,
+        subreddit,
+        author,
+        created,
+        title,
+        nsfw,
+        spoiler,
+        comments,
+        score,
+        domain
+    )
 }
 
 internal class LinkPost(

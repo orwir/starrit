@@ -1,4 +1,4 @@
-package orwir.gazzit.feed
+package orwir.gazzit.feed.content
 
 import android.view.LayoutInflater
 import android.view.View

@@ -5,6 +5,8 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import orwir.gazzit.common.service
+import orwir.gazzit.feed.content.ContentInflater
+import orwir.gazzit.feed.content.PostResolver
 import orwir.gazzit.feed.model.FeedType
 
 val feedModule = module {
