@@ -5,7 +5,7 @@ import android.view.View
 import orwir.gazzit.common.GlobalNavigation
 import orwir.gazzit.common.extensions.activityScope
 import orwir.gazzit.common.extensions.get
-import orwir.gazzit.common.view.loadImage
+import orwir.gazzit.common.view.load
 import orwir.gazzit.feed.databinding.*
 import orwir.gazzit.feed.model.*
 
@@ -41,13 +41,11 @@ private fun inflateGifContent(post: GifPost, inflater: LayoutInflater): View =
         .apply {
             this.post = post
             listener = View.OnClickListener {
-                playing = if (playing == true) {
-                    gif.loadImage(post.source, gif.drawable)
-                    false
-                } else {
-                    gif.loadImage(post.gif, gif.drawable)
-                    true
-                }
+                gif.load(
+                    source = if (playing == true) post.source else post.gif,
+                    placeholder = gif.drawable
+                )
+                playing = playing?.let { !it } ?: true
             }
         }
         .root

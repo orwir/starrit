@@ -9,26 +9,39 @@ import androidx.databinding.BindingAdapter
 import coil.ImageLoader
 import coil.api.load
 import coil.request.RequestDisposable
-import org.koin.core.context.GlobalContext
+import orwir.gazzit.common.extensions.get
 
 @BindingAdapter("visibleOrGone")
 fun View.setVisibleOrGone(show: Boolean = false) {
     visibility = if (show) VISIBLE else GONE
 }
 
-@BindingAdapter("image", "placeholder", requireAll = false)
-fun ImageView.loadImage(image: String, placeholder: Drawable? = null) {
+@BindingAdapter("source", "preview", "placeholder", requireAll = false)
+fun ImageView.load(
+    source: String,
+    preview: String? = null,
+    placeholder: Drawable? = null
+) {
     if (tag is RequestDisposable) {
         (tag as RequestDisposable).dispose()
     }
-    if (image.isBlank()) {
-        setImageDrawable(placeholder)
-    } else {
-        val loader: ImageLoader = GlobalContext.get().koin.get()
-        tag = loader.load(context, image) {
-            crossfade(200)
-            placeholder?.let(::placeholder)
-            target(this@loadImage)
+    val url1: String? = preview?.takeIf { it.isNotBlank() } ?: source.takeIf { it.isNotBlank() }
+    val url2: String? = source.takeIf { url1 == preview && it.isNotBlank() }
+    val loader = get<ImageLoader>()
+    setImageDrawable(placeholder)
+    tag = url1?.let { url ->
+        loader.load(context, url) {
+            crossfade(400)
+            target { drawable ->
+                this@load.setImageDrawable(drawable)
+                tag = url2?.let { url ->
+                    loader.load(context, url) {
+                        crossfade(true)
+                        placeholder(drawable)
+                        target(this@load)
+                    }
+                }
+            }
         }
     }
 }

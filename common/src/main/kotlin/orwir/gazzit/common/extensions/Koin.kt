@@ -15,6 +15,8 @@ inline fun <reified T> View.activityScope(): Lazy<T> = lazy {
     activity().currentScope.get<T>()
 }
 
+inline fun <reified T> View.get(): T = GlobalContext.get().koin.get()
+
 inline fun <reified T> ViewDataBinding.activityScope(): Lazy<T> = root.activityScope()
 
 inline fun <reified T> ViewDataBinding.get(): T = GlobalContext.get().koin.get()

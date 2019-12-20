@@ -28,8 +28,9 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_open_in_new"
-            app:image="@{post.source}"
-            app:placeholder="@{@drawable/ic_image_placeholder}" />
+            app:placeholder="@{@drawable/ic_image_placeholder}"
+            app:preview="@{post.preview}"
+            app:source="@{post.source}" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Large"

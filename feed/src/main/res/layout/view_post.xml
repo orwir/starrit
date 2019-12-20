@@ -20,11 +20,11 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_icon_ghost"
-            app:image="@{post.subreddit.icon}"
             app:layout_constraintBottom_toBottomOf="@id/author"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/subreddit_title"
-            app:placeholder="@{@drawable/ic_icon_ghost}" />
+            app:placeholder="@{@drawable/ic_icon_ghost}"
+            app:source="@{post.subreddit.icon}" />
 
         <TextView
             android:id="@+id/subreddit_title"
