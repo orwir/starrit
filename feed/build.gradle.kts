@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":videoplayer"))
     implementation(Library.AndroidX.constraintLayout)
+    implementation(Library.AndroidX.coordinator)
     implementation(Library.AndroidX.paging)
     implementation(Library.Squareup.retrofit)
 }

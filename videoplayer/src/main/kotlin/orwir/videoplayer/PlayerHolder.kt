@@ -14,6 +14,7 @@ internal object PlayerHolder {
     fun releaseSelf(view: PlayerView) {
         if (view == holder?.get()) {
             view.release()
+            holder = null
         }
     }
 

@@ -49,8 +49,8 @@ androidExtensions {
 
 dependencies {
     implementation(project(":common"))
-    implementation(Library.Squareup.retrofit)
     implementation(Library.AndroidX.constraintLayout)
+    implementation(Library.Squareup.retrofit)
 }
 
 fun DefaultConfig.stringField(name: String, value: String) {

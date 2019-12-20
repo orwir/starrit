@@ -56,7 +56,7 @@ dependencies {
     implementation(project(":authorization"))
     implementation(project(":splash"))
     implementation(project(":feed"))
-
+    implementation(Library.AndroidX.appcompat)
     implementation(Library.AndroidX.navigationFragment)
     implementation(Library.AndroidX.navigationUi)
     implementation(Library.AndroidX.browser)
