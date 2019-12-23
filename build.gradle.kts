@@ -10,7 +10,6 @@ buildscript {
         classpath(Build.Library.androidGradle)
         classpath(Build.Library.kotlinGradle)
         classpath(Build.Library.navSafeArgs)
-        classpath(Build.Library.junit5)
     }
 }
 

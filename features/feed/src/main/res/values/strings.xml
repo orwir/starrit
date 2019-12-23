@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="subreddit">r/%1$s</string>
+    <string name="author">u/%1$s</string>
+    <string name="best">Best</string>
+    <string name="nsfw">💋💀</string>
+    <string name="spoiler">⚡</string>
+</resources>

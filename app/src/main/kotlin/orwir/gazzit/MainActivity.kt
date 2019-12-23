@@ -11,19 +11,21 @@ import orwir.gazzit.authorization.AuthorizationRepository
 
 class MainActivity : AppCompatActivity() {
 
-    private val authorizationRepository: AuthorizationRepository by inject()
+    private val authorization: AuthorizationRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        currentScope.get<Navigator> {
-            parametersOf(this, findNavController(R.id.navhost))
-        }
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        currentScope.get<Navigator> { parametersOf(this, findNavController(R.id.navhost)) }
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.data?.let(authorizationRepository::authorizationFlowComplete)
+        intent?.data?.let(authorization::authorizationFlowComplete)
     }
 
 }

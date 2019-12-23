@@ -1,63 +1,46 @@
+import orwir.gradle.extension.feature
+import orwir.gradle.extension.library
+
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("android.extensions")
-    id("androidx.navigation.safeargs.kotlin")
+    id(Build.Plugin.application)
+    id(Build.Plugin.kotlin_android)
+    id(Build.Plugin.kotlin_android_extensions)
+    id(Build.Plugin.kotlin_navigation_safeargs)
+    id(Build.Plugin.simple_android)
 }
 
 android {
-    compileSdkVersion(Android.Sdk.compile)
-    buildToolsVersion = Android.buildToolsVersion
-
     defaultConfig {
-        applicationId = Android.Application.id
+        applicationId = Gazzit.applicationID
         versionCode = Android.Application.versionCode(project)
         versionName = Android.Application.versionName(project)
 
-        minSdkVersion(Android.Sdk.min)
-        targetSdkVersion(Android.Sdk.target)
-
         manifestPlaceholders = mapOf(
-            "schema" to Android.Application.schema,
-            "authorizationHost" to Android.Application.authorizationHost
+            "authorizationSchema" to Gazzit.DeepLink.Authorization.schema,
+            "authorizationHost" to Gazzit.DeepLink.Authorization.host
         )
     }
-
-    sourceSets["main"].java.srcDir("src/main/kotlin")
-
-//    buildTypes {
-//        getByName("release") {
-//            isMinifyEnabled = true
-//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-//        }
-//    }
-
-    compileOptions {
-        sourceCompatibility = Android.javaVersion
-        targetCompatibility = Android.javaVersion
-    }
-
-    kotlinOptions {
-        jvmTarget = Android.javaVersion.toString()
-    }
-
-    dataBinding {
-        isEnabled = true
-    }
-}
-
-androidExtensions {
-    isExperimental = true
+    dataBinding { isEnabled = true }
 }
 
 dependencies {
-    implementation(project(":common"))
-    implementation(project(":videoplayer"))
-    implementation(project(":authorization"))
-    implementation(project(":splash"))
-    implementation(project(":feed"))
+    library(Gazzit.Library.core)
+    library(Gazzit.Library.view)
+    library(Gazzit.Library.authorization)
+    library(Gazzit.Library.listing)
+
+    feature(Gazzit.Feature.splash)
+    feature(Gazzit.Feature.login)
+    feature(Gazzit.Feature.feed)
+
     implementation(Library.AndroidX.appcompat)
+    implementation(Library.AndroidX.fragment)
     implementation(Library.AndroidX.navigationFragment)
     implementation(Library.AndroidX.navigationUi)
     implementation(Library.AndroidX.browser)
+
+    implementation(Library.Squareup.okhttp)
+    implementation(Library.Squareup.logginInterceptor)
+    implementation(Library.Squareup.moshi)
+    implementation(Library.Squareup.moshiKotlin)
 }

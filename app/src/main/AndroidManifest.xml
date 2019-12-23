@@ -3,15 +3,15 @@
 
     <application
         android:name=".GazzitApplication"
-        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.NoActionBar">
 
         <activity
-            android:name="orwir.gazzit.MainActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,8 +25,9 @@
 
                 <data
                     android:host="${authorizationHost}"
-                    android:scheme="${schema}" />
+                    android:scheme="${authorizationSchema}" />
             </intent-filter>
+
         </activity>
 
     </application>

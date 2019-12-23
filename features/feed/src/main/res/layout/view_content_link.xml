@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="post"
+            type="orwir.gazzit.listing.feed.LinkPost" />
+
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{listener::onClick}">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_open_in_new"
+            app:placeholder="@{@drawable/ic_image_placeholder}"
+            app:preview="@{post.preview}"
+            app:source="@{post.source}" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:background="#77000000"
+            android:drawableEnd="@drawable/ic_open_in_new"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingStart="@dimen/space"
+            android:paddingEnd="@dimen/space"
+            android:text="@{post.displayLink}"
+            android:textColor="@color/amber"
+            tools:text="https://example.com" />
+
+    </FrameLayout>
+</layout>

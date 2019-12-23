@@ -2,16 +2,14 @@ package orwir.gazzit
 
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.KoinComponent
 import org.koin.core.context.startKoin
-import orwir.gazzit.authorization.authorizationModule
-import orwir.gazzit.common.KoinedLogger
-import orwir.gazzit.common.commonModule
-import orwir.gazzit.feed.feedModule
-import orwir.gazzit.splash.splashModule
+import orwir.gazzit.authorization.libAuthorizationModule
+import orwir.gazzit.core.KoinLoger
+import orwir.gazzit.core.libCoreModule
+import orwir.gazzit.listing.libListingModule
 import timber.log.Timber
 
-class GazzitApplication : Application(), KoinComponent {
+class GazzitApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -21,17 +19,18 @@ class GazzitApplication : Application(), KoinComponent {
         }
 
         startKoin {
-            logger(KoinedLogger)
             androidContext(this@GazzitApplication)
+            logger(KoinLoger())
             modules(
                 listOf(
-                    commonModule,
-                    splashModule,
-                    authorizationModule,
-                    feedModule,
-                    appModule
+                    appModule,
+
+                    libCoreModule,
+                    libAuthorizationModule,
+                    libListingModule
                 )
             )
         }
     }
+
 }

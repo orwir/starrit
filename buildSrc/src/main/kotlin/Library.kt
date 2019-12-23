@@ -1,4 +1,5 @@
 object Library {
+
     object Kotlin {
         const val std = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Build.kotlinVersion}"
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2"
@@ -6,25 +7,24 @@ object Library {
     }
 
     object AndroidX {
-        private const val versionLifecycle = "2.2.0-rc03"
-        private const val versionNavigation = "2.1.0"
-        private const val versionPreference = "1.1.0"
+        private const val v_lifecycle = "2.2.0-rc03"
+        private const val v_navigation = "2.1.0"
 
         const val core = "androidx.core:core-ktx:1.1.0"
-        const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$versionLifecycle"
-        const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$versionLifecycle"
-        const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:$versionLifecycle"
-        const val lifecycleLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$versionLifecycle"
+        const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$v_lifecycle"
+        const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$v_lifecycle"
+        const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:$v_lifecycle"
+        const val lifecycleLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$v_lifecycle"
+
         const val appcompat = "androidx.appcompat:appcompat:1.1.0"
-        const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
-        const val coordinator = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+        const val fragment = "androidx.fragment:fragment:1.2.0-rc04"
+        const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
+        const val coordinatorLayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
-        const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$versionNavigation"
-        const val navigationUi = "androidx.navigation:navigation-ui-ktx:$versionNavigation"
         const val paging = "androidx.paging:paging-runtime:2.1.1"
+        const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$v_navigation"
+        const val navigationUi = "androidx.navigation:navigation-ui-ktx:$v_navigation"
         const val browser = "androidx.browser:browser:1.2.0"
-        const val preference = "androidx.preference:preference:$versionPreference"
-        const val preferenceKtx = "androidx.preference:preference-ktx:$versionPreference"
     }
 
     object Koin {
@@ -61,13 +61,13 @@ object Library {
     const val exoPlayer = "com.google.android.exoplayer:exoplayer:2.11.0"
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
-    object Junit {
-        private const val version = "5.5.2"
-
-        const val api = "org.junit.jupiter:junit-jupiter-api:$version"
-        const val engine = "org.junit.jupiter:junit-jupiter-engine:$version"
-        const val params = "org.junit.jupiter:junit-jupiter-params:$version"
-    }
-
-    const val mockk = "io.mockk:mockk:1.9.3"
+//    object Junit {
+//        private const val version = "5.5.2"
+//
+//        const val api = "org.junit.jupiter:junit-jupiter-api:$version"
+//        const val engine = "org.junit.jupiter:junit-jupiter-engine:$version"
+//        const val params = "org.junit.jupiter:junit-jupiter-params:$version"
+//    }
+//
+//    const val mockk = "io.mockk:mockk:1.9.3"
 }
