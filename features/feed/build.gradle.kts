@@ -12,10 +12,10 @@ android {
 }
 
 dependencies {
-    library(Gazzit.Library.core)
-    library(Gazzit.Library.view)
-    library(Gazzit.Library.listing)
-    library(Gazzit.Library.videoplayer)
+    library(Starrit.Library.core)
+    library(Starrit.Library.view)
+    library(Starrit.Library.listing)
+    library(Starrit.Library.videoplayer)
     implementation(Library.AndroidX.coordinatorLayout)
     implementation(Library.AndroidX.constraintLayout)
     implementation(Library.AndroidX.paging)

@@ -14,8 +14,8 @@ android {
     defaultConfig {
         val clientID: String by project
         val credentialsB64: String = "$clientID:".toByteArray().run(Base64::toBase64String)
-        val schema = Gazzit.DeepLink.Authorization.schema
-        val host = Gazzit.DeepLink.Authorization.host
+        val schema = Starrit.DeepLink.Authorization.schema
+        val host = Starrit.DeepLink.Authorization.host
 
         stringField("SCHEMA", schema)
         stringField("HOST", host)
@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    library(Gazzit.Library.core)
+    library(Starrit.Library.core)
     implementation(Library.Squareup.okhttp)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.moshi)

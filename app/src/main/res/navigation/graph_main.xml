@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="orwir.gazzit.feature.splash.SplashFragment"
+        android:name="orwir.starrit.feature.splash.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="orwir.gazzit.feature.login.LoginFragment"
+        android:name="orwir.starrit.feature.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -36,11 +36,11 @@
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="orwir.gazzit.feature.feed.FeedFragment"
+        android:name="orwir.starrit.feature.feed.FeedFragment"
         android:label="FeedFragment"
         tools:layout="@layout/fragment_feed">
         <argument
             android:name="type"
-            app:argType="orwir.gazzit.listing.feed.FeedType" />
+            app:argType="orwir.starrit.listing.feed.FeedType" />
     </fragment>
 </navigation>

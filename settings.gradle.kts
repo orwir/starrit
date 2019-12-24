@@ -1,4 +1,4 @@
-rootProject.name = "gazzit"
+rootProject.name = "starrit"
 
 include(
     ":app",

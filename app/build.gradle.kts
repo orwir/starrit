@@ -11,27 +11,27 @@ plugins {
 
 android {
     defaultConfig {
-        applicationId = Gazzit.applicationID
+        applicationId = Starrit.applicationID
         versionCode = Android.Application.versionCode(project)
         versionName = Android.Application.versionName(project)
 
         manifestPlaceholders = mapOf(
-            "authorizationSchema" to Gazzit.DeepLink.Authorization.schema,
-            "authorizationHost" to Gazzit.DeepLink.Authorization.host
+            "authorizationSchema" to Starrit.DeepLink.Authorization.schema,
+            "authorizationHost" to Starrit.DeepLink.Authorization.host
         )
     }
     dataBinding { isEnabled = true }
 }
 
 dependencies {
-    library(Gazzit.Library.core)
-    library(Gazzit.Library.view)
-    library(Gazzit.Library.authorization)
-    library(Gazzit.Library.listing)
+    library(Starrit.Library.core)
+    library(Starrit.Library.view)
+    library(Starrit.Library.authorization)
+    library(Starrit.Library.listing)
 
-    feature(Gazzit.Feature.splash)
-    feature(Gazzit.Feature.login)
-    feature(Gazzit.Feature.feed)
+    feature(Starrit.Feature.splash)
+    feature(Starrit.Feature.login)
+    feature(Starrit.Feature.feed)
 
     implementation(Library.AndroidX.appcompat)
     implementation(Library.AndroidX.fragment)

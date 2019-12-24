@@ -13,7 +13,7 @@ android {
 }
 
 dependencies {
-    library(Gazzit.Library.core)
+    library(Starrit.Library.core)
     implementation(Library.AndroidX.fragment)
     implementation(Library.AndroidX.recyclerView)
 }

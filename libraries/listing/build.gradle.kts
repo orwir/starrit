@@ -9,7 +9,7 @@ plugins {
 }
 
 dependencies {
-    library(Gazzit.Library.core)
+    library(Starrit.Library.core)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.moshi)
     implementation(Library.Squareup.moshiKotlin)

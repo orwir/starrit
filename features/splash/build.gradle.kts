@@ -12,7 +12,7 @@ android {
 }
 
 dependencies {
-    library(Gazzit.Library.core)
-    library(Gazzit.Library.view)
-    library(Gazzit.Library.authorization)
+    library(Starrit.Library.core)
+    library(Starrit.Library.view)
+    library(Starrit.Library.authorization)
 }

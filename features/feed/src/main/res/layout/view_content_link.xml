@@ -7,7 +7,7 @@
 
         <variable
             name="post"
-            type="orwir.gazzit.listing.feed.LinkPost" />
+            type="orwir.starrit.listing.feed.LinkPost" />
 
         <variable
             name="listener"

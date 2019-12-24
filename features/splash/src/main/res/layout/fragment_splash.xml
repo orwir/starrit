@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="orwir.gazzit.feature.splash.SplashViewModel" />
+            type="orwir.starrit.feature.splash.SplashViewModel" />
     </data>
 
     <FrameLayout
