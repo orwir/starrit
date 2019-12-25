@@ -10,3 +10,9 @@ fun DependencyHandlerScope.feature(name: String) {
 fun DependencyHandlerScope.library(name: String) {
     add("implementation", project(":libraries:$name"))
 }
+
+fun DependencyHandlerScope.unitTestsLibraries() {
+    add("testImplementation", Library.junit)
+    add("testImplementation", Library.truth)
+    add("testImplementation", Library.mockk)
+}

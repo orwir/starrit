@@ -1,4 +1,5 @@
 import orwir.gradle.extension.stringField
+import orwir.gradle.extension.unitTestsLibraries
 
 plugins {
     id(Build.Plugin.library)
@@ -46,4 +47,6 @@ dependencies {
     implementation(Library.Squareup.moshiKotlin)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.retrofitMoshiConverter)
+
+    unitTestsLibraries()
 }

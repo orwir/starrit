@@ -113,10 +113,7 @@ inline operator fun <reified T> SharedPreferences.set(key: String, value: T) {
  * @param defaultValue default value
  * @return saved value or [defaultValue].
  */
-inline operator fun <reified T> SharedPreferences.get(
-    key: String,
-    defaultValue: T = defaultForType()
-) =
+inline operator fun <reified T> SharedPreferences.get(key: String, defaultValue: T = defaultForType()) =
     when (defaultValue) {
         is String -> getString(key, defaultValue) as T
         is Int -> getInt(key, defaultValue) as T
