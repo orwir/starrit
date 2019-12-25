@@ -2,17 +2,11 @@ package orwir.starrit.core
 
 import android.app.Application
 import android.content.SharedPreferences
-import android.util.Log
 import coil.ImageLoader
 import coil.decode.GifDecoder
-import org.koin.core.logger.KOIN_TAG
-import org.koin.core.logger.Level
-import org.koin.core.logger.Logger
-import org.koin.core.logger.MESSAGE
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import timber.log.Timber
 
 val libCoreModule = module {
 
@@ -37,15 +31,4 @@ val libCoreModule = module {
         }
     }
 
-}
-
-class KoinLoger : Logger() {
-    override fun log(level: Level, msg: MESSAGE) {
-        val priority = when (level) {
-            Level.DEBUG -> Log.DEBUG
-            Level.ERROR -> Log.ERROR
-            Level.INFO -> Log.INFO
-        }
-        Timber.tag(KOIN_TAG).log(priority, msg)
-    }
 }
