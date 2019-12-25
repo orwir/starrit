@@ -7,7 +7,7 @@ import org.koin.core.logger.Logger
 import org.koin.core.logger.MESSAGE
 import timber.log.Timber
 
-class KoinLoger : Logger() {
+class KoinLogger : Logger() {
     override fun log(level: Level, msg: MESSAGE) {
         val priority = when (level) {
             Level.DEBUG -> Log.DEBUG

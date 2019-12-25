@@ -37,6 +37,10 @@ class SimpleAndroidPlugin : Plugin<Project> {
                 targetCompatibility = Android.javaVersion
             }
 
+            testOptions {
+                unitTests.isIncludeAndroidResources = true
+            }
+
             packagingOptions {
                 exclude("META-INF/LICENSE*")
             }

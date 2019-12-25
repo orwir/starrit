@@ -64,6 +64,7 @@ object Library {
     const val junit = "junit:junit:4.12"
     const val truth = "com.google.truth:truth:1.0"
     const val mockk = "io.mockk:mockk:1.9.3"
+    const val robolectric = "org.robolectric:robolectric:4.3"
 
     /*
     // Core library

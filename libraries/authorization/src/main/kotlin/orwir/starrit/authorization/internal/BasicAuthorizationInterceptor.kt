@@ -5,7 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.starrit.core.AuthorizationInterceptor
+import orwir.starrit.authorization.AuthorizationInterceptor
 import orwir.starrit.core.BuildConfig.REDDIT_URL_OAUTH
 
 internal class BasicAuthorizationInterceptor : AuthorizationInterceptor, KoinComponent {
