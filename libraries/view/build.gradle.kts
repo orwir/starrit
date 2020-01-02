@@ -13,7 +13,9 @@ android {
 }
 
 dependencies {
+    api(Library.AndroidX.appcompat)
+    api(Library.AndroidX.fragment)
+
     library(Starrit.Library.core)
-    implementation(Library.AndroidX.fragment)
     implementation(Library.AndroidX.recyclerView)
 }

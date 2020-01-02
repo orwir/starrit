@@ -49,10 +49,7 @@ internal class BasicAuthorizationRepository :
                 try {
                     token = service.refreshToken(it.refresh).copy(refresh = it.refresh)
                 } catch (e: Exception) {
-                    throw TokenException(
-                        "Token refresh failed!",
-                        e
-                    )
+                    throw TokenException("Token refresh failed!", e)
                 }
             }
             token
@@ -62,18 +59,12 @@ internal class BasicAuthorizationRepository :
     @ExperimentalCoroutinesApi
     override fun authorizationFlow(): Flow<Step> = channelFlow {
         if (requestCallback == null) {
-            requestCallback = object :
-                Callback {
+            requestCallback = object : Callback {
 
                 override fun onStart() {
                     requestState = requestState ?: UUID.randomUUID().toString()
                     responseUri = null
-                    offer(Step.Start(
-                        buildAuthorizationUri(
-                            requestState!!,
-                            scope
-                        )
-                    ))
+                    offer(Step.Start(buildAuthorizationUri(requestState!!, scope)))
                 }
 
                 override fun onSuccess() {
@@ -108,30 +99,24 @@ internal class BasicAuthorizationRepository :
     }
 
     override fun authorizationFlowComplete(response: Uri) {
-        if (response.authority == BuildConfig.HOST) {
-            if (requestCallback != null) {
-                val callback = requestCallback!!
-                launch {
-                    val state = response.getQueryParameter("state")
-                    if (state == requestState) {
-                        val code = response.getQueryParameter("code")!!
-                        try {
-                            token = service.accessToken(code)
-                            callback.onSuccess()
-                        } catch (e: Exception) {
-                            callback.onError(e)
-                        }
-                    } else {
-                        callback.onError(
-                            TokenException(
-                                "Request/Response state mismatch: e:[$requestState], a:[$state]"
-                            )
-                        )
+        if (requestCallback != null) {
+            val callback = requestCallback!!
+            launch {
+                val state = response.getQueryParameter("state")
+                if (state == requestState) {
+                    val code = response.getQueryParameter("code")!!
+                    try {
+                        token = service.accessToken(code)
+                        callback.onSuccess()
+                    } catch (e: Exception) {
+                        callback.onError(e)
                     }
+                } else {
+                    callback.onError(TokenException("Request/Response state mismatch: e:[$requestState], a:[$state]"))
                 }
-            } else {
-                responseUri = response
             }
+        } else {
+            responseUri = response
         }
     }
 

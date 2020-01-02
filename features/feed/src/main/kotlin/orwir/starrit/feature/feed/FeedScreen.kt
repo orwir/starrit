@@ -1,10 +1,7 @@
 package orwir.starrit.feature.feed
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,13 +20,15 @@ import orwir.starrit.feature.feed.internal.FeedDataSourceFactory
 import orwir.starrit.feature.feed.internal.pageConfig
 import orwir.starrit.listing.feed.FeedType
 import orwir.starrit.listing.feed.Post
+import orwir.starrit.view.BaseFragment
+import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.activityScope
 import orwir.starrit.view.argument
 import orwir.videoplayer.bindPlayer
 
 private const val TYPE = "type"
 
-class FeedFragment : Fragment() {
+class FeedFragment : BaseFragment<FragmentFeedBinding>() {
 
     companion object {
         init {
@@ -37,6 +36,7 @@ class FeedFragment : Fragment() {
         }
     }
 
+    override val inflate: FragmentInflater<FragmentFeedBinding> = FragmentFeedBinding::inflate
     private val type: FeedType by argument(TYPE)
     private val viewModel: FeedViewModel by viewModel { parametersOf(type) }
     private val navigation: FeedNavigation by activityScope()
@@ -48,17 +48,10 @@ class FeedFragment : Fragment() {
         bindPlayer(player)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = FragmentFeedBinding.inflate(inflater, container, false)
-        .also {
-            it.listing = type.toTitle()
-            it.viewModel = viewModel
-            it.lifecycleOwner = viewLifecycleOwner
-        }
-        .root
+    override fun onBindView(binding: FragmentFeedBinding) {
+        binding.listing = type.toTitle()
+        binding.viewModel = viewModel
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

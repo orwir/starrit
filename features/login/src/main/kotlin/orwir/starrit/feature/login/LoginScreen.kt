@@ -1,19 +1,20 @@
 package orwir.starrit.feature.login
 
+import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import orwir.starrit.authorization.AuthorizationRepository
+import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
 import orwir.starrit.authorization.model.Step
 import orwir.starrit.feature.login.databinding.FragmentLoginBinding
+import orwir.starrit.view.BaseFragment
+import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.activityScope
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     companion object {
         init {
@@ -21,22 +22,22 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override val inflate: FragmentInflater<FragmentLoginBinding> = FragmentLoginBinding::inflate
     private val viewModel: LoginViewModel by viewModel()
     private val navigation: LoginNavigation by activityScope()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = FragmentLoginBinding.inflate(inflater, container, false)
-        .also {
-            it.viewModel = viewModel
-            it.lifecycleOwner = viewLifecycleOwner
-        }
-        .root
+    override fun onBindView(binding: FragmentLoginBinding) {
+        binding.viewModel = viewModel
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        baseActivity.uriDispatcher.addCallback(viewLifecycleOwner) {
+            ifUriStartsWith(REDIRECT_URI)
+            onUri { viewModel.authorize(it) }
+        }
+
         viewModel.state.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Step.Start -> navigation.openBrowser(it.uri)
@@ -58,6 +59,10 @@ internal class LoginViewModel(private val repository: AuthorizationRepository) :
 
     fun authorize() {
         repository.authorizationFlowStart()
+    }
+
+    fun authorize(uri: Uri) {
+        repository.authorizationFlowComplete(uri)
     }
 
 }

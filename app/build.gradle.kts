@@ -33,8 +33,6 @@ dependencies {
     feature(Starrit.Feature.login)
     feature(Starrit.Feature.feed)
 
-    implementation(Library.AndroidX.appcompat)
-    implementation(Library.AndroidX.fragment)
     implementation(Library.AndroidX.navigationFragment)
     implementation(Library.AndroidX.navigationUi)
     implementation(Library.AndroidX.browser)
