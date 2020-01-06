@@ -10,14 +10,13 @@
             type="orwir.starrit.listing.feed.TextPost" />
     </data>
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Medium"
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/TextAppearance.MyTheme.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="all"
         android:ellipsize="end"
         android:text="@{post.text}"
-        android:textAppearance="?attr/textAppearanceBody2"
         app:maxLinesToggle="@{4}"
         tools:text="Text content placeholder" />
 </layout>

@@ -30,6 +30,6 @@ dependencies {
     implementation(Library.Squareup.okhttp)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.moshi)
-    implementation(Library.Squareup.moshiKotlin)
-    kapt(Library.Squareup.moshiKotlinCodgen)
+    implementation(Library.Squareup.moshi_kotlin)
+    kapt(Library.Squareup.moshi_kotlin_codgen)
 }

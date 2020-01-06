@@ -23,16 +23,16 @@ dependencies {
 
     // Androidx
     api(Library.AndroidX.core)
-    api(Library.AndroidX.lifecycleRuntime)
-    api(Library.AndroidX.lifecycleLivedata)
-    api(Library.AndroidX.lifecycleExtensions)
-    api(Library.AndroidX.lifecycleViewModel)
+    api(Library.AndroidX.lifecycle_runtime)
+    api(Library.AndroidX.lifecycle_livedata)
+    api(Library.AndroidX.lifecycle_extensions)
+    api(Library.AndroidX.lifecycle_viewModel)
 
     // DI
     api(Library.Koin.core)
     api(Library.Koin.android)
-    api(Library.Koin.androidScope)
-    api(Library.Koin.androidViewModel)
+    api(Library.Koin.android_scope)
+    api(Library.Koin.android_viewmodel)
 
     // Image Loader
     api(Library.Coil.base)
@@ -44,9 +44,9 @@ dependencies {
     // Network & Json
     implementation(Library.Squareup.okhttp)
     implementation(Library.Squareup.moshi)
-    implementation(Library.Squareup.moshiKotlin)
+    implementation(Library.Squareup.moshi_kotlin)
     implementation(Library.Squareup.retrofit)
-    implementation(Library.Squareup.retrofitMoshiConverter)
+    implementation(Library.Squareup.retrofit_converter_moshi)
 
     unitTestsLibraries()
 }

@@ -11,26 +11,11 @@ import orwir.starrit.view.load
 
 internal class ContentInflater {
     fun inflate(post: Post, inflater: LayoutInflater): View = when (post) {
-        is TextPost -> inflateTextContent(
-            post,
-            inflater
-        )
-        is GifPost -> inflateGifContent(
-            post,
-            inflater
-        )
-        is ImagePost -> inflateImageContent(
-            post,
-            inflater
-        )
-        is VideoPost -> inflateVideoContent(
-            post,
-            inflater
-        )
-        is LinkPost -> inflateLinkContent(
-            post,
-            inflater
-        )
+        is TextPost -> inflateTextContent(post, inflater)
+        is GifPost -> inflateGifContent(post, inflater)
+        is ImagePost -> inflateImageContent(post, inflater)
+        is VideoPost -> inflateVideoContent(post, inflater)
+        is LinkPost -> inflateLinkContent(post, inflater)
     }
 }
 

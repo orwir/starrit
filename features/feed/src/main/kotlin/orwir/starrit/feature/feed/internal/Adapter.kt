@@ -10,9 +10,7 @@ import org.koin.core.inject
 import orwir.starrit.feature.feed.databinding.ViewPostBinding
 import orwir.starrit.listing.feed.Post
 
-internal class FeedAdapter : PagedListAdapter<Post, ViewHolder>(
-    PostDiffCallback()
-) {
+internal class FeedAdapter : PagedListAdapter<Post, ViewHolder>(PostDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewPostBinding
         .inflate(LayoutInflater.from(parent.context), parent, false)
@@ -38,6 +36,9 @@ internal class ViewHolder(
 
     fun bind(post: Post) {
         binding.post = post
+        // BUG: enable/disable doesn't work on xml even with "clickable = false"
+        binding.nsfw.isEnabled = post.nsfw
+        binding.spoiler.isEnabled = post.spoiler
         binding.content.removeAllViews()
         binding.content.addView(content.inflate(post, inflater))
     }

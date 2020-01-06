@@ -33,12 +33,12 @@ dependencies {
     feature(Starrit.Feature.login)
     feature(Starrit.Feature.feed)
 
-    implementation(Library.AndroidX.navigationFragment)
-    implementation(Library.AndroidX.navigationUi)
+    implementation(Library.AndroidX.navigation_fragment)
+    implementation(Library.AndroidX.navigation_ui)
     implementation(Library.AndroidX.browser)
 
     implementation(Library.Squareup.okhttp)
-    implementation(Library.Squareup.logginInterceptor)
+    implementation(Library.Squareup.loggin_interceptor)
     implementation(Library.Squareup.moshi)
-    implementation(Library.Squareup.moshiKotlin)
+    implementation(Library.Squareup.moshi_kotlin)
 }

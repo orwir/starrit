@@ -6,10 +6,10 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Subreddit(
     @Json(name = "display_name") val name: String,
-    @Json(name = "community_icon") val communityIcon: String?,
-    @Json(name = "icon_img") val iconImg: String?,
-    @Json(name = "banner_img") val bannerImg: String?,
-    @Json(name = "header_img") val headerImg: String?
+    @Json(name = "community_icon") internal val communityIcon: String?,
+    @Json(name = "icon_img") internal val iconImg: String?,
+    @Json(name = "banner_img") internal val bannerImg: String?,
+    @Json(name = "header_img") internal val headerImg: String?
 ) {
     val icon: String =
         communityIcon?.takeIf { it.isNotBlank() }

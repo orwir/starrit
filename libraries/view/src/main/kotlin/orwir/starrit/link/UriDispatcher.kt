@@ -22,7 +22,7 @@ class UriDispatcher {
         }
     }
 
-    fun onUri(uri: Uri) {
+    internal fun onUri(uri: Uri) {
         callbacks.filter { it.predicate(uri) }.forEach { it.onUri(uri) }
     }
 

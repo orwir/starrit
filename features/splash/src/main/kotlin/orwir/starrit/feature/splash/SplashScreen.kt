@@ -2,6 +2,7 @@ package orwir.starrit.feature.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
@@ -30,6 +31,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch {
+            delay(200)
             if (viewModel.isAuthorized()) {
                 navigation.openLastFeed()
             } else {

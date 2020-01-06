@@ -6,24 +6,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.parameter.parametersOf
-import orwir.starrit.core.livedata.SingleLiveEvent
 import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
 import orwir.starrit.feature.feed.internal.FeedAdapter
 import orwir.starrit.feature.feed.internal.FeedDataSourceFactory
 import orwir.starrit.feature.feed.internal.pageConfig
 import orwir.starrit.listing.feed.FeedType
 import orwir.starrit.listing.feed.Post
-import orwir.starrit.view.BaseFragment
-import orwir.starrit.view.FragmentInflater
-import orwir.starrit.view.activityScope
-import orwir.starrit.view.argument
+import orwir.starrit.view.*
 import orwir.videoplayer.bindPlayer
 
 private const val TYPE = "type"
@@ -56,14 +51,10 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         posts.adapter = adapter
-        posts.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        posts.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.space).toInt()))
 
         viewModel.posts.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-        })
-
-        viewModel.searchEvent.observe(viewLifecycleOwner, Observer {
-            // todo: implement it
         })
     }
 
@@ -75,18 +66,6 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
 
 internal class FeedViewModel(type: FeedType) : ViewModel() {
 
-    val posts = LivePagedListBuilder<String, Post>(
-        FeedDataSourceFactory(
-            type,
-            viewModelScope
-        ),
-        pageConfig
-    ).build()
-
-    val searchEvent = SingleLiveEvent<Unit>()
-
-    fun openSearch() {
-        searchEvent.call()
-    }
+    val posts = LivePagedListBuilder<String, Post>(FeedDataSourceFactory(type, viewModelScope), pageConfig).build()
 
 }

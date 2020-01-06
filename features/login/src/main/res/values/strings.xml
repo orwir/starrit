@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="to_use_the_app_you_need_to_authorize">To use the app you need to authorize on Reddit</string>
-    <string name="authorize">Authorize</string>
+    <string name="description">Choose access type</string>
+    <string name="separator">- OR -</string>
+    <string name="authorized">Authorized</string>
+    <string name="anonymous">Anonymous</string>
 </resources>

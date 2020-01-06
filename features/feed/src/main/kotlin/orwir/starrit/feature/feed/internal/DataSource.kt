@@ -21,8 +21,7 @@ internal class FeedDataSourceFactory(
     private val type: FeedType,
     private val scope: CoroutineScope
 ) : DataSource.Factory<String, Post>() {
-    override fun create(): DataSource<String, Post> =
-        FeedDataSource(type, scope)
+    override fun create(): DataSource<String, Post> = FeedDataSource(type, scope)
 }
 
 internal class FeedDataSource(

@@ -31,11 +31,7 @@ fun maxLinesClickListener(view: TextView, oldCollapsedMaxLines: Int, newCollapse
         // Default to collapsed
         view.maxLines = newCollapsedMaxLines
         // Now set click listener
-        view.setOnClickListener(
-            MaxLinesToggleClickListener(
-                newCollapsedMaxLines
-            )
-        )
+        view.setOnClickListener(MaxLinesToggleClickListener(newCollapsedMaxLines))
     }
 }
 
@@ -48,8 +44,7 @@ class MaxLinesToggleClickListener(private val collapsedLines: Int) : View.OnClic
     override fun onClick(view: View) {
         TransitionManager.beginDelayedTransition(view.findRecyclerViewOrParent(), transition)
         val textView = view as TextView
-        textView.maxLines =
-            if (textView.maxLines > collapsedLines) collapsedLines else Int.MAX_VALUE
+        textView.maxLines = if (textView.maxLines > collapsedLines) collapsedLines else Int.MAX_VALUE
     }
 
     private fun View.findRecyclerViewOrParent(): ViewGroup {

@@ -15,4 +15,5 @@ dependencies {
     library(Starrit.Library.core)
     library(Starrit.Library.view)
     library(Starrit.Library.authorization)
+    implementation(Library.AndroidX.constraint_layout)
 }

@@ -11,19 +11,20 @@ object Library {
         private const val v_navigation = "2.1.0"
 
         const val core = "androidx.core:core-ktx:1.1.0"
-        const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$v_lifecycle"
-        const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$v_lifecycle"
-        const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:$v_lifecycle"
-        const val lifecycleLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$v_lifecycle"
+        const val lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:$v_lifecycle"
+        const val lifecycle_viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$v_lifecycle"
+        const val lifecycle_runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$v_lifecycle"
+        const val lifecycle_livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$v_lifecycle"
 
         const val appcompat = "androidx.appcompat:appcompat:1.1.0"
         const val fragment = "androidx.fragment:fragment:1.2.0-rc04"
-        const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
-        const val coordinatorLayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
+        const val material = "com.google.android.material:material:1.1.0-rc01"
+        const val recycler_view = "androidx.recyclerview:recyclerview:1.1.0"
+        const val coordinator_layout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+        const val constraint_layout = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val paging = "androidx.paging:paging-runtime:2.1.1"
-        const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$v_navigation"
-        const val navigationUi = "androidx.navigation:navigation-ui-ktx:$v_navigation"
+        const val navigation_fragment = "androidx.navigation:navigation-fragment-ktx:$v_navigation"
+        const val navigation_ui = "androidx.navigation:navigation-ui-ktx:$v_navigation"
         const val browser = "androidx.browser:browser:1.2.0"
     }
 
@@ -32,8 +33,8 @@ object Library {
 
         const val core = "org.koin:koin-core:$version"
         const val android = "org.koin:koin-android:$version"
-        const val androidScope = "org.koin:koin-androidx-scope:$version"
-        const val androidViewModel = "org.koin:koin-androidx-viewmodel:$version"
+        const val android_scope = "org.koin:koin-androidx-scope:$version"
+        const val android_viewmodel = "org.koin:koin-androidx-viewmodel:$version"
     }
 
     object Coil {
@@ -45,20 +46,20 @@ object Library {
     }
 
     object Squareup {
-        private const val versionOkhttp = "4.2.2"
-        private const val versionMoshi = "1.9.2"
-        private const val versionRetrofit = "2.6.3"
+        private const val v_okhttp = "4.2.2"
+        private const val v_moshi = "1.9.2"
+        private const val v_retrofit = "2.6.3"
 
-        const val okhttp = "com.squareup.okhttp3:okhttp:$versionOkhttp"
-        const val logginInterceptor = "com.squareup.okhttp3:logging-interceptor:$versionOkhttp"
-        const val moshi = "com.squareup.moshi:moshi:$versionMoshi"
-        const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:$versionMoshi"
-        const val moshiKotlinCodgen = "com.squareup.moshi:moshi-kotlin-codegen:$versionMoshi"
-        const val retrofit = "com.squareup.retrofit2:retrofit:$versionRetrofit"
-        const val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:$versionRetrofit"
+        const val okhttp = "com.squareup.okhttp3:okhttp:$v_okhttp"
+        const val loggin_interceptor = "com.squareup.okhttp3:logging-interceptor:$v_okhttp"
+        const val moshi = "com.squareup.moshi:moshi:$v_moshi"
+        const val moshi_kotlin = "com.squareup.moshi:moshi-kotlin:$v_moshi"
+        const val moshi_kotlin_codgen = "com.squareup.moshi:moshi-kotlin-codegen:$v_moshi"
+        const val retrofit = "com.squareup.retrofit2:retrofit:$v_retrofit"
+        const val retrofit_converter_moshi = "com.squareup.retrofit2:converter-moshi:$v_retrofit"
     }
 
-    const val exoPlayer = "com.google.android.exoplayer:exoplayer:2.11.0"
+    const val exoplayer = "com.google.android.exoplayer:exoplayer:2.11.0"
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
     const val junit = "junit:junit:4.12"

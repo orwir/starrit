@@ -5,212 +5,230 @@
 
     <data>
 
+        <import
+            alias="T"
+            type="orwir.starrit.view.TransformationType" />
+
+        <import
+            alias="C"
+            type="kotlin.collections.CollectionsKt" />
+
         <variable
             name="post"
             type="orwir.starrit.listing.feed.Post" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spaceX2">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/subreddit_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_icon_ghost"
-            app:layout_constraintBottom_toBottomOf="@id/author"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/subreddit_title"
-            app:placeholder="@{@drawable/ic_icon_ghost}"
-            app:source="@{post.subreddit.icon}" />
-
-        <TextView
-            android:id="@+id/subreddit_title"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@{@string/subreddit(post.subreddit.name)}"
-            app:layout_constraintBottom_toTopOf="@id/author"
-            app:layout_constraintStart_toEndOf="@id/subreddit_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="r/subreddit" />
-
-        <TextView
-            android:id="@+id/author"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space"
-            android:layout_marginEnd="@dimen/space"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@{@string/author(post.author)}"
-            app:layout_constraintEnd_toStartOf="@id/created"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toEndOf="@id/subreddit_icon"
-            app:layout_constraintTop_toBottomOf="@id/subreddit_title"
-            tools:text="u/author" />
-
-        <TextView
-            android:id="@+id/created"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{post.created}"
-            app:layout_constraintBottom_toBottomOf="@id/author"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/author"
-            app:layout_constraintTop_toTopOf="@id/author"
-            tools:text="11.10 19:34" />
-
-        <TextView
-            android:id="@+id/title"
-            style="@style/TextAppearance.AppCompat.Title"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space"
-            android:ellipsize="end"
-            android:text="@{post.title}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/author"
-            app:maxLinesToggle="@{2}"
-            tools:text="Post title" />
+            android:padding="@dimen/space">
 
-        <TextView
-            android:id="@+id/spoiler"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/spoiler"
-            app:layout_constraintEnd_toStartOf="@id/nsfw"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:visibleOrGone="@{post.spoiler}" />
+            <ImageView
+                android:id="@+id/subreddit_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_subreddit"
+                app:layout_constraintBottom_toBottomOf="@id/author"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/subreddit_title"
+                app:placeholder="@{@drawable/ic_subreddit}"
+                app:source="@{post.subreddit.icon}"
+                app:transformations="@{C.listOf(T.CIRCLE)}" />
 
-        <TextView
-            android:id="@+id/nsfw"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nsfw"
-            app:layout_constraintEnd_toStartOf="@id/domain"
-            app:layout_constraintStart_toEndOf="@id/spoiler"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:visibleOrGone="@{post.nsfw}" />
+            <TextView
+                android:id="@+id/subreddit_title"
+                style="@style/TextAppearance.MyTheme.Subtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{@string/subreddit(post.subreddit.name)}"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/subreddit_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="r/subreddit" />
 
-        <TextView
-            android:id="@+id/domain"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{post.domain}"
-            app:layout_constraintStart_toEndOf="@id/nsfw"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:visibleOrGone="@{!post.selfDomain}"
-            tools:text="i.reddit.com" />
+            <TextView
+                android:id="@+id/author"
+                style="@style/TextAppearance.MyTheme.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{@string/author(post.author)}"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toStartOf="@id/created"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/subreddit_icon"
+                app:layout_constraintTop_toBottomOf="@id/subreddit_title"
+                tools:text="u/author" />
 
-        <FrameLayout
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space"
-            android:addStatesFromChildren="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:transitionGroup="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/domain" />
+            <TextView
+                android:id="@+id/created"
+                style="@style/TextAppearance.MyTheme.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space"
+                android:text="@{post.created}"
+                app:layout_constraintBaseline_toBaselineOf="@id/author"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/author"
+                tools:text="yesterday" />
 
-        <ImageView
-            android:id="@+id/vote_up"
-            android:layout_width="@dimen/button_size"
-            android:layout_height="@dimen/button_size"
-            android:layout_marginTop="@dimen/space"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_arrow_up"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/content" />
+            <TextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.MyTheme.Headline6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space"
+                android:ellipsize="end"
+                android:text="@{post.title}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/created"
+                app:maxLinesToggle="@{2}"
+                tools:text="Post title" />
 
-        <TextView
-            android:id="@+id/score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{post.score}"
-            app:layout_constraintBottom_toBottomOf="@id/vote_up"
-            app:layout_constraintStart_toEndOf="@id/vote_up"
-            app:layout_constraintTop_toTopOf="@id/vote_up"
-            tools:text="n/a" />
+            <ImageView
+                android:id="@+id/nsfw"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/ic_nsfw"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
-        <ImageView
-            android:id="@+id/vote_down"
-            android:layout_width="@dimen/button_size"
-            android:layout_height="@dimen/button_size"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_arrow_down"
-            app:layout_constraintBottom_toBottomOf="@id/vote_up"
-            app:layout_constraintStart_toEndOf="@id/score"
-            app:layout_constraintTop_toTopOf="@id/vote_up" />
+            <ImageView
+                android:id="@+id/spoiler"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/ic_spoiler"
+                app:layout_constraintStart_toEndOf="@id/nsfw"
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
-        <ImageView
-            android:id="@+id/comments"
-            android:layout_width="@dimen/button_size"
-            android:layout_height="@dimen/button_size"
-            android:layout_marginStart="@dimen/spaceX2"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_comment"
-            app:layout_constraintBottom_toBottomOf="@id/vote_up"
-            app:layout_constraintStart_toEndOf="@id/vote_down"
-            app:layout_constraintTop_toTopOf="@id/vote_up" />
+            <TextView
+                android:id="@+id/domain"
+                style="@style/TextAppearance.MyTheme.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:text="@{post.domain}"
+                app:layout_constraintStart_toEndOf="@id/spoiler"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:visibleOrGone="@{!post.selfDomain}"
+                tools:text="domain.com" />
 
-        <TextView
-            android:id="@+id/comments_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{post.comments}"
-            app:layout_constraintBottom_toBottomOf="@id/vote_up"
-            app:layout_constraintStart_toEndOf="@id/comments"
-            app:layout_constraintTop_toTopOf="@id/vote_up"
-            tools:text="n/a" />
+            <FrameLayout
+                android:id="@+id/content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space"
+                android:addStatesFromChildren="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:transitionGroup="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/domain"
+                tools:background="@color/color_ghost"
+                tools:layout_height="120dp" />
 
-        <ImageView
-            android:id="@+id/share"
-            android:layout_width="@dimen/button_size"
-            android:layout_height="@dimen/button_size"
-            android:layout_marginEnd="@dimen/spaceX2"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_share"
-            app:layout_constraintEnd_toStartOf="@id/more"
-            app:layout_constraintTop_toTopOf="@id/vote_up" />
+            <TextView
+                android:id="@+id/score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{post.score}"
+                app:layout_constraintBottom_toBottomOf="@id/vote_up"
+                app:layout_constraintStart_toEndOf="@id/vote_up"
+                app:layout_constraintTop_toTopOf="@id/vote_up"
+                tools:text="4k" />
 
-        <ImageView
-            android:id="@+id/more"
-            android:layout_width="@dimen/button_size"
-            android:layout_height="@dimen/button_size"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_more_vert"
-            app:layout_constraintBottom_toBottomOf="@id/vote_up"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/vote_up" />
+            <ImageView
+                android:id="@+id/vote_up"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:layout_marginTop="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_vote_up"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/content" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/vote_down"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:layout_marginTop="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_vote_down"
+                app:layout_constraintStart_toEndOf="@id/score"
+                app:layout_constraintTop_toBottomOf="@id/content" />
 
+            <TextView
+                android:id="@+id/comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{post.comments}"
+                app:layout_constraintBottom_toBottomOf="@id/img_comments"
+                app:layout_constraintStart_toEndOf="@id/img_comments"
+                app:layout_constraintTop_toTopOf="@id/img_comments"
+                tools:text="325" />
+
+            <ImageView
+                android:id="@+id/img_comments"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:layout_marginTop="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_comments"
+                app:layout_constraintStart_toEndOf="@id/vote_down"
+                app:layout_constraintTop_toBottomOf="@id/content" />
+
+            <ImageView
+                android:id="@+id/share"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:layout_marginTop="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_share"
+                app:layout_constraintEnd_toStartOf="@id/more"
+                app:layout_constraintTop_toBottomOf="@id/content" />
+
+            <ImageView
+                android:id="@+id/more"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:layout_marginTop="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_more_vert"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/content" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 </layout>

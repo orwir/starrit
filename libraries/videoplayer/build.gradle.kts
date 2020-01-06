@@ -6,11 +6,11 @@ plugins {
 }
 
 dependencies {
-    api(Library.exoPlayer)
+    api(Library.exoplayer)
 
     implementation(Library.Kotlin.std)
     implementation(Library.Kotlin.coroutines)
     implementation(Library.Kotlin.reflect)
-    implementation(Library.AndroidX.constraintLayout)
+    implementation(Library.AndroidX.constraint_layout)
     implementation(Library.Coil.coil)
 }

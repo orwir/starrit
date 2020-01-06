@@ -35,7 +35,7 @@ internal class BaseListingRepository : ListingRepository, KoinComponent {
                 resolver.resolve(
                     it.data
                 )
-            }, before, after)
+            }, data.before, data.after)
         }
 
 }
