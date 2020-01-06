@@ -31,11 +31,7 @@ internal class BaseListingRepository : ListingRepository, KoinComponent {
                 limit = limit
             )
         }.run {
-            Feed(data.children.map {
-                resolver.resolve(
-                    it.data
-                )
-            }, data.before, data.after)
+            Feed(data.children.map { resolver.resolve(it.data) }, data.before, data.after)
         }
 
 }

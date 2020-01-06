@@ -41,10 +41,9 @@ private fun inflateGifContent(post: GifPost, inflater: LayoutInflater): View =
         .apply {
             this.post = post
             listener = View.OnClickListener {
-                gif.load(
-                    source = if (playing == true) post.source else post.gif,
-                    placeholder = gif.drawable
-                )
+                gif.load(if (playing == true) post.source else post.gif) {
+                    placeholder(gif.drawable)
+                }
                 playing = playing?.let { !it } ?: true
             }
         }
