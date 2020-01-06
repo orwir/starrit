@@ -1,5 +1,6 @@
 package orwir.starrit.feature.feed.internal
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
@@ -41,6 +42,17 @@ internal class ViewHolder(
         binding.spoiler.isEnabled = post.spoiler
         binding.content.removeAllViews()
         binding.content.addView(content.inflate(post, inflater))
+        binding.share.setOnClickListener { share(post) }
+    }
+
+    private fun share(post: Post) {
+        val content = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, post.contentUrl)
+        }
+        val chooser = Intent.createChooser(content, post.title)
+        itemView.context.startActivity(chooser)
     }
 
 }

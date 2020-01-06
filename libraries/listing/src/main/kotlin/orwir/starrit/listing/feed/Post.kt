@@ -16,8 +16,7 @@ sealed class Post(submission: Submission, res: Resources) {
     val id: String = submission.id
     val subreddit: Subreddit = submission.subreddit
     val author: String = submission.author
-    val created: String =
-        prettyDate(submission.created * 1000, res)
+    val created: String = prettyDate(submission.created * 1000, res)
     val title: String = submission.title
     val nsfw: Boolean = submission.nsfw
     val spoiler: Boolean = submission.spoiler
@@ -25,6 +24,8 @@ sealed class Post(submission: Submission, res: Resources) {
     val score: String = prettyScore(submission, res)
     val domain: String = submission.domain
     val selfDomain: Boolean = domain.startsWith("self.")
+    val contentUrl = submission.url
+    val postUrl = submission.permalink
 
     override fun equals(other: Any?) =
         other is Post
@@ -39,6 +40,8 @@ sealed class Post(submission: Submission, res: Resources) {
                 && comments == other.comments
                 && score == other.score
                 && domain == other.domain
+                && contentUrl == other.contentUrl
+                && postUrl == other.postUrl
 
     override fun hashCode() = createHashCode(
         id,
@@ -50,7 +53,9 @@ sealed class Post(submission: Submission, res: Resources) {
         spoiler,
         comments,
         score,
-        domain
+        domain,
+        contentUrl,
+        postUrl
     )
 
     private fun prettyScore(submission: Submission, res: Resources) = if (submission.hideScore) {
@@ -66,7 +71,7 @@ class LinkPost(
 ) : Post(submission, resources), PostImages by RedditImages(
     submission
 ) {
-    val link: Uri = submission.url.toUri()
+    val link: Uri = contentUrl.toUri()
     val displayLink: String = link.authority ?: submission.url
 }
 
