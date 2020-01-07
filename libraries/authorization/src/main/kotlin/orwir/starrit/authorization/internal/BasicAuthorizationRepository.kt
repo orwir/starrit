@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -57,7 +57,7 @@ internal class BasicAuthorizationRepository :
     }
 
     @ExperimentalCoroutinesApi
-    override fun authorizationFlow(): Flow<Step> = channelFlow {
+    override fun authorizationFlow(): Flow<Step> = callbackFlow {
         if (requestCallback == null) {
             requestCallback = object : Callback {
 

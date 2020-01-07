@@ -37,9 +37,6 @@ internal class ViewHolder(
 
     fun bind(post: Post) {
         binding.post = post
-        // BUG: enable/disable doesn't work on xml even with "clickable = false"
-        binding.nsfw.isEnabled = post.nsfw
-        binding.spoiler.isEnabled = post.spoiler
         binding.content.removeAllViews()
         binding.content.addView(content.inflate(post, inflater))
         binding.share.setOnClickListener { share(post) }
@@ -51,8 +48,7 @@ internal class ViewHolder(
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, post.contentUrl)
         }
-        val chooser = Intent.createChooser(content, post.title)
-        itemView.context.startActivity(chooser)
+        itemView.context.startActivity(Intent.createChooser(content, post.title))
     }
 
 }

@@ -81,9 +81,33 @@
                 android:layout_marginStart="@dimen/space"
                 android:text="@{post.created}"
                 app:layout_constraintBaseline_toBaselineOf="@id/author"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/nsfw"
                 app:layout_constraintStart_toEndOf="@id/author"
                 tools:text="yesterday" />
+
+            <ImageView
+                android:id="@+id/nsfw"
+                visibleOrGone="@{post.nsfw}"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="@dimen/space"
+                android:src="@drawable/ic_nsfw"
+                app:layout_constraintBottom_toBottomOf="@id/author"
+                app:layout_constraintEnd_toStartOf="@id/spoiler"
+                app:layout_constraintStart_toEndOf="@id/created"
+                app:layout_constraintTop_toTopOf="@id/author" />
+
+            <ImageView
+                android:id="@+id/spoiler"
+                visibleOrGone="@{post.spoiler}"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="@dimen/space"
+                android:src="@drawable/ic_spoiler"
+                app:layout_constraintBottom_toBottomOf="@id/nsfw"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/nsfw"
+                app:layout_constraintTop_toTopOf="@id/nsfw" />
 
             <TextView
                 android:id="@+id/title"
@@ -91,42 +115,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space"
-                android:ellipsize="end"
                 android:text="@{post.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/created"
-                app:maxLinesToggle="@{2}"
                 tools:text="Post title" />
-
-            <ImageView
-                android:id="@+id/nsfw"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginTop="4dp"
-                android:src="@drawable/ic_nsfw"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title" />
-
-            <ImageView
-                android:id="@+id/spoiler"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:src="@drawable/ic_spoiler"
-                app:layout_constraintStart_toEndOf="@id/nsfw"
-                app:layout_constraintTop_toBottomOf="@id/title" />
 
             <TextView
                 android:id="@+id/domain"
                 style="@style/TextAppearance.MyTheme.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
                 android:text="@{post.domain}"
-                app:layout_constraintStart_toEndOf="@id/spoiler"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title"
                 app:visibleOrGone="@{!post.selfDomain}"
                 tools:text="domain.com" />
@@ -161,8 +163,8 @@
                 android:layout_height="@dimen/button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
+                android:clickable="false"
+                android:focusable="false"
                 android:src="@drawable/ic_vote_up"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/content" />
@@ -173,8 +175,8 @@
                 android:layout_height="@dimen/button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
+                android:clickable="false"
+                android:focusable="false"
                 android:src="@drawable/ic_vote_down"
                 app:layout_constraintStart_toEndOf="@id/score"
                 app:layout_constraintTop_toBottomOf="@id/content" />
@@ -195,8 +197,8 @@
                 android:layout_height="@dimen/button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
+                android:clickable="false"
+                android:focusable="false"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_comments"
                 app:layout_constraintStart_toEndOf="@id/vote_down"
