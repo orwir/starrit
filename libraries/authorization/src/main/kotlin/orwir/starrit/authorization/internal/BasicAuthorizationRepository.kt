@@ -61,6 +61,11 @@ internal class BasicAuthorizationRepository :
         if (requestCallback == null) {
             requestCallback = object : Callback {
 
+                override fun onReset() {
+                    requestState = null
+                    offer(Step.Idle)
+                }
+
                 override fun onStart() {
                     requestState = requestState ?: UUID.randomUUID().toString()
                     responseUri = null
@@ -127,9 +132,13 @@ internal class BasicAuthorizationRepository :
         }
     }
 
+    override fun authorizationFlowReset() {
+        requestCallback?.onReset()
+    }
 }
 
 private interface Callback {
+    fun onReset()
     fun onStart()
     fun onSuccess()
     fun onError(exception: Exception)

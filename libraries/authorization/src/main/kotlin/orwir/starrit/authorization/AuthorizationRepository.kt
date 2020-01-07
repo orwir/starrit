@@ -11,5 +11,6 @@ interface AuthorizationRepository {
     fun authorizationFlow(): Flow<Step>
     fun authorizationFlowStart()
     fun authorizationFlowComplete(response: Uri)
+    fun authorizationFlowReset()
 
 }

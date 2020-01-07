@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.*
+import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import orwir.starrit.authorization.AuthorizationRepository
@@ -35,7 +36,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        baseActivity.uriDispatcher.addCallback(viewLifecycleOwner) {
+        baseActivity.uriDispatcher.addCallback(this) {
             ifUriStartsWith(REDIRECT_URI)
             onUri { viewModel.authorize(it) }
         }
@@ -51,7 +52,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun onResume() {
         super.onResume()
-        // TODO: #16: handle user just closed authorization tab
+        resetWhenUserCancelAuthorization()
     }
 
     private fun handleFailure(exception: Exception) {
@@ -68,6 +69,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             }
         }
     }
+
+    private fun resetWhenUserCancelAuthorization() {
+        lifecycleScope.launchWhenResumed {
+            delay(1000)
+            if (viewModel.state.value is Step.Start) {
+                viewModel.reset()
+            }
+        }
+    }
+
 }
 
 internal class LoginViewModel(private val repository: AuthorizationRepository) : ViewModel() {
@@ -84,6 +95,10 @@ internal class LoginViewModel(private val repository: AuthorizationRepository) :
 
     fun authorize(uri: Uri) {
         repository.authorizationFlowComplete(uri)
+    }
+
+    fun reset() {
+        repository.authorizationFlowReset()
     }
 
 }
