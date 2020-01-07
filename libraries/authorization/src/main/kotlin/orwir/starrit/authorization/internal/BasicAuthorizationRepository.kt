@@ -104,12 +104,19 @@ internal class BasicAuthorizationRepository :
             launch {
                 val state = response.getQueryParameter("state")
                 if (state == requestState) {
-                    val code = response.getQueryParameter("code")!!
-                    try {
-                        token = service.accessToken(code)
-                        callback.onSuccess()
-                    } catch (e: Exception) {
-                        callback.onError(e)
+                    val error = response.getQueryParameter("error")
+                        ?.toUpperCase(Locale.ENGLISH)
+                        ?.let(TokenException.ErrorCode::valueOf)
+                    if (error == null) {
+                        val code = response.getQueryParameter("code")!!
+                        try {
+                            token = service.accessToken(code)
+                            callback.onSuccess()
+                        } catch (e: Exception) {
+                            callback.onError(e)
+                        }
+                    } else {
+                        callback.onError(TokenException("API Error", code = error))
                     }
                 } else {
                     callback.onError(TokenException("Request/Response state mismatch: e:[$requestState], a:[$state]"))

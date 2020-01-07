@@ -8,11 +8,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import orwir.starrit.authorization.AuthorizationRepository
 import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
+import orwir.starrit.authorization.TokenException
 import orwir.starrit.authorization.model.Step
 import orwir.starrit.feature.login.databinding.FragmentLoginBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.activityScope
+import orwir.starrit.view.showErrorDialog
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
@@ -42,11 +44,30 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             when (it) {
                 is Step.Start -> navigation.openBrowser(it.uri)
                 is Step.Success -> navigation.openHomePage()
-                is Step.Failure -> TODO("Not implemented yet! e:[${it.exception}]")
+                is Step.Failure -> handleFailure(it.exception)
             }
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        // TODO: #16: handle user just closed authorization tab
+    }
+
+    private fun handleFailure(exception: Exception) {
+        fun Exception.isAccessDenied() =
+            this is TokenException && code == TokenException.ErrorCode.ACCESS_DENIED
+
+        showErrorDialog(exception) {
+            if (exception.isAccessDenied()) {
+                setTitle(R.string.authorization_required)
+                setMessage(R.string.error_message_access_denied)
+            }
+            setPositiveButton(R.string.retry) { _, _ ->
+                viewModel.authorize()
+            }
+        }
+    }
 }
 
 internal class LoginViewModel(private val repository: AuthorizationRepository) : ViewModel() {
@@ -55,7 +76,7 @@ internal class LoginViewModel(private val repository: AuthorizationRepository) :
         .authorizationFlow()
         .asLiveData(viewModelScope.coroutineContext)
 
-    val inProgress: LiveData<Boolean> = state.map { it is Step.Start }
+    val inProgress: LiveData<Boolean> = state.map { it is Step.Start || it is Step.Success }
 
     fun authorize() {
         repository.authorizationFlowStart()

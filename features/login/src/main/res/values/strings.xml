@@ -4,4 +4,6 @@
     <string name="separator">- OR -</string>
     <string name="authorized">Authorized</string>
     <string name="anonymous">Anonymous</string>
+    <string name="authorization_required">Authorization required!</string>
+    <string name="error_message_access_denied">To proceed as <b>authorized</b> you should allow access to <b>Reddit</b>.</string>
 </resources>
