@@ -36,9 +36,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        baseActivity.uriDispatcher.addCallback(this) {
-            ifUriStartsWith(REDIRECT_URI)
-            onUri { viewModel.authorize(it) }
+        baseActivity.linkDispatcher.addCallback(this) {
+            filter { it.toString().startsWith(REDIRECT_URI) }
+            onLinkReceived { viewModel.authorize(it) }
         }
 
         viewModel.state.observe(viewLifecycleOwner, Observer {
