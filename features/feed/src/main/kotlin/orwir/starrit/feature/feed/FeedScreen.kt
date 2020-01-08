@@ -37,7 +37,6 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
     private val sort: Feed.Sort by argument(SORT)
     private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
     private val navigation: FeedNavigation by activityScope()
-    private val adapter = FeedAdapter()
     private val player: ExoPlayer by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +51,7 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = FeedAdapter()
         posts.adapter = adapter
         posts.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.space).toInt()))
 

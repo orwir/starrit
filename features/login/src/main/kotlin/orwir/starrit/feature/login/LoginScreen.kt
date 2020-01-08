@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import orwir.starrit.authorization.AuthorizationFlowRepository
@@ -52,12 +53,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun onResume() {
         super.onResume()
-        resetWhenUserCancelAuthorization()
+        lifecycleScope.launch { resetWhenUserCancelAuthorization() }
     }
 
     private fun handleFailure(exception: Exception) {
-        fun Exception.isAccessDenied() =
-            this is TokenException && code == TokenException.ErrorCode.ACCESS_DENIED
+        fun Exception.isAccessDenied() = this is TokenException && code == TokenException.ErrorCode.ACCESS_DENIED
 
         showErrorDialog(exception) {
             if (exception.isAccessDenied()) {
@@ -70,12 +70,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         }
     }
 
-    private fun resetWhenUserCancelAuthorization() {
-        lifecycleScope.launchWhenResumed {
-            delay(1000)
-            if (viewModel.state.value is Step.Start) {
-                viewModel.reset()
-            }
+    private suspend fun resetWhenUserCancelAuthorization() {
+        delay(1000)
+        if (viewModel.state.value is Step.Start) {
+            viewModel.reset()
         }
     }
 
