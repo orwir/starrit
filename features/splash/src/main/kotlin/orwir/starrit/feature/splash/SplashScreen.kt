@@ -45,6 +45,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
 internal class SplashViewModel(private val repository: AccessRepository) : ViewModel() {
 
-    suspend fun hasAccess(): Boolean = repository.accessType() != AccessType.UNSPECIFIED
+    suspend fun hasAccess(): Boolean = repository.accessType() != AccessType.Unspecified
 
 }

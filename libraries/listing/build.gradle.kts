@@ -11,6 +11,7 @@ plugins {
 dependencies {
     library(Starrit.Library.core)
     library(Starrit.Library.authorization)
+    implementation(Library.AndroidX.paging)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.moshi)
     implementation(Library.Squareup.moshi_kotlin)

@@ -2,8 +2,11 @@ package orwir.starrit.feature.feed
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.*
-import androidx.paging.LivePagedListBuilder
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagedList
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
 import org.koin.android.ext.android.inject
@@ -13,13 +16,11 @@ import org.koin.core.parameter.parametersOf
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
 import orwir.starrit.feature.feed.internal.FeedAdapter
-import orwir.starrit.feature.feed.internal.FeedDataSourceFactory
-import orwir.starrit.feature.feed.internal.pageConfig
+import orwir.starrit.listing.ListingRepository
 import orwir.starrit.listing.feed.Feed
 import orwir.starrit.listing.feed.Post
 import orwir.starrit.view.*
 import orwir.videoplayer.bindPlayer
-import timber.log.Timber
 
 private const val TYPE = "type"
 private const val SORT = "sort"
@@ -51,25 +52,25 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = FeedAdapter()
+        val adapter = FeedAdapter(viewModel::retry)
         posts.adapter = adapter
         posts.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.space).toInt()))
 
-        viewModel.posts.observe(viewLifecycleOwner, Observer { adapter.submitList(it) })
-
-        viewModel.networkState.observe(viewLifecycleOwner, Observer {
-            Timber.d("[Feed] networkState=$it")
-        })
+        viewModel.posts.observe(viewLifecycleOwner, Observer(adapter::submitList))
+        viewModel.networkState.observe(viewLifecycleOwner, Observer(adapter::setNetworkState))
     }
 
 }
 
-internal class FeedViewModel(type: Feed.Type, sort: Feed.Sort) : ViewModel() {
+internal class FeedViewModel(type: Feed.Type, sort: Feed.Sort, repository: ListingRepository) : ViewModel() {
 
-    private val _networkState = MutableLiveData<NetworkState>()
-    private val dataSourceFactory = FeedDataSourceFactory(type, sort, viewModelScope, _networkState)
+    private val feed = repository.feed(type, sort, viewModelScope)
 
-    val networkState: LiveData<NetworkState> = _networkState
-    val posts = LivePagedListBuilder<String, Post>(dataSourceFactory, pageConfig).build()
+    val posts: LiveData<PagedList<Post>> = feed.posts
+    val networkState: LiveData<NetworkState> = feed.networkState
+
+    fun retry() {
+        feed.retry.call()
+    }
 
 }

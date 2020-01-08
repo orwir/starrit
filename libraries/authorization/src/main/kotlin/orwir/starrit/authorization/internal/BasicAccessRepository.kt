@@ -41,12 +41,12 @@ internal class BasicAccessRepository :
 
     override suspend fun accessType(): AccessType =
         when (accessType) {
-            AccessType.AUTHORIZED ->
+            AccessType.Authorized ->
                 try {
                     obtainToken()
-                    AccessType.AUTHORIZED
+                    AccessType.Authorized
                 } catch (e: Exception) {
-                    accessType = AccessType.UNSPECIFIED
+                    accessType = AccessType.Unspecified
                     accessType
                 }
             else -> accessType
@@ -76,7 +76,7 @@ internal class BasicAccessRepository :
 
                 override fun onAnonymous() {
                     token = null
-                    accessType = AccessType.ANONYMOUS
+                    accessType = AccessType.Anonymous
                     onSuccess()
                 }
 
@@ -145,7 +145,7 @@ internal class BasicAccessRepository :
             try {
                 val code = response.getQueryParameter("code")!!
                 token = service.accessToken(code)
-                accessType = AccessType.AUTHORIZED
+                accessType = AccessType.Authorized
                 callback.onSuccess()
             } catch (e: Exception) {
                 callback.onError(e)

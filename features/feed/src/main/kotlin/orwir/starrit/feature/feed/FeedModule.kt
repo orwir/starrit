@@ -19,6 +19,6 @@ internal val feedModule = module {
             .build()
     }
 
-    viewModel { (type: Feed.Type, sort: Feed.Sort) -> FeedViewModel(type, sort) }
+    viewModel { (type: Feed.Type, sort: Feed.Sort) -> FeedViewModel(type, sort, get()) }
 
 }

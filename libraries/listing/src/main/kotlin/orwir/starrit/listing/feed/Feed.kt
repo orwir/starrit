@@ -1,16 +1,17 @@
 package orwir.starrit.listing.feed
 
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
+import orwir.starrit.core.model.NetworkState
+import orwir.starrit.core.model.ActionHolder
 import java.io.Serializable
 import java.util.*
 
 data class Feed(
-    val type: Type,
-    val sort: Sort,
-    val posts: List<Post>,
-    val before: String?,
-    val after: String?
+    val posts: LiveData<PagedList<Post>>,
+    val networkState: LiveData<NetworkState>,
+    val retry: ActionHolder
 ) {
-
     sealed class Type(val subreddit: String) : Serializable {
         object Home : Type("/r/home")
         object Popular : Type("/r/popular")
@@ -29,5 +30,4 @@ data class Feed(
 
         fun asParameter() = name.toLowerCase(Locale.ENGLISH)
     }
-
 }
