@@ -2,9 +2,7 @@ package orwir.starrit.feature.feed
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
@@ -12,6 +10,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.parameter.parametersOf
+import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
 import orwir.starrit.feature.feed.internal.FeedAdapter
 import orwir.starrit.feature.feed.internal.FeedDataSourceFactory
@@ -20,6 +19,7 @@ import orwir.starrit.listing.feed.Feed
 import orwir.starrit.listing.feed.Post
 import orwir.starrit.view.*
 import orwir.videoplayer.bindPlayer
+import timber.log.Timber
 
 private const val TYPE = "type"
 private const val SORT = "sort"
@@ -55,8 +55,10 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
         posts.adapter = adapter
         posts.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.space).toInt()))
 
-        viewModel.posts.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
+        viewModel.posts.observe(viewLifecycleOwner, Observer { adapter.submitList(it) })
+
+        viewModel.networkState.observe(viewLifecycleOwner, Observer {
+            Timber.d("[Feed] networkState=$it")
         })
     }
 
@@ -64,7 +66,10 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
 
 internal class FeedViewModel(type: Feed.Type, sort: Feed.Sort) : ViewModel() {
 
-    val posts = LivePagedListBuilder<String, Post>(FeedDataSourceFactory(type, sort, viewModelScope), pageConfig)
-        .build()
+    private val _networkState = MutableLiveData<NetworkState>()
+    private val dataSourceFactory = FeedDataSourceFactory(type, sort, viewModelScope, _networkState)
+
+    val networkState: LiveData<NetworkState> = _networkState
+    val posts = LivePagedListBuilder<String, Post>(dataSourceFactory, pageConfig).build()
 
 }
