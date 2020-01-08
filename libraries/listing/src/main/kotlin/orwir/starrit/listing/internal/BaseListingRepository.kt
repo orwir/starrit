@@ -19,7 +19,7 @@ internal class BaseListingRepository : ListingRepository, KoinComponent {
     override suspend fun feed(type: Feed.Type, sort: Feed.Sort, before: String?, after: String?, limit: Int?): Feed =
         service.listing(
             base = if (accessRepository.accessType() == AccessType.AUTHORIZED) REDDIT_URL_OAUTH else REDDIT_URL_BASIC,
-            subreddit = type.subreddit,
+            subreddit = type.asParameter(),
             sort = sort.asParameter(),
             before = before,
             after = after,

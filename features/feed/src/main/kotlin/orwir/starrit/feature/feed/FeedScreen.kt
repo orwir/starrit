@@ -46,7 +46,7 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
     }
 
     override fun onBindView(binding: FragmentFeedBinding) {
-        binding.listing = "${type.title()}/${sort.asParameter()}"
+        binding.listing = "${type.subreddit}/${sort.asParameter()}"
         binding.viewModel = viewModel
     }
 
@@ -58,11 +58,6 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
         viewModel.posts.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
-    }
-
-    private fun Feed.Type.title() = when (this) {
-        is Feed.Type.Home -> getString(R.string.home)
-        else -> subreddit
     }
 
 }

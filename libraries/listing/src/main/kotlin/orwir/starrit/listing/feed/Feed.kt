@@ -12,10 +12,12 @@ data class Feed(
 ) {
 
     sealed class Type(val subreddit: String) : Serializable {
-        object Home : Type("")
+        object Home : Type("/r/home")
         object Popular : Type("/r/popular")
         object All : Type("/r/all")
         class Subreddit(name: String) : Type("/r/$name")
+
+        fun asParameter() = if (this is Home) "" else subreddit
     }
 
     enum class Sort {
