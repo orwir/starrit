@@ -17,6 +17,8 @@ import orwir.starrit.listing.adapter.KindAdapter
 import orwir.starrit.listing.adapter.VoteAdapter
 import orwir.starrit.network.CoreInterceptor
 import orwir.starrit.network.NetworkLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 val appModule = module {
 
@@ -35,6 +37,14 @@ val appModule = module {
             .add(KotlinJsonAdapterFactory())
             .add(KindAdapter())
             .add(VoteAdapter())
+            .build()
+    }
+
+    single<Retrofit> {
+        Retrofit.Builder()
+            .baseUrl("http://localhost/")
+            .client(get())
+            .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
     }
 

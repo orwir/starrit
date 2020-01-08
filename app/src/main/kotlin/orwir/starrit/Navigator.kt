@@ -9,7 +9,7 @@ import orwir.starrit.feature.login.LoginFragmentDirections
 import orwir.starrit.feature.login.LoginNavigation
 import orwir.starrit.feature.splash.SplashFragmentDirections
 import orwir.starrit.feature.splash.SplashNavigation
-import orwir.starrit.listing.feed.FeedType
+import orwir.starrit.listing.feed.Feed
 
 class Navigator(
     private val context: Context,
@@ -25,7 +25,8 @@ class Navigator(
     }
 
     override fun openLastFeed() {
-        controller.navigate(SplashFragmentDirections.toFeedFragment(FeedType.Best))
+        val direction = SplashFragmentDirections.toFeedFragment(Feed.Type.Home, Feed.Sort.Best)
+        controller.navigate(direction)
     }
 
     override fun openLogin() {
@@ -33,6 +34,7 @@ class Navigator(
     }
 
     override fun openHomePage() {
-        controller.navigate(LoginFragmentDirections.toFeedFragment(FeedType.Best))
+        val direction = LoginFragmentDirections.toFeedFragment(Feed.Type.Home, Feed.Sort.Best)
+        controller.navigate(direction)
     }
 }

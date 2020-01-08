@@ -16,12 +16,13 @@ import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
 import orwir.starrit.feature.feed.internal.FeedAdapter
 import orwir.starrit.feature.feed.internal.FeedDataSourceFactory
 import orwir.starrit.feature.feed.internal.pageConfig
-import orwir.starrit.listing.feed.FeedType
+import orwir.starrit.listing.feed.Feed
 import orwir.starrit.listing.feed.Post
 import orwir.starrit.view.*
 import orwir.videoplayer.bindPlayer
 
 private const val TYPE = "type"
+private const val SORT = "sort"
 
 class FeedFragment : BaseFragment<FragmentFeedBinding>() {
 
@@ -32,8 +33,9 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
     }
 
     override val inflate: FragmentInflater<FragmentFeedBinding> = FragmentFeedBinding::inflate
-    private val type: FeedType by argument(TYPE)
-    private val viewModel: FeedViewModel by viewModel { parametersOf(type) }
+    private val type: Feed.Type by argument(TYPE)
+    private val sort: Feed.Sort by argument(SORT)
+    private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
     private val navigation: FeedNavigation by activityScope()
     private val adapter = FeedAdapter()
     private val player: ExoPlayer by inject()
@@ -44,7 +46,7 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
     }
 
     override fun onBindView(binding: FragmentFeedBinding) {
-        binding.listing = type.toTitle()
+        binding.listing = "${type.title()}/${sort.asParameter()}"
         binding.viewModel = viewModel
     }
 
@@ -58,14 +60,16 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
         })
     }
 
-    private fun FeedType.toTitle() = when (this) {
-        is FeedType.Best -> getString(R.string.best)
-        is FeedType.Subreddit -> getString(R.string.subreddit, name)
+    private fun Feed.Type.title() = when (this) {
+        is Feed.Type.Home -> getString(R.string.home)
+        else -> subreddit
     }
+
 }
 
-internal class FeedViewModel(type: FeedType) : ViewModel() {
+internal class FeedViewModel(type: Feed.Type, sort: Feed.Sort) : ViewModel() {
 
-    val posts = LivePagedListBuilder<String, Post>(FeedDataSourceFactory(type, viewModelScope), pageConfig).build()
+    val posts = LivePagedListBuilder<String, Post>(FeedDataSourceFactory(type, sort, viewModelScope), pageConfig)
+        .build()
 
 }

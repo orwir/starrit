@@ -3,9 +3,8 @@ package orwir.starrit.listing.model
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Submissions(
+data class Listing(
     val before: String?,
     val after: String?,
-    val modhash: String?,
-    val children: List<Response<Submission>>
+    val children: List<Thing<Submission>>
 )

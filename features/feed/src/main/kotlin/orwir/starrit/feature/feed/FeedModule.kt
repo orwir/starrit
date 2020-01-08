@@ -5,7 +5,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import orwir.starrit.feature.feed.internal.ContentInflater
-import orwir.starrit.listing.feed.FeedType
+import orwir.starrit.listing.feed.Feed
 
 internal val feedModule = module {
 
@@ -19,6 +19,6 @@ internal val feedModule = module {
             .build()
     }
 
-    viewModel { (type: FeedType) -> FeedViewModel(type) }
+    viewModel { (type: Feed.Type, sort: Feed.Sort) -> FeedViewModel(type, sort) }
 
 }

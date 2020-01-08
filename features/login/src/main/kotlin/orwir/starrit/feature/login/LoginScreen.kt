@@ -7,7 +7,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
-import orwir.starrit.authorization.AuthorizationRepository
+import orwir.starrit.authorization.AuthorizationFlowRepository
 import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
 import orwir.starrit.authorization.TokenException
 import orwir.starrit.authorization.model.Step
@@ -81,24 +81,28 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
 }
 
-internal class LoginViewModel(private val repository: AuthorizationRepository) : ViewModel() {
+internal class LoginViewModel(private val authorization: AuthorizationFlowRepository) : ViewModel() {
 
-    val state: LiveData<Step> = repository
-        .authorizationFlow()
+    val state: LiveData<Step> = authorization
+        .flow()
         .asLiveData(viewModelScope.coroutineContext)
 
     val inProgress: LiveData<Boolean> = state.map { it is Step.Start || it is Step.Success }
 
     fun authorize() {
-        repository.authorizationFlowStart()
+        authorization.startFlow()
     }
 
     fun authorize(uri: Uri) {
-        repository.authorizationFlowComplete(uri)
+        authorization.completeFlow(uri)
     }
 
     fun reset() {
-        repository.authorizationFlowReset()
+        authorization.resetFlow()
+    }
+
+    fun anonymous() {
+        authorization.anonymousAccess()
     }
 
 }

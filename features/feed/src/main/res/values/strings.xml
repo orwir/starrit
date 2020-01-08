@@ -2,5 +2,5 @@
 <resources>
     <string name="subreddit">r/%1$s</string>
     <string name="author">u/%1$s</string>
-    <string name="best">Best</string>
+    <string name="home">/r/home</string>
 </resources>

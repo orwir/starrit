@@ -9,10 +9,6 @@ internal class PostResolver(private val context: Context) {
     fun resolve(submission: Submission): Post = submission.run {
         val resources = context.resources
         when {
-            hasText() -> TextPost(
-                submission,
-                resources
-            )
             hasGif() -> GifPost(submission, resources)
             hasImage() -> ImagePost(
                 submission,
@@ -22,13 +18,17 @@ internal class PostResolver(private val context: Context) {
                 submission,
                 resources
             )
+            hasText() -> TextPost(
+                submission,
+                resources
+            )
             else -> LinkPost(submission, resources)
         }
     }
 }
 
 private fun Submission.hasText() =
-    selftextHtml?.isNotBlank() == true || selftext?.isNotBlank() == true
+    selftextHtml?.isNotBlank() == true || selftext?.isNotBlank() == true || domain.startsWith("self.")
 
 private fun Submission.hasImage() = imageUrlOrNull() != null
 

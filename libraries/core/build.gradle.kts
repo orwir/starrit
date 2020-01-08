@@ -46,7 +46,6 @@ dependencies {
     implementation(Library.Squareup.moshi)
     implementation(Library.Squareup.moshi_kotlin)
     implementation(Library.Squareup.retrofit)
-    implementation(Library.Squareup.retrofit_converter_moshi)
 
     unitTestsLibraries()
 }

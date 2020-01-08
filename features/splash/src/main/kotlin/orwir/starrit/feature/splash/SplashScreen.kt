@@ -7,7 +7,8 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
-import orwir.starrit.authorization.AuthorizationRepository
+import orwir.starrit.authorization.AccessRepository
+import orwir.starrit.authorization.model.AccessType
 import orwir.starrit.feature.splash.databinding.FragmentSplashBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
@@ -33,7 +34,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenResumed {
             delay(200)
-            if (viewModel.isAuthorized()) {
+            if (viewModel.hasAccess()) {
                 navigation.openLastFeed()
             } else {
                 navigation.openLogin()
@@ -42,8 +43,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     }
 }
 
-internal class SplashViewModel(private val repository: AuthorizationRepository) : ViewModel() {
+internal class SplashViewModel(private val repository: AccessRepository) : ViewModel() {
 
-    suspend fun isAuthorized(): Boolean = repository.isAuthorized()
+    suspend fun hasAccess(): Boolean = repository.accessType() != AccessType.UNSPECIFIED
 
 }

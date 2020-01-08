@@ -1,33 +1,24 @@
 package orwir.starrit.listing.internal
 
-import orwir.starrit.listing.model.Response
-import orwir.starrit.listing.model.Submissions
+import orwir.starrit.listing.model.Listing
+import orwir.starrit.listing.model.Thing
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface ListingService {
 
-    @GET("/best")
-    suspend fun best(
+    @GET("{base}{subreddit}/{sort}.json")
+    suspend fun listing(
+        @Path("base", encoded = true) base: String,
+        @Path("subreddit", encoded = true) subreddit: String,
+        @Path("sort", encoded = true) sort: String,
         @Query("after") after: String? = null,
         @Query("before") before: String? = null,
         @Query("limit") limit: Int? = null,
-        @Query("include_categories") includeCategories: Boolean = true,
-        @Query("sr_detail") srDetail: Boolean = true,
-        @Query("raw_json") rawJson: Int = 1
-    ): Response<Submissions>
-
-    @GET("/r/{subreddit}/{type}")
-    suspend fun subreddit(
-        @Path("subreddit") subreddit: String,
-        @Path("type") type: String = "hot",
-        @Query("after") after: String? = null,
-        @Query("before") before: String? = null,
-        @Query("limit") limit: Int? = null,
-        @Query("include_categories") includeCategories: Boolean = true,
-        @Query("sr_detail") srDetail: Boolean = true,
-        @Query("raw_json") rawJson: Int = 1
-    ): Response<Submissions>
+        @Query("include_categories") withCategories: Boolean = true,
+        @Query("sr_detail") details: Boolean = true,
+        @Query("raw_json") raw: Int = 1
+    ): Thing<Listing>
 
 }

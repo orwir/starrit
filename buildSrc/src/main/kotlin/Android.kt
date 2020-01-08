@@ -9,7 +9,7 @@ object Android {
 
     object Application {
         fun versionName(project: Project) = project.gradleProperty("versionName", "canary")
-        fun versionCode(project: Project) = project.gradleProperty("versionCode", 2)
+        fun versionCode(project: Project) = project.gradleProperty("versionCode", 3)
     }
 
     object Sdk {

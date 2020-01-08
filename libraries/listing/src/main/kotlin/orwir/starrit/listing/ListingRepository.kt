@@ -1,12 +1,12 @@
 package orwir.starrit.listing
 
 import orwir.starrit.listing.feed.Feed
-import orwir.starrit.listing.feed.FeedType
 
 interface ListingRepository {
 
     suspend fun feed(
-        type: FeedType,
+        type: Feed.Type,
+        sort: Feed.Sort = Feed.Sort.Best,
         before: String? = null,
         after: String? = null,
         limit: Int? = null

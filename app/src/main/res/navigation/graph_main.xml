@@ -49,6 +49,9 @@
         tools:layout="@layout/fragment_feed">
         <argument
             android:name="type"
-            app:argType="orwir.starrit.listing.feed.FeedType" />
+            app:argType="orwir.starrit.listing.feed.Feed$Type" />
+        <argument
+            android:name="sort"
+            app:argType="orwir.starrit.listing.feed.Feed$Sort" />
     </fragment>
 </navigation>

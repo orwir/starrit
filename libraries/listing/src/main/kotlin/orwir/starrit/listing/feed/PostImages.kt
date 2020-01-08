@@ -9,8 +9,7 @@ interface PostImages {
     val source: String
 }
 
-internal class RedditImages(submission: Submission) :
-    PostImages {
+internal class RedditImages(submission: Submission) : PostImages {
 
     override val preview: String = submission.preview
         ?.images
