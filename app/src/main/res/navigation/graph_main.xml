@@ -5,6 +5,12 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/splashFragment">
 
+    <action
+        android:id="@+id/to_authorization"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/splashFragment"
         android:name="orwir.starrit.feature.splash.SplashFragment"
@@ -54,4 +60,5 @@
             android:name="sort"
             app:argType="orwir.starrit.listing.feed.Feed$Sort" />
     </fragment>
+
 </navigation>

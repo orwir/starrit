@@ -37,4 +37,9 @@ class Navigator(
         val direction = LoginFragmentDirections.toFeedFragment(Feed.Type.Home, Feed.Sort.Best)
         controller.navigate(direction)
     }
+
+    fun openAuthorization() {
+        controller.navigate(R.id.to_authorization)
+    }
+
 }

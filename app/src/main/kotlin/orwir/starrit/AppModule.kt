@@ -16,7 +16,6 @@ import orwir.starrit.feature.splash.SplashNavigation
 import orwir.starrit.listing.adapter.KindAdapter
 import orwir.starrit.listing.adapter.VoteAdapter
 import orwir.starrit.network.CoreInterceptor
-import orwir.starrit.network.NetworkLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -48,17 +47,13 @@ val appModule = module {
 
     single {
         OkHttpClient.Builder()
-            .addInterceptor(CoreInterceptor())
-            .addInterceptor(get<AuthorizationInterceptor>())
-            .addInterceptor(
-                NetworkLoggingInterceptor(
-                    if (BuildConfig.DEBUG) {
-                        HttpLoggingInterceptor.Level.BODY
-                    } else {
-                        HttpLoggingInterceptor.Level.NONE
-                    }
-                )
-            )
+            .apply {
+                addInterceptor(CoreInterceptor())
+                addInterceptor(get<AuthorizationInterceptor>())
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+                }
+            }
             .build()
     }
 
