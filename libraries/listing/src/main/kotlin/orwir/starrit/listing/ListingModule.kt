@@ -8,16 +8,10 @@ import orwir.starrit.listing.internal.ListingService
 
 val libListingModule = module {
 
-    single<ListingService> {
-        service(get(), ListingService::class.java)
-    }
+    single { service(get(), ListingService::class.java) }
 
-    single<ListingRepository> {
-        BaseListingRepository()
-    }
+    single<ListingRepository> { BaseListingRepository() }
 
-    single<PostResolver> {
-        PostResolver(get())
-    }
+    single { PostResolver(get()) }
 
 }

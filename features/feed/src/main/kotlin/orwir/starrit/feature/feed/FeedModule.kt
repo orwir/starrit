@@ -9,9 +9,7 @@ import orwir.starrit.listing.feed.Feed
 
 internal val feedModule = module {
 
-    single<ContentInflater> {
-        ContentInflater()
-    }
+    single { ContentInflater() }
 
     single<ExoPlayer> {
         SimpleExoPlayer.Builder(get())

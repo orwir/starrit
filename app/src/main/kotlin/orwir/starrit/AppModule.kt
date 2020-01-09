@@ -23,16 +23,14 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 val appModule = module {
 
     scope(named<MainActivity>()) {
-        scoped { (context: Context, controller: NavController) ->
-            Navigator(context, controller)
-        } binds arrayOf(
+        scoped { (context: Context, controller: NavController) -> Navigator(context, controller) } binds arrayOf(
             SplashNavigation::class,
             LoginNavigation::class,
             FeedNavigation::class
         )
     }
 
-    single<Moshi> {
+    single {
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .add(KindAdapter())
@@ -40,7 +38,7 @@ val appModule = module {
             .build()
     }
 
-    single<Retrofit> {
+    single {
         Retrofit.Builder()
             .baseUrl("http://localhost/")
             .client(get())
@@ -48,7 +46,7 @@ val appModule = module {
             .build()
     }
 
-    single<OkHttpClient> {
+    single {
         OkHttpClient.Builder()
             .addInterceptor(CoreInterceptor())
             .addInterceptor(get<AuthorizationInterceptor>())
