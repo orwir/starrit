@@ -139,5 +139,4 @@ inline fun <reified T> defaultForType(): T =
         else -> throw IllegalArgumentException("Default value not found for type ${T::class}")
     }
 
-fun getKey(thisRef: Any, property: KProperty<*>) =
-    "${thisRef::class.simpleName}.${property.name}"
+fun getKey(thisRef: Any, property: KProperty<*>) = "${thisRef::class.simpleName}.${property.name}"

@@ -9,17 +9,20 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.parameter.parametersOf
+import orwir.starrit.core.di.inject
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
 import orwir.starrit.feature.feed.internal.FeedAdapter
 import orwir.starrit.listing.ListingRepository
 import orwir.starrit.listing.feed.Feed
 import orwir.starrit.listing.feed.Post
-import orwir.starrit.view.*
+import orwir.starrit.view.BaseFragment
+import orwir.starrit.view.FragmentInflater
+import orwir.starrit.view.MarginItemDecoration
+import orwir.starrit.view.argument
 import orwir.videoplayer.bindPlayer
 
 private const val TYPE = "type"
@@ -37,7 +40,7 @@ class FeedFragment : BaseFragment<FragmentFeedBinding>() {
     private val type: Feed.Type by argument(TYPE)
     private val sort: Feed.Sort by argument(SORT)
     private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
-    private val navigation: FeedNavigation by activityScope()
+    private val navigation: FeedNavigation by inject()
     private val player: ExoPlayer by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {

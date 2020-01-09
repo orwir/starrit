@@ -12,10 +12,10 @@ import orwir.starrit.authorization.AuthorizationFlowRepository
 import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
 import orwir.starrit.authorization.TokenException
 import orwir.starrit.authorization.model.Step
+import orwir.starrit.core.di.inject
 import orwir.starrit.feature.login.databinding.FragmentLoginBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
-import orwir.starrit.view.activityScope
 import orwir.starrit.view.showErrorDialog
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
@@ -28,7 +28,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override val inflate: FragmentInflater<FragmentLoginBinding> = FragmentLoginBinding::inflate
     private val viewModel: LoginViewModel by viewModel()
-    private val navigation: LoginNavigation by activityScope()
+    private val navigation: LoginNavigation by inject()
 
     override fun onBindView(binding: FragmentLoginBinding) {
         binding.viewModel = viewModel
@@ -49,6 +49,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 is Step.Failure -> handleFailure(it.exception)
             }
         })
+
     }
 
     override fun onResume() {

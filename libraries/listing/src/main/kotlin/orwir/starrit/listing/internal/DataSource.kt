@@ -7,9 +7,9 @@ import androidx.paging.PagedList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import orwir.starrit.authorization.AccessRepository
+import orwir.starrit.core.di.Injectable
+import orwir.starrit.core.di.inject
 import orwir.starrit.core.model.ActionHolder
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.listing.feed.Feed
@@ -37,7 +37,7 @@ internal class FeedDataSource(
     private val scope: CoroutineScope,
     private val networkState: MutableLiveData<NetworkState>,
     private val retry: ActionHolder
-) : PageKeyedDataSource<String, Post>(), KoinComponent {
+) : PageKeyedDataSource<String, Post>(), Injectable {
 
     private val service: ListingService by inject()
     private val accessRepository: AccessRepository by inject()
@@ -85,7 +85,6 @@ internal class FeedDataSource(
                 ).apply {
                     retry.action = null
                     networkState.postValue(NetworkState.Success)
-
                     callback(
                         data.children.map { resolver.resolve(it.data) },
                         data.before,

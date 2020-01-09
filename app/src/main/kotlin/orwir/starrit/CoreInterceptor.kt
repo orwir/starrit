@@ -1,12 +1,8 @@
-package orwir.starrit.network
+package orwir.starrit
 
 import okhttp3.Interceptor
-import org.koin.core.KoinComponent
-import org.koin.core.get
-import orwir.starrit.BuildConfig
-import orwir.starrit.Navigator
 
-internal class CoreInterceptor : Interceptor, KoinComponent {
+internal class CoreInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain) = chain
         .request()
         .newBuilder()
@@ -18,8 +14,9 @@ internal class CoreInterceptor : Interceptor, KoinComponent {
         .let(chain::proceed)
         .also {
             if (it.code == 401) {
-                val navigator: Navigator = get()
-                navigator.openAuthorization()
+//                val navigator: Navigator = DI.dependency()
+//                val cause = TokenException("Authorization is revoked!", code = TokenException.ErrorCode.ACCESS_DENIED)
+//                navigator.openAuthorization(cause)
             }
         }
 }

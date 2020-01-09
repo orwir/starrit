@@ -14,8 +14,7 @@ import orwir.starrit.listing.feed.Feed
 class Navigator(
     private val context: Context,
     private val controller: NavController
-) : SplashNavigation, LoginNavigation,
-    FeedNavigation {
+) : SplashNavigation, LoginNavigation, FeedNavigation {
 
     override fun openBrowser(uri: Uri) {
         CustomTabsIntent
@@ -39,7 +38,7 @@ class Navigator(
     }
 
     fun openAuthorization() {
-        controller.navigate(R.id.to_authorization)
+        //controller.navigate(NavGraphDirections.toAuthorization(cause))
     }
 
 }

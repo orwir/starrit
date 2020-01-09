@@ -8,15 +8,15 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import orwir.starrit.authorization.AccessRepository
 import orwir.starrit.authorization.AuthorizationFlowRepository
 import orwir.starrit.authorization.BuildConfig.CLIENT_ID
 import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
 import orwir.starrit.authorization.TokenException
 import orwir.starrit.authorization.model.*
-import orwir.starrit.core.extension.KoinedShareable
+import orwir.starrit.core.di.Injectable
+import orwir.starrit.core.di.inject
+import orwir.starrit.core.extension.InjectedShareable
 import orwir.starrit.core.extension.Shareable
 import orwir.starrit.core.extension.enumPref
 import orwir.starrit.core.extension.objPref
@@ -26,8 +26,8 @@ internal class BasicAccessRepository :
     AccessRepository,
     AuthorizationFlowRepository,
     TokenRepository,
-    KoinComponent,
-    Shareable by KoinedShareable(),
+    Injectable,
+    Shareable by InjectedShareable(),
     CoroutineScope by CoroutineScope(Dispatchers.Default) {
 
     private var requestState: String? by objPref()

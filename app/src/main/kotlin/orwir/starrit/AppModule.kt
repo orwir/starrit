@@ -15,7 +15,6 @@ import orwir.starrit.feature.login.LoginNavigation
 import orwir.starrit.feature.splash.SplashNavigation
 import orwir.starrit.listing.adapter.KindAdapter
 import orwir.starrit.listing.adapter.VoteAdapter
-import orwir.starrit.network.CoreInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 

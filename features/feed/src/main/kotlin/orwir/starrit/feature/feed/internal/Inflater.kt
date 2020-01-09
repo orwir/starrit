@@ -2,11 +2,10 @@ package orwir.starrit.feature.feed.internal
 
 import android.view.LayoutInflater
 import android.view.View
+import orwir.starrit.core.di.DI
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.feed.databinding.*
 import orwir.starrit.listing.feed.*
-import orwir.starrit.view.activityScope
-import orwir.starrit.view.get
 import orwir.starrit.view.load
 
 internal class ContentInflater {
@@ -24,7 +23,7 @@ private fun inflateLinkContent(post: LinkPost, inflater: LayoutInflater): View =
         .inflate(inflater)
         .apply {
             this.post = post
-            val navigation: FeedNavigation by activityScope()
+            val navigation: FeedNavigation = DI.dependency()
             listener = View.OnClickListener { navigation.openBrowser(post.link) }
         }
         .root
@@ -60,6 +59,6 @@ private fun inflateVideoContent(post: VideoPost, inflater: LayoutInflater): View
         .inflate(inflater)
         .apply {
             this.post = post
-            playerView.player = get()
+            playerView.player = DI.dependency()
         }
         .root

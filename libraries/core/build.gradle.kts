@@ -30,7 +30,7 @@ dependencies {
 
     // DI
     api(Library.Koin.core)
-    api(Library.Koin.android)
+    api(Library.Koin.android_viewmodel)
 
     // Image Loader
     api(Library.Coil.base)

@@ -9,10 +9,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import orwir.starrit.authorization.AccessRepository
 import orwir.starrit.authorization.model.AccessType
+import orwir.starrit.core.di.inject
 import orwir.starrit.feature.splash.databinding.FragmentSplashBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
-import orwir.starrit.view.activityScope
 
 class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
@@ -24,7 +24,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
     override val inflate: FragmentInflater<FragmentSplashBinding> = FragmentSplashBinding::inflate
     private val viewModel: SplashViewModel by viewModel()
-    private val navigation: SplashNavigation by activityScope()
+    private val navigation: SplashNavigation by inject()
 
     override fun onBindView(binding: FragmentSplashBinding) {
         binding.viewModel = viewModel
