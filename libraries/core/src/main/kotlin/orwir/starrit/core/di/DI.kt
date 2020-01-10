@@ -16,10 +16,9 @@ object DI {
     inline fun <reified T> dependency(
         qualifier: Qualifier? = null,
         noinline parameters: ParametersDefinition? = null
-    ): T =
-        Scopes.app.getOrNull<T>(qualifier, parameters)
-            ?: Scopes.host.getOrNull<T>(qualifier, parameters)
-            ?: Scopes.screen.get(qualifier, parameters)
+    ): T = Scopes.app.getOrNull<T>(qualifier, parameters)
+        ?: Scopes.host.getOrNull<T>(qualifier, parameters)
+        ?: Scopes.screen.get(qualifier, parameters)
 }
 
 object Scopes {

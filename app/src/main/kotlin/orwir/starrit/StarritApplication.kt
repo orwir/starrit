@@ -7,6 +7,7 @@ import orwir.starrit.authorization.libAuthorizationModule
 import orwir.starrit.core.KoinLogger
 import orwir.starrit.core.libCoreModule
 import orwir.starrit.listing.libListingModule
+import orwir.starrit.view.libViewModule
 import timber.log.Timber
 
 class StarritApplication : Application() {
@@ -27,7 +28,8 @@ class StarritApplication : Application() {
 
                     libCoreModule,
                     libAuthorizationModule,
-                    libListingModule
+                    libListingModule,
+                    libViewModule
                 )
             )
         }

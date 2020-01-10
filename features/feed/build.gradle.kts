@@ -16,6 +16,7 @@ dependencies {
     library(Starrit.Library.view)
     library(Starrit.Library.listing)
     library(Starrit.Library.videoplayer)
+    library(Starrit.Library.banner)
     implementation(Library.AndroidX.coordinator_layout)
     implementation(Library.AndroidX.constraint_layout)
     implementation(Library.AndroidX.paging)

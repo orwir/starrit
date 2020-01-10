@@ -23,6 +23,7 @@ object Starrit {
         const val authorization = "authorization"
         const val listing = "listing"
         const val videoplayer = "videoplayer"
+        const val banner = "banner"
     }
 
 }

@@ -34,19 +34,18 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="snap|scroll|enterAlways">
+                app:layout_scrollFlags="snap|scroll|enterAlways"
+                app:title="@{listing}"
+                tools:title="/r/home/best" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="@style/TextAppearance.MyTheme.Headline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:text="@{listing}"
-                    tools:text="r/aww" />
-
-            </com.google.android.material.appbar.MaterialToolbar>
+            <orwir.android.material.banner.Banner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSurface"
+                app:icon="@drawable/ic_share"
+                app:primary_text="test"
+                app:primary_onClick="@{() -> viewModel.test()}"
+                app:text="Your internet connection was lost. We can't upload your photo." />
 
         </com.google.android.material.appbar.AppBarLayout>
 

@@ -24,6 +24,7 @@ import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.MarginItemDecoration
 import orwir.starrit.view.argument
 import orwir.videoplayer.bindPlayer
+import timber.log.Timber
 
 private const val TYPE = "type"
 private const val SORT = "sort"
@@ -74,6 +75,10 @@ internal class FeedViewModel(type: Feed.Type, sort: Feed.Sort, repository: Listi
 
     fun retry() {
         feed.retry.call()
+    }
+
+    fun test() {
+        Timber.d("[Banner] test click")
     }
 
 }
