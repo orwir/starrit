@@ -11,6 +11,10 @@ fun DependencyHandlerScope.library(name: String) {
     add("implementation", project(":libraries:$name"))
 }
 
+fun DependencyHandlerScope.widget(name: String) {
+    add("implementation", project(":widgets:$name"))
+}
+
 fun DependencyHandlerScope.unitTestsLibraries() {
     add("testImplementation", Library.junit)
     add("testImplementation", Library.truth)
