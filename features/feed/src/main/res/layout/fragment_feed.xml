@@ -27,6 +27,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:liftOnScroll="true">
@@ -37,15 +38,6 @@
                 app:layout_scrollFlags="snap|scroll|enterAlways"
                 app:title="@{listing}"
                 tools:title="/r/home/best" />
-
-            <orwir.android.material.banner.Banner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorSurface"
-                app:icon="@drawable/ic_share"
-                app:primary_text="test"
-                app:primary_onClick="@{() -> viewModel.test()}"
-                app:text="Your internet connection was lost. We can't upload your photo." />
 
         </com.google.android.material.appbar.AppBarLayout>
 
