@@ -3,11 +3,13 @@ package orwir.starrit
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import orwir.starrit.authorization.libAuthorizationModule
+import orwir.starrit.authorization.libraryAuthorizationModule
 import orwir.starrit.core.KoinLogger
-import orwir.starrit.core.libCoreModule
-import orwir.starrit.listing.libListingModule
-import orwir.starrit.view.libViewModule
+import orwir.starrit.feature.feed.featureFeedModule
+import orwir.starrit.feature.login.featureLoginModule
+import orwir.starrit.feature.splash.featureSplashModule
+import orwir.starrit.listing.libraryListingModule
+import orwir.starrit.view.libraryViewModule
 import timber.log.Timber
 
 class StarritApplication : Application() {
@@ -22,16 +24,17 @@ class StarritApplication : Application() {
         startKoin {
             androidContext(this@StarritApplication)
             logger(KoinLogger())
-            modules(
-                listOf(
-                    appModule,
+            modules(listOf(
+                applicationModule,
 
-                    libCoreModule,
-                    libAuthorizationModule,
-                    libListingModule,
-                    libViewModule
-                )
-            )
+                libraryAuthorizationModule,
+                libraryListingModule,
+                libraryViewModule,
+
+                featureSplashModule,
+                featureLoginModule,
+                featureFeedModule
+            ))
         }
     }
 

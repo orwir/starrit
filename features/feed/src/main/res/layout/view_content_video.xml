@@ -13,7 +13,7 @@
         android:id="@+id/playerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:coverUrl="@{post.source}"
+        app:coverUrl="@{post.imageSource}"
         app:videoUrl="@{post.video}" />
 
 </layout>

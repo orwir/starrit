@@ -6,27 +6,27 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.BuildConfig
 import orwir.starrit.feature.feed.R
 import orwir.starrit.feature.feed.databinding.ViewNetworkStateBinding
 import orwir.starrit.feature.feed.databinding.ViewPostBinding
 import orwir.starrit.listing.feed.Post
-import orwir.starrit.view.setVisibleOrGone
+import orwir.starrit.view.binding.setVisibleOrGone
 
 internal class FeedAdapter(
+    private val contentInflater: PostContentInflater,
     private val onRetry: () -> Unit
-) : PagedListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback()) {
+) : PagedListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback) {
 
     private var networkState: NetworkState? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
-        R.layout.view_post -> createPostViewHolder(parent)
-        R.layout.view_network_state -> createNetworkStateViewHolder(parent)
-        else -> throw IllegalArgumentException("Unknown viewType: $viewType")
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        when (viewType) {
+            R.layout.view_post -> createPostViewHolder(parent)
+            R.layout.view_network_state -> createNetworkStateViewHolder(parent)
+            else -> throw IllegalArgumentException("Unknown viewType: $viewType")
+        }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
@@ -64,7 +64,7 @@ internal class FeedAdapter(
 
     private fun createPostViewHolder(parent: ViewGroup) = ViewPostBinding
         .inflate(LayoutInflater.from(parent.context), parent, false)
-        .run(::PostViewHolder)
+        .let { PostViewHolder(it, contentInflater) }
 
     private fun createNetworkStateViewHolder(parent: ViewGroup) = ViewNetworkStateBinding
         .inflate(LayoutInflater.from(parent.context), parent, false)
@@ -72,22 +72,22 @@ internal class FeedAdapter(
 
 }
 
-internal class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
+internal object PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.id == newItem.id
     override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem == newItem
 }
 
 internal class PostViewHolder(
-    private val binding: ViewPostBinding
-) : RecyclerView.ViewHolder(binding.root), KoinComponent {
+    private val binding: ViewPostBinding,
+    private val contentInflater: PostContentInflater
+) : RecyclerView.ViewHolder(binding.root) {
 
-    private val inflater: LayoutInflater = LayoutInflater.from(itemView.context)
-    private val content: ContentInflater by inject()
+    private val layoutInflater: LayoutInflater = LayoutInflater.from(itemView.context)
 
     fun bind(post: Post) {
         binding.post = post
         binding.content.removeAllViews()
-        binding.content.addView(content.inflate(post, inflater))
+        binding.content.addView(contentInflater.inflate(post, layoutInflater))
         binding.share.setOnClickListener { share(post) }
     }
 

@@ -6,12 +6,9 @@
     <data>
 
         <variable
-            name="listing"
-            type="String" />
-
-        <variable
             name="viewModel"
             type="orwir.starrit.feature.feed.FeedViewModel" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="snap|scroll|enterAlways"
-                app:title="@{listing}"
+                app:title="@{viewModel.title}"
                 tools:title="/r/home/best" />
 
         </com.google.android.material.appbar.AppBarLayout>

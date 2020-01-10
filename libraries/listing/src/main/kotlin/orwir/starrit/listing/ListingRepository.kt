@@ -4,9 +4,9 @@ import androidx.annotation.MainThread
 import kotlinx.coroutines.CoroutineScope
 import orwir.starrit.listing.feed.Feed
 
+@MainThread
 interface ListingRepository {
 
-    @MainThread
     fun feed(type: Feed.Type, sort: Feed.Sort, scope: CoroutineScope): Feed
 
 }

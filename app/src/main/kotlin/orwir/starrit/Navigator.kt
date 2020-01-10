@@ -32,7 +32,7 @@ class Navigator(
         controller.navigate(SplashFragmentDirections.toLoginFragment())
     }
 
-    override fun openHomePage() {
+    override fun openHomeFeed() {
         val direction = LoginFragmentDirections.toFeedFragment(Feed.Type.Home, Feed.Sort.Best)
         controller.navigate(direction)
     }

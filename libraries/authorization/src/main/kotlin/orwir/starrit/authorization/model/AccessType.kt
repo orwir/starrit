@@ -25,4 +25,6 @@ enum class AccessType {
      * If user [Authorized] send requests to [REDDIT_URL_OAUTH] otherwise [REDDIT_URL_BASIC].
      */
     fun resolveBaseUrl() = if (this == Authorized) REDDIT_URL_OAUTH else REDDIT_URL_BASIC
+
+    fun valid(): Boolean = this == Authorized || this == Anonymous
 }

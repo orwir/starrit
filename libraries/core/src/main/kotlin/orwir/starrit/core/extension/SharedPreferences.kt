@@ -2,16 +2,16 @@ package orwir.starrit.core.extension
 
 import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import orwir.starrit.core.*
-import orwir.starrit.core.di.Injectable
-import orwir.starrit.core.di.inject
 
 interface Shareable {
     val prefs: SharedPreferences
     val moshi: Moshi
 }
 
-class InjectedShareable : Shareable, Injectable {
+class InjectedShareable : Shareable, KoinComponent {
     override val prefs: SharedPreferences by inject()
     override val moshi: Moshi by inject()
 }

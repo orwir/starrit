@@ -1,22 +1,17 @@
 package orwir.starrit.feature.feed
 
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.SimpleExoPlayer
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import orwir.starrit.feature.feed.internal.ContentInflater
+import orwir.starrit.feature.feed.internal.PostContentInflater
 import orwir.starrit.listing.feed.Feed
 
-internal val feedModule = module {
-
-    single { ContentInflater() }
-
-    single<ExoPlayer> {
-        SimpleExoPlayer.Builder(get())
-            .setUseLazyPreparation(true)
-            .build()
-    }
+val featureFeedModule = module {
 
     viewModel { (type: Feed.Type, sort: Feed.Sort) -> FeedViewModel(type, sort, get()) }
+
+    scope(named<FeedFragment>()) {
+        scoped { (navigation: FeedNavigation) -> PostContentInflater(navigation, get(), get()) }
+    }
 
 }

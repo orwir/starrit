@@ -10,6 +10,8 @@ import orwir.starrit.core.util.squeeze
 import orwir.starrit.listing.R
 import orwir.starrit.listing.model.Submission
 import orwir.starrit.listing.model.Subreddit
+import orwir.starrit.listing.util.imageUrlOrNull
+import orwir.starrit.listing.util.isImageUrl
 import orwir.starrit.listing.util.videoOrNull
 
 sealed class Post(submission: Submission, res: Resources) {
@@ -26,6 +28,23 @@ sealed class Post(submission: Submission, res: Resources) {
     val selfDomain: Boolean = domain.startsWith("self.")
     val contentUrl = submission.url
     val postUrl = submission.permalink
+
+    val imagePreview: String = submission.preview
+        ?.images
+        ?.firstOrNull()
+        ?.resolutions
+        ?.firstOrNull()
+        ?.url
+        ?: submission.thumbnail.takeIf(::isImageUrl)
+        ?: ""
+
+    val imageSource: String = submission.preview
+        ?.images
+        ?.firstOrNull()
+        ?.source
+        ?.url
+        ?: submission.imageUrlOrNull()
+        ?: ""
 
     override fun equals(other: Any?) =
         other is Post
@@ -58,19 +77,18 @@ sealed class Post(submission: Submission, res: Resources) {
         postUrl
     )
 
-    private fun prettyScore(submission: Submission, res: Resources) = if (submission.hideScore) {
-        res.getString(R.string.score_hidden)
-    } else {
-        submission.score.squeeze()
-    }
+    private fun prettyScore(submission: Submission, res: Resources) =
+        if (submission.hideScore) {
+            res.getString(R.string.score_hidden)
+        } else {
+            submission.score.squeeze()
+        }
 }
 
 class LinkPost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), PostImages by RedditImages(
-    submission
-) {
+) : Post(submission, resources) {
     val link: Uri = contentUrl.toUri()
     val displayLink: String = link.authority ?: submission.url
 }
@@ -78,16 +96,12 @@ class LinkPost(
 class ImagePost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), PostImages by RedditImages(
-    submission
-)
+) : Post(submission, resources)
 
 class GifPost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), PostImages by RedditImages(
-    submission
-) {
+) : Post(submission, resources) {
     val gif: String = submission.url
 }
 
@@ -101,8 +115,6 @@ class TextPost(
 class VideoPost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), PostImages by RedditImages(
-    submission
-) {
+) : Post(submission, resources) {
     val video: String = submission.videoOrNull() ?: ""
 }

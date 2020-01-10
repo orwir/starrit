@@ -3,19 +3,19 @@ package orwir.starrit.authorization
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import orwir.starrit.authorization.internal.AuthorizationService
-import orwir.starrit.authorization.internal.BasicAccessRepository
-import orwir.starrit.authorization.internal.BasicAuthorizationInterceptor
+import orwir.starrit.authorization.internal.BaseAccessInterceptor
+import orwir.starrit.authorization.internal.BaseAccessRepository
 import orwir.starrit.authorization.internal.TokenRepository
 import orwir.starrit.core.extension.service
 
-val libAuthorizationModule = module {
+val libraryAuthorizationModule = module {
 
-    single<AccessRepository> { BasicAccessRepository() } binds arrayOf(
+    single<AccessRepository> { BaseAccessRepository() } binds arrayOf(
         TokenRepository::class,
-        AuthorizationFlowRepository::class
+        AuthorizationRepository::class
     )
 
-    single<AuthorizationInterceptor> { BasicAuthorizationInterceptor() }
+    single<AccessInterceptor> { BaseAccessInterceptor() }
 
     single { service(get(), AuthorizationService::class.java) }
 

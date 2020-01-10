@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import orwir.starrit.authorization.model.Step
 
 @MainThread
-interface AuthorizationFlowRepository {
+interface AuthorizationRepository {
 
     fun flow(): Flow<Step>
     fun startFlow()

@@ -6,25 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.loadKoinModules
 import orwir.starrit.authorization.AccessRepository
-import orwir.starrit.authorization.model.AccessType
-import orwir.starrit.core.di.inject
 import orwir.starrit.feature.splash.databinding.FragmentSplashBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 
-class SplashFragment : BaseFragment<FragmentSplashBinding>() {
-
-    companion object {
-        init {
-            loadKoinModules(splashModule)
-        }
-    }
+class SplashFragment(navigation: Lazy<SplashNavigation>) : BaseFragment<FragmentSplashBinding>() {
 
     override val inflate: FragmentInflater<FragmentSplashBinding> = FragmentSplashBinding::inflate
     private val viewModel: SplashViewModel by viewModel()
-    private val navigation: SplashNavigation by inject()
+    private val navigation by navigation
 
     override fun onBindView(binding: FragmentSplashBinding) {
         binding.viewModel = viewModel
@@ -45,6 +36,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
 internal class SplashViewModel(private val repository: AccessRepository) : ViewModel() {
 
-    suspend fun hasAccess(): Boolean = repository.accessType() != AccessType.Unspecified
+    suspend fun hasAccess(): Boolean = repository.type().valid()
 
 }

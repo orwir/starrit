@@ -16,7 +16,7 @@ internal interface ListingService {
         @Query("after") after: String? = null,
         @Query("before") before: String? = null,
         @Query("limit") limit: Int? = null,
-        @Query("include_categories") withCategories: Boolean = true,
+        @Query("include_categories") categories: Boolean = true,
         @Query("sr_detail") details: Boolean = true,
         @Query("raw_json") raw: Int = 1
     ): Thing<Listing>

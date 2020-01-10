@@ -4,6 +4,6 @@ import orwir.starrit.authorization.model.AccessType
 
 interface AccessRepository {
 
-    suspend fun accessType(): AccessType
+    suspend fun type(): AccessType
 
 }

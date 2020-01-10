@@ -2,10 +2,22 @@ package orwir.starrit.listing.util
 
 import orwir.starrit.listing.model.Submission
 
-internal fun Submission.imageUrlOrNull(): String? = when {
-    isImageUrl(url) -> url
-    domain == "imgur.com" -> "$url.png"
-    else -> null
-}
+private val IMG_EXTENSIONS =
+    arrayOf(
+        "bmp",
+        "jpg",
+        "jpeg",
+        "png",
+        "svg",
+        "tif",
+        "tiff",
+        "jfif",
+        "pjpeg",
+        "pjp",
+        "ico",
+        "cur"
+    )
 
-internal fun isImageUrl(url: String) = url.endsWith(".png") || url.endsWith(".jpg")
+internal fun Submission.imageUrlOrNull(): String? = url.takeIf(::isImageUrl)
+
+internal fun isImageUrl(url: String): Boolean = IMG_EXTENSIONS.contains(url.substring(url.lastIndexOf(".") + 1))

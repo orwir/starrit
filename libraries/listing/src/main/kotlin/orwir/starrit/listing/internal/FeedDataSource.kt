@@ -7,9 +7,9 @@ import androidx.paging.PagedList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import orwir.starrit.authorization.AccessRepository
-import orwir.starrit.core.di.Injectable
-import orwir.starrit.core.di.inject
 import orwir.starrit.core.model.ActionHolder
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.listing.feed.Feed
@@ -27,8 +27,15 @@ internal class FeedDataSourceFactory(
     private val scope: CoroutineScope,
     private val networkState: MutableLiveData<NetworkState>,
     private val retry: ActionHolder
-) : DataSource.Factory<String, Post>() {
-    override fun create(): DataSource<String, Post> = FeedDataSource(type, sort, scope, networkState, retry)
+) : DataSource.Factory<String, Post>(), KoinComponent {
+
+    private val service: ListingService by inject()
+    private val access: AccessRepository by inject()
+    private val resolver: PostResolver by inject()
+
+    override fun create(): DataSource<String, Post> =
+        FeedDataSource(type, sort, scope, networkState, retry, service, access, resolver)
+
 }
 
 internal class FeedDataSource(
@@ -36,12 +43,11 @@ internal class FeedDataSource(
     private val sort: Feed.Sort,
     private val scope: CoroutineScope,
     private val networkState: MutableLiveData<NetworkState>,
-    private val retry: ActionHolder
-) : PageKeyedDataSource<String, Post>(), Injectable {
-
-    private val service: ListingService by inject()
-    private val accessRepository: AccessRepository by inject()
-    private val resolver: PostResolver by inject()
+    private val retry: ActionHolder,
+    private val service: ListingService,
+    private val access: AccessRepository,
+    private val resolver: PostResolver
+) : PageKeyedDataSource<String, Post>() {
 
     override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<String, Post>) {
         load(limit = params.requestedLoadSize) { posts, before, after ->
@@ -76,7 +82,7 @@ internal class FeedDataSource(
             try {
                 networkState.postValue(NetworkState.Loading)
                 service.listing(
-                    base = accessRepository.accessType().resolveBaseUrl(),
+                    base = access.type().resolveBaseUrl(),
                     subreddit = type.asParameter(),
                     sort = sort.asParameter(),
                     before = before,

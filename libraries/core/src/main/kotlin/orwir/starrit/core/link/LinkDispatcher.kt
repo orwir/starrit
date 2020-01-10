@@ -26,6 +26,7 @@ class LinkDispatcher {
             }
     }
 
+    @MainThread
     fun onLinkReceived(uri: Uri) {
         callbacks.filter { it.test(uri) }.forEach { it.onReceived(uri) }
     }

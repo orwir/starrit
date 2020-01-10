@@ -16,7 +16,7 @@ internal interface AuthorizationService {
     @FormUrlEncoded
     @Headers(BASIC_AUTH)
     @POST(TOKEN_URL)
-    suspend fun accessToken(
+    suspend fun obtainToken(
         @Field("code") code: String,
         @Field("grant_type") type: String = "authorization_code",
         @Field("redirect_uri") uri: String = BuildConfig.REDIRECT_URI

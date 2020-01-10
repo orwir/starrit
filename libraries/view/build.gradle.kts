@@ -1,4 +1,5 @@
 import orwir.gradle.extension.library
+import orwir.gradle.extension.widget
 
 plugins {
     id(Build.Plugin.library)
@@ -13,10 +14,23 @@ android {
 }
 
 dependencies {
+    // Common widgets
     api(Library.AndroidX.appcompat)
     api(Library.AndroidX.material)
     api(Library.AndroidX.fragment)
+    api(Library.AndroidX.lifecycle_viewModel)
+    api(Library.AndroidX.recycler_view)
+    api(Library.AndroidX.coordinator_layout)
+    api(Library.AndroidX.constraint_layout)
+    widget(Starrit.Widget.banner, "api")
+    widget(Starrit.Widget.videoplayer, "api")
+
+    // DI ViewModel extensions
+    api(Library.Koin.android_viewmodel)
+
+    // Image Loader
+    api(Library.Coil.base)
+    implementation(Library.Coil.gif)
 
     library(Starrit.Library.core)
-    implementation(Library.AndroidX.recycler_view)
 }

@@ -4,12 +4,12 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import orwir.starrit.authorization.AuthorizationInterceptor
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import orwir.starrit.authorization.AccessInterceptor
 import orwir.starrit.core.BuildConfig.REDDIT_URL_OAUTH
-import orwir.starrit.core.di.Injectable
-import orwir.starrit.core.di.inject
 
-internal class BasicAuthorizationInterceptor : AuthorizationInterceptor, Injectable {
+internal class BaseAccessInterceptor : AccessInterceptor, KoinComponent {
 
     private val repository: TokenRepository by inject()
 
@@ -24,6 +24,7 @@ internal class BasicAuthorizationInterceptor : AuthorizationInterceptor, Injecta
                 }
             }
         }
+        // todo: check authorization exceptions here
         return chain.proceed(request)
     }
 

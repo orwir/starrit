@@ -31,13 +31,13 @@ inline fun <reified T> objPref(
 ) = object : ReadWriteProperty<Any, T?> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): T? =
-        prefs[key ?: getKey(thisRef, property), ""]
+        prefs[key ?: getPrefKey(thisRef, property), ""]
             .takeIf { it.isNotBlank() }
             ?.let(adapter::to)
             ?: defaultValue
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-        prefs[key ?: getKey(thisRef, property)] = value?.let(adapter::from) ?: ""
+        prefs[key ?: getPrefKey(thisRef, property)] = value?.let(adapter::from) ?: ""
     }
 
 }
@@ -57,10 +57,10 @@ inline fun <reified T : Enum<T>> enumPref(
     defaultValue: T = enumValues<T>().first()
 ) = object : ReadWriteProperty<Any, T> {
     override fun getValue(thisRef: Any, property: KProperty<*>): T =
-        prefs[key ?: getKey(thisRef, property), defaultValue.name].let(::enumValueOf)
+        prefs[key ?: getPrefKey(thisRef, property), defaultValue.name].let(::enumValueOf)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        prefs[key ?: getKey(thisRef, property)] = value.name
+        prefs[key ?: getPrefKey(thisRef, property)] = value.name
     }
 }
 
@@ -79,10 +79,10 @@ inline fun <reified T> pref(
     defaultValue: T = defaultForType()
 ) = object : ReadWriteProperty<Any, T> {
     override fun getValue(thisRef: Any, property: KProperty<*>) =
-        prefs[key ?: getKey(thisRef, property), defaultValue]
+        prefs[key ?: getPrefKey(thisRef, property), defaultValue]
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        prefs[key ?: getKey(thisRef, property)] = value
+        prefs[key ?: getPrefKey(thisRef, property)] = value
     }
 }
 
@@ -139,4 +139,4 @@ inline fun <reified T> defaultForType(): T =
         else -> throw IllegalArgumentException("Default value not found for type ${T::class}")
     }
 
-fun getKey(thisRef: Any, property: KProperty<*>) = "${thisRef::class.simpleName}.${property.name}"
+fun getPrefKey(thisRef: Any, property: KProperty<*>) = "${thisRef::class.simpleName}.${property.name}"

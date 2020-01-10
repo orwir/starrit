@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:padding="@dimen/space">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/description"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"

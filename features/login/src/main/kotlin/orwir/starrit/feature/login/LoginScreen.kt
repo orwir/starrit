@@ -7,29 +7,21 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.loadKoinModules
-import orwir.starrit.authorization.AuthorizationFlowRepository
+import orwir.starrit.authorization.AuthorizationRepository
 import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
 import orwir.starrit.authorization.TokenException
 import orwir.starrit.authorization.model.Step
-import orwir.starrit.core.di.inject
 import orwir.starrit.feature.login.databinding.FragmentLoginBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
-import orwir.starrit.view.observe
-import orwir.starrit.view.showErrorDialog
+import orwir.starrit.view.extension.observe
+import orwir.starrit.view.extension.showErrorDialog
 
-class LoginFragment : BaseFragment<FragmentLoginBinding>() {
-
-    companion object {
-        init {
-            loadKoinModules(loginModule)
-        }
-    }
+class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLoginBinding>() {
 
     override val inflate: FragmentInflater<FragmentLoginBinding> = FragmentLoginBinding::inflate
     private val viewModel: LoginViewModel by viewModel()
-    private val navigation: LoginNavigation by inject()
+    private val navigation by navigation
 
     override fun onBindView(binding: FragmentLoginBinding) {
         binding.viewModel = viewModel
@@ -46,7 +38,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         observe(viewModel.state) {
             when (it) {
                 is Step.Start -> navigation.openBrowser(it.uri)
-                is Step.Success -> navigation.openHomePage()
+                is Step.Success -> navigation.openHomeFeed()
                 is Step.Failure -> handleFailure(it.exception)
             }
         }
@@ -81,7 +73,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
 }
 
-internal class LoginViewModel(private val authorization: AuthorizationFlowRepository) : ViewModel() {
+internal class LoginViewModel(private val authorization: AuthorizationRepository) : ViewModel() {
 
     val state: LiveData<Step> = authorization
         .flow()

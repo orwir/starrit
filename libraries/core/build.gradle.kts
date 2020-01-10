@@ -1,5 +1,4 @@
 import orwir.gradle.extension.stringField
-import orwir.gradle.extension.unitTestsLibraries
 
 plugins {
     id(Build.Plugin.library)
@@ -26,15 +25,11 @@ dependencies {
     api(Library.AndroidX.lifecycle_runtime)
     api(Library.AndroidX.lifecycle_livedata)
     api(Library.AndroidX.lifecycle_extensions)
-    api(Library.AndroidX.lifecycle_viewModel)
 
     // DI
     api(Library.Koin.core)
-    api(Library.Koin.android_viewmodel)
-
-    // Image Loader
-    api(Library.Coil.base)
-    implementation(Library.Coil.gif)
+    api(Library.Koin.android)
+    api(Library.Koin.android_scope)
 
     // Logger
     api(Library.timber)
@@ -44,6 +39,4 @@ dependencies {
     implementation(Library.Squareup.moshi)
     implementation(Library.Squareup.moshi_kotlin)
     implementation(Library.Squareup.retrofit)
-
-    unitTestsLibraries()
 }

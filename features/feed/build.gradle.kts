@@ -1,5 +1,4 @@
 import orwir.gradle.extension.library
-import orwir.gradle.extension.widget
 
 plugins {
     id(Build.Plugin.library)
@@ -16,8 +15,5 @@ dependencies {
     library(Starrit.Library.core)
     library(Starrit.Library.view)
     library(Starrit.Library.listing)
-    widget(Starrit.Widget.videoplayer)
-    implementation(Library.AndroidX.coordinator_layout)
-    implementation(Library.AndroidX.constraint_layout)
     implementation(Library.AndroidX.paging)
 }

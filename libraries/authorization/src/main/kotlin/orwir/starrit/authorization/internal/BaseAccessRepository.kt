@@ -4,29 +4,30 @@ import android.net.Uri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import orwir.starrit.authorization.AccessRepository
-import orwir.starrit.authorization.AuthorizationFlowRepository
+import orwir.starrit.authorization.AuthorizationRepository
 import orwir.starrit.authorization.BuildConfig.CLIENT_ID
 import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
 import orwir.starrit.authorization.TokenException
 import orwir.starrit.authorization.model.*
-import orwir.starrit.core.di.Injectable
-import orwir.starrit.core.di.inject
 import orwir.starrit.core.extension.InjectedShareable
 import orwir.starrit.core.extension.Shareable
 import orwir.starrit.core.extension.enumPref
 import orwir.starrit.core.extension.objPref
 import java.util.*
 
-internal class BasicAccessRepository :
+internal class BaseAccessRepository :
     AccessRepository,
-    AuthorizationFlowRepository,
+    AuthorizationRepository,
     TokenRepository,
-    Injectable,
+    KoinComponent,
     Shareable by InjectedShareable(),
     CoroutineScope by CoroutineScope(Dispatchers.Default) {
 
@@ -34,22 +35,21 @@ internal class BasicAccessRepository :
     private var requestCallback: Callback? = null
     private var responseUri: Uri? = null
     private var token: Token? by objPref()
-    private var accessType: AccessType by enumPref()
+    private var access: AccessType by enumPref()
 
     private val service: AuthorizationService by inject()
     private val scope = listOf(Scope.Identity, Scope.Read).joinToString { it.asParameter() }
 
-    override suspend fun accessType(): AccessType =
-        when (accessType) {
+    override suspend fun type(): AccessType =
+        when (access) {
             AccessType.Authorized ->
                 try {
                     obtainToken()
                     AccessType.Authorized
                 } catch (e: Exception) {
-                    accessType = AccessType.Unspecified
-                    accessType
+                    AccessType.Revoked
                 }
-            else -> accessType
+            else -> access
         }
 
     override suspend fun obtainToken(): Token =
@@ -58,7 +58,7 @@ internal class BasicAccessRepository :
                 try {
                     token = service.refreshToken(it.refresh).copy(refresh = it.refresh)
                 } catch (e: Exception) {
-                    throw TokenException("Token refresh failed!", e)
+                    throw e.takeIf { e is TokenException } ?: TokenException("Token refresh failed!", e)
                 }
             }
             token
@@ -66,45 +66,12 @@ internal class BasicAccessRepository :
 
     @ExperimentalCoroutinesApi
     override fun flow(): Flow<Step> = callbackFlow {
-        if (requestCallback == null) {
-            requestCallback = object : Callback {
-                override fun onStart() {
-                    requestState = requestState ?: UUID.randomUUID().toString()
-                    responseUri = null
-                    offer(Step.Start(buildAuthorizationUri(requestState!!, scope)))
-                }
+        requestCallback = requestCallback ?: createRequestCallback()
 
-                override fun onAnonymous() {
-                    token = null
-                    accessType = AccessType.Anonymous
-                    onSuccess()
-                }
-
-                override fun onSuccess() {
-                    requestState = null
-                    responseUri = null
-                    offer(Step.Success)
-                    channel.close()
-                }
-
-                override fun onError(exception: Exception) {
-                    requestState = null
-                    responseUri = null
-                    offer(Step.Failure(exception))
-                }
-
-                override fun onReset() {
-                    requestState = null
-                    responseUri = null
-                    offer(Step.Idle)
-                }
-            }
-        }
-
-        if (responseUri == null) {
-            offer(Step.Idle)
-        } else {
+        if (isRestored()) {
             completeFlow(responseUri!!)
+        } else {
+            offer(Step.Idle)
         }
 
         awaitClose {
@@ -128,24 +95,24 @@ internal class BasicAccessRepository :
         val callback = requestCallback!!
         val expectedState = requestState!!
         val actualState = response.getQueryParameter("state")
-        val error = response.getQueryParameter("error")
-            ?.toUpperCase(Locale.ENGLISH)
-            ?.let(TokenException.ErrorCode::valueOf)
-
         if (expectedState != actualState) {
             callback.onError(TokenException("Request/Response state mismatch: e:[$expectedState], a:[$actualState]"))
             return
         }
-        if (error != null) {
-            callback.onError(TokenException("API Error: $error", code = error))
+
+        val errorCode = response.getQueryParameter("error")
+            ?.toUpperCase(Locale.ENGLISH)
+            ?.let(TokenException.ErrorCode::valueOf)
+        if (errorCode != null) {
+            callback.onError(TokenException("OAuth error: $errorCode", code = errorCode))
             return
         }
 
         launch {
             try {
                 val code = response.getQueryParameter("code")!!
-                token = service.accessToken(code)
-                accessType = AccessType.Authorized
+                token = service.obtainToken(code)
+                access = AccessType.Authorized
                 callback.onSuccess()
             } catch (e: Exception) {
                 callback.onError(e)
@@ -158,8 +125,48 @@ internal class BasicAccessRepository :
     }
 
     override fun anonymousAccess() {
+        access = AccessType.Anonymous
+        token = null
         requestCallback?.onAnonymous()
     }
+
+    private fun isRestored(): Boolean = responseUri != null
+
+    @ExperimentalCoroutinesApi
+    private fun ProducerScope<Step>.createRequestCallback(): Callback =
+        object : Callback {
+
+            override fun onStart() {
+                onCall(requestState ?: UUID.randomUUID().toString())
+                offer(Step.Start(buildAuthorizationUri(requestState!!, scope)))
+            }
+
+            override fun onAnonymous() {
+                onCall(null)
+                onSuccess()
+            }
+
+            override fun onSuccess() {
+                onCall(null)
+                offer(Step.Success)
+                channel.close()
+            }
+
+            override fun onError(exception: Exception) {
+                onCall(null)
+                offer(Step.Failure(exception))
+            }
+
+            override fun onReset() {
+                onCall(null)
+                offer(Step.Idle)
+            }
+
+            private fun onCall(state: String?) {
+                requestState = state
+                responseUri = null
+            }
+        }
 
 }
 

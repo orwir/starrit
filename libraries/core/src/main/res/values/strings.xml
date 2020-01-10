@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Pretty Date -->
     <string name="df_now">now</string>
     <string name="df_today">%1$dh ago</string>
     <string name="df_yesterday">yesterday HH:mm</string>

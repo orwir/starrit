@@ -2,8 +2,8 @@ package orwir.starrit.listing.feed
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import orwir.starrit.core.model.NetworkState
 import orwir.starrit.core.model.ActionHolder
+import orwir.starrit.core.model.NetworkState
 import java.io.Serializable
 import java.util.*
 

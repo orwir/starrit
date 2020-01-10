@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        app:preview="@{post.preview}"
-        app:source="@{post.source}" />
+        app:preview="@{post.imagePreview}"
+        app:source="@{post.imageSource}" />
 
 </layout>
