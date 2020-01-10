@@ -42,8 +42,4 @@
 
     </style>
 
-    <style name="Widget.MyTheme.GhostTextView" parent="Widget.MaterialComponents.TextView">
-        <item name="colorGhost">@color/color_ghost</item>
-    </style>
-
 </resources>

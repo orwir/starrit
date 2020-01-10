@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import orwir.starrit.core.di.createScope
 import orwir.starrit.core.di.setCurrentHost
-import orwir.starrit.link.LinkDispatcher
+import orwir.starrit.core.link.LinkDispatcher
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    val linkDispatcher: LinkDispatcher = LinkDispatcher()
+    internal val linkDispatcher: LinkDispatcher = LinkDispatcher()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,4 +1,4 @@
-package orwir.starrit.link
+package orwir.starrit.core.link
 
 import android.net.Uri
 

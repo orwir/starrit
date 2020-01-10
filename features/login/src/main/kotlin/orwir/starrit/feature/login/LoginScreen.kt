@@ -16,6 +16,7 @@ import orwir.starrit.core.di.inject
 import orwir.starrit.feature.login.databinding.FragmentLoginBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
+import orwir.starrit.view.observe
 import orwir.starrit.view.showErrorDialog
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
@@ -37,18 +38,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        baseActivity.linkDispatcher.addCallback(this) {
+        onLinkDispatched {
             filter { it.toString().startsWith(REDIRECT_URI) }
             onLinkReceived { viewModel.authorize(it) }
         }
 
-        viewModel.state.observe(viewLifecycleOwner, Observer {
+        observe(viewModel.state) {
             when (it) {
                 is Step.Start -> navigation.openBrowser(it.uri)
                 is Step.Success -> navigation.openHomePage()
                 is Step.Failure -> handleFailure(it.exception)
             }
-        })
+        }
 
     }
 

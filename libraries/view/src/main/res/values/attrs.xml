@@ -25,7 +25,7 @@
     <attr name="colorStrokeColor" format="color" />
 
     <declare-styleable name="Theme">
-        <attr name="ghostTextViewStyle" format="reference" />
+        <attr name="colorGhost" format="color" />
     </declare-styleable>
 
     <!--Label view attributes-->
@@ -63,10 +63,6 @@
         <attr name="shapeFillColor" format="color" />
         <attr name="shapeStrokeColor" format="color" />
         <attr name="shapeAppearanceAttr" format="reference" />
-    </declare-styleable>
-
-    <declare-styleable name="GhostTextView">
-        <attr name="colorGhost" format="color" />
     </declare-styleable>
 
 </resources>

@@ -1,4 +1,4 @@
-package orwir.starrit.link
+package orwir.starrit.core.link
 
 import android.net.Uri
 import androidx.annotation.MainThread
@@ -26,7 +26,7 @@ class LinkDispatcher {
             }
     }
 
-    internal fun onLinkReceived(uri: Uri) {
+    fun onLinkReceived(uri: Uri) {
         callbacks.filter { it.test(uri) }.forEach { it.onReceived(uri) }
     }
 
