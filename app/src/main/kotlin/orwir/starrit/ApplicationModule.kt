@@ -13,6 +13,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import orwir.starrit.authorization.AccessInterceptor
+import orwir.starrit.core.event.EventBus
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.login.LoginNavigation
 import orwir.starrit.feature.splash.SplashNavigation
@@ -61,6 +62,12 @@ val applicationModule = module {
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
     }
+
+    single { EventBus.Low() }
+
+    single { EventBus.Medium() }
+
+    single { EventBus.High() }
 
     scope(named<MainActivity>()) {
         scoped { (context: Context, controller: NavController) -> Navigator(context, controller) } binds arrayOf(

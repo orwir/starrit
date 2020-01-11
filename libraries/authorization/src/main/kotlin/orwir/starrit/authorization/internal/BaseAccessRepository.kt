@@ -4,7 +4,7 @@ import android.net.Uri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.ProducerScope
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -71,7 +71,7 @@ internal class BaseAccessRepository :
         if (isRestored()) {
             completeFlow(responseUri!!)
         } else {
-            offer(Step.Idle)
+            send(Step.Idle)
         }
 
         awaitClose {
@@ -133,33 +133,40 @@ internal class BaseAccessRepository :
     private fun isRestored(): Boolean = responseUri != null
 
     @ExperimentalCoroutinesApi
-    private fun ProducerScope<Step>.createRequestCallback(): Callback =
+    private fun SendChannel<Step>.createRequestCallback(): Callback =
         object : Callback {
 
             override fun onStart() {
-                onCall(requestState ?: UUID.randomUUID().toString())
-                offer(Step.Start(buildAuthorizationUri(requestState!!, scope)))
+                launch {
+                    onCall(requestState ?: UUID.randomUUID().toString())
+                    send(Step.Start(buildAuthorizationUri(requestState!!, scope)))
+                }
             }
 
             override fun onAnonymous() {
-                onCall(null)
                 onSuccess()
             }
 
             override fun onSuccess() {
-                onCall(null)
-                offer(Step.Success)
-                channel.close()
+                launch {
+                    onCall(null)
+                    send(Step.Success)
+                    close()
+                }
             }
 
             override fun onError(exception: Exception) {
-                onCall(null)
-                offer(Step.Failure(exception))
+                launch {
+                    onCall(null)
+                    send(Step.Failure(exception))
+                }
             }
 
             override fun onReset() {
-                onCall(null)
-                offer(Step.Idle)
+                launch {
+                    onCall(null)
+                    send(Step.Idle)
+                }
             }
 
             private fun onCall(state: String?) {
