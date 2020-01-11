@@ -37,4 +37,7 @@ class Navigator(
         controller.navigate(direction)
     }
 
+    override fun openAuthorization() {
+        controller.navigate(NavGraphDirections.toAuthorization())
+    }
 }

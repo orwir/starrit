@@ -4,6 +4,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
+import timber.log.Timber
 
 sealed class EventBus<T> {
 
@@ -16,6 +17,7 @@ sealed class EventBus<T> {
 
     @ExperimentalCoroutinesApi
     suspend fun send(event: T) {
+        Timber.d("[Event] send(): severity=${this::class.simpleName}, payload=$event")
         channel.send(event)
     }
 

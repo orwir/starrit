@@ -13,7 +13,7 @@ class BaseFragmentFactory(private val scope: Scope) : FragmentFactory() {
         when (loadFragmentClass(classLoader, className)) {
             SplashFragment::class.java -> SplashFragment(scope.inject())
             LoginFragment::class.java -> LoginFragment(scope.inject())
-            FeedFragment::class.java -> FeedFragment(scope.inject(), scope.get())
+            FeedFragment::class.java -> FeedFragment(scope.inject())
             else -> super.instantiate(classLoader, className)
         }
 

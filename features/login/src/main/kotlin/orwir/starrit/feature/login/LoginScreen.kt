@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.*
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.starrit.authorization.AuthorizationRepository
 import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
@@ -14,6 +13,7 @@ import orwir.starrit.authorization.model.Step
 import orwir.starrit.feature.login.databinding.FragmentLoginBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
+import orwir.starrit.view.extension.launchWhenResumed
 import orwir.starrit.view.extension.observe
 import orwir.starrit.view.extension.showErrorDialog
 
@@ -47,7 +47,7 @@ class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLo
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launch { resetWhenUserCancelAuthorization() }
+        launchWhenResumed { resetWhenUserCancelAuthorization() }
     }
 
     private fun handleFailure(exception: Exception) {

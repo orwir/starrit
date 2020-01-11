@@ -3,13 +3,13 @@ package orwir.starrit.feature.splash
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.starrit.authorization.AccessRepository
 import orwir.starrit.feature.splash.databinding.FragmentSplashBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
+import orwir.starrit.view.extension.launchWhenResumed
 
 class SplashFragment(navigation: Lazy<SplashNavigation>) : BaseFragment<FragmentSplashBinding>() {
 
@@ -23,7 +23,7 @@ class SplashFragment(navigation: Lazy<SplashNavigation>) : BaseFragment<Fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launchWhenResumed {
+        launchWhenResumed {
             delay(200)
             if (viewModel.hasAccess()) {
                 navigation.openLastFeed()

@@ -36,6 +36,11 @@
                 app:title="@{viewModel.title}"
                 tools:title="/r/home/best" />
 
+            <FrameLayout
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

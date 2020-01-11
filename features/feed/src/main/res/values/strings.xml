@@ -4,4 +4,7 @@
     <string name="author">u/%1$s</string>
     <string name="retry">Retry</string>
     <string name="posts_loading_error">Something went wrong...</string>
+
+    <string name="authorization_revoked">Authorization was revoked. Please authorize again.</string>
+    <string name="authorize">Authorize</string>
 </resources>
