@@ -1,8 +1,6 @@
 package orwir.starrit.authorization.internal
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -33,13 +31,11 @@ internal class BaseAccessInterceptor : AccessInterceptor, KoinComponent {
         }
         val response = chain.proceed(request)
         if (response.code == 401) {
-            GlobalScope.launch {
-                eventBus.send(TokenException("Token was revoked!", code = TokenException.ErrorCode.ACCESS_DENIED))
-            }
+            eventBus.send(TokenException("Token was revoked!", code = TokenException.ErrorCode.ACCESS_DENIED))
         }
         return response
     }
-    
+
     private fun Request.requireAuthorization() = url.toString().startsWith(REDDIT_URL_OAUTH)
 
 }

@@ -2,12 +2,13 @@ package orwir.starrit.feature.feed
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.isActive
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,7 +29,6 @@ import orwir.starrit.view.extension.argument
 import orwir.starrit.view.extension.launchWhenResumed
 import orwir.starrit.view.extension.observe
 import orwir.videoplayer.bindPlayer
-import timber.log.Timber
 
 private const val TYPE = "type"
 private const val SORT = "sort"
@@ -61,33 +61,12 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
         observe(viewModel.posts, adapter::submitList)
         observe(viewModel.networkState, adapter::setNetworkState)
 
-        //todo: be sure that stream is closed and event not saved anywhere after consumption
         launchWhenResumed {
-            for (event in banners.stream) {
-                Timber.d("[Event] received(): $event")
-                handleBannerEvent(event)
-                if (!isActive) {
-                    Timber.d("[Event] coroutine scope closed.")
-                    break
-                }
-            }
-            Timber.d("[Event] reached end of scope.")
+            for (event in banners.stream) handleBannerEvent(event)
         }
-
-        viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
-            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun onDestroy() {
-                Timber.d("[Event] OnLifecycleEvent(ON_DESTROY)")
-            }
-        })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Timber.d("[Event] onDestroyView()")
-    }
-
-    private fun handleBannerEvent(event: Any?) {
+    private fun handleBannerEvent(event: Any) {
         //todo: check event
         banner.removeAllViews()
         BannerBuilder(context!!)
