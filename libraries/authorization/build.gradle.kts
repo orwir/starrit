@@ -1,4 +1,5 @@
 import org.bouncycastle.util.encoders.Base64
+import orwir.gradle.extension.gradlePropertyOrThrow
 import orwir.gradle.extension.library
 import orwir.gradle.extension.stringField
 
@@ -12,7 +13,7 @@ plugins {
 
 android {
     defaultConfig {
-        val clientID: String by project
+        val clientID: String = gradlePropertyOrThrow("clientID", "Don't forget to create an application here https://www.reddit.com/prefs/apps and set a client id to the project.")
         val credentialsB64: String = "$clientID:".toByteArray().run(Base64::toBase64String)
         val schema = Starrit.DeepLink.Authorization.schema
         val host = Starrit.DeepLink.Authorization.host

@@ -9,11 +9,11 @@ inline fun <reified T> Project.gradleProperty(name: String, default: T = default
         default
     } as T
 
-inline fun <reified T> Project.gradleProperty(name: String): T {
+inline fun <reified T> Project.gradlePropertyOrThrow(name: String, message: String = ""): T {
     if (project.hasProperty(name)) {
         return property(name) as T
     }
-    throw IllegalArgumentException("Property [$name] not found!")
+    throw IllegalArgumentException("Property [$name] not found! $message")
 }
 
 inline fun <reified T> defaultForType(): T =
