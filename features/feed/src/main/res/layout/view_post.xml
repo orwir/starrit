@@ -5,17 +5,9 @@
 
     <data>
 
-        <import
-            alias="T"
-            type="orwir.starrit.view.binding.TransformationType" />
-
-        <import
-            alias="C"
-            type="kotlin.collections.CollectionsKt" />
-
         <variable
-            name="post"
-            type="orwir.starrit.listing.feed.Post" />
+            name="viewModel"
+            type="orwir.starrit.feature.feed.internal.adapter.PostViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -36,8 +28,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/subreddit_title"
                 app:placeholder="@{@drawable/ic_subreddit}"
-                app:source="@{post.subreddit.icon}"
-                app:transformations="@{C.listOf(T.CIRCLE)}" />
+                app:source="@{viewModel.icon}"
+                app:transformations="@{viewModel.iconTransformations}" />
 
             <TextView
                 android:id="@+id/subreddit_title"
@@ -47,7 +39,7 @@
                 android:layout_marginStart="@dimen/space"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{@string/subreddit(post.subreddit.name)}"
+                android:text="@{@string/subreddit(viewModel.subreddit)}"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
@@ -64,7 +56,7 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{@string/author(post.author)}"
+                android:text="@{@string/author(viewModel.author)}"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toStartOf="@id/created"
                 app:layout_constraintHorizontal_bias="0"
@@ -79,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space"
-                android:text="@{post.created}"
+                android:text="@{viewModel.created}"
                 app:layout_constraintBaseline_toBaselineOf="@id/author"
                 app:layout_constraintEnd_toStartOf="@id/nsfw"
                 app:layout_constraintStart_toEndOf="@id/author"
@@ -87,7 +79,7 @@
 
             <ImageView
                 android:id="@+id/nsfw"
-                visibleOrGone="@{post.nsfw}"
+                visibleOrGone="@{viewModel.nsfw}"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginStart="@dimen/space"
@@ -99,7 +91,7 @@
 
             <ImageView
                 android:id="@+id/spoiler"
-                visibleOrGone="@{post.spoiler}"
+                visibleOrGone="@{viewModel.spoiler}"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginStart="@dimen/space"
@@ -115,7 +107,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space"
-                android:text="@{post.title}"
+                android:text="@{viewModel.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/created"
@@ -127,10 +119,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@{post.domain}"
+                android:text="@{viewModel.domain}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title"
-                app:visibleOrGone="@{!post.selfDomain}"
+                app:visibleOrGone="@{viewModel.showDomain}"
                 tools:text="domain.com" />
 
             <FrameLayout
@@ -151,7 +143,7 @@
                 android:id="@+id/score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{post.score}"
+                android:text="@{viewModel.score}"
                 app:layout_constraintBottom_toBottomOf="@id/vote_up"
                 app:layout_constraintStart_toEndOf="@id/vote_up"
                 app:layout_constraintTop_toTopOf="@id/vote_up"
@@ -163,8 +155,9 @@
                 android:layout_height="@dimen/button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="false"
-                android:focusable="false"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{viewModel.voteUp}"
                 android:src="@drawable/ic_vote_up"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/content" />
@@ -175,8 +168,9 @@
                 android:layout_height="@dimen/button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="false"
-                android:focusable="false"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{viewModel.voteDown}"
                 android:src="@drawable/ic_vote_down"
                 app:layout_constraintStart_toEndOf="@id/score"
                 app:layout_constraintTop_toBottomOf="@id/content" />
@@ -185,7 +179,7 @@
                 android:id="@+id/comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{post.comments}"
+                android:text="@{viewModel.comments}"
                 app:layout_constraintBottom_toBottomOf="@id/img_comments"
                 app:layout_constraintStart_toEndOf="@id/img_comments"
                 app:layout_constraintTop_toTopOf="@id/img_comments"
@@ -197,8 +191,9 @@
                 android:layout_height="@dimen/button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="false"
-                android:focusable="false"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{viewModel.openComments}"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_comments"
                 app:layout_constraintStart_toEndOf="@id/vote_down"
@@ -212,6 +207,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{viewModel.share}"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_share"
                 app:layout_constraintEnd_toStartOf="@id/more"
@@ -225,6 +221,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{viewModel.more}"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_more_vert"
                 app:layout_constraintEnd_toEndOf="parent"

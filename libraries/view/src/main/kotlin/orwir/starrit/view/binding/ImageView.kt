@@ -1,11 +1,10 @@
 package orwir.starrit.view.binding
 
-import android.content.Context
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import coil.ImageLoader
-import coil.transform.*
+import coil.transform.Transformation
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import orwir.starrit.view.extension.load
@@ -21,11 +20,11 @@ object ImageViewBinding : KoinComponent {
         preview: String? = null,
         placeholder: Drawable? = null,
         error: Drawable? = null,
-        transformations: List<TransformationType>? = null
+        transformations: List<Transformation>? = null
     ) {
         setImageDrawable(placeholder)
         load(preview?.takeIf { it.isNotBlank() } ?: source, loader) {
-            transformations?.let { TransformationType.toCoil(context, it) }?.let(::transformations)
+            transformations?.let(::transformations)
             crossfade(400)
             placeholder(placeholder)
             error(error)
@@ -38,23 +37,4 @@ object ImageViewBinding : KoinComponent {
         }
     }
 
-}
-
-// todo: revise it
-enum class TransformationType {
-    CIRCLE,
-    BLUR,
-    GRAY,
-    ROUNDED;
-
-    companion object {
-        fun toCoil(context: Context, list: List<TransformationType>): List<Transformation>? {
-            val result = mutableListOf<Transformation>()
-            if (list.contains(CIRCLE)) result.add(CircleCropTransformation())
-            if (list.contains(BLUR)) result.add(BlurTransformation(context)) // todo: parameters?
-            if (list.contains(GRAY)) result.add(GrayscaleTransformation())
-            if (list.contains(ROUNDED)) result.add(RoundedCornersTransformation()) // todo: radius
-            return result.takeIf { it.isNotEmpty() }
-        }
-    }
 }

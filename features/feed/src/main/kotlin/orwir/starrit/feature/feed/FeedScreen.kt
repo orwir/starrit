@@ -1,6 +1,7 @@
 package orwir.starrit.feature.feed
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -17,8 +18,8 @@ import orwir.android.material.banner.BannerBuilder
 import orwir.starrit.core.event.EventBus
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
-import orwir.starrit.feature.feed.internal.FeedAdapter
-import orwir.starrit.feature.feed.internal.PostContentInflater
+import orwir.starrit.feature.feed.internal.adapter.FeedAdapter
+import orwir.starrit.feature.feed.internal.content.PostContentBinder
 import orwir.starrit.listing.ListingRepository
 import orwir.starrit.listing.feed.Feed
 import orwir.starrit.listing.feed.Post
@@ -42,7 +43,9 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
     private val player: ExoPlayer by inject()
     private val banners: EventBus.Medium by inject()
     private val navigation by navigation
-    private val contentInflater: PostContentInflater by currentScope.inject { parametersOf(navigation.value) }
+    private val contentBinder: PostContentBinder by currentScope.inject {
+        parametersOf(navigation.value, LayoutInflater.from(requireContext()))
+    }
     private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
 
     override fun onBindView(binding: FragmentFeedBinding) {
@@ -54,7 +57,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.bindPlayer(player)
 
-        val adapter = FeedAdapter(contentInflater, viewModel::retry)
+        val adapter = FeedAdapter(contentBinder, viewModel::retry)
         posts.adapter = adapter
         posts.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.space).toInt()))
 

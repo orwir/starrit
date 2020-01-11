@@ -1,4 +1,4 @@
-package orwir.starrit.feature.feed.internal
+package orwir.starrit.feature.feed.internal.content
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +9,22 @@ import orwir.starrit.feature.feed.databinding.*
 import orwir.starrit.listing.feed.*
 import orwir.starrit.view.extension.load
 
-internal class PostContentInflater(
+internal class PostContentBinder(
     private val navigation: FeedNavigation,
+    private val inflater: LayoutInflater,
     private val player: ExoPlayer,
     private val imageLoader: ImageLoader
 ) {
 
-    fun inflate(post: Post, inflater: LayoutInflater): View = when (post) {
+    fun inflateAndBind(post: Post): View = when (post) {
         is TextPost -> inflateTextContent(post, inflater)
         is GifPost -> inflateGifContent(post, inflater)
         is ImagePost -> inflateImageContent(post, inflater)
         is VideoPost -> inflateVideoContent(post, inflater)
         is LinkPost -> inflateLinkContent(post, inflater)
     }
+
+    //todo: revisit inflaters methods
 
     private fun inflateLinkContent(post: LinkPost, inflater: LayoutInflater): View =
         ViewContentLinkBinding

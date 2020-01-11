@@ -1,22 +1,19 @@
-package orwir.starrit.feature.feed.internal
+package orwir.starrit.feature.feed.internal.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import orwir.starrit.core.model.NetworkState
-import orwir.starrit.feature.feed.BuildConfig
 import orwir.starrit.feature.feed.R
 import orwir.starrit.feature.feed.databinding.ViewNetworkStateBinding
 import orwir.starrit.feature.feed.databinding.ViewPostBinding
+import orwir.starrit.feature.feed.internal.content.PostContentBinder
 import orwir.starrit.listing.feed.Post
-import orwir.starrit.view.binding.setVisibleOrGone
 
 internal class FeedAdapter(
-    private val contentInflater: PostContentInflater,
-    private val onRetry: () -> Unit
+    private val contentBinder: PostContentBinder,
+    private val retryHandler: () -> Unit
 ) : PagedListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback) {
 
     private var networkState: NetworkState? = null
@@ -64,64 +61,10 @@ internal class FeedAdapter(
 
     private fun createPostViewHolder(parent: ViewGroup) = ViewPostBinding
         .inflate(LayoutInflater.from(parent.context), parent, false)
-        .let { PostViewHolder(it, contentInflater) }
+        .let { PostViewHolder(it, contentBinder) }
 
     private fun createNetworkStateViewHolder(parent: ViewGroup) = ViewNetworkStateBinding
         .inflate(LayoutInflater.from(parent.context), parent, false)
-        .let { NetworkStateViewHolder(it, onRetry) }
-
-}
-
-internal object PostDiffCallback : DiffUtil.ItemCallback<Post>() {
-    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.id == newItem.id
-    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem == newItem
-}
-
-internal class PostViewHolder(
-    private val binding: ViewPostBinding,
-    private val contentInflater: PostContentInflater
-) : RecyclerView.ViewHolder(binding.root) {
-
-    private val layoutInflater: LayoutInflater = LayoutInflater.from(itemView.context)
-
-    fun bind(post: Post) {
-        binding.post = post
-        binding.content.removeAllViews()
-        binding.content.addView(contentInflater.inflate(post, layoutInflater))
-        binding.share.setOnClickListener { share(post) }
-    }
-
-    private fun share(post: Post) {
-        val content = Intent().apply {
-            action = Intent.ACTION_SEND
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, post.contentUrl)
-        }
-        itemView.context.startActivity(Intent.createChooser(content, post.title))
-    }
-
-}
-
-internal class NetworkStateViewHolder(
-    private val binding: ViewNetworkStateBinding,
-    private val onRetry: () -> Unit
-) : RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(networkState: NetworkState?) {
-        binding.apply {
-            loading.setVisibleOrGone(networkState is NetworkState.Loading)
-            retry.setVisibleOrGone(networkState is NetworkState.Failure)
-            retry.setOnClickListener { onRetry.invoke() }
-            error.setVisibleOrGone(networkState is NetworkState.Failure)
-            error.text = if (networkState is NetworkState.Failure) networkState.message() else ""
-        }
-    }
-
-    private fun NetworkState.Failure.message() =
-        if (BuildConfig.DEBUG) {
-            error.message
-        } else {
-            itemView.context.getText(R.string.posts_loading_error)
-        }
+        .let { NetworkStateViewHolder(it, retryHandler) }
 
 }
