@@ -28,8 +28,8 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_open_in_new"
-            app:preview="@{post.imagePreview}"
-            app:source="@{post.imageSource}" />
+            app:preview="@{post.preview}"
+            app:source="@{post.source}" />
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/TextAppearance.MyTheme.Headline6"
