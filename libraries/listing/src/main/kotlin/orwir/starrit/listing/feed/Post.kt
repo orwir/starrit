@@ -96,7 +96,15 @@ class LinkPost(
 class ImagePost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources)
+) : Post(submission, resources) {
+    private val image = submission.preview
+        ?.images
+        ?.firstOrNull()
+        ?.resolutions
+        ?.firstOrNull()
+    val imageWidth: Int = image?.width ?: 0
+    val imageHeight: Int = image?.height ?: 0
+}
 
 class GifPost(
     submission: Submission,

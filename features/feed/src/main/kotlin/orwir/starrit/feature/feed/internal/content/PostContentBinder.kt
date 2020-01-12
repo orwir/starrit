@@ -1,5 +1,6 @@
 package orwir.starrit.feature.feed.internal.content
 
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
@@ -7,10 +8,12 @@ import androidx.lifecycle.Observer
 import coil.ImageLoader
 import com.google.android.exoplayer2.ExoPlayer
 import orwir.starrit.feature.feed.FeedNavigation
+import orwir.starrit.feature.feed.R
 import orwir.starrit.feature.feed.databinding.*
 import orwir.starrit.listing.feed.*
 import orwir.starrit.view.binding.ImageViewBinding.load
 import orwir.starrit.view.binding.setVisibleOrGone
+import orwir.starrit.view.extension.getColorFromAttr
 import orwir.starrit.view.extension.load
 
 internal class PostContentBinder(
@@ -44,9 +47,12 @@ internal class PostContentBinder(
         ViewContentImageBinding
             .inflate(inflater)
             .apply {
-                //todo: #51
+                val colorGhost = image.context.getColorFromAttr(R.attr.colorGhost)
+                val placeholder = ColorDrawable(colorGhost).apply {
+                    setBounds(0, 0, post.imageWidth, post.imageHeight)
+                }
                 image
-                    .load(post.imageSource, post.imagePreview)
+                    .load(post.imageSource, post.imagePreview, placeholder)
                     .observe(owner, Observer(loading::setVisibleOrGone))
             }
             .root
