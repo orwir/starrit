@@ -1,7 +1,6 @@
 package orwir.starrit.feature.feed
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -40,12 +39,10 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
     private val type: Feed.Type by argument(TYPE)
     private val sort: Feed.Sort by argument(SORT)
 
+    internal val navigation by navigation
     private val player: ExoPlayer by inject()
     private val banners: EventBus.Medium by inject()
-    private val navigation by navigation
-    private val contentBinder: PostContentBinder by currentScope.inject { // todo: potential leak here because it have to be viewLifecycleOwner
-        parametersOf(viewLifecycleOwner, navigation.value, LayoutInflater.from(requireContext()))
-    }
+    private val contentBinder: PostContentBinder by currentScope.inject()
     private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
 
     override fun onBindView(binding: FragmentFeedBinding) {
@@ -54,6 +51,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
 
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        currentScope.declare(this)
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.bindPlayer(player)
 

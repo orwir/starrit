@@ -14,6 +14,6 @@ internal fun PostContentBinder.ImageContent(post: ImagePost): View =
         .apply {
             val placeholder = image.context.createImagePlaceholder(post)
             val loading = image.load(post.source, post.preview, placeholder)
-            loading.observe(owner, Observer(progress::setVisibleOrGone))
+            loading.observe(owner.value!!, Observer(progress::setVisibleOrGone))
         }
         .root

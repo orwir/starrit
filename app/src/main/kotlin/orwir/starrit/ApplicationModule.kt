@@ -1,8 +1,7 @@
 package orwir.starrit
 
 import android.app.Application
-import android.content.Context
-import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.squareup.moshi.Moshi
@@ -70,7 +69,10 @@ val applicationModule = module {
     single { EventBus.High() }
 
     scope(named<MainActivity>()) {
-        scoped { (context: Context, controller: NavController) -> Navigator(context, controller) } binds arrayOf(
+        scoped {
+            val activity = get<MainActivity>()
+            Navigator(activity, activity.findNavController(R.id.navhost))
+        } binds arrayOf(
             SplashNavigation::class,
             LoginNavigation::class,
             FeedNavigation::class

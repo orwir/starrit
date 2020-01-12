@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import coil.ImageLoader
 import com.google.android.exoplayer2.ExoPlayer
 import orwir.starrit.feature.feed.FeedNavigation
@@ -14,7 +15,7 @@ import orwir.starrit.listing.feed.*
 import orwir.starrit.view.extension.getColorFromAttr
 
 internal class PostContentBinder(
-    val owner: LifecycleOwner,
+    val owner: LiveData<LifecycleOwner>,
     val navigation: FeedNavigation,
     val inflater: LayoutInflater,
     val player: ExoPlayer,
