@@ -43,8 +43,8 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
     private val player: ExoPlayer by inject()
     private val banners: EventBus.Medium by inject()
     private val navigation by navigation
-    private val contentBinder: PostContentBinder by currentScope.inject {
-        parametersOf(navigation.value, LayoutInflater.from(requireContext()))
+    private val contentBinder: PostContentBinder by currentScope.inject { // todo: potential leak here because it have to be viewLifecycleOwner
+        parametersOf(viewLifecycleOwner, navigation.value, LayoutInflater.from(requireContext()))
     }
     private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
 

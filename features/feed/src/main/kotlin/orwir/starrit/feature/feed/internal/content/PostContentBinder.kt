@@ -2,21 +2,26 @@ package orwir.starrit.feature.feed.internal.content
 
 import android.view.LayoutInflater
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import coil.ImageLoader
 import com.google.android.exoplayer2.ExoPlayer
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.feed.databinding.*
 import orwir.starrit.listing.feed.*
+import orwir.starrit.view.binding.ImageViewBinding.load
+import orwir.starrit.view.binding.setVisibleOrGone
 import orwir.starrit.view.extension.load
 
 internal class PostContentBinder(
+    private val owner: LifecycleOwner,
     private val navigation: FeedNavigation,
     private val inflater: LayoutInflater,
     private val player: ExoPlayer,
     private val imageLoader: ImageLoader
 ) {
 
-    fun inflateAndBind(post: Post): View = when (post) {
+    fun inflate(post: Post): View = when (post) {
         is TextPost -> inflateTextContent(post, inflater)
         is GifPost -> inflateGifContent(post, inflater)
         is ImagePost -> inflateImageContent(post, inflater)
@@ -38,7 +43,12 @@ internal class PostContentBinder(
     private fun inflateImageContent(post: ImagePost, inflater: LayoutInflater): View =
         ViewContentImageBinding
             .inflate(inflater)
-            .also { it.post = post }
+            .apply {
+                //todo: #51
+                image
+                    .load(post.imageSource, post.imagePreview)
+                    .observe(owner, Observer(loading::setVisibleOrGone))
+            }
             .root
 
     private fun inflateGifContent(post: GifPost, inflater: LayoutInflater): View =

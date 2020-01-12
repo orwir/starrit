@@ -18,7 +18,7 @@ internal class PostViewHolder(
     fun bind(post: Post) {
         binding.viewModel = PostViewModel(post, ::clickHandler)
         binding.content.removeAllViews()
-        binding.content.addView(contentBinder.inflateAndBind(post))
+        binding.content.addView(contentBinder.inflate(post))
     }
 
     private fun clickHandler(view: View, post: Post) {

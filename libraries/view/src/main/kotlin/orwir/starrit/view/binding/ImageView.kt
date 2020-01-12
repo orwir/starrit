@@ -3,6 +3,7 @@ package orwir.starrit.view.binding
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import coil.ImageLoader
 import coil.transform.Transformation
 import org.koin.core.KoinComponent
@@ -21,20 +22,41 @@ object ImageViewBinding : KoinComponent {
         placeholder: Drawable? = null,
         error: Drawable? = null,
         transformations: List<Transformation>? = null
-    ) {
-        setImageDrawable(placeholder)
-        load(preview?.takeIf { it.isNotBlank() } ?: source, loader) {
-            transformations?.let(::transformations)
-            crossfade(400)
-            placeholder(placeholder)
-            error(error)
-            target {
-                setImageDrawable(it)
-                if (preview?.isNotBlank() == true) {
-                    load(source, null, it, error, transformations)
+    ): LiveData<Boolean> = object : LiveData<Boolean>() {
+
+        init {
+            postValue(true)
+            loadInternal(source, preview, placeholder, error, transformations)
+        }
+
+        private fun loadInternal(
+            source: String,
+            preview: String? = null,
+            placeholder: Drawable? = null,
+            error: Drawable? = null,
+            transformations: List<Transformation>? = null
+        ) {
+            setImageDrawable(placeholder)
+            load(preview?.takeIf { it.isNotBlank() } ?: source, loader) {
+                transformations?.let(::transformations)
+                crossfade(400)
+                placeholder(placeholder)
+                target(onError = ::onError) {
+                    setImageDrawable(it)
+                    if (preview?.isNotBlank() == true) {
+                        loadInternal(source, null, it, error, transformations)
+                    } else {
+                        postValue(false)
+                    }
                 }
             }
         }
+
+        private fun onError(error: Drawable?) {
+            setImageDrawable(error)
+            postValue(false)
+        }
+
     }
 
 }
