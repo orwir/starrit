@@ -1,7 +1,6 @@
 package orwir.starrit.feature.feed.internal.content
 
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import orwir.starrit.feature.feed.databinding.ViewContentGifBinding
@@ -10,7 +9,7 @@ import orwir.starrit.view.binding.ImageViewBinding.load
 import orwir.starrit.view.binding.setVisibleOrGone
 
 @Suppress("FunctionName")
-internal fun PostContentBinder.GifContent(post: GifPost, owner: LifecycleOwner): View =
+internal fun PostContentBinder.GifContent(post: GifPost): View =
     ViewContentGifBinding
         .inflate(inflater)
         .apply {

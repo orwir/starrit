@@ -15,11 +15,10 @@ val featureFeedModule = module {
         scoped {
             val fragment = get<FeedFragment>()
             PostContentBinder(
-                fragment.viewLifecycleOwnerLiveData,
-                fragment.navigation,
-                LayoutInflater.from(fragment.context),
-                get(),
-                get()
+                navigation = fragment.navigation,
+                inflater = LayoutInflater.from(fragment.context),
+                player = get(),
+                ownerLiveData = fragment.viewLifecycleOwnerLiveData
             )
         }
     }

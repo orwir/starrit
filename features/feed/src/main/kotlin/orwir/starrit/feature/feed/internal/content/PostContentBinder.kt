@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import coil.ImageLoader
 import com.google.android.exoplayer2.ExoPlayer
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.feed.R
@@ -15,17 +14,19 @@ import orwir.starrit.listing.feed.*
 import orwir.starrit.view.extension.getColorFromAttr
 
 internal class PostContentBinder(
-    val owner: LiveData<LifecycleOwner>,
     val navigation: FeedNavigation,
     val inflater: LayoutInflater,
     val player: ExoPlayer,
-    val imageLoader: ImageLoader
+    private val ownerLiveData: LiveData<LifecycleOwner>
 ) {
+
+    val owner: LifecycleOwner
+        get() = ownerLiveData.value ?: throw IllegalStateException("Lifecycle owner not set!")
 
     fun inflate(post: Post): View = when (post) {
         is TextPost -> TextContent(post)
-        is GifPost -> GifContent(post, owner.value!!)
-        is ImagePost -> ImageContent(post, owner.value!!)
+        is GifPost -> GifContent(post)
+        is ImagePost -> ImageContent(post)
         is VideoPost -> VideoContent(post)
         is LinkPost -> LinkContent(post)
     }
