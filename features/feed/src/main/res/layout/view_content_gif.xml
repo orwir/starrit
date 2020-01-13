@@ -1,44 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-        <variable
-            name="post"
-            type="orwir.starrit.listing.feed.GifPost" />
-
-        <variable
-            name="playing"
-            type="Boolean" />
-
-        <variable
-            name="listener"
-            type="android.view.View.OnClickListener" />
-    </data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:focusable="true"
-        android:onClick="@{listener::onClick}">
+        android:focusable="true">
 
         <ImageView
             android:id="@+id/gif"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            app:preview="@{post.preview}"
-            app:source="@{post.source}" />
+            android:adjustViewBounds="true" />
 
         <ImageView
-            android:id="@+id/cap"
+            android:id="@+id/caption"
             android:layout_width="64dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_gif"
-            app:visibleOrGone="@{!playing}" />
+            android:src="@drawable/ic_gif" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="start|bottom" />
     </FrameLayout>
 
 </layout>

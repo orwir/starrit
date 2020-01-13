@@ -17,8 +17,7 @@ fun prettyDate(ms: Long, res: Resources): String {
     }
 }
 
-private fun toDateString(date: Long, format: String) =
-    SimpleDateFormat(format, Locale.ENGLISH).format(date)
+private fun toDateString(date: Long, format: String) = SimpleDateFormat(format, Locale.ENGLISH).format(date)
 
 private fun isLessThanHour(diff: Long): Boolean = TimeUnit.MILLISECONDS.toHours(diff) < 1L
 

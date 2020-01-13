@@ -38,7 +38,7 @@ object Library {
     }
 
     object Coil {
-        private const val version = "0.8.0"
+        private const val version = "0.9.1"
 
         const val coil = "io.coil-kt:coil:$version"
         const val base = "io.coil-kt:coil-base:$version"

@@ -3,60 +3,64 @@ package orwir.starrit.view.binding
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
 import coil.ImageLoader
+import coil.api.load
+import coil.request.LoadRequestBuilder
+import coil.request.RequestDisposable
 import coil.transform.Transformation
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.starrit.view.extension.load
 
+//todo: lifecycle / detach aware
 object ImageViewBinding : KoinComponent {
 
     private val loader: ImageLoader by inject()
 
     @JvmStatic
     @BindingAdapter("source", "preview", "placeholder", "error", "transformations", requireAll = false)
+    fun ImageView.setImageData(
+        source: String,
+        preview: String? = null,
+        placeholder: Drawable? = null,
+        error: Drawable? = null,
+        transformations: List<Transformation>? = null
+    ) {
+        GlobalScope.launch { load(source, preview, placeholder, error, transformations).collect { } }
+    }
+
+    // todo: fix me - fast scrolling / up scrolling breaks loading
     fun ImageView.load(
         source: String,
         preview: String? = null,
         placeholder: Drawable? = null,
         error: Drawable? = null,
         transformations: List<Transformation>? = null
-    ): LiveData<Boolean> = object : LiveData<Boolean>() {
+    ): Flow<Boolean> = flow {
 
-        init {
-            value = true
-            loadInternal(source, preview, placeholder, error, transformations)
+        fun invokeRequest(url: String, placeholder: Drawable?) = load(url) {
+            crossfade(200)
+            transformations?.let(::transformations)
+            placeholder(placeholder)
+            error(error)
         }
 
-        private fun loadInternal(
-            source: String,
-            preview: String? = null,
-            placeholder: Drawable? = null,
-            error: Drawable? = null,
-            transformations: List<Transformation>? = null
-        ) {
-            setImageDrawable(placeholder)
-            load(preview?.takeIf { it.isNotBlank() } ?: source, loader) {
-                transformations?.let(::transformations)
-                crossfade(400)
-                placeholder(placeholder)
-                target(onError = ::onError) {
-                    setImageDrawable(it)
-                    if (preview?.isNotBlank() == true) {
-                        loadInternal(source, null, it, error, transformations)
-                    } else {
-                        value = false
-                    }
-                }
-            }
+        emit(false)
+        invokeRequest(preview?.takeIf { it.isNotBlank() } ?: source, placeholder).await()
+        if (preview?.isNotBlank() == true) {
+            invokeRequest(source, drawable).await()
         }
-
-        private fun onError(error: Drawable?) {
-            setImageDrawable(error)
-            value = false
-        }
-
+        emit(true)
     }
+
+    fun ImageView.load(image: String, config: LoadRequestBuilder.() -> Unit = {}): RequestDisposable =
+        loader.load(context, image) {
+            target(this@load)
+            apply(config)
+        }
 
 }

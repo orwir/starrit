@@ -15,6 +15,7 @@ import orwir.starrit.core.model.NetworkState
 import orwir.starrit.listing.feed.Feed
 import orwir.starrit.listing.feed.Post
 import orwir.starrit.listing.feed.PostResolver
+import timber.log.Timber
 
 internal val pageConfig = PagedList.Config.Builder()
     .setPageSize(25)
@@ -100,6 +101,7 @@ internal class FeedDataSource(
             } catch (e: Exception) {
                 retry.action = { load(before, after, limit, callback) }
                 networkState.postValue(NetworkState.Failure(e))
+                Timber.e(e)
             }
         }
     }

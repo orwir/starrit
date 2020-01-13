@@ -1,19 +1,26 @@
 package orwir.starrit.feature.feed.internal.content
 
 import android.view.View
-import androidx.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
 import orwir.starrit.feature.feed.databinding.ViewContentImageBinding
 import orwir.starrit.listing.feed.ImagePost
 import orwir.starrit.view.binding.ImageViewBinding.load
 import orwir.starrit.view.binding.setVisibleOrGone
 
 @Suppress("FunctionName")
-internal fun PostContentBinder.ImageContent(post: ImagePost): View =
+internal fun PostContentBinder.ImageContent(post: ImagePost, owner: LifecycleOwner): View =
     ViewContentImageBinding
         .inflate(inflater)
         .apply {
             val placeholder = image.context.createImagePlaceholder(post)
-            val loading = image.load(post.source, post.preview, placeholder)
-            loading.observe(owner.value!!, Observer(progress::setVisibleOrGone))
+            // todo: cancel on detach
+            owner.lifecycleScope.launchWhenResumed {
+                image.load(post.source, post.preview, placeholder)
+                    .collect {
+                        progress.setVisibleOrGone(!it)
+                    }
+            }
         }
         .root

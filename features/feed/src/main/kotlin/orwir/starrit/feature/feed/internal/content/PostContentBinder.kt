@@ -24,8 +24,8 @@ internal class PostContentBinder(
 
     fun inflate(post: Post): View = when (post) {
         is TextPost -> TextContent(post)
-        is GifPost -> GifContent(post)
-        is ImagePost -> ImageContent(post)
+        is GifPost -> GifContent(post, owner.value!!)
+        is ImagePost -> ImageContent(post, owner.value!!)
         is VideoPost -> VideoContent(post)
         is LinkPost -> LinkContent(post)
     }
