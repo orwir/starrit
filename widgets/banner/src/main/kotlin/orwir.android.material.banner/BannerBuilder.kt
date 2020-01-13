@@ -16,44 +16,38 @@ class BannerBuilder(private val context: Context) {
         return this
     }
 
-    fun setIcon(@DrawableRes iconId: Int): BannerBuilder {
+    fun setIcon(@DrawableRes iconId: Int) = apply {
         banner.setIcon(iconId)
-        return this
     }
 
-    fun setIcon(icon: Drawable?): BannerBuilder {
+    fun setIcon(icon: Drawable?) = apply {
         banner.setIcon(icon)
-        return this
     }
 
-    fun setMessage(@StringRes messsageId: Int): BannerBuilder {
+    fun setMessage(@StringRes messsageId: Int) = apply {
         banner.setMessage(messsageId)
-        return this
     }
 
-    fun setMessage(message: CharSequence?): BannerBuilder {
+    fun setMessage(message: CharSequence?) = apply {
         banner.setMessage(message)
-        return this
     }
 
-    fun setPrimaryButton(@StringRes textId: Int, listener: OnBannerButtonClick): BannerBuilder {
-        return setPrimaryButton(context.resources.getText(textId), listener)
+    fun setPrimaryButton(@StringRes textId: Int, listener: OnBannerButtonClick) = apply {
+        setPrimaryButton(context.resources.getText(textId), listener)
     }
 
-    fun setPrimaryButton(text: CharSequence, listener: OnBannerButtonClick): BannerBuilder {
+    fun setPrimaryButton(text: CharSequence, listener: OnBannerButtonClick) = apply {
         banner.setPrimaryText(text)
         banner.setPrimaryButtonListener(listener)
-        return this
     }
 
-    fun setSecondaryButton(@StringRes textId: Int, listener: OnBannerButtonClick): BannerBuilder {
-        return setSecondaryButton(context.resources.getText(textId), listener)
+    fun setSecondaryButton(@StringRes textId: Int, listener: OnBannerButtonClick) = apply {
+        setSecondaryButton(context.resources.getText(textId), listener)
     }
 
-    fun setSecondaryButton(text: CharSequence, listener: OnBannerButtonClick): BannerBuilder {
+    fun setSecondaryButton(text: CharSequence, listener: OnBannerButtonClick) = apply {
         banner.setSecondaryText(text)
         banner.setSecondaryButtonListener(listener)
-        return this
     }
 
     fun show(): Banner {
