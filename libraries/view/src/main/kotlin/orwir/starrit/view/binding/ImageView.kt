@@ -25,7 +25,7 @@ object ImageViewBinding : KoinComponent {
     ): LiveData<Boolean> = object : LiveData<Boolean>() {
 
         init {
-            postValue(true)
+            value = true
             loadInternal(source, preview, placeholder, error, transformations)
         }
 
@@ -46,7 +46,7 @@ object ImageViewBinding : KoinComponent {
                     if (preview?.isNotBlank() == true) {
                         loadInternal(source, null, it, error, transformations)
                     } else {
-                        postValue(false)
+                        value = false
                     }
                 }
             }
@@ -54,7 +54,7 @@ object ImageViewBinding : KoinComponent {
 
         private fun onError(error: Drawable?) {
             setImageDrawable(error)
-            postValue(false)
+            value = false
         }
 
     }
