@@ -12,7 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 fun Context.getThemeColor(@AttrRes attr: Int): Int =
     obtainStyledAttributes(intArrayOf(attr)).run {
         try {
-            getColor(0, Color.TRANSPARENT)
+            getColor(0, Color.MAGENTA)
         } finally {
             recycle()
         }
