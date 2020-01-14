@@ -11,6 +11,6 @@ dependencies {
     implementation(Library.Kotlin.std)
     implementation(Library.Kotlin.coroutines)
     implementation(Library.Kotlin.reflect)
+    implementation(Library.AndroidX.material)
     implementation(Library.AndroidX.constraint_layout)
-    implementation(Library.Coil.coil)
 }
