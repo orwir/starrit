@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-//todo: lifecycle / detach aware
 object ImageViewBinding : KoinComponent {
 
     private val loader: ImageLoader by inject()
@@ -33,7 +32,6 @@ object ImageViewBinding : KoinComponent {
         GlobalScope.launch { load(source, preview, placeholder, error, transformations).collect { } }
     }
 
-    // todo: fix me - fast scrolling / up scrolling breaks loading
     fun ImageView.load(
         source: String,
         preview: String? = null,
@@ -42,11 +40,11 @@ object ImageViewBinding : KoinComponent {
         transformations: List<Transformation>? = null
     ): Flow<Boolean> = flow {
 
-        fun invokeRequest(url: String, placeholder: Drawable?) = load(url) {
-            crossfade(200)
+        fun invokeRequest(url: String, placeholder: Drawable?) = loader.load(context, url) {
             transformations?.let(::transformations)
             placeholder(placeholder)
             error(error)
+            target(this@load)
         }
 
         emit(false)
