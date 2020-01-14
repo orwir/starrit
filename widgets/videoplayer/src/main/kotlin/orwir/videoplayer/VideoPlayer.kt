@@ -9,8 +9,10 @@ import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import kotlinx.android.synthetic.main.videoplayer.view.*
+import kotlinx.android.synthetic.main.videoplayer_controls.view.*
 
 class VideoPlayer @JvmOverloads constructor(
     context: Context,
@@ -18,23 +20,28 @@ class VideoPlayer @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    var player: ExoPlayer? = null
+    lateinit var player: ExoPlayer
     val cover: ImageView by lazy { vp_cover }
-    private var video: MediaSource? = null
+
+    private lateinit var video: MediaSource
+    private val listener = object : Player.EventListener {
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            when (playbackState) {
+                Player.STATE_BUFFERING -> {
+                }
+                Player.STATE_READY -> {
+                }
+                Player.STATE_IDLE -> {
+                }
+                Player.STATE_ENDED -> stop()
+            }
+        }
+    }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.videoplayer, this, true)
-        stop()
-
-//        player_root.setOnClickListener {
-//            PlayerHolder.swap(this)
-//            player_view.visibility = View.VISIBLE // todo: move UI changes to separate method
-//            player_play.visibility = View.GONE
-//            player_view.player = player
-//            player_view.controllerAutoShow = false
-//            player.prepare(source, true, true)
-//            player.playWhenReady = true
-//        }
+        vp_cover.setOnClickListener { start() }
+        exo_stop.setOnClickListener { stop() }
     }
 
     override fun onDetachedFromWindow() {
@@ -50,19 +57,20 @@ class VideoPlayer @JvmOverloads constructor(
         vp_cover.setImageDrawable(drawable)
     }
 
-    fun play() {
-
-    }
-
-    fun pause() {
-
+    fun start() {
+        VideoPlayerHolder.swap(this)
+        vp_content.player = player
+        player.addListener(listener)
+        player.prepare(video, true, true)
+        player.audioComponent?.volume = 0F
+        vp_content.visibility = View.VISIBLE
+        vp_content.hideController()
     }
 
     fun stop() {
-        player?.stop(true)
-        vp_play.visibility = View.VISIBLE
-        vp_pause.visibility = View.GONE
-        vp_stop.visibility = View.GONE
+        player.removeListener(listener)
+        player.stop(true)
+        vp_content.visibility = View.GONE
     }
 
     internal fun release() {
