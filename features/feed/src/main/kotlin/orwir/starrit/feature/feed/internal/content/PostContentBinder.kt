@@ -5,12 +5,19 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ExoPlayer
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.feed.R
 import orwir.starrit.listing.feed.*
+import orwir.starrit.view.binding.ImageViewBinding.load
+import orwir.starrit.view.binding.setVisibleOrGone
 import orwir.starrit.view.extension.getColorFromAttr
 
 internal class PostContentBinder(
@@ -38,6 +45,13 @@ internal class PostContentBinder(
         val placeholder = ColorDrawable(color)
         placeholder.setBounds(0, 0, image.width, image.height)
         return placeholder
+    }
+
+    fun ImageData.loadImageData(image: ImageView, progress: ProgressBar) {
+        val placeholder = image.context.createImagePlaceholder(this)
+        owner.lifecycleScope.launch {
+            image.load(source, preview, placeholder).collect { progress.setVisibleOrGone(it) }
+        }
     }
 
 }

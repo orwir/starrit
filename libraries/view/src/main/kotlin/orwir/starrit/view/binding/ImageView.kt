@@ -3,6 +3,7 @@ package orwir.starrit.view.binding
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.coroutineScope
 import coil.ImageLoader
 import coil.api.load
 import coil.request.LoadRequestBuilder
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import orwir.starrit.view.extension.getLifecycle
 
 object ImageViewBinding : KoinComponent {
 
@@ -29,7 +31,9 @@ object ImageViewBinding : KoinComponent {
         error: Drawable? = null,
         transformations: List<Transformation>? = null
     ) {
-        GlobalScope.launch { load(source, preview, placeholder, error, transformations).collect { } }
+        (context.getLifecycle()?.coroutineScope ?: GlobalScope).launch {
+            load(source, preview, placeholder, error, transformations).collect {}
+        }
     }
 
     fun ImageView.load(
@@ -40,19 +44,18 @@ object ImageViewBinding : KoinComponent {
         transformations: List<Transformation>? = null
     ): Flow<Boolean> = flow {
 
-        fun invokeRequest(url: String, placeholder: Drawable?) = loader.load(context, url) {
+        fun invokeRequest(url: String, placeholder: Drawable?) = load(url) {
             transformations?.let(::transformations)
             placeholder(placeholder)
             error(error)
-            target(this@load)
         }
 
-        emit(false)
+        emit(true)
         invokeRequest(preview?.takeIf { it.isNotBlank() } ?: source, placeholder).await()
         if (preview?.isNotBlank() == true) {
             invokeRequest(source, drawable).await()
         }
-        emit(true)
+        emit(false)
     }
 
     fun ImageView.load(image: String, config: LoadRequestBuilder.() -> Unit = {}): RequestDisposable =
