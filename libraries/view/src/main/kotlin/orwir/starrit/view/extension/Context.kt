@@ -2,17 +2,21 @@ package orwir.starrit.view.extension
 
 import android.content.Context
 import android.content.ContextWrapper
-import android.util.TypedValue
+import android.graphics.Color
 import androidx.annotation.AttrRes
-import androidx.core.content.ContextCompat
+import androidx.annotation.ColorInt
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 
-fun Context.getColorFromAttr(@AttrRes attr: Int): Int {
-    val outValue = TypedValue()
-    theme.resolveAttribute(attr, outValue, true)
-    return ContextCompat.getColor(this, outValue.resourceId)
-}
+@ColorInt
+fun Context.getThemeColor(@AttrRes attr: Int): Int =
+    obtainStyledAttributes(intArrayOf(attr)).run {
+        try {
+            getColor(0, Color.TRANSPARENT)
+        } finally {
+            recycle()
+        }
+    }
 
 fun Context.getLifecycle(): Lifecycle? {
     var context = this

@@ -18,7 +18,7 @@ import orwir.starrit.feature.feed.R
 import orwir.starrit.listing.feed.*
 import orwir.starrit.view.binding.ImageViewBinding.load
 import orwir.starrit.view.binding.setVisibleOrGone
-import orwir.starrit.view.extension.getColorFromAttr
+import orwir.starrit.view.extension.getThemeColor
 
 internal class PostContentBinder(
     val navigation: FeedNavigation,
@@ -41,7 +41,7 @@ internal class PostContentBinder(
     }
 
     fun Context.createImagePlaceholder(image: ImageData): Drawable {
-        val color = getColorFromAttr(R.attr.colorGhost)
+        val color = getThemeColor(R.attr.colorGhost)
         val placeholder = ColorDrawable(color)
         placeholder.setBounds(0, 0, image.width, image.height)
         return placeholder
