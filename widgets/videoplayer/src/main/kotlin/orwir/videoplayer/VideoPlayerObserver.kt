@@ -6,11 +6,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.exoplayer2.ExoPlayer
 
-fun LifecycleOwner.bindPlayer(player: ExoPlayer) {
-    lifecycle.addObserver(PlayerObserver(player))
+fun LifecycleOwner.bindVideoPlayer(player: ExoPlayer) {
+    lifecycle.addObserver(VideoPlayerObserver(player))
 }
 
-class PlayerObserver(private val player: ExoPlayer) : LifecycleObserver {
+class VideoPlayerObserver(private val player: ExoPlayer) : LifecycleObserver {
 
     private var playOnResume: Boolean = false
 

@@ -28,7 +28,7 @@ import orwir.starrit.view.MarginItemDecoration
 import orwir.starrit.view.extension.argument
 import orwir.starrit.view.extension.launchWhenResumed
 import orwir.starrit.view.extension.observe
-import orwir.videoplayer.bindPlayer
+import orwir.videoplayer.bindVideoPlayer
 
 private const val TYPE = "type"
 private const val SORT = "sort"
@@ -53,7 +53,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         currentScope.declare(this)
         super.onViewCreated(view, savedInstanceState)
-        viewLifecycleOwner.bindPlayer(player)
+        viewLifecycleOwner.bindVideoPlayer(player)
 
         val adapter = FeedAdapter(contentBinder, viewModel::retry)
         posts.adapter = adapter

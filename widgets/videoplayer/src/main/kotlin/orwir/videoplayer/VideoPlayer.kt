@@ -6,22 +6,25 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import kotlinx.android.synthetic.main.videoplayer.view.*
 
-class PlayerView @JvmOverloads constructor(
+class VideoPlayer @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    lateinit var player: ExoPlayer
-    private lateinit var video: MediaSource
+    var player: ExoPlayer? = null
+    val cover: ImageView by lazy { vp_cover }
+    private var video: MediaSource? = null
 
     init {
         LayoutInflater.from(context).inflate(R.layout.videoplayer, this, true)
+        stop()
 
 //        player_root.setOnClickListener {
 //            PlayerHolder.swap(this)
@@ -36,19 +39,19 @@ class PlayerView @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        PlayerHolder.releaseSelf(this)
+        VideoPlayerHolder.releaseSelf(this)
+    }
+
+    fun setVideo(uri: Uri) {
+        video = uri.toMediaSource(context)
     }
 
     fun setCover(drawable: Drawable?) {
-        player_cover.setImageDrawable(drawable)
-    }
-
-    fun setVideo(url: String) {
-        video = Uri.parse(url).toMediaSource(context)
+        vp_cover.setImageDrawable(drawable)
     }
 
     fun play() {
-        
+
     }
 
     fun pause() {
@@ -56,9 +59,10 @@ class PlayerView @JvmOverloads constructor(
     }
 
     fun stop() {
-        player.stop(true)
-        player_view.visibility = View.GONE
-        player_play.visibility = View.VISIBLE
+        player?.stop(true)
+        vp_play.visibility = View.VISIBLE
+        vp_pause.visibility = View.GONE
+        vp_stop.visibility = View.GONE
     }
 
     internal fun release() {

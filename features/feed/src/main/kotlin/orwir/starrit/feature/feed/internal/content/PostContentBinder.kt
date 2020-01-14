@@ -40,18 +40,18 @@ internal class PostContentBinder(
         }
     }
 
-    fun Context.createImagePlaceholder(image: ImageData): Drawable {
+    fun ImageData.loadImageData(image: ImageView, progress: ProgressBar? = null) {
+        val placeholder = image.context.createImagePlaceholder(this)
+        owner.lifecycleScope.launch {
+            image.load(source, preview, placeholder).collect { progress?.setVisibleOrGone(it) }
+        }
+    }
+
+    private fun Context.createImagePlaceholder(image: ImageData): Drawable {
         val color = getThemeColor(R.attr.colorGhost)
         val placeholder = ColorDrawable(color)
         placeholder.setBounds(0, 0, image.width, image.height)
         return placeholder
-    }
-
-    fun ImageData.loadImageData(image: ImageView, progress: ProgressBar) {
-        val placeholder = image.context.createImagePlaceholder(this)
-        owner.lifecycleScope.launch {
-            image.load(source, preview, placeholder).collect { progress.setVisibleOrGone(it) }
-        }
     }
 
 }

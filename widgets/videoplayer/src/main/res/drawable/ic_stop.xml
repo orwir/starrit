@@ -8,6 +8,6 @@
       android:fillColor="#000000"
       android:fillAlpha="0.8"/>
   <path
-      android:pathData="M16,10V38L38,24L16,10Z"
+      android:pathData="M12,12H36V36H12V12Z"
       android:fillColor="#ffffff"/>
 </vector>

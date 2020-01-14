@@ -22,7 +22,6 @@ internal fun Uri.toMediaSource(context: Context): MediaSource {
         type.contains("m3u8") ->
             HlsMediaSource.Factory(factory).createMediaSource(this)
         else ->
-            DashMediaSource.Factory(DefaultDashChunkSource.Factory(factory), factory)
-                .createMediaSource(this)
+            DashMediaSource.Factory(DefaultDashChunkSource.Factory(factory), factory).createMediaSource(this)
     }
 }

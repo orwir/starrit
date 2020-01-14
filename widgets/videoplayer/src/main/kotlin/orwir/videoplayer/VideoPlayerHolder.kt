@@ -3,18 +3,18 @@ package orwir.videoplayer
 import androidx.annotation.MainThread
 import java.lang.ref.WeakReference
 
-internal object PlayerHolder {
+internal object VideoPlayerHolder {
 
-    private var holder: WeakReference<PlayerView?>? = null
+    private var holder: WeakReference<VideoPlayer?>? = null
 
     @MainThread
-    fun swap(view: PlayerView) {
+    fun swap(view: VideoPlayer) {
         holder?.get()?.release()
         holder = WeakReference(view)
     }
 
     @MainThread
-    fun releaseSelf(view: PlayerView) {
+    fun releaseSelf(view: VideoPlayer) {
         if (view == holder?.get()) {
             view.release()
             holder = null

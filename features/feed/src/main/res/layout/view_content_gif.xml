@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/caption"
-            android:layout_width="64dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/ic_gif" />
 
