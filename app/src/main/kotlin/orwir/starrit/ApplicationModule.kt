@@ -16,6 +16,7 @@ import orwir.starrit.core.event.EventBus
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.login.LoginNavigation
 import orwir.starrit.feature.splash.SplashNavigation
+import orwir.starrit.listing.adapter.FeedTypeAdapter
 import orwir.starrit.listing.adapter.KindAdapter
 import orwir.starrit.listing.adapter.VoteAdapter
 import retrofit2.Retrofit
@@ -48,9 +49,10 @@ val applicationModule = module {
 
     single {
         Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
             .add(KindAdapter())
             .add(VoteAdapter())
+            .add(FeedTypeAdapter())
+            .add(KotlinJsonAdapterFactory())
             .build()
     }
 

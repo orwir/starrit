@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Feed Screen -->
     <string name="subreddit">r/%1$s</string>
     <string name="author">u/%1$s</string>
     <string name="retry">Retry</string>
     <string name="posts_loading_error">Something went wrong...</string> <!-- TODO: rewrite message -->
-
     <string name="menu_open_selection">Selection</string>
-
     <string name="authorization_revoked">Authorization was revoked. Please authorize again.</string> <!-- TODO: rework notifications -->
     <string name="authorize">Authorize</string> <!-- TODO: rework notifications -->
+
+    <!-- Selection Screen -->
+    <string name="dropdown_type_hint">Type</string>
+    <string name="dropdown_sort_hint">Sort</string>
+
 </resources>

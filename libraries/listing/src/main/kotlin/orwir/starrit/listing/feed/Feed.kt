@@ -7,15 +7,19 @@ import orwir.starrit.core.model.NetworkState
 import java.io.Serializable
 import java.util.*
 
+internal const val HOME = "/r/home"
+internal const val POPULAR = "/r/popular"
+internal const val ALL = "/r/all"
+
 data class Feed(
     val posts: LiveData<PagedList<Post>>,
     val networkState: LiveData<NetworkState>,
     val retry: ActionHolder
 ) {
     sealed class Type(val subreddit: String) : Serializable {
-        object Home : Type("/r/home")
-        object Popular : Type("/r/popular")
-        object All : Type("/r/all")
+        object Home : Type(HOME)
+        object Popular : Type(POPULAR)
+        object All : Type(ALL)
         class Subreddit(name: String) : Type("/r/$name")
 
         fun asParameter() = if (this is Home) "" else subreddit
