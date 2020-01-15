@@ -23,6 +23,8 @@ data class Feed(
         class Subreddit(name: String) : Type("/r/$name")
 
         fun asParameter() = if (this is Home) "" else subreddit
+
+        override fun toString(): String = subreddit.substring(3)
     }
 
     enum class Sort {
@@ -33,5 +35,7 @@ data class Feed(
         Rising;
 
         fun asParameter() = name.toLowerCase(Locale.ENGLISH)
+
+        override fun toString(): String = name.toLowerCase(Locale.ENGLISH)
     }
 }

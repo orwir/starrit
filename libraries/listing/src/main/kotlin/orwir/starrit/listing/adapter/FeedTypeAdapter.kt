@@ -10,11 +10,7 @@ import orwir.starrit.listing.feed.POPULAR
 class FeedTypeAdapter {
     @ToJson
     fun to(type: Feed.Type): String =
-        if (type is Feed.Type.Subreddit) {
-            type.subreddit.substring(3)
-        } else {
-            type.subreddit
-        }
+        if (type is Feed.Type.Subreddit) type.toString() else type.subreddit
 
     @FromJson
     fun from(raw: String): Feed.Type =
