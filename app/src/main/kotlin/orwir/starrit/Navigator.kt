@@ -24,7 +24,7 @@ class Navigator(
     }
 
     override fun openLastFeed() {
-        val direction = SplashFragmentDirections.toFeedFragment(Feed.Type.Home, Feed.Sort.Best)
+        val direction = SplashFragmentDirections.toFeed(Feed.Type.Home, Feed.Sort.Best)
         controller.navigate(direction)
     }
 
@@ -33,7 +33,7 @@ class Navigator(
     }
 
     override fun openHomeFeed() {
-        val direction = LoginFragmentDirections.toFeedFragment(Feed.Type.Home, Feed.Sort.Best)
+        val direction = LoginFragmentDirections.toFeed(Feed.Type.Home, Feed.Sort.Best)
         controller.navigate(direction)
     }
 

@@ -4,6 +4,7 @@ plugins {
     id(Build.Plugin.library)
     id(Build.Plugin.kotlin_android)
     id(Build.Plugin.kotlin_android_extensions)
+    id(Build.Plugin.kotlin_navigation_safeargs)
     id(Build.Plugin.simple_android)
 }
 

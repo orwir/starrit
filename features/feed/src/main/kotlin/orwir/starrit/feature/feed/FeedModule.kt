@@ -11,6 +11,8 @@ val featureFeedModule = module {
 
     viewModel { (type: Feed.Type, sort: Feed.Sort) -> FeedViewModel(type, sort, get()) }
 
+    viewModel { (type: Feed.Type, sort: Feed.Sort) -> SelectionViewModel(type, sort, get()) }
+
     scope(named<FeedFragment>()) {
         scoped {
             val fragment = get<FeedFragment>()
@@ -24,3 +26,6 @@ val featureFeedModule = module {
     }
 
 }
+
+internal const val FEED_TYPE = "type"
+internal const val FEED_SORT = "sort"

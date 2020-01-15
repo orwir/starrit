@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
@@ -30,16 +31,13 @@ import orwir.starrit.view.extension.launchWhenResumed
 import orwir.starrit.view.extension.observe
 import orwir.videoplayer.bindVideoPlayer
 
-private const val TYPE = "type"
-private const val SORT = "sort"
-
 class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeedBinding>() {
     override val inflate: FragmentInflater<FragmentFeedBinding> = FragmentFeedBinding::inflate
 
-    private val type: Feed.Type by argument(TYPE)
-    private val sort: Feed.Sort by argument(SORT)
-
+    internal val type: Feed.Type by argument(FEED_TYPE)
+    internal val sort: Feed.Sort by argument(FEED_SORT)
     internal val navigation by navigation
+
     private val player: ExoPlayer by inject()
     private val banners: EventBus.Medium by inject()
     private val contentBinder: PostContentBinder by currentScope.inject()
@@ -51,8 +49,9 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
 
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        currentScope.declare(this)
         super.onViewCreated(view, savedInstanceState)
+        inflateMenu()
+        currentScope.declare(this)
         viewLifecycleOwner.bindVideoPlayer(player)
 
         val adapter = FeedAdapter(contentBinder, viewModel::retry)
@@ -64,6 +63,24 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
 
         launchWhenResumed {
             for (event in banners.stream) handleBannerEvent(event)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        currentScope.close()
+    }
+
+    private fun inflateMenu() {
+        toolbar.inflateMenu(R.menu.menu_feed)
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.open_selection -> {
+                    findNavController().navigate(FeedFragmentDirections.toSelectionFragment(type, sort))
+                    true
+                }
+                else -> false
+            }
         }
     }
 

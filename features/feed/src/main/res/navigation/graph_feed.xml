@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/graph_feed"
+    app:startDestination="@id/feedFragment">
+
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="orwir.starrit.feature.feed.FeedFragment"
+        android:label="FeedFragment">
+        <action
+            android:id="@+id/to_selectionFragment"
+            app:destination="@id/selectionFragment" />
+        <argument
+            android:name="type"
+            app:argType="orwir.starrit.listing.feed.Feed$Type" />
+        <argument
+            android:name="sort"
+            app:argType="orwir.starrit.listing.feed.Feed$Sort" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectionFragment"
+        android:name="orwir.starrit.feature.feed.SelectionFragment"
+        android:label="SelectionFragment">
+        <action
+            android:id="@+id/to_feedFragment"
+            app:destination="@id/feedFragment"
+            app:popUpTo="@id/feedFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="type"
+            app:argType="orwir.starrit.listing.feed.Feed$Type" />
+        <argument
+            android:name="sort"
+            app:argType="orwir.starrit.listing.feed.Feed$Sort" />
+    </fragment>
+
+</navigation>
