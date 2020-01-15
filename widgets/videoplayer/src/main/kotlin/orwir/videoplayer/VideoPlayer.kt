@@ -33,7 +33,8 @@ class VideoPlayer @JvmOverloads constructor(
                 }
                 Player.STATE_IDLE -> {
                 }
-                Player.STATE_ENDED -> stop()
+                Player.STATE_ENDED -> {
+                }
             }
         }
     }
@@ -63,6 +64,7 @@ class VideoPlayer @JvmOverloads constructor(
         player.addListener(listener)
         player.prepare(video, true, true)
         player.audioComponent?.volume = 0F
+        player.playWhenReady = true
         vp_content.visibility = View.VISIBLE
         vp_content.hideController()
     }
