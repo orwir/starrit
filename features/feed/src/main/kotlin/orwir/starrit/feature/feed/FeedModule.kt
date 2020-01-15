@@ -9,6 +9,8 @@ import orwir.starrit.listing.feed.Feed
 
 val featureFeedModule = module {
 
+    single { FeedPreferences() }
+
     viewModel { (type: Feed.Type, sort: Feed.Sort) -> FeedViewModel(type, sort, get()) }
 
     viewModel { (type: Feed.Type, sort: Feed.Sort) -> SelectionViewModel(type, sort, get()) }

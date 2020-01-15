@@ -20,7 +20,7 @@ import orwir.starrit.authorization.model.*
 import orwir.starrit.core.extension.InjectedShareable
 import orwir.starrit.core.extension.Shareable
 import orwir.starrit.core.extension.enumPref
-import orwir.starrit.core.extension.objPref
+import orwir.starrit.core.extension.nullableObjPref
 import java.util.*
 
 internal class BaseAccessRepository :
@@ -31,10 +31,10 @@ internal class BaseAccessRepository :
     Shareable by InjectedShareable(),
     CoroutineScope by CoroutineScope(Dispatchers.Default) {
 
-    private var requestState: String? by objPref()
+    private var requestState: String? by nullableObjPref()
     private var requestCallback: Callback? = null
     private var responseUri: Uri? = null
-    private var token: Token? by objPref()
+    private var token: Token? by nullableObjPref()
     private var access: AccessType by enumPref()
 
     private val service: AuthorizationService by inject()

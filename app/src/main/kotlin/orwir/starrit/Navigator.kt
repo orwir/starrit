@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.navigation.NavController
 import orwir.starrit.feature.feed.FeedNavigation
+import orwir.starrit.feature.feed.FeedPreferences
 import orwir.starrit.feature.login.LoginFragmentDirections
 import orwir.starrit.feature.login.LoginNavigation
 import orwir.starrit.feature.splash.SplashFragmentDirections
@@ -13,7 +14,8 @@ import orwir.starrit.listing.feed.Feed
 
 class Navigator(
     private val context: Context,
-    private val controller: NavController
+    private val controller: NavController,
+    private val feedPreferences: FeedPreferences
 ) : SplashNavigation, LoginNavigation, FeedNavigation {
 
     override fun openBrowser(uri: Uri) {
@@ -24,7 +26,9 @@ class Navigator(
     }
 
     override fun openLastFeed() {
-        val direction = SplashFragmentDirections.toFeed(Feed.Type.Home, Feed.Sort.Best)
+        val type = feedPreferences.latestType
+        val sort = feedPreferences.latestSort
+        val direction = SplashFragmentDirections.toFeed(type, sort)
         controller.navigate(direction)
     }
 

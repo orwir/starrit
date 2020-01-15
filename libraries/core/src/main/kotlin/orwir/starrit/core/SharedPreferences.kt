@@ -14,20 +14,20 @@ interface ObjectAdapter<T> {
 }
 
 /**
- * Creates delegate for object property in [SharedPreferences].
+ * Creates delegate for nullable object property in [SharedPreferences].
  * If [key] not passed simpleName+propertyName of holder class will be used.
  * @param T type of the property
  * @param prefs instance of [SharedPreferences]
  * @param adapter object converter
- * @param key unique identifier
  * @param defaultValue is used if property not set
+ * @param key unique identifier
  * @return property delegate [ReadWriteProperty]
  */
-inline fun <reified T> objPref(
+inline fun <reified T> nullableObjPref(
     prefs: SharedPreferences,
     adapter: ObjectAdapter<T>,
-    key: String? = null,
-    defaultValue: T? = null
+    defaultValue: T? = null,
+    key: String? = null
 ) = object : ReadWriteProperty<Any, T?> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): T? =
@@ -40,6 +40,35 @@ inline fun <reified T> objPref(
         prefs[key ?: getPrefKey(thisRef, property)] = value?.let(adapter::from) ?: ""
     }
 
+}
+
+/**
+ * Creates delegate for object property in [SharedPreferences].
+ * If [key] not passed simpleName+propertyName of holder class will be used.
+ * @param T type of the property
+ * @param prefs instance of [SharedPreferences]
+ * @param adapter object converter
+ * @param defaultValue is used if property not set
+ * @param key unique identifier
+ * @return property delegate [ReadWriteProperty]
+ */
+inline fun <reified T> objPref(
+    prefs: SharedPreferences,
+    adapter: ObjectAdapter<T>,
+    defaultValue: T,
+    key: String? = null
+) = object : ReadWriteProperty<Any, T> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): T {
+        return prefs[key ?: getPrefKey(thisRef, property), ""]
+            .takeIf { it.isNotBlank() }
+            ?.let(adapter::to)
+            ?: defaultValue
+    }
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+        prefs[key ?: getPrefKey(thisRef, property)] = adapter.from(value)
+    }
 }
 
 /**

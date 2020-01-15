@@ -71,7 +71,7 @@ val applicationModule = module {
     scope(named<MainActivity>()) {
         scoped {
             val activity = get<MainActivity>()
-            Navigator(activity, activity.findNavController(R.id.navhost))
+            Navigator(activity, activity.findNavController(R.id.navhost), get())
         } binds arrayOf(
             SplashNavigation::class,
             LoginNavigation::class,

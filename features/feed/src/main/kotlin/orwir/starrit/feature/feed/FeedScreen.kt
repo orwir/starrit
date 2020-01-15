@@ -39,6 +39,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
     internal val navigation by navigation
 
     private val player: ExoPlayer by inject()
+    private val preferences: FeedPreferences by inject()
     private val banners: EventBus.Medium by inject()
     private val contentBinder: PostContentBinder by currentScope.inject()
     private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
@@ -64,6 +65,12 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
         launchWhenResumed {
             for (event in banners.stream) handleBannerEvent(event)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        preferences.latestType = type
+        preferences.latestSort = sort
     }
 
     override fun onDestroyView() {
