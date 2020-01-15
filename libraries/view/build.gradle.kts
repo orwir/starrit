@@ -22,6 +22,8 @@ dependencies {
     api(Library.AndroidX.recycler_view)
     api(Library.AndroidX.coordinator_layout)
     api(Library.AndroidX.constraint_layout)
+    api(Library.AndroidX.navigation_fragment)
+    api(Library.AndroidX.navigation_ui)
     widget(Starrit.Widget.banner, "api")
     widget(Starrit.Widget.videoplayer, "api")
 
