@@ -40,7 +40,7 @@ class SelectionFragment : BaseFragment<FragmentSelectionBinding>() {
         val config = combineLiveData(dropdown_type.selection<Feed.Type>(), dropdow_sort.selection<Feed.Sort>())
 
         observe(config) { (type, sort) ->
-            viewModel.updateSelection(FeedConfig(type as Feed.Type, sort as Feed.Sort))
+            viewModel.updateSelection(type as Feed.Type, sort as Feed.Sort)
         }
 
         observe(viewModel.openSelectedEvent) {
@@ -51,10 +51,7 @@ class SelectionFragment : BaseFragment<FragmentSelectionBinding>() {
 
 }
 
-internal class SelectionViewModel(
-    private val type: Feed.Type,
-    private val sort: Feed.Sort
-) : ViewModel() {
+internal class SelectionViewModel(private val type: Feed.Type, private val sort: Feed.Sort) : ViewModel() {
 
     val types = arrayOf(
         Feed.Type.Home,
@@ -64,11 +61,11 @@ internal class SelectionViewModel(
     val sorts = Feed.Sort.values()
 
     private val _selection = MutableLiveData<FeedConfig>()
-    val selected: LiveData<Boolean> = _selection.map { (type, sort) -> this.type != type || this.sort != sort }
+    val selected: LiveData<Boolean> = _selection.map { it.type != type || it.sort != sort }
     val openSelectedEvent = LiveEvent<FeedConfig>()
 
-    fun updateSelection(config: FeedConfig) {
-        _selection.postValue(config)
+    fun updateSelection(type: Feed.Type, sort: Feed.Sort) {
+        _selection.postValue(FeedConfig(type, sort))
     }
 
     fun openSelected() {

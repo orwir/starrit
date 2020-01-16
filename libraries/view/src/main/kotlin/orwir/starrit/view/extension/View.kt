@@ -20,9 +20,7 @@ fun <T> AutoCompleteTextView.selection(distinct: Boolean = true): LiveData<T> = 
     (0 until adapter.count)
         .map { adapter.getItem(it) }
         .find { it.toString() == text.toString() }
-        ?.let {
-            emit(it as T)
-        }
+        ?.let { emit(it as T) }
 
     val clickSource = MutableLiveData<T>()
     emitSource(clickSource)

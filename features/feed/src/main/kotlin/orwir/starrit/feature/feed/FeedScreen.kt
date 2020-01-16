@@ -51,8 +51,8 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        inflateMenu()
         currentScope.declare(this)
+        inflateMenu()
         viewLifecycleOwner.bindVideoPlayer(player)
 
         val adapter = FeedAdapter(contentBinder, viewModel::retry)
@@ -71,11 +71,6 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
         super.onResume()
         preferences.latestType = type
         preferences.latestSort = sort
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        currentScope.close()
     }
 
     private fun inflateMenu() {

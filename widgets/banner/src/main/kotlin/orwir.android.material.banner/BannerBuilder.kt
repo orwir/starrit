@@ -24,8 +24,8 @@ class BannerBuilder(private val context: Context) {
         banner.setIcon(icon)
     }
 
-    fun setMessage(@StringRes messsageId: Int) = apply {
-        banner.setMessage(messsageId)
+    fun setMessage(@StringRes messageId: Int) = apply {
+        banner.setMessage(messageId)
     }
 
     fun setMessage(message: CharSequence?) = apply {
