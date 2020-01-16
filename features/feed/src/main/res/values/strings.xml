@@ -5,10 +5,10 @@
     <string name="author">u/%1$s</string>
     <string name="retry">Retry</string>
     <string name="button_show_more">show more</string>
-    <string name="posts_loading_error">Something went wrong...</string> <!-- TODO: rewrite message -->
+    <string name="posts_loading_error">Something went wrong...</string>
     <string name="menu_open_selection">Selection</string>
-    <string name="authorization_revoked">Authorization was revoked. Please authorize again.</string> <!-- TODO: rework notifications -->
-    <string name="authorize">Authorize</string> <!-- TODO: rework notifications -->
+    <string name="authorization_revoked">Authorization was revoked. Please authorize again.</string>
+    <string name="authorize">Authorize</string>
 
     <!-- Selection Screen -->
     <string name="dropdown_type_hint">Type</string>

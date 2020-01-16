@@ -62,7 +62,6 @@ class SimpleAndroidPlugin : Plugin<Project> {
         }
     }
 
-    // TODO: find proper way to configure optional extensions
     private inline fun <reified T : Any> Project.silentConfigure(noinline configuration: T.() -> Unit) {
         try {
             configure<T> { configuration() }
