@@ -48,10 +48,13 @@ object ImageViewBinding : KoinComponent {
         }
 
         emit(true)
-        setImageDrawable(placeholder) // if preview/source empty or null
-        invokeRequest(preview?.takeIf { it.isNotBlank() } ?: source, placeholder).await()
-        if (preview?.isNotBlank() == true) {
-            invokeRequest(source, drawable).await()
+        if (preview?.urlOrNull() ?: source.urlOrNull() == null) {
+            setImageDrawable(placeholder)
+        } else {
+            invokeRequest(preview?.urlOrNull() ?: source, placeholder).await()
+            if (preview?.isNotBlank() == true) {
+                invokeRequest(source, drawable).await()
+            }
         }
         emit(false)
     }
@@ -61,5 +64,7 @@ object ImageViewBinding : KoinComponent {
             target(this@load)
             apply(config)
         }
+
+    private fun String.urlOrNull() = takeIf { it.isNotBlank() }
 
 }

@@ -40,7 +40,7 @@ internal class PostContentBinder(
 
     fun ImageData.loadImageData(image: ImageView, progress: ProgressBar? = null) {
         val placeholder = image.context.createImagePlaceholder(this)
-        image.load(source, preview, placeholder).observe(owner, Observer {
+        image.load(source, preview, placeholder, placeholder).observe(owner, Observer {
             progress?.setVisibleOrGone(it)
         })
     }
