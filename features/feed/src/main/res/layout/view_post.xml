@@ -79,7 +79,7 @@
 
             <ImageView
                 android:id="@+id/nsfw"
-                visibleOrGone="@{viewModel.nsfw}"
+                app:visibleOrGone="@{viewModel.nsfw}"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginStart="@dimen/space"

@@ -6,17 +6,40 @@
     <data>
 
         <variable
-            name="post"
-            type="orwir.starrit.listing.feed.TextPost" />
+            name="viewModel"
+            type="orwir.starrit.feature.feed.internal.content.TextViewModel" />
     </data>
 
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.MyTheme.Body1"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="all"
-        android:ellipsize="end"
-        android:text="@{post.text}"
-        app:maxLinesToggle="@{4}"
-        tools:text="Text content placeholder" />
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:maxLines="@{viewModel.maxLines}"
+            android:text="@{viewModel.content}"
+            tools:text="line1\nline2\nline3\nline4\nline5\nline6\nline7\nline8" />
+
+        <TextView
+            style="@style/TextAppearance.MyTheme.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_button_size"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_show_more"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> viewModel.expand()}"
+            android:paddingStart="@dimen/space"
+            android:paddingEnd="@dimen/space"
+            android:text="@string/button_show_more"
+            android:textColor="?attr/colorSecondary"
+            app:visibleOrGone="@{viewModel.collapsed}" />
+
+    </FrameLayout>
+
 </layout>

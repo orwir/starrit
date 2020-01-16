@@ -4,6 +4,7 @@
     <string name="subreddit">r/%1$s</string>
     <string name="author">u/%1$s</string>
     <string name="retry">Retry</string>
+    <string name="button_show_more">show more</string>
     <string name="posts_loading_error">Something went wrong...</string> <!-- TODO: rewrite message -->
     <string name="menu_open_selection">Selection</string>
     <string name="authorization_revoked">Authorization was revoked. Please authorize again.</string> <!-- TODO: rework notifications -->
