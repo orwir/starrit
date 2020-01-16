@@ -3,20 +3,17 @@ package orwir.starrit.view.binding
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.liveData
 import coil.ImageLoader
 import coil.api.load
 import coil.request.LoadRequestBuilder
 import coil.request.RequestDisposable
 import coil.transform.Transformation
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.starrit.view.extension.getLifecycle
+import orwir.starrit.view.extension.lifecycleOwner
 
 object ImageViewBinding : KoinComponent {
 
@@ -31,8 +28,8 @@ object ImageViewBinding : KoinComponent {
         error: Drawable? = null,
         transformations: List<Transformation>? = null
     ) {
-        (context.getLifecycle()?.coroutineScope ?: GlobalScope).launch {
-            load(source, preview, placeholder, error, transformations).collect {}
+        context.lifecycleOwner?.apply {
+            load(source, preview, placeholder, error, transformations).observe(this, Observer { })
         }
     }
 
@@ -42,7 +39,7 @@ object ImageViewBinding : KoinComponent {
         placeholder: Drawable? = null,
         error: Drawable? = null,
         transformations: List<Transformation>? = null
-    ): Flow<Boolean> = flow {
+    ): LiveData<Boolean> = liveData {
 
         fun invokeRequest(url: String, placeholder: Drawable?) = load(url) {
             transformations?.let(::transformations)
@@ -51,6 +48,7 @@ object ImageViewBinding : KoinComponent {
         }
 
         emit(true)
+        setImageDrawable(placeholder) // if preview/source empty or null
         invokeRequest(preview?.takeIf { it.isNotBlank() } ?: source, placeholder).await()
         if (preview?.isNotBlank() == true) {
             invokeRequest(source, drawable).await()

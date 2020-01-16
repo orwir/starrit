@@ -5,7 +5,6 @@ import android.content.ContextWrapper
 import android.graphics.Color
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 
 @ColorInt
@@ -18,13 +17,14 @@ fun Context.getThemeColor(@AttrRes attr: Int): Int =
         }
     }
 
-fun Context.getLifecycle(): Lifecycle? {
-    var context = this
-    while (true) {
-        when (context) {
-            is LifecycleOwner -> return context.lifecycle
-            !is ContextWrapper -> return null
-            else -> context = context.baseContext
+val Context.lifecycleOwner: LifecycleOwner?
+    get() {
+        var context = this
+        while (true) {
+            when (context) {
+                is LifecycleOwner -> return context
+                !is ContextWrapper -> return null
+                else -> context = context.baseContext
+            }
         }
     }
-}

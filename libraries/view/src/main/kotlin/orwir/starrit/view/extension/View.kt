@@ -1,13 +1,13 @@
 package orwir.starrit.view.extension
 
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.annotation.LayoutRes
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.launch
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 
 fun <T> AutoCompleteTextView.makeExposedDropdown(@LayoutRes itemLayout: Int, values: Array<T>, default: T) {
     setAdapter(ArrayAdapter<T>(context, itemLayout, values))
@@ -15,31 +15,42 @@ fun <T> AutoCompleteTextView.makeExposedDropdown(@LayoutRes itemLayout: Int, val
 }
 
 @Suppress("UNCHECKED_CAST")
-@ExperimentalCoroutinesApi
-fun <T> AutoCompleteTextView.selectionFlow() = callbackFlow {
-    var latest: T? = null
-
+fun <T> AutoCompleteTextView.selection(distinct: Boolean = true): LiveData<T> = liveData {
     // find initial value
     (0 until adapter.count)
         .map { adapter.getItem(it) }
         .find { it.toString() == text.toString() }
         ?.let {
-            latest = it as T
-            send(it as T)
+            emit(it as T)
         }
+
+    val clickSource = MutableLiveData<T>()
+    emitSource(clickSource)
 
     onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
-        launch {
-            val selected = parent.getItemAtPosition(position) as T
-            if (selected != latest) {
-                latest = selected
-                send(selected)
-            }
+        val selected = parent.getItemAtPosition(position) as T
+        if (!distinct || selected != latestValue) {
+            clickSource.value = selected
         }
     }
+}
 
-    awaitClose {
-        onItemSelectedListener = null
-    }
+fun View.onAttachStateChanged(block: (Boolean) -> Unit) {
+    addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+        override fun onViewDetachedFromWindow(v: View?) {
+            block(false)
+        }
 
+        override fun onViewAttachedToWindow(v: View?) {
+            block(true)
+        }
+    })
+}
+
+fun View.onAttached(block: () -> Unit) {
+    onAttachStateChanged { if (it) block() }
+}
+
+fun View.onDetached(block: () -> Unit) {
+    onAttachStateChanged { if (!it) block() }
 }

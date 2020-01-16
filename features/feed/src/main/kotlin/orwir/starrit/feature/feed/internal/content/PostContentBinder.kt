@@ -9,10 +9,8 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Observer
 import com.google.android.exoplayer2.ExoPlayer
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.feed.R
 import orwir.starrit.listing.feed.*
@@ -42,9 +40,9 @@ internal class PostContentBinder(
 
     fun ImageData.loadImageData(image: ImageView, progress: ProgressBar? = null) {
         val placeholder = image.context.createImagePlaceholder(this)
-        owner.lifecycleScope.launch {
-            image.load(source, preview, placeholder, placeholder).collect { progress?.setVisibleOrGone(it) }
-        }
+        image.load(source, preview, placeholder).observe(owner, Observer {
+            progress?.setVisibleOrGone(it)
+        })
     }
 
     private fun Context.createImagePlaceholder(image: ImageData): Drawable {

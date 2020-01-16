@@ -2,16 +2,16 @@ package orwir.starrit.feature.feed
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_selection.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import orwir.starrit.core.event.LiveEvent
+import orwir.starrit.core.livedata.combineLiveData
 import orwir.starrit.feature.feed.databinding.FragmentSelectionBinding
 import orwir.starrit.listing.feed.Feed
 import orwir.starrit.view.BaseFragment
@@ -19,7 +19,7 @@ import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.extension.argument
 import orwir.starrit.view.extension.makeExposedDropdown
 import orwir.starrit.view.extension.observe
-import orwir.starrit.view.extension.selectionFlow
+import orwir.starrit.view.extension.selection
 
 class SelectionFragment : BaseFragment<FragmentSelectionBinding>() {
     override val inflate: FragmentInflater<FragmentSelectionBinding> = FragmentSelectionBinding::inflate
@@ -32,17 +32,15 @@ class SelectionFragment : BaseFragment<FragmentSelectionBinding>() {
         binding.viewModel = viewModel
     }
 
-    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         dropdown_type.makeExposedDropdown(R.layout.view_dropdown_item, viewModel.types, initialType)
         dropdow_sort.makeExposedDropdown(R.layout.view_dropdown_item, viewModel.sorts, initialSort)
+        val config = combineLiveData(dropdown_type.selection<Feed.Type>(), dropdow_sort.selection<Feed.Sort>())
 
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            val typesFlow = dropdown_type.selectionFlow<Feed.Type>()
-            val sortsFlow = dropdow_sort.selectionFlow<Feed.Sort>()
-            feedConfigFlow(typesFlow, sortsFlow).collect { viewModel.updateSelection(it) }
+        observe(config) { (type, sort) ->
+            viewModel.updateSelection(FeedConfig(type as Feed.Type, sort as Feed.Sort))
         }
 
         observe(viewModel.openSelectedEvent) {
@@ -50,10 +48,6 @@ class SelectionFragment : BaseFragment<FragmentSelectionBinding>() {
             findNavController().navigate(direction)
         }
     }
-
-    @ExperimentalCoroutinesApi
-    private fun feedConfigFlow(type: Flow<Feed.Type>, sort: Flow<Feed.Sort>): Flow<FeedConfig> =
-        type.combine(sort) { t, s -> FeedConfig(t, s) }
 
 }
 

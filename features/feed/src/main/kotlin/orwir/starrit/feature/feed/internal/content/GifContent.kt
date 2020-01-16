@@ -2,13 +2,13 @@ package orwir.starrit.feature.feed.internal.content
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import orwir.starrit.feature.feed.databinding.ViewContentGifBinding
 import orwir.starrit.listing.feed.GifPost
 import orwir.starrit.view.binding.ImageViewBinding.load
 import orwir.starrit.view.binding.setVisibleOrGone
+import orwir.starrit.view.extension.onDetached
 
 @Suppress("FunctionName")
 internal fun PostContentBinder.GifContent(post: GifPost, parent: ViewGroup): View =
@@ -17,15 +17,16 @@ internal fun PostContentBinder.GifContent(post: GifPost, parent: ViewGroup): Vie
         .apply {
             post.loadImageData(gif, progress)
 
-            var playing = false
-            container.setOnClickListener {
-                owner.lifecycleScope.launch {
-                    playing = !playing
+            val playing = MutableLiveData<Boolean>()
 
-                    caption.visibility = if (playing) View.GONE else View.VISIBLE
-                    val imageUrl = if (playing) post.gif else post.source
-                    gif.load(imageUrl, placeholder = gif.drawable).collect { progress.setVisibleOrGone(it) }
-                }
-            }
+            container.setOnClickListener { playing.value = playing.value != true }
+            gif.onDetached { playing.value = false }
+
+            playing.observe(owner, Observer {
+                caption.setVisibleOrGone(!it)
+                val imageUrl = if (it) post.gif else post.source
+                gif.load(imageUrl, placeholder = gif.drawable)
+                    .observe(owner, Observer { loading -> progress.setVisibleOrGone(loading) })
+            })
         }
         .root
