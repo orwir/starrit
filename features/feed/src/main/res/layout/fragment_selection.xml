@@ -40,10 +40,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space"
             android:hint="@string/dropdown_sort_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"
-            android:layout_marginStart="@dimen/space"
             app:layout_constraintStart_toEndOf="@id/dropdown_layout_type"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -56,6 +56,18 @@
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="@{viewModel.selected}"
+            android:onClick="@{() -> viewModel.openSelected()}"
+            android:text="@string/button_open"
+            android:minWidth="@dimen/button_min_width"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

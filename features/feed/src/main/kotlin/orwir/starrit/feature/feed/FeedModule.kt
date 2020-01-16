@@ -13,7 +13,7 @@ val featureFeedModule = module {
 
     viewModel { (type: Feed.Type, sort: Feed.Sort) -> FeedViewModel(type, sort, get()) }
 
-    viewModel { (type: Feed.Type, sort: Feed.Sort) -> SelectionViewModel(type, sort, get()) }
+    viewModel { (type: Feed.Type, sort: Feed.Sort) -> SelectionViewModel(type, sort) }
 
     scope(named<FeedFragment>()) {
         scoped {

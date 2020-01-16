@@ -94,7 +94,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
     private fun handleBannerEvent(event: Any) {
         //todo: check event
         banner.removeAllViews()
-        BannerBuilder(context!!)
+        BannerBuilder(requireContext())
             .setParent(banner)
             .setIcon(R.drawable.ic_account)
             .setMessage(R.string.authorization_revoked)

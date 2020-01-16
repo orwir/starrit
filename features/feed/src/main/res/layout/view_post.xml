@@ -151,8 +151,8 @@
 
             <ImageView
                 android:id="@+id/vote_up"
-                android:layout_width="@dimen/button_size"
-                android:layout_height="@dimen/button_size"
+                android:layout_width="@dimen/icon_button_size"
+                android:layout_height="@dimen/icon_button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
@@ -164,8 +164,8 @@
 
             <ImageView
                 android:id="@+id/vote_down"
-                android:layout_width="@dimen/button_size"
-                android:layout_height="@dimen/button_size"
+                android:layout_width="@dimen/icon_button_size"
+                android:layout_height="@dimen/icon_button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
@@ -187,8 +187,8 @@
 
             <ImageView
                 android:id="@+id/img_comments"
-                android:layout_width="@dimen/button_size"
-                android:layout_height="@dimen/button_size"
+                android:layout_width="@dimen/icon_button_size"
+                android:layout_height="@dimen/icon_button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
@@ -201,8 +201,8 @@
 
             <ImageView
                 android:id="@+id/share"
-                android:layout_width="@dimen/button_size"
-                android:layout_height="@dimen/button_size"
+                android:layout_width="@dimen/icon_button_size"
+                android:layout_height="@dimen/icon_button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
@@ -215,8 +215,8 @@
 
             <ImageView
                 android:id="@+id/more"
-                android:layout_width="@dimen/button_size"
-                android:layout_height="@dimen/button_size"
+                android:layout_width="@dimen/icon_button_size"
+                android:layout_height="@dimen/icon_button_size"
                 android:layout_marginTop="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"

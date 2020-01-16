@@ -36,6 +36,6 @@ data class Feed(
 
         fun asParameter() = name.toLowerCase(Locale.ENGLISH)
 
-        override fun toString(): String = name.toLowerCase(Locale.ENGLISH)
+        override fun toString(): String = asParameter()
     }
 }
