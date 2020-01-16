@@ -48,10 +48,14 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
         binding.viewModel = viewModel
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        currentScope.declare(this)
+        super.onCreate(savedInstanceState)
+    }
+
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        currentScope.declare(this)
         inflateMenu()
         viewLifecycleOwner.bindVideoPlayer(player)
 
