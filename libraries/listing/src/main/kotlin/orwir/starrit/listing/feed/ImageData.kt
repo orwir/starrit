@@ -7,6 +7,7 @@ import orwir.starrit.listing.util.isImageUrl
 interface ImageData {
     val preview: String
     val source: String
+    val blurred: String
     val width: Int
     val height: Int
 }
@@ -33,6 +34,17 @@ fun ImageData(submission: Submission): ImageData = object : ImageData {
     override val source: String = highRes
         ?.url
         ?: submission.imageUrlOrNull()
+        ?: ""
+
+    override val blurred: String = submission
+        .preview
+        ?.images
+        ?.firstOrNull()
+        ?.variants
+        ?.nsfw
+        ?.resolutions
+        ?.firstOrNull()
+        ?.url
         ?: ""
 
     override val width: Int = lowRes?.width ?: highRes?.width ?: 0

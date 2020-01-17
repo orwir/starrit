@@ -3,31 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="orwir.starrit.feature.feed.internal.content.LinkViewModel" />
-    </data>
-
     <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{viewModel.openLink}">
+        android:foreground="?attr/selectableItemBackground">
 
         <ImageView
+            android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="128dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_open_in_new"
-            app:preview="@{viewModel.preview}"
-            app:source="@{viewModel.source}" />
+            android:src="@drawable/ic_open_in_new" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text"
             style="@style/TextAppearance.MyTheme.Headline6"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -39,7 +32,6 @@
             android:maxLines="1"
             android:paddingStart="@dimen/space"
             android:paddingEnd="@dimen/space"
-            android:text="@{viewModel.link}"
             android:textColor="?attr/colorSecondary"
             app:backgroundTint="@color/color_surface_80"
             tools:text="https://example.com" />

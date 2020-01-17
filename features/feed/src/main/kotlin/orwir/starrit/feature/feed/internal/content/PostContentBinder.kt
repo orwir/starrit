@@ -40,7 +40,7 @@ internal class PostContentBinder(
 
     fun ImageData.loadImageData(image: ImageView, progress: ProgressBar? = null) {
         val placeholder = image.context.createImagePlaceholder(this)
-        image.load(source, preview, placeholder, placeholder).observe(owner, Observer {
+        image.load(safeSource, safePreview, placeholder, placeholder).observe(owner, Observer {
             progress?.setVisibleOrGone(it)
         })
     }
@@ -50,6 +50,18 @@ internal class PostContentBinder(
         val placeholder = ColorDrawable(color)
         placeholder.setBounds(0, 0, image.width, image.height)
         return placeholder
+    }
+
+    private val ImageData.safePreview: String?
+        get() = preview.takeUnless { shouldBlur() }
+
+    private val ImageData.safeSource: String
+        get() = source.takeUnless { shouldBlur() } ?: blurred
+
+    private fun ImageData.shouldBlur() = if (this is Post) {
+        spoiler || nsfw
+    } else {
+        false
     }
 
 }
