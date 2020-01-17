@@ -15,7 +15,6 @@ import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.extension.launchWhenResumed
 import orwir.starrit.view.extension.observe
-import orwir.starrit.view.extension.showErrorDialog
 
 class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLoginBinding>() {
 
@@ -53,15 +52,15 @@ class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLo
     private fun handleFailure(exception: Exception) {
         fun Exception.isAccessDenied() = this is TokenException && code == TokenException.ErrorCode.ACCESS_DENIED
 
-        showErrorDialog(exception) {
-            if (exception.isAccessDenied()) {
-                setTitle(R.string.authorization_required)
-                setMessage(R.string.error_message_access_denied)
-            }
-            setPositiveButton(R.string.retry) { _, _ ->
-                viewModel.authorize()
-            }
-        }
+//        showErrorDialog(exception) {
+//            if (exception.isAccessDenied()) {
+//                setTitle(R.string.authorization_required)
+//                setMessage(R.string.error_message_access_denied)
+//            }
+//            setPositiveButton(R.string.retry) { _, _ ->
+//                viewModel.authorize()
+//            }
+//        }
     }
 
     private suspend fun resetWhenUserCancelAuthorization() {

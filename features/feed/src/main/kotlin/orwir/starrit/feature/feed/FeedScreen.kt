@@ -9,13 +9,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import orwir.android.material.banner.BannerBuilder
-import orwir.starrit.core.event.EventBus
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
 import orwir.starrit.feature.feed.internal.adapter.FeedAdapter
@@ -26,8 +23,8 @@ import orwir.starrit.listing.feed.Post
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.MarginItemDecoration
+import orwir.starrit.view.event.EventManager
 import orwir.starrit.view.extension.argument
-import orwir.starrit.view.extension.launchWhenResumed
 import orwir.starrit.view.extension.observe
 import orwir.videoplayer.bindVideoPlayer
 
@@ -40,7 +37,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
 
     private val player: ExoPlayer by inject()
     private val preferences: FeedPreferences by inject()
-    private val banners: EventBus.Medium by inject()
+    private val eventManager: EventManager by inject()
     private val contentBinder: PostContentBinder by currentScope.inject()
     private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
 
@@ -53,7 +50,6 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
         super.onCreate(savedInstanceState)
     }
 
-    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         inflateMenu()
@@ -66,9 +62,9 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
         observe(viewModel.posts, adapter::submitList)
         observe(viewModel.networkState, adapter::setNetworkState)
 
-        launchWhenResumed {
-            for (event in banners.stream) handleBannerEvent(event)
-        }
+        eventManager.observeDialogs(viewLifecycleOwner, requireContext())
+        eventManager.observeBanners(viewLifecycleOwner, banner)
+        eventManager.observeSnackbars(viewLifecycleOwner, root)
     }
 
     override fun onResume() {
@@ -88,16 +84,6 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
                 else -> false
             }
         }
-    }
-
-    private fun handleBannerEvent(event: Any) {
-        banner.removeAllViews()
-        BannerBuilder(requireContext())
-            .setParent(banner)
-            .setIcon(R.drawable.ic_account)
-            .setMessage(R.string.authorization_revoked)
-            .setPrimaryButton(R.string.authorize) { navigation.openAuthorization() }
-            .show()
     }
 
 }

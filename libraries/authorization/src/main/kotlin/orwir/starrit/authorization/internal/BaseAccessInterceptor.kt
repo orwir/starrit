@@ -8,8 +8,8 @@ import okhttp3.Response
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import orwir.starrit.authorization.AccessInterceptor
-import orwir.starrit.authorization.TokenException
 import orwir.starrit.core.BuildConfig.REDDIT_URL_OAUTH
+import orwir.starrit.core.event.Event
 import orwir.starrit.core.event.EventBus
 
 internal class BaseAccessInterceptor : AccessInterceptor, KoinComponent {
@@ -31,7 +31,7 @@ internal class BaseAccessInterceptor : AccessInterceptor, KoinComponent {
         }
         val response = chain.proceed(request)
         if (response.code == 401) {
-            eventBus.send(TokenException("Token was revoked!", code = TokenException.ErrorCode.ACCESS_DENIED))
+            eventBus.send(Event.AccessRevoked)
         }
         return response
     }

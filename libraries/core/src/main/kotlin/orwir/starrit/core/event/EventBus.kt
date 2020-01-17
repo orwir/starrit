@@ -1,25 +1,17 @@
 package orwir.starrit.core.event
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.ReceiveChannel
+import androidx.lifecycle.LiveData
 
 sealed class EventBus<T> {
 
-    @ExperimentalCoroutinesApi
-    private val channel: BroadcastChannel<T> = StatelessBroadcastChannel()
+    val flow: LiveData<T> = LiveEvent()
 
-    @ExperimentalCoroutinesApi
-    val stream: ReceiveChannel<T>
-        get() = channel.openSubscription()
-
-    @ExperimentalCoroutinesApi
     fun send(event: T) {
-        channel.offer(event)
+        (flow as LiveEvent).postValue(event)
     }
 
-    class Low : EventBus<Any>()
-    class Medium : EventBus<Any>()
-    class High : EventBus<Any>()
+    class Low : EventBus<Event>()
+    class Medium : EventBus<Event>()
+    class High : EventBus<Event>()
 
 }

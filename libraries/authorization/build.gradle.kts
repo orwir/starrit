@@ -28,6 +28,7 @@ android {
 
 dependencies {
     library(Starrit.Library.core)
+    library(Starrit.Library.view)
     implementation(Library.Squareup.okhttp)
     implementation(Library.Squareup.retrofit)
     implementation(Library.Squareup.moshi)
