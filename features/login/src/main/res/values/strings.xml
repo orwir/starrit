@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="description">Choose access type</string>
-    <string name="separator">- OR -</string>
-    <string name="authorized">Authorized</string>
-    <string name="anonymous">Anonymous</string>
+    <string name="login_description">Choose access type</string>
+    <string name="login_separator">- OR -</string>
+    <string name="login_start_authorization">Authorized</string>
+    <string name="login_start_anonymous">Anonymous</string>
 </resources>

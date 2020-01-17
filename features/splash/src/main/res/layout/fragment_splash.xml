@@ -29,7 +29,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/developed_by"
+            android:text="@string/splash_developed_label"
             app:layout_constraintBottom_toTopOf="@id/author"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -41,7 +41,7 @@
             android:layout_marginBottom="@dimen/spaceX2"
             android:textColor="?attr/colorPrimary"
             android:textStyle="bold"
-            android:text="@string/orwir"
+            android:text="@string/splash_developed_author"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dialog_error_title">Error</string>
-    <string name="dialog_error_message_stub">An internal error occurred.</string>
+    <string name="error_message_stub">An internal error occurred.</string>
 </resources>

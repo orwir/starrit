@@ -9,11 +9,11 @@ import java.util.concurrent.TimeUnit
 fun prettyDate(ms: Long, res: Resources): String {
     val diff = System.currentTimeMillis() - ms
     return when {
-        isLessThanHour(diff) -> res.getString(R.string.df_now)
-        isLessThanDay(diff) -> res.getString(R.string.df_today, TimeUnit.MILLISECONDS.toHours(diff))
-        isYesterday(diff) -> toDateString(ms, res.getString(R.string.df_yesterday))
-        isSameYear(ms) -> toDateString(ms, res.getString(R.string.df_this_year))
-        else -> toDateString(ms, res.getString(R.string.df_fulldate))
+        isLessThanHour(diff) -> res.getString(R.string.pretty_date_now)
+        isLessThanDay(diff) -> res.getString(R.string.pretty_date_today, TimeUnit.MILLISECONDS.toHours(diff))
+        isYesterday(diff) -> toDateString(ms, res.getString(R.string.pretty_date_yesterday))
+        isSameYear(ms) -> toDateString(ms, res.getString(R.string.pretty_date_this_year))
+        else -> toDateString(ms, res.getString(R.string.pretty_date_fulldate))
     }
 }
 

@@ -36,7 +36,7 @@
             android:onClick="@{() -> viewModel.expand()}"
             android:paddingStart="@dimen/space"
             android:paddingEnd="@dimen/space"
-            android:text="@string/button_show_more"
+            android:text="@string/text_content_button_show_more"
             android:textColor="?attr/colorSecondary"
             app:visibleOrGone="@{viewModel.collapsed}" />
 

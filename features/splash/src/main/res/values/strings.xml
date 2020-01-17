@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="developed_by">Developed by</string>
-    <string name="orwir" translatable="false">orwir</string>
+    <string name="splash_developed_label">Developed by</string>
+    <string name="splash_developed_author" translatable="false">orwir</string>
 </resources>

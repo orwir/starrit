@@ -60,7 +60,7 @@ sealed class Post(submission: Submission, res: Resources) {
 
     private fun prettyScore(submission: Submission, res: Resources) =
         if (submission.hideScore) {
-            res.getString(R.string.score_hidden)
+            res.getString(R.string.post_score_hidden)
         } else {
             submission.score.squeeze()
         }

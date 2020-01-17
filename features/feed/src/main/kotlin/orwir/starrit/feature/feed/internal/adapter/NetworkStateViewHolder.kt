@@ -30,7 +30,7 @@ internal class NetworkStateViewModel(
         if (networkState is NetworkState.Failure) {
             networkState.error
                 .message?.takeIf { it.isNotBlank() && BuildConfig.DEBUG }
-                ?: resources.getText(R.string.posts_loading_error)
+                ?: resources.getText(R.string.error_message_stub)
         } else {
             ""
         }

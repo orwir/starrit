@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Feed Screen -->
-    <string name="subreddit">r/%1$s</string>
-    <string name="author">u/%1$s</string>
-    <string name="retry">Retry</string>
-    <string name="button_show_more">show more</string>
-    <string name="posts_loading_error">Something went wrong...</string>
-    <string name="menu_open_selection">Selection</string>
-    <string name="authorization_revoked">Authorization was revoked. Please authorize again.</string>
-    <string name="authorize">Authorize</string>
+    <string name="post_view_subreddit">r/%1$s</string>
+    <string name="post_view_author">u/%1$s</string>
+    <string name="network_state_button_retry">Retry</string>
+    <string name="text_content_button_show_more">show more</string>
+    <string name="feed_toolbar_menu_selection">Selection</string>
 
     <!-- Selection Screen -->
-    <string name="dropdown_type_hint">Type</string>
-    <string name="dropdown_sort_hint">Sort</string>
-    <string name="button_open">Open</string>
+    <string name="selection_type_hint">Type</string>
+    <string name="selection_sort_hint">Sort</string>
+    <string name="selection_button_open">Open</string>
 
 </resources>

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="score_hidden">⏳</string>
+    <string name="post_score_hidden">⏳</string>
 </resources>
