@@ -1,4 +1,4 @@
-package orwir.starrit.view.event
+package orwir.starrit.view.extension
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog

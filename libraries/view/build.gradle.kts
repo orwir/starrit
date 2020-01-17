@@ -18,6 +18,7 @@ dependencies {
     api(Library.AndroidX.appcompat)
     api(Library.AndroidX.material)
     api(Library.AndroidX.fragment)
+    api(Library.AndroidX.fragment_ktx)
     api(Library.AndroidX.lifecycle_viewModel)
     api(Library.AndroidX.recycler_view)
     api(Library.AndroidX.coordinator_layout)
