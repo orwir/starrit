@@ -1,4 +1,4 @@
-package orwir.starrit.authorization
+package orwir.starrit.access
 
 import java.io.IOException
 
@@ -17,3 +17,6 @@ class TokenException(
     }
 
 }
+
+fun Exception.isAccessDenied() =
+    this is TokenException && code == TokenException.ErrorCode.ACCESS_DENIED

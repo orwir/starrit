@@ -13,8 +13,8 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import orwir.starrit.authorization.isAccessDenied
-import orwir.starrit.authorization.showAccessRevoked
+import orwir.starrit.access.isAccessDenied
+import orwir.starrit.access.showAccessRevoked
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
 import orwir.starrit.feature.feed.internal.adapter.FeedAdapter

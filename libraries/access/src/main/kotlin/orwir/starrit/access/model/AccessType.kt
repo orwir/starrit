@@ -1,4 +1,4 @@
-package orwir.starrit.authorization.model
+package orwir.starrit.access.model
 
 import orwir.starrit.core.BuildConfig.REDDIT_URL_BASIC
 import orwir.starrit.core.BuildConfig.REDDIT_URL_OAUTH

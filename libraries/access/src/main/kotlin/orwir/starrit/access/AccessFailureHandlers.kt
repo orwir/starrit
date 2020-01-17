@@ -1,4 +1,4 @@
-package orwir.starrit.authorization
+package orwir.starrit.access
 
 import android.content.Context
 import android.widget.FrameLayout

@@ -15,7 +15,7 @@ android {
 dependencies {
     library(Starrit.Library.core)
     library(Starrit.Library.view)
-    library(Starrit.Library.authorization)
+    library(Starrit.Library.access)
     library(Starrit.Library.listing)
     implementation(Library.AndroidX.paging)
 }

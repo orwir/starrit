@@ -1,4 +1,4 @@
-package orwir.starrit.authorization.model
+package orwir.starrit.access.model
 
 import android.net.Uri
 

@@ -20,7 +20,7 @@ object Starrit {
     object Library {
         const val core = "core"
         const val view = "view"
-        const val authorization = "authorization"
+        const val access = "access"
         const val listing = "listing"
     }
 

@@ -11,7 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
-import orwir.starrit.authorization.AccessInterceptor
+import orwir.starrit.access.AccessInterceptor
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.login.LoginNavigation
 import orwir.starrit.feature.splash.SplashNavigation

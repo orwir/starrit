@@ -5,7 +5,7 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import orwir.starrit.authorization.AccessRepository
+import orwir.starrit.access.AccessRepository
 import orwir.starrit.feature.splash.databinding.FragmentSplashBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater

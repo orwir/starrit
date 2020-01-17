@@ -1,4 +1,4 @@
-package orwir.starrit.authorization.internal
+package orwir.starrit.access.internal
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -7,9 +7,9 @@ import okhttp3.Request
 import okhttp3.Response
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.starrit.authorization.AccessInterceptor
-import orwir.starrit.authorization.TokenException
-import orwir.starrit.authorization.TokenException.ErrorCode
+import orwir.starrit.access.AccessInterceptor
+import orwir.starrit.access.TokenException
+import orwir.starrit.access.TokenException.ErrorCode
 import orwir.starrit.core.BuildConfig.REDDIT_URL_OAUTH
 
 internal class BaseAccessInterceptor : AccessInterceptor, KoinComponent {
@@ -31,7 +31,10 @@ internal class BaseAccessInterceptor : AccessInterceptor, KoinComponent {
         val response = chain.proceed(request)
         if (response.code == 401) {
             response.close()
-            throw TokenException("Access was revoked.", code = ErrorCode.ACCESS_DENIED)
+            throw TokenException(
+                "Access was revoked.",
+                code = ErrorCode.ACCESS_DENIED
+            )
         }
         return response
     }

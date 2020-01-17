@@ -9,7 +9,7 @@ include(
 
     ":libraries:core",
     ":libraries:view",
-    ":libraries:authorization",
+    ":libraries:access",
     ":libraries:listing",
 
     ":widgets:videoplayer",

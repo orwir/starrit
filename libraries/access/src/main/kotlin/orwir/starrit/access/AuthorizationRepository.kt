@@ -1,9 +1,9 @@
-package orwir.starrit.authorization
+package orwir.starrit.access
 
 import android.net.Uri
 import androidx.annotation.MainThread
 import kotlinx.coroutines.flow.Flow
-import orwir.starrit.authorization.model.Step
+import orwir.starrit.access.model.Step
 
 @MainThread
 interface AuthorizationRepository {

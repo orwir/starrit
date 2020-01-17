@@ -14,5 +14,5 @@ android {
 dependencies {
     library(Starrit.Library.core)
     library(Starrit.Library.view)
-    library(Starrit.Library.authorization)
+    library(Starrit.Library.access)
 }

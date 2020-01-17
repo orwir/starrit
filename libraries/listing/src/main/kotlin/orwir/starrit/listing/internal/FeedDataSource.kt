@@ -9,7 +9,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.starrit.authorization.AccessRepository
+import orwir.starrit.access.AccessRepository
 import orwir.starrit.core.model.ActionHolder
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.listing.feed.Feed

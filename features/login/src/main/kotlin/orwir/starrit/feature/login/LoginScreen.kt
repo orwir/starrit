@@ -7,11 +7,11 @@ import androidx.lifecycle.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import orwir.starrit.authorization.AuthorizationRepository
-import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
-import orwir.starrit.authorization.isAccessDenied
-import orwir.starrit.authorization.model.Step
-import orwir.starrit.authorization.showAccessDenied
+import orwir.starrit.access.AuthorizationRepository
+import orwir.starrit.access.BuildConfig.REDIRECT_URI
+import orwir.starrit.access.isAccessDenied
+import orwir.starrit.access.model.Step
+import orwir.starrit.access.showAccessDenied
 import orwir.starrit.feature.login.databinding.FragmentLoginBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
@@ -53,7 +53,10 @@ class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLo
 
     private fun handleFailure(exception: Exception) {
         if (exception.isAccessDenied()) {
-            showAccessDenied(requireContext(), viewModel::authorize)
+            showAccessDenied(
+                requireContext(),
+                viewModel::authorize
+            )
         } else {
             root.showSnackbar(exception)
         }

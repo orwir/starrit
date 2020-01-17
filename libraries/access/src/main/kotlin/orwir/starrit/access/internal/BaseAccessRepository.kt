@@ -1,4 +1,4 @@
-package orwir.starrit.authorization.internal
+package orwir.starrit.access.internal
 
 import android.net.Uri
 import kotlinx.coroutines.CoroutineScope
@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import orwir.starrit.authorization.AccessRepository
-import orwir.starrit.authorization.AuthorizationRepository
-import orwir.starrit.authorization.BuildConfig.CLIENT_ID
-import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
-import orwir.starrit.authorization.TokenException
-import orwir.starrit.authorization.model.*
+import orwir.starrit.access.AccessRepository
+import orwir.starrit.access.AuthorizationRepository
+import orwir.starrit.access.BuildConfig.CLIENT_ID
+import orwir.starrit.access.BuildConfig.REDIRECT_URI
+import orwir.starrit.access.TokenException
+import orwir.starrit.access.model.*
 import orwir.starrit.core.extension.InjectedShareable
 import orwir.starrit.core.extension.Shareable
 import orwir.starrit.core.extension.enumPref
@@ -58,7 +58,10 @@ internal class BaseAccessRepository :
                 try {
                     token = service.refreshToken(it.refresh).copy(refresh = it.refresh)
                 } catch (e: Exception) {
-                    throw e.takeIf { e is TokenException } ?: TokenException("Token refresh failed!", e)
+                    throw e.takeIf { e is TokenException } ?: TokenException(
+                        "Token refresh failed!",
+                        e
+                    )
                 }
             }
             token
@@ -104,7 +107,12 @@ internal class BaseAccessRepository :
             ?.toUpperCase(Locale.ENGLISH)
             ?.let(TokenException.ErrorCode::valueOf)
         if (errorCode != null) {
-            callback.onError(TokenException("OAuth error: $errorCode", code = errorCode))
+            callback.onError(
+                TokenException(
+                    "OAuth error: $errorCode",
+                    code = errorCode
+                )
+            )
             return
         }
 
