@@ -13,6 +13,8 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import orwir.starrit.authorization.isAccessDenied
+import orwir.starrit.authorization.showAccessRevoked
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
 import orwir.starrit.feature.feed.internal.adapter.FeedAdapter
@@ -23,9 +25,9 @@ import orwir.starrit.listing.feed.Post
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.MarginItemDecoration
-import orwir.starrit.view.event.EventManager
 import orwir.starrit.view.extension.argument
 import orwir.starrit.view.extension.observe
+import orwir.starrit.view.extension.showSnackbar
 import orwir.videoplayer.bindVideoPlayer
 
 class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeedBinding>() {
@@ -37,7 +39,6 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
 
     private val player: ExoPlayer by inject()
     private val preferences: FeedPreferences by inject()
-    private val eventManager: EventManager by inject()
     private val contentBinder: PostContentBinder by currentScope.inject()
     private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
 
@@ -60,11 +61,12 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
         posts.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.space).toInt()))
 
         observe(viewModel.posts, adapter::submitList)
-        observe(viewModel.networkState, adapter::setNetworkState)
-
-        eventManager.observeDialogs(viewLifecycleOwner, requireContext())
-        eventManager.observeBanners(viewLifecycleOwner, banner)
-        eventManager.observeSnackbars(viewLifecycleOwner, root)
+        observe(viewModel.networkState) {
+            adapter.setNetworkState(it)
+            if (it is NetworkState.Failure) {
+                handleFailure(it.error)
+            }
+        }
     }
 
     override fun onResume() {
@@ -83,6 +85,16 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
                 }
                 else -> false
             }
+        }
+    }
+
+    private fun handleFailure(exception: Exception) {
+        if (exception.isAccessDenied()) {
+            showAccessRevoked(banner) {
+                navigation.openAuthorization()
+            }
+        } else {
+            root.showSnackbar(exception)
         }
     }
 

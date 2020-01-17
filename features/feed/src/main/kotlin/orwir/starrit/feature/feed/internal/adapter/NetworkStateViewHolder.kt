@@ -14,7 +14,7 @@ internal class NetworkStateViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(networkState: NetworkState?) {
-        binding.viewModel = NetworkStateViewModel(networkState, itemView.resources) { onRetry }
+        binding.viewModel = NetworkStateViewModel(networkState, itemView.resources) { onRetry() }
     }
 
 }

@@ -6,6 +6,6 @@
     <string name="banner_access_revoked_message">Authorization was revoked. Please authorize again.</string>
     <string name="banner_access_revoked_primary_action">Authorize</string>
     <string name="dialog_access_denied_title">Authorization required!</string>
-    <string name="dialog_access_denied_message">To proceed as <b>authorized</b> you should allow access to <b>Reddit</b>.</string>
+    <string name="dialog_access_denied_message">To proceed as authorized you should allow connection to Reddit.</string>
     <string name="dialog_access_denied_positive_action">Open</string>
 </resources>

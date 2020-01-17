@@ -4,17 +4,20 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.starrit.authorization.AuthorizationRepository
 import orwir.starrit.authorization.BuildConfig.REDIRECT_URI
-import orwir.starrit.authorization.TokenException
+import orwir.starrit.authorization.isAccessDenied
 import orwir.starrit.authorization.model.Step
+import orwir.starrit.authorization.showAccessDenied
 import orwir.starrit.feature.login.databinding.FragmentLoginBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.extension.launchWhenResumed
 import orwir.starrit.view.extension.observe
+import orwir.starrit.view.extension.showSnackbar
 
 class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLoginBinding>() {
 
@@ -41,7 +44,6 @@ class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLo
                 is Step.Failure -> handleFailure(it.exception)
             }
         }
-
     }
 
     override fun onResume() {
@@ -50,17 +52,11 @@ class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLo
     }
 
     private fun handleFailure(exception: Exception) {
-        fun Exception.isAccessDenied() = this is TokenException && code == TokenException.ErrorCode.ACCESS_DENIED
-
-//        showErrorDialog(exception) {
-//            if (exception.isAccessDenied()) {
-//                setTitle(R.string.authorization_required)
-//                setMessage(R.string.error_message_access_denied)
-//            }
-//            setPositiveButton(R.string.retry) { _, _ ->
-//                viewModel.authorize()
-//            }
-//        }
+        if (exception.isAccessDenied()) {
+            showAccessDenied(requireContext(), viewModel::authorize)
+        } else {
+            root.showSnackbar(exception)
+        }
     }
 
     private suspend fun resetWhenUserCancelAuthorization() {

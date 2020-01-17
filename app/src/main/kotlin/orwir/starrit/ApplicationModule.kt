@@ -12,14 +12,12 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import orwir.starrit.authorization.AccessInterceptor
-import orwir.starrit.core.event.EventBus
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.login.LoginNavigation
 import orwir.starrit.feature.splash.SplashNavigation
 import orwir.starrit.listing.adapter.FeedTypeAdapter
 import orwir.starrit.listing.adapter.KindAdapter
 import orwir.starrit.listing.adapter.VoteAdapter
-import orwir.starrit.view.event.EventManager
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -64,14 +62,6 @@ val applicationModule = module {
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
     }
-
-    single { EventManager(get(), get(), get()) }
-
-    single { EventBus.Low() }
-
-    single { EventBus.Medium() }
-
-    single { EventBus.High() }
 
     scope(named<MainActivity>()) {
         scoped {

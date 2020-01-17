@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import orwir.starrit.core.event.LiveEvent
+import orwir.starrit.core.livedata.LiveEvent
 import orwir.starrit.feature.feed.databinding.ViewContentTextBinding
 import orwir.starrit.listing.feed.TextPost
 

@@ -1,4 +1,4 @@
-package orwir.starrit.core.event
+package orwir.starrit.core.livedata
 
 /**
  * Copyright 2019 Hadi Lashkari Ghouchani

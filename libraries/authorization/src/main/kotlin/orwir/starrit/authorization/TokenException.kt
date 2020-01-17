@@ -1,10 +1,12 @@
 package orwir.starrit.authorization
 
+import java.io.IOException
+
 class TokenException(
     message: String? = null,
     cause: Throwable? = null,
     val code: ErrorCode = ErrorCode.UNSPECIFIED
-) : Exception(message, cause) {
+) : IOException(message, cause) {
 
     enum class ErrorCode {
         ACCESS_DENIED,

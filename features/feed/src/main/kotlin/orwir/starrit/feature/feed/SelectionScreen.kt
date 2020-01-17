@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_selection.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import orwir.starrit.core.event.LiveEvent
+import orwir.starrit.core.livedata.LiveEvent
 import orwir.starrit.core.livedata.combineLiveData
 import orwir.starrit.feature.feed.databinding.FragmentSelectionBinding
 import orwir.starrit.listing.feed.Feed
