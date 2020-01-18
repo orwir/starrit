@@ -41,7 +41,7 @@ class VideoPlayer @JvmOverloads constructor(
 
     init {
         LayoutInflater.from(context).inflate(R.layout.videoplayer, this, true)
-        vp_cover.setOnClickListener { start() }
+        veil.setOnClickListener { start() }
         exo_stop.setOnClickListener { stop() }
     }
 

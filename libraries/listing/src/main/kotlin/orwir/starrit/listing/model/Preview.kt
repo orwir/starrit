@@ -5,6 +5,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Preview(
-    @Json(name = "images") val images: List<PreviewImages>,
+    @Json(name = "images") val images: List<Images>,
     @Json(name = "enabled") val enabled: Boolean
 )

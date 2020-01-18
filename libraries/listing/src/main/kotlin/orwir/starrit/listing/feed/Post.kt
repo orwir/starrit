@@ -8,6 +8,7 @@ import orwir.starrit.core.util.createHashCode
 import orwir.starrit.core.util.prettyDate
 import orwir.starrit.core.util.squeeze
 import orwir.starrit.listing.R
+import orwir.starrit.listing.model.Image
 import orwir.starrit.listing.model.Submission
 import orwir.starrit.listing.model.Subreddit
 import orwir.starrit.listing.util.videoOrNull
@@ -26,22 +27,44 @@ sealed class Post(submission: Submission, res: Resources) {
     val selfDomain: Boolean = domain.startsWith("self.")
     val contentUrl = submission.url
     val postUrl = submission.permalink
+    val imagePreview: Image = submission.preview
+        ?.images
+        ?.firstOrNull()
+        ?.resolutions
+        ?.firstOrNull()
+        ?: Image("", 0, 0)
+    val imageSource: Image = submission.preview
+        ?.images
+        ?.firstOrNull()
+        ?.source
+        ?: Image("", 0, 0)
+    val imageBlurred: Image = submission
+        .preview
+        ?.images
+        ?.firstOrNull()
+        ?.variants
+        ?.nsfw
+        ?.resolutions
+        ?.firstOrNull()
+        ?: Image("", 0, 0)
 
-    override fun equals(other: Any?) =
-        other is Post
-                && other::class == this::class
-                && id == other.id
-                && subreddit == other.subreddit
-                && author == other.author
-                && created == other.created
-                && title == other.title
-                && nsfw == other.nsfw
-                && spoiler == other.spoiler
-                && comments == other.comments
-                && score == other.score
-                && domain == other.domain
-                && contentUrl == other.contentUrl
-                && postUrl == other.postUrl
+    override fun equals(other: Any?) = other is Post
+            && other::class == this::class
+            && id == other.id
+            && subreddit == other.subreddit
+            && author == other.author
+            && created == other.created
+            && title == other.title
+            && nsfw == other.nsfw
+            && spoiler == other.spoiler
+            && comments == other.comments
+            && score == other.score
+            && domain == other.domain
+            && contentUrl == other.contentUrl
+            && postUrl == other.postUrl
+            && imagePreview == other.imagePreview
+            && imageSource == other.imageSource
+            && imageBlurred == other.imageBlurred
 
     override fun hashCode() = createHashCode(
         id,
@@ -55,7 +78,10 @@ sealed class Post(submission: Submission, res: Resources) {
         score,
         domain,
         contentUrl,
-        postUrl
+        postUrl,
+        imagePreview,
+        imageSource,
+        imageBlurred
     )
 
     private fun prettyScore(submission: Submission, res: Resources) =
@@ -69,7 +95,7 @@ sealed class Post(submission: Submission, res: Resources) {
 class LinkPost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), ImageData by ImageData(submission) {
+) : Post(submission, resources) {
     val link: Uri = contentUrl.toUri()
     val displayLink: String = link.authority ?: submission.url
 }
@@ -77,12 +103,12 @@ class LinkPost(
 class ImagePost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), ImageData by ImageData(submission)
+) : Post(submission, resources)
 
 class GifPost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), ImageData by ImageData(submission) {
+) : Post(submission, resources) {
     val gif: String = submission.url
 }
 
@@ -96,6 +122,6 @@ class TextPost(
 class VideoPost(
     submission: Submission,
     resources: Resources
-) : Post(submission, resources), ImageData by ImageData(submission) {
+) : Post(submission, resources) {
     val video: String = submission.videoOrNull() ?: ""
 }

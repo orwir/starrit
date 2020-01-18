@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import orwir.starrit.core.extension.observe
 import orwir.starrit.feature.feed.databinding.ViewContentGifBinding
 import orwir.starrit.listing.feed.GifPost
 import orwir.starrit.view.binding.ImageViewBinding.load
@@ -22,11 +23,11 @@ internal fun PostContentBinder.GifContent(post: GifPost, parent: ViewGroup): Vie
             container.setOnClickListener { playing.value = playing.value != true }
             gif.onDetached { playing.value = false }
 
-            playing.observe(owner, Observer {
+            owner.observe(playing) {
                 caption.setVisibleOrGone(!it)
-                val imageUrl = if (it) post.gif else post.source
+                val imageUrl = if (it) post.gif else post.imageSource.url
                 gif.load(imageUrl, placeholder = gif.drawable)
                     .observe(owner, Observer { loading -> progress.setVisibleOrGone(loading) })
-            })
+            }
         }
         .root
