@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="vp_center_button_size">32dp</dimen>
+    <dimen name="vp_bottom_button_size">24dp</dimen>
+    <dimen name="vp_space">8dp</dimen>
+</resources>

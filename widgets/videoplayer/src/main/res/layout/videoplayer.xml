@@ -5,6 +5,7 @@
     android:id="@+id/vp_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    tools:background="#000"
     tools:layout_height="match_parent">
 
     <ImageView
@@ -18,17 +19,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_play"
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/vp_surface"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:resize_mode="fixed_width"
+        app:show_buffering="when_playing"
+        app:use_controller="false" />
 
     <View
-        android:id="@+id/veil"
+        android:id="@+id/vp_veil"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -38,18 +43,97 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/vp_content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:controller_layout_id="@layout/videoplayer_controls"
+    <ImageView
+        android:id="@+id/vp_play"
+        android:layout_width="@dimen/vp_center_button_size"
+        android:layout_height="@dimen/vp_center_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_play"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_pause"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vp_pause"
+        android:layout_width="@dimen/vp_center_button_size"
+        android:layout_height="@dimen/vp_center_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_repeat"
+        app:layout_constraintStart_toEndOf="@id/vp_play"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vp_repeat"
+        android:layout_width="@dimen/vp_center_button_size"
+        android:layout_height="@dimen/vp_center_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_repeat_on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_volume"
+        app:layout_constraintStart_toEndOf="@id/vp_pause"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vp_volume"
+        android:layout_width="@dimen/vp_center_button_size"
+        android:layout_height="@dimen/vp_center_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_volume_on"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/vp_repeat"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/vp_remained"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/vp_bottom_button_size"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:layout_marginBottom="@dimen/vp_space"
+        android:gravity="center_vertical"
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_open_volume"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:resize_mode="fixed_width"
-        app:show_buffering="when_playing"
-        app:shutter_background_color="@android:color/transparent" />
+        tools:text="00:00" />
+
+    <ImageView
+        android:id="@+id/vp_open_volume"
+        android:layout_width="@dimen/vp_bottom_button_size"
+        android:layout_height="@dimen/vp_bottom_button_size"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:layout_marginBottom="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_volume_on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_fullscreen"
+        app:layout_constraintStart_toEndOf="@id/vp_remained" />
+
+    <ImageView
+        android:id="@+id/vp_fullscreen"
+        android:layout_width="@dimen/vp_bottom_button_size"
+        android:layout_height="@dimen/vp_bottom_button_size"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:layout_marginBottom="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_fullscreen_on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/vp_open_volume" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
