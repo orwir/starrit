@@ -3,7 +3,7 @@ package orwir.starrit.access.model
 import orwir.starrit.core.BuildConfig.REDDIT_URL_BASIC
 import orwir.starrit.core.BuildConfig.REDDIT_URL_OAUTH
 
-enum class AccessType {
+enum class AccessState {
     /**
      * User opens the app first time or cleared data
      */

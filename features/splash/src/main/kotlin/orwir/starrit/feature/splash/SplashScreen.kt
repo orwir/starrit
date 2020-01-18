@@ -36,6 +36,6 @@ class SplashFragment(navigation: Lazy<SplashNavigation>) : BaseFragment<Fragment
 
 internal class SplashViewModel(private val repository: AccessRepository) : ViewModel() {
 
-    suspend fun hasAccess(): Boolean = repository.type().valid()
+    suspend fun hasAccess(): Boolean = repository.state().valid()
 
 }

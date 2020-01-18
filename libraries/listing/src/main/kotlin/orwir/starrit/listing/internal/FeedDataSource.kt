@@ -83,7 +83,7 @@ internal class FeedDataSource(
             try {
                 networkState.postValue(NetworkState.Loading)
                 service.listing(
-                    base = access.type().resolveBaseUrl(),
+                    base = access.state().resolveBaseUrl(),
                     subreddit = type.asParameter(),
                     sort = sort.asParameter(),
                     before = before,

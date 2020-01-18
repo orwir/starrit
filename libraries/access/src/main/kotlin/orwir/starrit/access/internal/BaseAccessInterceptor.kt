@@ -31,10 +31,7 @@ internal class BaseAccessInterceptor : AccessInterceptor, KoinComponent {
         val response = chain.proceed(request)
         if (response.code == 401) {
             response.close()
-            throw TokenException(
-                "Access was revoked.",
-                code = ErrorCode.ACCESS_DENIED
-            )
+            throw TokenException("Access was revoked.", code = ErrorCode.ACCESS_DENIED)
         }
         return response
     }

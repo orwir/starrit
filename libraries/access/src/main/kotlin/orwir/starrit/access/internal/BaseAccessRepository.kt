@@ -35,33 +35,35 @@ internal class BaseAccessRepository :
     private var requestCallback: Callback? = null
     private var responseUri: Uri? = null
     private var token: Token? by nullableObjPref()
-    private var access: AccessType by enumPref()
+    private var access: AccessState by enumPref()
 
-    private val service: AuthorizationService by inject()
+    private val authorization: AuthorizationService by inject()
+    private val account: AccountService by inject()
     private val scope = listOf(Scope.Identity, Scope.Read).joinToString { it.asParameter() }
 
-    override suspend fun type(): AccessType =
+    override suspend fun state(): AccessState =
         when (access) {
-            AccessType.Authorized ->
+            AccessState.Authorized ->
                 try {
                     obtainToken()
-                    AccessType.Authorized
+                    AccessState.Authorized
                 } catch (e: Exception) {
-                    AccessType.Revoked
+                    AccessState.Revoked
                 }
             else -> access
         }
+
+    override suspend fun account(): Account {
+        TODO("Not implemented yet!")
+    }
 
     override suspend fun obtainToken(): Token =
         token?.let {
             if (it.isExpired()) {
                 try {
-                    token = service.refreshToken(it.refresh).copy(refresh = it.refresh)
+                    token = authorization.refreshToken(it.refresh).copy(refresh = it.refresh)
                 } catch (e: Exception) {
-                    throw e.takeIf { e is TokenException } ?: TokenException(
-                        "Token refresh failed!",
-                        e
-                    )
+                    throw e.takeIf { e is TokenException } ?: TokenException("Token refresh failed!", e)
                 }
             }
             token
@@ -107,20 +109,15 @@ internal class BaseAccessRepository :
             ?.toUpperCase(Locale.ENGLISH)
             ?.let(TokenException.ErrorCode::valueOf)
         if (errorCode != null) {
-            callback.onError(
-                TokenException(
-                    "OAuth error: $errorCode",
-                    code = errorCode
-                )
-            )
+            callback.onError(TokenException("OAuth error: $errorCode", code = errorCode))
             return
         }
 
         launch {
             try {
                 val code = response.getQueryParameter("code")!!
-                token = service.obtainToken(code)
-                access = AccessType.Authorized
+                token = authorization.obtainToken(code)
+                access = AccessState.Authorized
                 callback.onSuccess()
             } catch (e: Exception) {
                 callback.onError(e)
@@ -133,7 +130,7 @@ internal class BaseAccessRepository :
     }
 
     override fun anonymousAccess() {
-        access = AccessType.Anonymous
+        access = AccessState.Anonymous
         token = null
         requestCallback?.onAnonymous()
     }
