@@ -22,6 +22,7 @@ val featureFeedModule = module {
                 navigation = fragment.navigation,
                 inflater = LayoutInflater.from(fragment.context),
                 player = get(),
+                preferences = get(),
                 ownerLiveData = fragment.viewLifecycleOwnerLiveData
             )
         }

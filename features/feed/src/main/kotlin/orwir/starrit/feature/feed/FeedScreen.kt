@@ -2,6 +2,7 @@ package orwir.starrit.feature.feed
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
+import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,6 +28,7 @@ import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.MarginItemDecoration
 import orwir.starrit.view.extension.argument
+import orwir.starrit.view.extension.launchWhenResumed
 import orwir.starrit.view.extension.observe
 import orwir.starrit.view.extension.showSnackbar
 import orwir.videoplayer.bindVideoPlayer
@@ -77,10 +80,19 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
 
     private fun inflateMenu() {
         toolbar.inflateMenu(R.menu.menu_feed)
+        toolbar.menu.findItem(R.id.blur_nsfw).setIcon(blurNsfwIcon())
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.open_selection -> {
                     findNavController().navigate(FeedFragmentDirections.toSelectionFragment(type, sort))
+                    true
+                }
+                R.id.blur_nsfw -> {
+                    preferences.blurNsfw = !preferences.blurNsfw
+                    launchWhenResumed {
+                        delay(350)
+                        it.setIcon(blurNsfwIcon())
+                    }
                     true
                 }
                 else -> false
@@ -97,6 +109,10 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
             root.showSnackbar(exception)
         }
     }
+
+    @DrawableRes
+    private fun blurNsfwIcon(): Int =
+        if (preferences.blurNsfw) R.drawable.ic_visibility_off else R.drawable.ic_visibility_on
 
 }
 

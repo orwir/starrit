@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 import com.google.android.exoplayer2.ExoPlayer
 import orwir.starrit.core.extension.observe
 import orwir.starrit.feature.feed.FeedNavigation
+import orwir.starrit.feature.feed.FeedPreferences
 import orwir.starrit.feature.feed.R
 import orwir.starrit.listing.feed.*
 import orwir.starrit.listing.model.Image
@@ -23,6 +24,7 @@ internal class PostContentBinder(
     val navigation: FeedNavigation,
     val inflater: LayoutInflater,
     val player: ExoPlayer,
+    val preferences: FeedPreferences,
     private val ownerLiveData: LiveData<LifecycleOwner>
 ) {
 
@@ -77,6 +79,6 @@ internal class PostContentBinder(
         }
     }
 
-    private fun isBlurNsfw() = true // TODO: implement it after account will be added
+    private fun isBlurNsfw() = preferences.blurNsfw
 
 }

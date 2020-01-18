@@ -6,6 +6,7 @@
     <string name="network_state_button_retry">Retry</string>
     <string name="text_content_button_show_more">show more</string>
     <string name="feed_toolbar_menu_selection">Selection</string>
+    <string name="feed_toolbar_menu_blur_nsfw">Blur NSFW</string>
 
     <!-- Selection Screen -->
     <string name="selection_type_hint">Type</string>
