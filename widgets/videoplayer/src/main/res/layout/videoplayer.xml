@@ -96,6 +96,17 @@
         app:layout_constraintStart_toEndOf="@id/vp_repeat"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/vp_playback_seeker"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/vp_bottom_button_size"
+        android:layout_marginBottom="@dimen/vp_space"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_remained"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/vp_remained"
         android:layout_width="wrap_content"
@@ -106,14 +117,12 @@
         android:textColor="#FFF"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/vp_open_volume"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_volume_level"
+        app:layout_constraintStart_toEndOf="@id/vp_playback_seeker"
         tools:text="00:00" />
 
     <ImageView
-        android:id="@+id/vp_open_volume"
+        android:id="@+id/vp_volume_level"
         android:layout_width="@dimen/vp_bottom_button_size"
         android:layout_height="@dimen/vp_bottom_button_size"
         android:layout_marginEnd="@dimen/vp_space"
@@ -134,6 +143,13 @@
         android:src="@drawable/ic_fullscreen_on"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/vp_open_volume" />
+        app:layout_constraintStart_toEndOf="@id/vp_volume_level" />
+
+    <View
+        android:id="@+id/vp_volume_level_seeker"
+        android:layout_width="@dimen/vp_bottom_button_size"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@id/vp_volume_level"
+        app:layout_constraintStart_toStartOf="@id/vp_volume_level" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

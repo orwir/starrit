@@ -39,7 +39,7 @@ class VideoPlayer @JvmOverloads constructor(
         vp_repeat.setOnClickListener { }
         vp_volume.setOnClickListener { }
         // todo: content seeker
-        vp_open_volume.setOnClickListener { }
+        vp_volume_level.setOnClickListener { /*todo: show/hide volume seeker */ }
         // todo: volume seeker
         vp_fullscreen.setOnClickListener { }
     }
@@ -105,10 +105,10 @@ class VideoPlayer @JvmOverloads constructor(
         vp_pause.visible(show && state == true)
         vp_repeat.visible(show && state != true)
         vp_volume.visible(show && state == null)
-        //todo: content seeker -> state != null
+        vp_playback_seeker.visible(show && state != null)
         vp_remained.visible(show && state != null)
-        vp_open_volume.visible(show && state != null)
-        //todo: volume seeker -> false
+        vp_volume_level.visible(show && state != null)
+        vp_volume_level_seeker.visible(false)
         vp_fullscreen.visible(show)
     }
 
