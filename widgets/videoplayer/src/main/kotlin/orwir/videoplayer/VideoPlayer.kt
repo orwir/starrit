@@ -19,7 +19,7 @@ class VideoPlayer @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyleAttr), Player.EventListener {
 
     val cover: ImageView by lazy { vp_cover }
-    lateinit var player: ExoPlayer
+    private lateinit var player: ExoPlayer
     private lateinit var video: MediaSource
     private var initial = true
     private var started = false
@@ -34,8 +34,8 @@ class VideoPlayer @JvmOverloads constructor(
                 showHUD(show = vp_fullscreen.visibility != View.VISIBLE, state = started && player.playWhenReady)
             }
         }
-        vp_play.setOnClickListener { if (!started) start() else playPause() }
-        vp_pause.setOnClickListener { playPause() }
+        vp_play.setOnClickListener { if (!started) start() else play() }
+        vp_pause.setOnClickListener { play() }
         vp_repeat.setOnClickListener { }
         vp_volume.setOnClickListener { }
         // todo: content seeker
@@ -46,6 +46,32 @@ class VideoPlayer @JvmOverloads constructor(
 
     fun setVideo(uri: Uri) {
         video = uri.toMediaSource(context)
+    }
+
+    fun start(restored: Boolean = false) {
+        VideoPlayerHolder.swap(this)
+        vp_surface.player = player
+        vp_surface.visible(true)
+        player.prepare(video, !restored, initial)
+        if (!restored) {
+            player.audioComponent?.volume = 0F // todo: get from configuration
+            player.playWhenReady = true
+        }
+        showHUD(show = !player.playWhenReady, state = player.playWhenReady)
+        player.addListener(this)
+        initial = false
+        started = true
+    }
+
+    fun play() {
+        player.playWhenReady = !player.playWhenReady
+        showHUD(show = !player.playWhenReady, state = false)
+    }
+
+    fun stop() {
+        player.stop(true)
+        started = false
+        beforeStart()
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
@@ -66,7 +92,12 @@ class VideoPlayer @JvmOverloads constructor(
         VideoPlayerHolder.releaseSelf(this)
     }
 
+    internal fun setPlayer(player: ExoPlayer) {
+        this.player = player
+    }
+
     internal fun release() {
+        initial = true
         player.removeListener(this)
         stop()
     }
@@ -76,30 +107,9 @@ class VideoPlayer @JvmOverloads constructor(
         showHUD(show = true, state = null)
     }
 
-    private fun start() {
-        VideoPlayerHolder.swap(this)
-        vp_surface.player = player
-        vp_surface.visible(true)
-        showHUD(show = false, state = true)
-        player.prepare(video, true, true)
-        player.audioComponent?.volume = 0F // todo: get from configuration
-        player.playWhenReady = true
-        player.addListener(this)
-        initial = false
-        started = true
-    }
-
-    private fun playPause() {
-        player.playWhenReady = !player.playWhenReady
-        showHUD(show = !player.playWhenReady, state = false)
-    }
-
-    private fun stop() {
-        player.stop(true)
-        started = false
-        beforeStart()
-    }
-
+    /**
+     * @param state before start: null, paused: false, playing: true
+     */
     private fun showHUD(show: Boolean, state: Boolean?) {
         vp_play.visible(show && state != true)
         vp_pause.visible(show && state == true)

@@ -28,7 +28,7 @@ val applicationModule = module {
         app.getSharedPreferences(app::class.qualifiedName, Application.MODE_PRIVATE)
     }
 
-    single<ExoPlayer> {
+    factory<ExoPlayer> {
         SimpleExoPlayer.Builder(get())
             .setUseLazyPreparation(true)
             .build()

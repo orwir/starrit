@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import com.google.android.exoplayer2.ExoPlayer
 import orwir.starrit.core.extension.observe
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.feed.FeedPreferences
@@ -23,7 +22,6 @@ import orwir.starrit.view.extension.getThemeColor
 internal class PostContentBinder(
     val navigation: FeedNavigation,
     val inflater: LayoutInflater,
-    val player: ExoPlayer,
     val preferences: FeedPreferences,
     private val ownerLiveData: LiveData<LifecycleOwner>
 ) {

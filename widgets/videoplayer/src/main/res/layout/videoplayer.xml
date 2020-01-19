@@ -100,6 +100,8 @@
         android:id="@+id/vp_playback_seeker"
         android:layout_width="0dp"
         android:layout_height="@dimen/vp_bottom_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
         android:layout_marginBottom="@dimen/vp_space"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/vp_remained"

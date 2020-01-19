@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
-import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.android.synthetic.main.fragment_feed.*
 import kotlinx.coroutines.delay
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,7 +40,6 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
     internal val sort: Feed.Sort by argument(FEED_SORT)
     internal val navigation by navigation
 
-    private val player: ExoPlayer by inject()
     private val preferences: FeedPreferences by inject()
     private val contentBinder: PostContentBinder by currentScope.inject()
     private val viewModel: FeedViewModel by viewModel { parametersOf(type, sort) }
@@ -57,7 +56,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         inflateMenu()
-        viewLifecycleOwner.bindVideoPlayer(player)
+        viewLifecycleOwner.bindVideoPlayer { get() }
 
         val adapter = FeedAdapter(contentBinder, viewModel::retry)
         posts.adapter = adapter

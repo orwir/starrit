@@ -11,8 +11,7 @@ internal fun PostContentBinder.VideoContent(post: VideoPost, parent: ViewGroup):
     ViewContentVideoBinding
         .inflate(inflater, parent, true)
         .apply {
-            video.player = player
-            video.setVideo(post.video.toUri())
-            post.loadImageData(video.cover)
+            player.setVideo(post.video.toUri())
+            post.loadImageData(player.cover)
         }
         .root
