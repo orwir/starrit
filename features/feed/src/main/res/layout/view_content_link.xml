@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
-        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -35,6 +34,11 @@
             android:textColor="?attr/colorSecondary"
             app:backgroundTint="@color/color_surface_80"
             tools:text="https://example.com" />
+
+        <View
+            android:id="@+id/veil"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </FrameLayout>
 </layout>

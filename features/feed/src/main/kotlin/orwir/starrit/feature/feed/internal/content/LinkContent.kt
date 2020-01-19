@@ -10,7 +10,7 @@ internal fun PostContentBinder.LinkContent(post: LinkPost, parent: ViewGroup): V
     ViewContentLinkBinding
         .inflate(inflater, parent, true)
         .apply {
-            container.setOnClickListener { navigation.openBrowser(post.link) }
+            veil.setOnClickListener { navigation.openBrowser(post.link) }
             text.text = post.displayLink
             post.loadImageData(image)
         }
