@@ -1,12 +1,14 @@
 package orwir.videoplayer
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
@@ -29,10 +31,14 @@ class VideoPlayer @JvmOverloads constructor(
     private var progressJob: Job? = null
     private var initial = true
     private var started = false
+    private var repeat = false
+    private val repeatOn: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_repeat_on)!! }
+    private val repeatOff: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_repeat_off)!! }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.videoplayer, this, true)
         beforeStart()
+        setRepeat(true)
         vp_veil.setOnClickListener {
             if (initial && !started) {
                 start()
@@ -42,7 +48,7 @@ class VideoPlayer @JvmOverloads constructor(
         }
         vp_play.setOnClickListener { if (!started) start() else play() }
         vp_pause.setOnClickListener { play() }
-        vp_repeat.setOnClickListener { }
+        vp_repeat.setOnClickListener { setRepeat(!repeat) }
         vp_volume.setOnClickListener { }
         // todo: content seeker
         vp_volume_level.setOnClickListener { /*todo: show/hide volume seeker */ }
@@ -64,6 +70,7 @@ class VideoPlayer @JvmOverloads constructor(
             player.audioComponent?.volume = 0F // todo: get from configuration
             player.playWhenReady = true
         }
+        setRepeat(repeat)
         showHUD(show = !player.playWhenReady, state = player.playWhenReady)
         player.addListener(this)
         initial = false
@@ -139,6 +146,14 @@ class VideoPlayer @JvmOverloads constructor(
         vp_volume_level.visible(show && state != null)
         vp_volume_level_seeker.visible(false)
         vp_fullscreen.visible(show)
+    }
+
+    private fun setRepeat(enabled: Boolean) {
+        repeat = enabled
+        vp_repeat.setImageDrawable(if (repeat) repeatOn else repeatOff)
+        if (this::player.isInitialized) {
+            player.repeatMode = if (repeat) Player.REPEAT_MODE_ALL else Player.REPEAT_MODE_OFF
+        }
     }
 
     private fun View.visible(value: Boolean) {
