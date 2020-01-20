@@ -104,9 +104,9 @@ class VideoPlayer @JvmOverloads constructor(
         super.onAttachedToWindow()
         initial = true
         started = false
+        setRepeat(repeat)
+        setVolume(volume)
         beforeStart()
-        setRepeat(true)
-        setVolume(0f)
     }
 
     override fun onDetachedFromWindow() {
