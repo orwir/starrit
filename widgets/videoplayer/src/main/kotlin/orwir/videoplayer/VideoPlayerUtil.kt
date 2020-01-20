@@ -28,21 +28,10 @@ internal fun Uri.toMediaSource(context: Context): MediaSource {
 }
 
 internal fun asRemainedTime(total: Long, played: Long): String {
-    var totalMS = total
-    val th = TimeUnit.MILLISECONDS.toHours(totalMS)
-    totalMS -= TimeUnit.HOURS.toMillis(th)
-    val tm = TimeUnit.MILLISECONDS.toMinutes(totalMS)
-
     var remainedMS = total - played
-    val rh = TimeUnit.MILLISECONDS.toHours(remainedMS)
-    remainedMS -= TimeUnit.HOURS.toMillis(rh)
-    val rm = TimeUnit.MILLISECONDS.toMinutes(remainedMS)
-    remainedMS -= TimeUnit.MINUTES.toMillis(rm)
-    val rs = TimeUnit.MILLISECONDS.toSeconds(remainedMS)
+    val minutes = TimeUnit.MILLISECONDS.toMinutes(remainedMS)
+    remainedMS -= TimeUnit.MINUTES.toMillis(minutes)
+    val seconds = TimeUnit.MILLISECONDS.toSeconds(remainedMS)
 
-    val hours = rh.takeIf { it > 0 }?.let { "%02d:".format(it) } ?: "00:".takeIf { th > 0 } ?: ""
-    val minutes = rm.takeIf { it > 0 }?.let { "%02d".format(it) } ?: "00".takeIf { tm > 0 } ?: ""
-    val seconds = ":%02d".format(rs)
-
-    return "$hours$minutes$seconds"
+    return "%d:%02d".format(minutes, seconds)
 }
