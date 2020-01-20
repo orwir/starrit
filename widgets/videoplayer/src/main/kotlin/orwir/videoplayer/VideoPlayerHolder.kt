@@ -12,9 +12,9 @@ internal object VideoPlayerHolder {
     @MainThread
     fun onPlayerInit(player: ExoPlayer) {
         this.player = player
-        holder?.get()?.apply {
-            setPlayer(player)
-            start(true)
+        holder?.get()?.also {
+            it.player = player
+            it.start(true)
         }
     }
 
@@ -22,7 +22,7 @@ internal object VideoPlayerHolder {
     fun swap(view: VideoPlayer) {
         holder?.get()?.takeIf { it != view }?.release()
         holder = WeakReference(view)
-        view.setPlayer(player)
+        view.player = player
     }
 
     @MainThread

@@ -6,14 +6,15 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import kotlinx.android.synthetic.main.videoplayer.view.*
+import kotlinx.android.synthetic.main.vp_controller.view.*
 import kotlinx.coroutines.*
 
 class VideoPlayer @JvmOverloads constructor(
@@ -21,42 +22,37 @@ class VideoPlayer @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) :
-    ConstraintLayout(context, attrs, defStyleAttr),
-    Player.EventListener,
-    CoroutineScope by CoroutineScope(Dispatchers.Main) {
+    FrameLayout(context, attrs, defStyleAttr),
+    CoroutineScope by CoroutineScope(Dispatchers.Main),
+    Player.EventListener {
 
     val cover: ImageView by lazy { vp_cover }
-    private lateinit var player: ExoPlayer
-    private lateinit var video: MediaSource
+    internal lateinit var player: ExoPlayer
+    internal lateinit var video: MediaSource
+
+    private var initial: Boolean = true
+    private var started: Boolean = false
+    private var repeat: Boolean = true
+    private var volume: Float = 0f
     private var progressJob: Job? = null
-    private var initial = true
-    private var started = false
 
-    private var repeat = true
-    private val repeatOn: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_repeat_on)!! }
-    private val repeatOff: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_repeat_off)!! }
-
-    private var volume = 0f
-    private val volumeOn: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_volume_on)!! }
-    private val volumeOff: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_volume_off)!! }
+    private val hud: View by lazy { vp_controller }
+    private val repeatOn: Drawable
+    private val repeatOff: Drawable
+    private val volumeOn: Drawable
+    private val volumeOff: Drawable
+    private val fullscreenOn: Drawable
+    private val fullscreenOff: Drawable
 
     init {
         LayoutInflater.from(context).inflate(R.layout.videoplayer, this, true)
-        vp_veil.setOnClickListener {
-            if (initial && !started) {
-                start()
-            } else {
-                showHUD(show = vp_fullscreen.visibility != View.VISIBLE, state = started && player.playWhenReady)
-            }
-        }
-        vp_play.setOnClickListener { if (!started) start() else play() }
-        vp_pause.setOnClickListener { play() }
-        vp_repeat.setOnClickListener { setRepeat(!repeat) }
-        vp_volume.setOnClickListener { setVolume(if (volume > 0f) 0f else 1f) }
-        // todo: content seeker
-        vp_volume_level.setOnClickListener { /*todo: show/hide volume seeker */ }
-        // todo: volume seeker
-        vp_fullscreen.setOnClickListener { }
+        repeatOn = ContextCompat.getDrawable(context, R.drawable.ic_repeat_on)!!
+        repeatOff = ContextCompat.getDrawable(context, R.drawable.ic_repeat_off)!!
+        volumeOn = ContextCompat.getDrawable(context, R.drawable.ic_volume_on)!!
+        volumeOff = ContextCompat.getDrawable(context, R.drawable.ic_volume_off)!!
+        fullscreenOn = ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_on)!!
+        fullscreenOff = ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_off)!!
+        initControllerListeners()
     }
 
     fun setVideo(uri: Uri) {
@@ -67,13 +63,11 @@ class VideoPlayer @JvmOverloads constructor(
         progressJob?.cancel()
         VideoPlayerHolder.swap(this)
         vp_surface.player = player
-        vp_surface.visible(true)
         player.prepare(video, !restored, initial)
-        if (!restored) {
-            setVolume(volume)
-            player.playWhenReady = true
-        }
+        if (!restored) player.playWhenReady = true
+        setVolume(volume)
         setRepeat(repeat)
+        vp_surface.setVisible(true)
         showHUD(show = !player.playWhenReady, state = player.playWhenReady)
         player.addListener(this)
         initial = false
@@ -83,7 +77,6 @@ class VideoPlayer @JvmOverloads constructor(
 
     fun play() {
         player.playWhenReady = !player.playWhenReady
-        showHUD(show = !player.playWhenReady, state = false)
     }
 
     fun stop() {
@@ -98,6 +91,11 @@ class VideoPlayer @JvmOverloads constructor(
             showHUD(show = true, state = false)
             started = false
         }
+    }
+
+    override fun onIsPlayingChanged(isPlaying: Boolean) {
+        // todo: check how well it works
+        showHUD(show = !isPlaying, state = isPlaying)
     }
 
     override fun onAttachedToWindow() {
@@ -115,10 +113,6 @@ class VideoPlayer @JvmOverloads constructor(
         VideoPlayerHolder.releaseSelf(this)
     }
 
-    internal fun setPlayer(player: ExoPlayer) {
-        this.player = player
-    }
-
     internal fun release() {
         initial = true
         player.removeListener(this)
@@ -126,37 +120,24 @@ class VideoPlayer @JvmOverloads constructor(
     }
 
     private fun beforeStart() {
-        vp_surface.visible(false)
+        vp_surface.setVisible(false)
         showHUD(show = true, state = null)
     }
 
     private suspend fun trackProgress() {
-        while (isActive) {
-            delay(500)
-            if (player.duration != C.TIME_UNSET) {
-                vp_remained.text = asRemainedTime(player.duration, player.currentPosition)
+        hud.apply {
+            while (isActive) {
+                delay(500)
+                if (player.duration != C.TIME_UNSET) {
+                    vp_remained.text = (player.duration - player.currentPosition).toRemainingTime()
+                }
             }
         }
     }
 
-    /**
-     * @param state before start: null, paused: false, playing: true
-     */
-    private fun showHUD(show: Boolean, state: Boolean?) {
-        vp_play.visible(show && state != true)
-        vp_pause.visible(show && state == true)
-        vp_repeat.visible(show && state != true)
-        vp_volume.visible(show && state == null)
-        vp_playback_seeker.visible(show && state != null)
-        vp_remained.visible(show && state != null)
-        vp_volume_level.visible(show && state != null)
-        vp_volume_level_seeker.visible(false)
-        vp_fullscreen.visible(show)
-    }
-
     private fun setRepeat(enabled: Boolean) {
         repeat = enabled
-        vp_repeat.setImageDrawable(if (repeat) repeatOn else repeatOff)
+        hud.vp_repeat.setImageDrawable(if (repeat) repeatOn else repeatOff)
         if (this::player.isInitialized) {
             player.repeatMode = if (repeat) Player.REPEAT_MODE_ALL else Player.REPEAT_MODE_OFF
         }
@@ -164,15 +145,58 @@ class VideoPlayer @JvmOverloads constructor(
 
     private fun setVolume(level: Float) {
         volume = level
-        vp_volume.setImageDrawable(if (volume > 0f) volumeOn else volumeOff)
-        vp_volume_level.setImageDrawable(if (volume > 0f) volumeOn else volumeOff)
         if (this::player.isInitialized) {
             player.audioComponent?.volume = volume
         }
+        hud.apply {
+            val drawable = if (volume > 0) volumeOn else volumeOff
+            vp_volume.setImageDrawable(drawable)
+            vp_volume_level.setImageDrawable(drawable)
+        }
     }
 
-    private fun View.visible(value: Boolean) {
-        visibility = if (value) View.VISIBLE else View.GONE
+    private fun initControllerListeners() {
+        hud.apply {
+            vp_veil.setOnClickListener {
+                if (initial && !started) {
+                    start()
+                } else {
+                    showHUD(show = !isHudVisible(), state = started && player.playWhenReady)
+                }
+            }
+            vp_play.setOnClickListener { if (!started) start() else play() }
+            vp_pause.setOnClickListener { play() }
+            vp_repeat.setOnClickListener { setRepeat(!repeat) }
+            vp_volume.setOnClickListener { setVolume(if (volume > 0f) 0f else 1f) }
+            // todo: content seeker
+            vp_volume_level.setOnClickListener { /*todo: show/hide volume seeker */ }
+            // todo: volume seeker
+            vp_fullscreen.setOnClickListener { /*todo: change fullscreen mode */ }
+        }
     }
+
+    /**
+     * @param show show / hide HUD
+     * @param state before start: null, paused: false, playing: true
+     */
+    private fun showHUD(show: Boolean, state: Boolean?) {
+        hud.apply {
+            vp_play.setVisible(show && state != true)
+            vp_pause.setVisible(show && state == true)
+            vp_repeat.setVisible(show && state != true)
+            vp_volume.setVisible(show && state == null)
+            vp_playback_seeker.setVisible(show && state != null)
+            vp_remained.setVisible(show && state != null)
+            vp_volume_level.setVisible(show && state != null)
+            vp_volume_level_seeker.setVisible(false)
+            vp_fullscreen.setVisible(show)
+        }
+    }
+
+    private fun View.setVisible(visible: Boolean) {
+        visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    private fun isHudVisible() = hud.vp_fullscreen.visibility == View.VISIBLE
 
 }

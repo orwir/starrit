@@ -27,11 +27,7 @@ internal fun Uri.toMediaSource(context: Context): MediaSource {
     }
 }
 
-internal fun asRemainedTime(total: Long, played: Long): String {
-    var remainedMS = total - played
-    val minutes = TimeUnit.MILLISECONDS.toMinutes(remainedMS)
-    remainedMS -= TimeUnit.MINUTES.toMillis(minutes)
-    val seconds = TimeUnit.MILLISECONDS.toSeconds(remainedMS)
-
-    return "%d:%02d".format(minutes, seconds)
+internal fun Long.toRemainingTime(): String {
+    val seconds = TimeUnit.MILLISECONDS.toSeconds(this)
+    return "%d:%02d".format(seconds / 60, seconds % 60)
 }

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vp_controller"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#000">
+
+    <View
+        android:id="@+id/vp_veil"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vp_play"
+        android:layout_width="@dimen/vp_center_button_size"
+        android:layout_height="@dimen/vp_center_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_play"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_pause"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vp_pause"
+        android:layout_width="@dimen/vp_center_button_size"
+        android:layout_height="@dimen/vp_center_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_repeat"
+        app:layout_constraintStart_toEndOf="@id/vp_play"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vp_repeat"
+        android:layout_width="@dimen/vp_center_button_size"
+        android:layout_height="@dimen/vp_center_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_repeat_on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_volume"
+        app:layout_constraintStart_toEndOf="@id/vp_pause"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vp_volume"
+        android:layout_width="@dimen/vp_center_button_size"
+        android:layout_height="@dimen/vp_center_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_volume_on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/vp_repeat"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/vp_playback_seeker"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/vp_bottom_button_size"
+        android:layout_marginStart="@dimen/vp_space"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:layout_marginBottom="@dimen/vp_space"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_remained"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/vp_remained"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/vp_bottom_button_size"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:layout_marginBottom="@dimen/vp_space"
+        android:gravity="center_vertical"
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_volume_level"
+        app:layout_constraintStart_toEndOf="@id/vp_playback_seeker"
+        tools:text="00:00" />
+
+    <ImageView
+        android:id="@+id/vp_volume_level"
+        android:layout_width="@dimen/vp_bottom_button_size"
+        android:layout_height="@dimen/vp_bottom_button_size"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:layout_marginBottom="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_volume_on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vp_fullscreen"
+        app:layout_constraintStart_toEndOf="@id/vp_remained" />
+
+    <ImageView
+        android:id="@+id/vp_fullscreen"
+        android:layout_width="@dimen/vp_bottom_button_size"
+        android:layout_height="@dimen/vp_bottom_button_size"
+        android:layout_marginEnd="@dimen/vp_space"
+        android:layout_marginBottom="@dimen/vp_space"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_fullscreen_on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/vp_volume_level" />
+
+    <View
+        android:id="@+id/vp_volume_level_seeker"
+        android:layout_width="@dimen/vp_bottom_button_size"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@id/vp_volume_level"
+        app:layout_constraintStart_toStartOf="@id/vp_volume_level" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
