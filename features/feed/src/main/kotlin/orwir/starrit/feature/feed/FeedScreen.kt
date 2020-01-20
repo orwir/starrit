@@ -58,7 +58,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
         inflateMenu()
         viewLifecycleOwner.bindVideoPlayer { get() }
 
-        val adapter = FeedAdapter(contentBinder, viewModel::retry)
+        val adapter = FeedAdapter(type, contentBinder, viewModel::retry)
         posts.adapter = adapter
         posts.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.space).toInt()))
 

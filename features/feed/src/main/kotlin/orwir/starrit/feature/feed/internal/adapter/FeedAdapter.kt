@@ -9,9 +9,11 @@ import orwir.starrit.feature.feed.R
 import orwir.starrit.feature.feed.databinding.ViewNetworkStateBinding
 import orwir.starrit.feature.feed.databinding.ViewPostBinding
 import orwir.starrit.feature.feed.internal.content.PostContentBinder
+import orwir.starrit.listing.feed.Feed
 import orwir.starrit.listing.feed.Post
 
 internal class FeedAdapter(
+    private val type: Feed.Type,
     private val contentBinder: PostContentBinder,
     private val retryHandler: () -> Unit
 ) : PagedListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback) {

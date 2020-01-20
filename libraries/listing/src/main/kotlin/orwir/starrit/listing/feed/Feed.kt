@@ -16,11 +16,11 @@ data class Feed(
     val networkState: LiveData<NetworkState>,
     val retry: ActionHolder
 ) {
-    sealed class Type(val subreddit: String) : Serializable {
+    sealed class Type(val subreddit: String, val solo: Boolean = false) : Serializable {
         object Home : Type(HOME)
         object Popular : Type(POPULAR)
         object All : Type(ALL)
-        class Subreddit(name: String) : Type("/r/$name")
+        class Subreddit(name: String) : Type("/r/$name", true)
 
         fun asParameter() = if (this is Home) "" else subreddit
 
