@@ -31,14 +31,17 @@ class VideoPlayer @JvmOverloads constructor(
     private var progressJob: Job? = null
     private var initial = true
     private var started = false
-    private var repeat = false
+
+    private var repeat = true
     private val repeatOn: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_repeat_on)!! }
     private val repeatOff: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_repeat_off)!! }
 
+    private var volume = 0f
+    private val volumeOn: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_volume_on)!! }
+    private val volumeOff: Drawable by lazy { ContextCompat.getDrawable(context, R.drawable.ic_volume_off)!! }
+
     init {
         LayoutInflater.from(context).inflate(R.layout.videoplayer, this, true)
-        beforeStart()
-        setRepeat(true)
         vp_veil.setOnClickListener {
             if (initial && !started) {
                 start()
@@ -49,7 +52,7 @@ class VideoPlayer @JvmOverloads constructor(
         vp_play.setOnClickListener { if (!started) start() else play() }
         vp_pause.setOnClickListener { play() }
         vp_repeat.setOnClickListener { setRepeat(!repeat) }
-        vp_volume.setOnClickListener { }
+        vp_volume.setOnClickListener { setVolume(if (volume > 0f) 0f else 1f) }
         // todo: content seeker
         vp_volume_level.setOnClickListener { /*todo: show/hide volume seeker */ }
         // todo: volume seeker
@@ -67,7 +70,7 @@ class VideoPlayer @JvmOverloads constructor(
         vp_surface.visible(true)
         player.prepare(video, !restored, initial)
         if (!restored) {
-            player.audioComponent?.volume = 0F // todo: get from configuration
+            setVolume(volume)
             player.playWhenReady = true
         }
         setRepeat(repeat)
@@ -101,6 +104,9 @@ class VideoPlayer @JvmOverloads constructor(
         super.onAttachedToWindow()
         initial = true
         started = false
+        beforeStart()
+        setRepeat(true)
+        setVolume(0f)
     }
 
     override fun onDetachedFromWindow() {
@@ -153,6 +159,15 @@ class VideoPlayer @JvmOverloads constructor(
         vp_repeat.setImageDrawable(if (repeat) repeatOn else repeatOff)
         if (this::player.isInitialized) {
             player.repeatMode = if (repeat) Player.REPEAT_MODE_ALL else Player.REPEAT_MODE_OFF
+        }
+    }
+
+    private fun setVolume(level: Float) {
+        volume = level
+        vp_volume.setImageDrawable(if (volume > 0f) volumeOn else volumeOff)
+        vp_volume_level.setImageDrawable(if (volume > 0f) volumeOn else volumeOff)
+        if (this::player.isInitialized) {
+            player.audioComponent?.volume = volume
         }
     }
 
