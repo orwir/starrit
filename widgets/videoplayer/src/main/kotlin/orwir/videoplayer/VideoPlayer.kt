@@ -7,20 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import kotlinx.android.synthetic.main.videoplayer.view.*
+import kotlinx.coroutines.*
 
 class VideoPlayer @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), Player.EventListener {
+) :
+    ConstraintLayout(context, attrs, defStyleAttr),
+    Player.EventListener,
+    CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     val cover: ImageView by lazy { vp_cover }
     private lateinit var player: ExoPlayer
     private lateinit var video: MediaSource
+    private var progressJob: Job? = null
     private var initial = true
     private var started = false
 
@@ -49,6 +55,7 @@ class VideoPlayer @JvmOverloads constructor(
     }
 
     fun start(restored: Boolean = false) {
+        progressJob?.cancel()
         VideoPlayerHolder.swap(this)
         vp_surface.player = player
         vp_surface.visible(true)
@@ -61,6 +68,7 @@ class VideoPlayer @JvmOverloads constructor(
         player.addListener(this)
         initial = false
         started = true
+        progressJob = launch { trackProgress() }
     }
 
     fun play() {
@@ -70,6 +78,7 @@ class VideoPlayer @JvmOverloads constructor(
 
     fun stop() {
         player.stop(true)
+        progressJob?.cancel()
         started = false
         beforeStart()
     }
@@ -89,6 +98,7 @@ class VideoPlayer @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        cancel()
         VideoPlayerHolder.releaseSelf(this)
     }
 
@@ -105,6 +115,16 @@ class VideoPlayer @JvmOverloads constructor(
     private fun beforeStart() {
         vp_surface.visible(false)
         showHUD(show = true, state = null)
+    }
+
+    private suspend fun trackProgress() {
+        while (isActive) {
+            delay(500)
+            if (player.duration != C.TIME_UNSET) {
+                val remained = player.duration - player.currentPosition
+                vp_remained.text = remained.toTimeFormat()
+            }
+        }
     }
 
     /**
