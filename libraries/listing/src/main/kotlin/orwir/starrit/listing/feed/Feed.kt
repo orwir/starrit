@@ -20,7 +20,7 @@ data class Feed(
         object Home : Type(HOME)
         object Popular : Type(POPULAR)
         object All : Type(ALL)
-        class Subreddit(name: String) : Type("/r/$name", true)
+        class Subreddit(name: String = "subreddit") : Type("/r/$name", true)
 
         fun asParameter() = if (this is Home) "" else subreddit
 

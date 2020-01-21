@@ -1,6 +1,8 @@
 package orwir.starrit.view.extension
 
+import android.content.Context
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -51,4 +53,9 @@ fun View.onAttached(block: () -> Unit) {
 
 fun View.onDetached(block: () -> Unit) {
     onAttachStateChanged { if (!it) block() }
+}
+
+fun View.hideKeyboard() {
+    val ims = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    ims.hideSoftInputFromWindow(windowToken, 0)
 }

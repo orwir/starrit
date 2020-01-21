@@ -109,11 +109,10 @@
                 visibleOrGone="@{viewModel.spoiler}"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginEnd="@dimen/spaceX2"
                 android:layout_marginStart="@dimen/space"
                 android:src="@drawable/ic_spoiler"
                 app:layout_constraintBottom_toBottomOf="@id/nsfw"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/title"
                 app:layout_constraintStart_toEndOf="@id/nsfw"
                 app:layout_constraintTop_toTopOf="@id/nsfw" />
 

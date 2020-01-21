@@ -11,6 +11,7 @@
     <!-- Selection Screen -->
     <string name="selection_type_hint">Type</string>
     <string name="selection_sort_hint">Sort</string>
+    <string name="selection_search_hint">Search</string>
     <string name="selection_button_open">Open</string>
 
 </resources>
