@@ -208,7 +208,6 @@ class VideoPlayer @JvmOverloads constructor(
             vp_timebar.setVisible(show && state != null)
             vp_remained.setVisible(show && state != null)
             vp_volume_level.setVisible(show && state != null)
-            vp_volume_level_seeker.setVisible(false)
             vp_fullscreen.setVisible(show)
         }
     }
