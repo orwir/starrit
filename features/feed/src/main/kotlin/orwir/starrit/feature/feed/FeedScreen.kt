@@ -60,7 +60,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
 
         val adapter = FeedAdapter(type, contentBinder, viewModel::retry)
         posts.adapter = adapter
-        posts.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.space).toInt()))
+        posts.addItemDecoration(MarginItemDecoration(requireContext(), R.dimen.space))
 
         observe(viewModel.posts, adapter::submitList)
         observe(viewModel.networkState) {
