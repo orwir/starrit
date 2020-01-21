@@ -6,17 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.transform.CircleCropTransformation
 import coil.transform.Transformation
 import orwir.starrit.feature.feed.R
-import orwir.starrit.feature.feed.databinding.ViewPostBinding
 import orwir.starrit.feature.feed.internal.content.PostContentBinder
 import orwir.starrit.listing.feed.Post
 
 internal class PostViewHolder(
-    private val binding: ViewPostBinding,
+    private val binding: PostBindingWrapper,
     private val contentBinder: PostContentBinder
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
-        binding.viewModel = PostViewModel(post, ::clickHandler)
+        binding.setViewModel(PostViewModel(post, ::clickHandler))
         binding.content.removeAllViews()
         contentBinder.inflate(post, binding.content)
     }

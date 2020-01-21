@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.R
 import orwir.starrit.feature.feed.databinding.ViewNetworkStateBinding
-import orwir.starrit.feature.feed.databinding.ViewPostBinding
 import orwir.starrit.feature.feed.internal.content.PostContentBinder
 import orwir.starrit.listing.feed.Feed
 import orwir.starrit.listing.feed.Post
@@ -61,9 +60,8 @@ internal class FeedAdapter(
 
     private fun hasExtraRow() = networkState != null && networkState !is NetworkState.Success
 
-    private fun createPostViewHolder(parent: ViewGroup) = ViewPostBinding
-        .inflate(LayoutInflater.from(parent.context), parent, false)
-        .let { PostViewHolder(it, contentBinder) }
+    private fun createPostViewHolder(parent: ViewGroup) =
+        PostViewHolder(PostBindingWrapper(LayoutInflater.from(parent.context), parent, false, type), contentBinder)
 
     private fun createNetworkStateViewHolder(parent: ViewGroup) = ViewNetworkStateBinding
         .inflate(LayoutInflater.from(parent.context), parent, false)

@@ -16,7 +16,7 @@ data class Feed(
     val networkState: LiveData<NetworkState>,
     val retry: ActionHolder
 ) {
-    sealed class Type(val subreddit: String, val solo: Boolean = false) : Serializable {
+    sealed class Type(val subreddit: String, val single: Boolean = false) : Serializable {
         object Home : Type(HOME)
         object Popular : Type(POPULAR)
         object All : Type(ALL)
