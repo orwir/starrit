@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.ui.TimeBar
 import kotlinx.android.synthetic.main.videoplayer.view.*
 import kotlinx.android.synthetic.main.vp_controller.view.*
 import kotlinx.coroutines.*
@@ -23,8 +24,7 @@ class VideoPlayer @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) :
     FrameLayout(context, attrs, defStyleAttr),
-    CoroutineScope by CoroutineScope(Dispatchers.Main),
-    Player.EventListener {
+    CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     val cover: ImageView by lazy { vp_cover }
     internal lateinit var player: ExoPlayer
@@ -36,6 +36,7 @@ class VideoPlayer @JvmOverloads constructor(
     private var volume: Float = 0f
     private var progressJob: Job? = null
 
+    private val listener = createListener()
     private val hud: View by lazy { vp_controller }
     private val repeatOn: Drawable
     private val repeatOff: Drawable
@@ -53,6 +54,7 @@ class VideoPlayer @JvmOverloads constructor(
         fullscreenOn = ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_on)!!
         fullscreenOff = ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_off)!!
         initControllerListeners()
+        vp_timebar.addListener(listener)
     }
 
     fun setVideo(uri: Uri) {
@@ -69,7 +71,7 @@ class VideoPlayer @JvmOverloads constructor(
         setRepeat(repeat)
         vp_surface.setVisible(true)
         showHUD(show = !player.playWhenReady, state = player.playWhenReady)
-        player.addListener(this)
+        player.addListener(listener)
         initial = false
         started = true
         progressJob = launch { trackProgress() }
@@ -77,6 +79,7 @@ class VideoPlayer @JvmOverloads constructor(
 
     fun play() {
         player.playWhenReady = !player.playWhenReady
+        showHUD(show = !player.playWhenReady, state = player.playWhenReady)
     }
 
     fun stop() {
@@ -84,18 +87,6 @@ class VideoPlayer @JvmOverloads constructor(
         progressJob?.cancel()
         started = false
         beforeStart()
-    }
-
-    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        if (playbackState == Player.STATE_ENDED) {
-            showHUD(show = true, state = false)
-            started = false
-        }
-    }
-
-    override fun onIsPlayingChanged(isPlaying: Boolean) {
-        // todo: check how well it works
-        showHUD(show = !isPlaying, state = isPlaying)
     }
 
     override fun onAttachedToWindow() {
@@ -115,7 +106,7 @@ class VideoPlayer @JvmOverloads constructor(
 
     internal fun release() {
         initial = true
-        player.removeListener(this)
+        player.removeListener(listener)
         stop()
     }
 
@@ -127,9 +118,14 @@ class VideoPlayer @JvmOverloads constructor(
     private suspend fun trackProgress() {
         hud.apply {
             while (isActive) {
-                delay(500)
+                delay(200)
                 if (player.duration != C.TIME_UNSET) {
-                    vp_remained.text = (player.duration - player.currentPosition).toTimeFormat()
+                    vp_timebar.setDuration(player.duration)
+                    vp_timebar.setBufferedPosition(player.bufferedPosition)
+                    if (player.isPlaying) {
+                        vp_remained.text = (player.duration - player.currentPosition).toTimeFormat()
+                        vp_timebar.setPosition(player.currentPosition)
+                    }
                 }
             }
         }
@@ -155,6 +151,32 @@ class VideoPlayer @JvmOverloads constructor(
         }
     }
 
+    private fun createListener() = object : Player.EventListener, TimeBar.OnScrubListener {
+
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            if (playbackState == Player.STATE_ENDED) {
+                showHUD(show = true, state = false)
+                started = false
+            }
+        }
+
+        override fun onScrubStart(timeBar: TimeBar, position: Long) {
+            // todo: implement
+        }
+
+        override fun onScrubMove(timeBar: TimeBar, position: Long) {
+            // todo: implement
+        }
+
+        override fun onScrubStop(timeBar: TimeBar, position: Long, canceled: Boolean) {
+            if (!canceled) {
+                player.seekTo(position)
+                timeBar.setPosition(position)
+            }
+        }
+
+    }
+
     private fun initControllerListeners() {
         hud.apply {
             vp_veil.setOnClickListener {
@@ -168,9 +190,7 @@ class VideoPlayer @JvmOverloads constructor(
             vp_pause.setOnClickListener { play() }
             vp_repeat.setOnClickListener { setRepeat(!repeat) }
             vp_volume.setOnClickListener { setVolume(if (volume > 0f) 0f else 1f) }
-            // todo: content seeker
             vp_volume_level.setOnClickListener { /*todo: show/hide volume seeker */ }
-            // todo: volume seeker
             vp_fullscreen.setOnClickListener { /*todo: change fullscreen mode */ }
         }
     }
@@ -185,7 +205,7 @@ class VideoPlayer @JvmOverloads constructor(
             vp_pause.setVisible(show && state == true)
             vp_repeat.setVisible(show && state != true)
             vp_volume.setVisible(show && state == null)
-            vp_playback_seeker.setVisible(show && state != null)
+            vp_timebar.setVisible(show && state != null)
             vp_remained.setVisible(show && state != null)
             vp_volume_level.setVisible(show && state != null)
             vp_volume_level_seeker.setVisible(false)
