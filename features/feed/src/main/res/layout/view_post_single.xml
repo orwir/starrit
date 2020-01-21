@@ -31,7 +31,7 @@
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toStartOf="@id/created"
                 app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintTop_toBottomOf="@id/content"
+                app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="u/author" />
@@ -92,12 +92,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spaceX2"
-                android:layout_marginTop="@dimen/space"
+                android:layout_marginTop="@dimen/spaceX2"
                 android:layout_marginEnd="@dimen/spaceX2"
                 android:text="@{viewModel.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/author"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="Post title" />
 
             <FrameLayout
@@ -107,9 +107,10 @@
                 android:addStatesFromChildren="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:transitionGroup="true"
+                android:layout_marginTop="@dimen/space"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/author"
                 tools:background="@color/color_ghost"
                 tools:layout_height="200dp" />
 
@@ -127,7 +128,7 @@
                 android:id="@+id/vote_up"
                 android:layout_width="@dimen/icon_button_size"
                 android:layout_height="@dimen/icon_button_size"
-                android:layout_marginStart="@dimen/space"
+                android:layout_marginStart="@dimen/spaceX2"
                 android:layout_marginBottom="@dimen/space"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
@@ -209,7 +210,7 @@
                 android:src="@drawable/ic_more_vert"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title" />
+                app:layout_constraintTop_toBottomOf="@id/content" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
