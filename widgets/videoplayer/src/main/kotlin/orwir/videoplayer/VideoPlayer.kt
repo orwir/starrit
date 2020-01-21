@@ -62,19 +62,20 @@ class VideoPlayer @JvmOverloads constructor(
     }
 
     fun start(restored: Boolean = false) {
-        progressJob?.cancel()
         VideoPlayerHolder.swap(this)
-        vp_surface.player = player
         player.prepare(video, !restored, initial)
-        if (!restored) player.playWhenReady = true
+        player.addListener(listener)
         setVolume(volume)
         setRepeat(repeat)
+        if (!restored) player.playWhenReady = true
+        vp_surface.player = player
         vp_surface.setVisible(true)
         showHUD(show = !player.playWhenReady, state = player.playWhenReady)
-        player.addListener(listener)
+        if (progressJob == null || progressJob?.isActive != true) {
+            progressJob = launch { trackProgress() }
+        }
         initial = false
         started = true
-        progressJob = launch { trackProgress() }
     }
 
     fun play() {
@@ -83,7 +84,8 @@ class VideoPlayer @JvmOverloads constructor(
     }
 
     fun stop() {
-        player.stop(true)
+        player.stop()
+        player.removeListener(listener)
         progressJob?.cancel()
         started = false
         beforeStart()
@@ -100,14 +102,13 @@ class VideoPlayer @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        cancel()
         VideoPlayerHolder.releaseSelf(this)
     }
 
     internal fun release() {
-        initial = true
-        player.removeListener(listener)
         stop()
+        vp_surface.player = null
+        initial = true
     }
 
     private fun beforeStart() {
@@ -190,7 +191,7 @@ class VideoPlayer @JvmOverloads constructor(
             vp_pause.setOnClickListener { play() }
             vp_repeat.setOnClickListener { setRepeat(!repeat) }
             vp_volume.setOnClickListener { setVolume(if (volume > 0f) 0f else 1f) }
-            vp_volume_level.setOnClickListener { /*todo: show/hide volume seeker */ }
+            vp_volume_level.setOnClickListener { setVolume(if (volume > 0f) 0f else 1f) /*todo: show/hide volume seeker */ }
             vp_fullscreen.setOnClickListener { /*todo: change fullscreen mode */ }
         }
     }
