@@ -5,11 +5,13 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import orwir.starrit.core.model.NetworkState
-import orwir.starrit.feature.feed.R
 import orwir.starrit.feature.feed.databinding.ViewNetworkStateBinding
 import orwir.starrit.feature.feed.internal.content.PostContentBinder
 import orwir.starrit.listing.feed.Feed
 import orwir.starrit.listing.feed.Post
+
+private const val POST_VIEW = 1
+private const val NETWORK_VIEW = 2
 
 internal class FeedAdapter(
     private val type: Feed.Type,
@@ -21,8 +23,8 @@ internal class FeedAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
-            R.layout.view_post -> createPostViewHolder(parent)
-            R.layout.view_network_state -> createNetworkStateViewHolder(parent)
+            POST_VIEW -> createPostViewHolder(parent)
+            NETWORK_VIEW -> createNetworkStateViewHolder(parent)
             else -> throw IllegalArgumentException("Unknown viewType: $viewType")
         }
 
@@ -34,11 +36,7 @@ internal class FeedAdapter(
     }
 
     override fun getItemViewType(position: Int): Int =
-        if (hasExtraRow() && position == itemCount - 1) {
-            R.layout.view_network_state
-        } else {
-            R.layout.view_post
-        }
+        if (hasExtraRow() && position == itemCount - 1) NETWORK_VIEW else POST_VIEW
 
     override fun getItemCount(): Int = super.getItemCount() + if (hasExtraRow()) 1 else 0
 

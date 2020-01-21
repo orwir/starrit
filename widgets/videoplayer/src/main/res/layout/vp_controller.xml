@@ -106,7 +106,6 @@
         android:layout_marginBottom="@dimen/vp_space"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_volume_on"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/vp_fullscreen"
         app:layout_constraintEnd_toEndOf="parent" />
 
