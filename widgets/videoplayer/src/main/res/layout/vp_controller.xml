@@ -94,7 +94,7 @@
         android:textColor="#FFF"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/vp_volume_level"
+        app:layout_constraintEnd_toStartOf="@id/vp_fullscreen"
         app:layout_constraintStart_toEndOf="@id/vp_timebar"
         tools:text="00:00" />
 
@@ -106,9 +106,9 @@
         android:layout_marginBottom="@dimen/vp_space"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_volume_on"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/vp_fullscreen"
-        app:layout_constraintStart_toEndOf="@id/vp_remained" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/vp_fullscreen"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/vp_fullscreen"
@@ -120,13 +120,6 @@
         android:src="@drawable/ic_fullscreen_on"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/vp_volume_level" />
-
-    <View
-        android:id="@+id/vp_volume_level_seeker"
-        android:layout_width="@dimen/vp_bottom_button_size"
-        android:layout_height="150dp"
-        app:layout_constraintBottom_toTopOf="@id/vp_volume_level"
-        app:layout_constraintStart_toStartOf="@id/vp_volume_level" />
+        app:layout_constraintStart_toEndOf="@id/vp_remained" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
