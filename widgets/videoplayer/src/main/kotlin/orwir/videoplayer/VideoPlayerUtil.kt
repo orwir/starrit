@@ -27,7 +27,7 @@ internal fun Uri.toMediaSource(context: Context): MediaSource {
     }
 }
 
-internal fun Long.toRemainingTime(): String {
+internal fun Long.toTimeFormat(): String {
     val seconds = TimeUnit.MILLISECONDS.toSeconds(this)
     return "%d:%02d".format(seconds / 60, seconds % 60)
 }

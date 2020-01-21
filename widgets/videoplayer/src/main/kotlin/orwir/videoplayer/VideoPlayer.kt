@@ -129,7 +129,7 @@ class VideoPlayer @JvmOverloads constructor(
             while (isActive) {
                 delay(500)
                 if (player.duration != C.TIME_UNSET) {
-                    vp_remained.text = (player.duration - player.currentPosition).toRemainingTime()
+                    vp_remained.text = (player.duration - player.currentPosition).toTimeFormat()
                 }
             }
         }
