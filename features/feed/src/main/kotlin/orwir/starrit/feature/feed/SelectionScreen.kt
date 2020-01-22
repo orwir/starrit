@@ -34,6 +34,7 @@ class SelectionFragment : BaseFragment<FragmentSelectionBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        search.threshold = 3
         search.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) v.hideKeyboard()
         }
