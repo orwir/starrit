@@ -50,10 +50,10 @@ internal class PostContentBinder(
             image.setOnClickListener {
                 image.setOnClickListener(null)
                 image.loadImageDataInternal(
-                    imageSource.url,
-                    imagePreview.url,
-                    placeholder,
-                    progress
+                    source = imageSource.url,
+                    preview = null,
+                    placeholder = image.drawable,
+                    progress = progress
                 )
             }
         }
