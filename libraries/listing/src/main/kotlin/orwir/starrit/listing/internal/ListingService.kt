@@ -1,8 +1,7 @@
 package orwir.starrit.listing.internal
 
-import orwir.starrit.core.BuildConfig.REDDIT_URL_OAUTH
 import orwir.starrit.listing.model.Listing
-import orwir.starrit.listing.model.Suggest
+import orwir.starrit.listing.model.Suggestion
 import orwir.starrit.listing.model.Thing
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -23,11 +22,12 @@ internal interface ListingService {
         @Query("raw_json") raw: Int = 1
     ): Thing<Listing>
 
-    @GET("$REDDIT_URL_OAUTH/api/search_reddit_names")
+    @GET("{base}/api/search_reddit_names.json")
     suspend fun suggest(
+        @Path("base", encoded = true) base: String,
         @Query("query") query: String,
         @Query("include_over_18") nsfw: Boolean = true,
         @Query("include_unadvertisable") unadvertisable: Boolean = true
-    ): Suggest
+    ): Suggestion
 
 }

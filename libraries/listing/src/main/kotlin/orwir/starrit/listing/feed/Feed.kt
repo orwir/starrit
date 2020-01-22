@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import orwir.starrit.core.model.ActionHolder
 import orwir.starrit.core.model.NetworkState
+import orwir.starrit.core.util.createHashCode
 import java.io.Serializable
 import java.util.*
 
@@ -20,7 +21,10 @@ data class Feed(
         object Home : Type(HOME)
         object Popular : Type(POPULAR)
         object All : Type(ALL)
-        class Subreddit(name: String = "subreddit") : Type("/r/$name", true)
+        class Subreddit(name: String = "subreddit") : Type("/r/$name", true) {
+            override fun equals(other: Any?) = other is Subreddit && subreddit == other.subreddit
+            override fun hashCode() = createHashCode(subreddit)
+        }
 
         fun asParameter() = if (this is Home) "" else subreddit
 

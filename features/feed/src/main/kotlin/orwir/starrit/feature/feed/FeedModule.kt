@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import orwir.starrit.feature.feed.internal.adapter.SearchAdapter
 import orwir.starrit.feature.feed.internal.content.PostContentBinder
 import orwir.starrit.listing.feed.Feed
 
@@ -24,6 +25,13 @@ val featureFeedModule = module {
                 preferences = get(),
                 ownerLiveData = fragment.viewLifecycleOwnerLiveData
             )
+        }
+    }
+
+    scope(named<SelectionFragment>()) {
+        scoped {
+            val fragment = get<SelectionFragment>()
+            SearchAdapter(fragment.requireContext(), get())
         }
     }
 

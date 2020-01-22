@@ -8,11 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_selection.*
+import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import orwir.starrit.core.livedata.LiveEvent
 import orwir.starrit.core.livedata.combineLiveData
 import orwir.starrit.feature.feed.databinding.FragmentSelectionBinding
+import orwir.starrit.feature.feed.internal.adapter.SearchAdapter
 import orwir.starrit.listing.feed.Feed.Sort
 import orwir.starrit.listing.feed.Feed.Type
 import orwir.starrit.view.BaseFragment
@@ -25,7 +27,13 @@ class SelectionFragment : BaseFragment<FragmentSelectionBinding>() {
 
     private val initialType: Type by argument(FEED_TYPE)
     private val initialSort: Sort by argument(FEED_SORT)
+    private val searchAdapter: SearchAdapter by currentScope.inject()
     private val viewModel: SelectionViewModel by viewModel { parametersOf(initialType, initialSort) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        currentScope.declare(this)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onBindView(binding: FragmentSelectionBinding) {
         binding.viewModel = viewModel
@@ -34,29 +42,34 @@ class SelectionFragment : BaseFragment<FragmentSelectionBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dropdown_type.makeExposedDropdown(R.layout.view_dropdown_item, viewModel.types, initialType)
+        dropdow_sort.makeExposedDropdown(R.layout.view_dropdown_item, viewModel.sorts, initialSort)
+        val config = combineLiveData(dropdown_type.selection<Type>(), dropdow_sort.selection<Sort>())
+
+        search.setAdapter(searchAdapter)
         search.threshold = 3
         search.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) v.hideKeyboard()
         }
-
-        dropdown_type.makeExposedDropdown(R.layout.view_dropdown_item, viewModel.types, initialType)
-        dropdow_sort.makeExposedDropdown(R.layout.view_dropdown_item, viewModel.sorts, initialSort)
-        val config = combineLiveData(dropdown_type.selection<Type>(), dropdow_sort.selection<Sort>())
+        if (initialType is Type.Subreddit) {
+            viewModel.updateSubreddit(initialType.toString())
+            search.setText(initialType.toString(), true)
+        }
 
         observe(config) { (type, sort) ->
             viewModel.updateSelection(type as Type, sort as Sort)
             search_layout.setVisibleOrGone(type is Type.Subreddit)
             if (search.text.isNotBlank() && type !is Type.Subreddit) {
                 viewModel.resetSubreddit()
-                search.setText("", false)
+                search.setText("", true)
             }
         }
 
-//        observe(search.selection<String>()) {
-//            search.hideKeyboard()
-//            dropdown_type.setText(it, false)
-//            viewModel.updateSubreddit(it)
-//        }
+        observe(search.selection<String>()) {
+            search.hideKeyboard()
+            dropdown_type.setText(it, false)
+            viewModel.updateSubreddit(it)
+        }
 
         observe(viewModel.openSelectedEvent) {
             val direction = SelectionFragmentDirections.toFeedFragment(it.type, it.sort)
@@ -88,12 +101,11 @@ internal class SelectionViewModel(private val type: Type, private val sort: Sort
 
     fun updateSubreddit(subreddit: String) {
         types[3] = Type.Subreddit(subreddit)
-        updateSelection(types[3], _selection.value!!.sort)
+        updateSelection(types[3], _selection.value?.sort ?: sort)
     }
 
     fun resetSubreddit() {
         types[3] = dummySubreddit
-        updateSelection(types[3], _selection.value!!.sort)
     }
 
     fun openSelected() {

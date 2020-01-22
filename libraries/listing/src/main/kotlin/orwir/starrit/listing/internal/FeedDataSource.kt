@@ -7,8 +7,6 @@ import androidx.paging.PagedList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import orwir.starrit.access.AccessRepository
 import orwir.starrit.core.model.ActionHolder
 import orwir.starrit.core.model.NetworkState
@@ -27,15 +25,14 @@ internal class FeedDataSourceFactory(
     private val sort: Feed.Sort,
     private val scope: CoroutineScope,
     private val networkState: MutableLiveData<NetworkState>,
-    private val retry: ActionHolder
-) : DataSource.Factory<String, Post>(), KoinComponent {
-
-    private val service: ListingService by inject()
-    private val access: AccessRepository by inject()
-    private val resolver: PostResolver by inject()
+    private val retry: ActionHolder,
+    private val listingService: ListingService,
+    private val userAccess: AccessRepository,
+    private val postResolver: PostResolver
+) : DataSource.Factory<String, Post>() {
 
     override fun create(): DataSource<String, Post> =
-        FeedDataSource(type, sort, scope, networkState, retry, service, access, resolver)
+        FeedDataSource(type, sort, scope, networkState, retry, listingService, userAccess, postResolver)
 
 }
 
@@ -45,9 +42,9 @@ internal class FeedDataSource(
     private val scope: CoroutineScope,
     private val networkState: MutableLiveData<NetworkState>,
     private val retry: ActionHolder,
-    private val service: ListingService,
-    private val access: AccessRepository,
-    private val resolver: PostResolver
+    private val listingService: ListingService,
+    private val userAccess: AccessRepository,
+    private val postResolver: PostResolver
 ) : PageKeyedDataSource<String, Post>() {
 
     override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<String, Post>) {
@@ -82,8 +79,8 @@ internal class FeedDataSource(
         scope.launch {
             try {
                 networkState.postValue(NetworkState.Loading)
-                service.listing(
-                    base = access.state().resolveBaseUrl(),
+                listingService.listing(
+                    base = userAccess.state().resolveBaseUrl(),
                     subreddit = type.asParameter(),
                     sort = sort.asParameter(),
                     before = before,
@@ -93,7 +90,7 @@ internal class FeedDataSource(
                     retry.action = null
                     networkState.postValue(NetworkState.Success)
                     callback(
-                        data.children.map { resolver.resolve(it.data) },
+                        data.children.map { postResolver.resolve(it.data) },
                         data.before,
                         data.after
                     )

@@ -8,15 +8,14 @@ import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import orwir.starrit.feature.feed.R
 import orwir.starrit.listing.ListingRepository
 
-class SubredditSuggestAdapter(
+class SearchAdapter(
     private val context: Context,
     private val repository: ListingRepository
-) : BaseAdapter(), Filterable, CoroutineScope by CoroutineScope(Dispatchers.Main) {
+) : BaseAdapter(), Filterable {
 
     private val suggested = mutableListOf<String>()
 
@@ -35,10 +34,15 @@ class SubredditSuggestAdapter(
     override fun getFilter(): Filter = object : Filter() {
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
+            suggested.clear()
             val result = FilterResults()
             if (constraint != null) {
-                //repository.suggest(constraint.toString())
+                runBlocking {
+                    suggested.addAll(repository.suggest(constraint.toString()).names)
+                }
             }
+            result.values = suggested
+            result.count = suggested.size
             return result
         }
 
