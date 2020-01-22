@@ -1,0 +1,11 @@
+name: push validation
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: assemble
+      uses: actions/checkout@v2
+      run: ./gradlew assemble -PclientID=${{ secrets.clientID }}
+      shell: bash
