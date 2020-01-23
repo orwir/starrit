@@ -101,9 +101,7 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
 
     private fun handleFailure(exception: Exception) {
         if (exception.isAccessDenied()) {
-            showAccessRevoked(banner) {
-                navigation.openAuthorization()
-            }
+            showAccessRevoked(banner) { navigation.openAuthorization() }
         } else {
             root.showSnackbar(exception)
         }

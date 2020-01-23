@@ -29,8 +29,8 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:paddingStart="@dimen/space"
-            android:paddingEnd="@dimen/space"
+            android:paddingStart="@dimen/spaceX2"
+            android:paddingEnd="@dimen/spaceX2"
             android:textColor="?attr/colorSecondary"
             app:backgroundTint="@color/color_surface_80"
             tools:text="https://example.com" />
