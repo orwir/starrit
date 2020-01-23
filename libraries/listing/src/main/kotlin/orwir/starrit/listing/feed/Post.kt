@@ -12,8 +12,9 @@ import orwir.starrit.listing.model.Image
 import orwir.starrit.listing.model.Submission
 import orwir.starrit.listing.model.Subreddit
 import orwir.starrit.listing.util.videoOrNull
+import java.io.Serializable
 
-sealed class Post(submission: Submission, res: Resources) {
+sealed class Post(submission: Submission, res: Resources) : Serializable {
     val id: String = submission.id
     val subreddit: Subreddit = submission.subreddit
     val author: String = submission.author
@@ -25,8 +26,8 @@ sealed class Post(submission: Submission, res: Resources) {
     val score: String = prettyScore(submission, res)
     val domain: String = submission.domain
     val selfDomain: Boolean = domain.startsWith("self.")
-    val contentUrl = submission.url
-    val postUrl = submission.permalink
+    val contentUrl: String = submission.url
+    val postUrl: String = submission.permalink
     val imagePreview: Image = submission.preview
         ?.images
         ?.firstOrNull()

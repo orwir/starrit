@@ -16,7 +16,8 @@ internal fun PostContentBinder.GifContent(post: GifPost, parent: ViewGroup): Vie
     ViewContentGifBinding
         .inflate(inflater, parent, true)
         .apply {
-            post.loadImageData(gif, progress)
+            gif.loadImageData(post, hud.progress)
+            hud.fullscreen.setupFullscreenButton(post)
 
             val playing = MutableLiveData<Boolean>()
 
@@ -27,7 +28,7 @@ internal fun PostContentBinder.GifContent(post: GifPost, parent: ViewGroup): Vie
                 caption.setVisibleOrGone(!it)
                 val imageUrl = if (it) post.gif else post.imageSource.url
                 gif.load(imageUrl, placeholder = gif.drawable)
-                    .observe(owner, Observer { loading -> progress.setVisibleOrGone(loading) })
+                    .observe(owner, Observer { loading -> hud.progress.setVisibleOrGone(loading) })
             }
         }
         .root

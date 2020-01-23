@@ -9,7 +9,9 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.navigation.findNavController
 import orwir.starrit.core.extension.observe
+import orwir.starrit.feature.feed.FeedFragmentDirections
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.feed.FeedPreferences
 import orwir.starrit.feature.feed.R
@@ -39,20 +41,27 @@ internal class PostContentBinder(
         }
     }
 
-    fun Post.loadImageData(image: ImageView, progress: ProgressBar? = null) {
-        val shouldBlur = spoiler || (nsfw && isBlurNsfw())
-        val source = imageSource.url.takeUnless { shouldBlur } ?: imageBlurred.url
-        val preview = imagePreview.url.takeUnless { shouldBlur }
-        val placeholder = image.context.createImagePlaceholder(imagePreview)
+    fun ImageView.setupFullscreenButton(post: Post) {
+        setOnClickListener {
+            val direction = FeedFragmentDirections.toContentFragment(post)
+            findNavController().navigate(direction)
+        }
+    }
 
-        image.loadImageDataInternal(source, preview, placeholder, progress)
+    fun ImageView.loadImageData(post: Post, progress: ProgressBar? = null) {
+        val shouldBlur = post.spoiler || (post.nsfw && isBlurNsfw())
+        val source = post.imageSource.url.takeUnless { shouldBlur } ?: post.imageBlurred.url
+        val preview = post.imagePreview.url.takeUnless { shouldBlur }
+        val placeholder = context.createImagePlaceholder(post.imagePreview)
+
+        loadImageDataInternal(source, preview, placeholder, progress)
         if (shouldBlur) {
-            image.setOnClickListener {
-                image.setOnClickListener(null)
-                image.loadImageDataInternal(
-                    source = imageSource.url,
+            setOnClickListener {
+                setOnClickListener(null)
+                loadImageDataInternal(
+                    source = post.imageSource.url,
                     preview = null,
-                    placeholder = image.drawable,
+                    placeholder = drawable,
                     progress = progress
                 )
             }

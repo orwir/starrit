@@ -2,6 +2,7 @@ package orwir.starrit.listing.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class Subreddit(
@@ -10,7 +11,7 @@ data class Subreddit(
     @Json(name = "icon_img") internal val iconImg: String?,
     @Json(name = "banner_img") internal val bannerImg: String?,
     @Json(name = "header_img") internal val headerImg: String?
-) {
+) : Serializable {
     val icon: String =
         communityIcon?.takeIf { it.isNotBlank() }
             ?: iconImg?.takeIf { it.isNotBlank() }

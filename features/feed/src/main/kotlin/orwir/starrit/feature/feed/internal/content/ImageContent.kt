@@ -9,5 +9,8 @@ import orwir.starrit.listing.feed.ImagePost
 internal fun PostContentBinder.ImageContent(post: ImagePost, parent: ViewGroup): View =
     ViewContentImageBinding
         .inflate(inflater, parent, true)
-        .apply { post.loadImageData(image, progress) }
+        .apply {
+            image.loadImageData(post, hud.progress)
+            hud.fullscreen.setupFullscreenButton(post)
+        }
         .root

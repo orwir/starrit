@@ -14,12 +14,9 @@
             android:scaleType="fitXY"
             tools:layout_height="200dp" />
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="start|top"
-            android:padding="4dp" />
+        <include
+            android:id="@+id/hud"
+            layout="@layout/view_content_hud" />
 
     </FrameLayout>
 

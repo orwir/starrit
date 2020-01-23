@@ -12,6 +12,6 @@ internal fun PostContentBinder.LinkContent(post: LinkPost, parent: ViewGroup): V
         .apply {
             veil.setOnClickListener { navigation.openBrowser(post.link) }
             text.text = post.displayLink
-            post.loadImageData(image)
+            image.loadImageData(post)
         }
         .root

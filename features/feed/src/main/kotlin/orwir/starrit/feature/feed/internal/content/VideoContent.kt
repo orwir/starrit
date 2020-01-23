@@ -12,6 +12,6 @@ internal fun PostContentBinder.VideoContent(post: VideoPost, parent: ViewGroup):
         .inflate(inflater, parent, true)
         .apply {
             player.setVideo(post.video.toUri())
-            post.loadImageData(player.cover)
+            player.cover.loadImageData(post)
         }
         .root
