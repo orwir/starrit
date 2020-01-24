@@ -11,6 +11,7 @@ include(
     ":libraries:view",
     ":libraries:access",
     ":libraries:listing",
+    ":libraries:content",
 
     ":widgets:videoplayer",
     ":widgets:banner"

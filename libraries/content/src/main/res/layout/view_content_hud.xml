@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end|top"
+            android:layout_margin="@dimen/space" />
+
+        <ImageView
+            android:id="@+id/fullscreen"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/space"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_fullscreen_on" />
+    </FrameLayout>
+
+</layout>

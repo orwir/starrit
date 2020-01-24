@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="post_score_hidden">⏳</string>
+    <string name="text_content_button_show_more">show more</string>
+</resources>

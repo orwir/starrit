@@ -22,6 +22,7 @@ object Starrit {
         const val view = "view"
         const val access = "access"
         const val listing = "listing"
+        const val content = "content"
     }
 
     object Widget {
