@@ -7,15 +7,15 @@
 
         <ProgressBar
             android:id="@+id/progress"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="end|top"
             android:layout_margin="@dimen/space" />
 
         <ImageView
             android:id="@+id/fullscreen"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/space"
             android:foreground="?attr/selectableItemBackgroundBorderless"
