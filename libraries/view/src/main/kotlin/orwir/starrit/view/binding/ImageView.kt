@@ -49,7 +49,10 @@ object ImageViewBinding : KoinComponent {
 
         emit(true)
         if (preview?.urlOrNull() ?: source.urlOrNull() == null) {
-            setImageDrawable(placeholder)
+            loader.load(context, placeholder) {
+                transformations?.let(::transformations)
+                target(this@load)
+            }.await()
         } else {
             invokeRequest(preview?.urlOrNull() ?: source, placeholder).await()
             if (preview?.isNotBlank() == true) {
