@@ -78,8 +78,6 @@ sealed class Post(submission: Submission, res: Resources) : Serializable {
             && title == other.title
             && nsfw == other.nsfw
             && spoiler == other.spoiler
-            && comments == other.comments
-            && score == other.score
             && domain == other.domain
             && contentUrl == other.contentUrl
             && postUrl == other.postUrl
@@ -95,8 +93,6 @@ sealed class Post(submission: Submission, res: Resources) : Serializable {
         title,
         nsfw,
         spoiler,
-        comments,
-        score,
         domain,
         contentUrl,
         postUrl,

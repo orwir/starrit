@@ -47,7 +47,7 @@ class Navigator(
     }
 
     override fun openFullscreen(post: Post) {
-        TODO("not implemented")
+        // todo: #45
     }
 
 }

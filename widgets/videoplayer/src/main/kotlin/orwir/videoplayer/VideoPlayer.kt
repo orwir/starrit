@@ -148,7 +148,6 @@ class VideoPlayer @JvmOverloads constructor(
         hud.apply {
             val drawable = if (volume > 0) volumeOn else volumeOff
             vp_volume.setImageDrawable(drawable)
-            vp_volume_level.setImageDrawable(drawable)
         }
     }
 
@@ -162,11 +161,11 @@ class VideoPlayer @JvmOverloads constructor(
         }
 
         override fun onScrubStart(timeBar: TimeBar, position: Long) {
-            // todo: implement
+            // todo: #76 - show hint with current position
         }
 
         override fun onScrubMove(timeBar: TimeBar, position: Long) {
-            // todo: implement
+            // todo: #76 - show hint with expected position
         }
 
         override fun onScrubStop(timeBar: TimeBar, position: Long, canceled: Boolean) {
@@ -191,8 +190,7 @@ class VideoPlayer @JvmOverloads constructor(
             vp_pause.setOnClickListener { play() }
             vp_repeat.setOnClickListener { setRepeat(!repeat) }
             vp_volume.setOnClickListener { setVolume(if (volume > 0f) 0f else 1f) }
-            vp_volume_level.setOnClickListener { setVolume(if (volume > 0f) 0f else 1f) /*todo: show/hide volume seeker */ }
-            vp_fullscreen.setOnClickListener { /*todo: change fullscreen mode */ }
+            vp_fullscreen.setOnClickListener { /*todo: #76 - change fullscreen mode */ }
         }
     }
 
@@ -204,11 +202,12 @@ class VideoPlayer @JvmOverloads constructor(
         hud.apply {
             vp_play.setVisible(show && state != true)
             vp_pause.setVisible(show && state == true)
-            vp_repeat.setVisible(show && state != true)
-            vp_volume.setVisible(show && state == null)
+
             vp_timebar.setVisible(show && state != null)
             vp_remained.setVisible(show && state != null)
-            vp_volume_level.setVisible(show && state != null)
+
+            vp_repeat.setVisible(show)
+            vp_volume.setVisible(show)
             vp_fullscreen.setVisible(show)
         }
     }

@@ -102,12 +102,8 @@ internal class FeedDataSource(
                     networkState.postValue(NetworkState.Success)
                     cachedFeed = data.children
                         .map { postResolver.resolve(it.data) }
-                        .filter { cachedFeed?.contains(it) != true } //get rid of duplicates
-                    callback(
-                        cachedFeed!!,
-                        data.before,
-                        data.after
-                    )
+                        .filter { cachedFeed?.contains(it) != true }
+                        .also { callback(it, data.before, data.after) }
                 }
             } catch (e: Exception) {
                 retry.action = { load(before, after, limit, callback) }
