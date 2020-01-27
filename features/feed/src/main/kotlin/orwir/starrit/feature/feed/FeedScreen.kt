@@ -17,13 +17,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import orwir.starrit.access.isAccessDenied
 import orwir.starrit.access.showAccessRevoked
+import orwir.starrit.content.feed.Feed
+import orwir.starrit.content.feed.FeedAdapter
+import orwir.starrit.content.feed.FeedPreferences
+import orwir.starrit.content.feed.FeedRepository
+import orwir.starrit.content.internal.post.PostContentBinder
+import orwir.starrit.content.post.Post
 import orwir.starrit.core.model.NetworkState
 import orwir.starrit.feature.feed.databinding.FragmentFeedBinding
-import orwir.starrit.feature.feed.internal.adapter.FeedAdapter
-import orwir.starrit.feature.feed.internal.content.PostContentBinder
-import orwir.starrit.listing.ListingRepository
-import orwir.starrit.listing.feed.Feed
-import orwir.starrit.listing.feed.Post
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.MarginItemDecoration
@@ -113,11 +114,11 @@ class FeedFragment(navigation: Lazy<FeedNavigation>) : BaseFragment<FragmentFeed
 
 }
 
-internal class FeedViewModel(type: Feed.Type, sort: Feed.Sort, repository: ListingRepository) : ViewModel() {
+internal class FeedViewModel(type: Feed.Type, sort: Feed.Sort, repository: FeedRepository) : ViewModel() {
 
     private val feed = repository.feed(type, sort, viewModelScope)
 
-    val title: String = "${type.subreddit}/${sort.asParameter()}"
+    val title: String = "${type.path}/${sort}"
     val posts: LiveData<PagedList<Post>> = feed.posts
     val networkState: LiveData<NetworkState> = feed.networkState
 

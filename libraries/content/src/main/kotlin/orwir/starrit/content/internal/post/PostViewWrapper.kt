@@ -8,7 +8,6 @@ import androidx.databinding.ViewDataBinding
 import orwir.starrit.content.databinding.ViewPostComplexBinding
 import orwir.starrit.content.databinding.ViewPostSimpleBinding
 import orwir.starrit.content.feed.Feed
-import orwir.starrit.content.post.PostViewModel
 
 internal class PostViewWrapper(
     inflater: LayoutInflater,

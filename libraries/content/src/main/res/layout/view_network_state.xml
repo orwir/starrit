@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="orwir.starrit.feature.feed.internal.adapter.NetworkStateViewModel" />
+            type="orwir.starrit.content.internal.feed.NetworkStateViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,12 +1,12 @@
-package orwir.starrit.feature.feed.internal.adapter
+package orwir.starrit.content.internal.feed
 
 import android.content.res.Resources
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import orwir.starrit.content.BuildConfig
+import orwir.starrit.content.R
+import orwir.starrit.content.databinding.ViewNetworkStateBinding
 import orwir.starrit.core.model.NetworkState
-import orwir.starrit.feature.feed.BuildConfig
-import orwir.starrit.feature.feed.R
-import orwir.starrit.feature.feed.databinding.ViewNetworkStateBinding
 
 internal class NetworkStateViewHolder(
     private val binding: ViewNetworkStateBinding,

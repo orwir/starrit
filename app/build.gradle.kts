@@ -27,7 +27,7 @@ dependencies {
     library(Starrit.Library.core)
     library(Starrit.Library.view)
     library(Starrit.Library.access)
-    library(Starrit.Library.listing)
+    library(Starrit.Library.content)
 
     feature(Starrit.Feature.splash)
     feature(Starrit.Feature.login)

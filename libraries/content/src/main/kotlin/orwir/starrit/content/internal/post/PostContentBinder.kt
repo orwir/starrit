@@ -17,7 +17,7 @@ import orwir.starrit.view.binding.ImageViewBinding.load
 import orwir.starrit.view.binding.setVisibleOrGone
 import orwir.starrit.view.extension.getThemeColor
 
-internal class PostContentBinder(
+class PostContentBinder(
     val navigation: PostNavigation,
     val inflater: LayoutInflater,
     val preferences: PostPreferences,

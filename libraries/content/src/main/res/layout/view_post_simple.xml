@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="orwir.starrit.content.post.PostViewModel" />
+            type="orwir.starrit.content.internal.post.PostViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

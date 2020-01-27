@@ -12,12 +12,13 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import orwir.starrit.access.AccessInterceptor
+import orwir.starrit.content.internal.adapter.FeedTypeAdapter
+import orwir.starrit.content.internal.adapter.KindAdapter
+import orwir.starrit.content.internal.adapter.VoteAdapter
+import orwir.starrit.content.post.PostNavigation
 import orwir.starrit.feature.feed.FeedNavigation
 import orwir.starrit.feature.login.LoginNavigation
 import orwir.starrit.feature.splash.SplashNavigation
-import orwir.starrit.listing.adapter.FeedTypeAdapter
-import orwir.starrit.listing.adapter.KindAdapter
-import orwir.starrit.listing.adapter.VoteAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -70,7 +71,8 @@ val applicationModule = module {
         } binds arrayOf(
             SplashNavigation::class,
             LoginNavigation::class,
-            FeedNavigation::class
+            FeedNavigation::class,
+            PostNavigation::class
         )
     }
 

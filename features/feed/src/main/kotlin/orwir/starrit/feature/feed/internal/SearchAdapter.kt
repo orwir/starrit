@@ -1,4 +1,4 @@
-package orwir.starrit.feature.feed.internal.adapter
+package orwir.starrit.feature.feed.internal
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,12 +9,12 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import kotlinx.coroutines.runBlocking
+import orwir.starrit.content.feed.FeedRepository
 import orwir.starrit.feature.feed.R
-import orwir.starrit.listing.ListingRepository
 
 class SearchAdapter(
     private val context: Context,
-    private val repository: ListingRepository
+    private val repository: FeedRepository
 ) : BaseAdapter(), Filterable {
 
     private val suggested = mutableListOf<String>()
@@ -38,7 +38,7 @@ class SearchAdapter(
             val result = FilterResults()
             if (constraint != null) {
                 runBlocking {
-                    suggested.addAll(repository.suggest(constraint.toString()).names)
+                    suggested.addAll(repository.searchSubreddits(constraint.toString()))
                 }
             }
             result.values = suggested

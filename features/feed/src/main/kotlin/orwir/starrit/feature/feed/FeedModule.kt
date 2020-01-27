@@ -4,13 +4,11 @@ import android.view.LayoutInflater
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import orwir.starrit.feature.feed.internal.adapter.SearchAdapter
-import orwir.starrit.feature.feed.internal.content.PostContentBinder
-import orwir.starrit.listing.feed.Feed
+import orwir.starrit.content.feed.Feed
+import orwir.starrit.content.internal.post.PostContentBinder
+import orwir.starrit.feature.feed.internal.SearchAdapter
 
 val featureFeedModule = module {
-
-    single { FeedPreferences() }
 
     viewModel { (type: Feed.Type, sort: Feed.Sort) -> FeedViewModel(type, sort, get()) }
 

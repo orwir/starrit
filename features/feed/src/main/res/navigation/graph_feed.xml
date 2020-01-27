@@ -10,10 +10,10 @@
         android:label="FeedFragment">
         <argument
             android:name="type"
-            app:argType="orwir.starrit.listing.feed.Feed$Type" />
+            app:argType="orwir.starrit.content.feed.Feed$Type" />
         <argument
             android:name="sort"
-            app:argType="orwir.starrit.listing.feed.Feed$Sort" />
+            app:argType="orwir.starrit.content.feed.Feed$Sort" />
 
         <action
             android:id="@+id/to_selectionFragment"
@@ -34,10 +34,10 @@
             app:popUpToInclusive="false" />
         <argument
             android:name="type"
-            app:argType="orwir.starrit.listing.feed.Feed$Type" />
+            app:argType="orwir.starrit.content.feed.Feed$Type" />
         <argument
             android:name="sort"
-            app:argType="orwir.starrit.listing.feed.Feed$Sort" />
+            app:argType="orwir.starrit.content.feed.Feed$Sort" />
     </fragment>
     <fragment
         android:id="@+id/contentFragment"
@@ -45,7 +45,7 @@
         android:label="ContentFragment">
         <argument
             android:name="post"
-            app:argType="orwir.starrit.listing.feed.Post" />
+            app:argType="orwir.starrit.content.post.Post" />
     </fragment>
 
 </navigation>

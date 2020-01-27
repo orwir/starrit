@@ -8,6 +8,10 @@ plugins {
     id(Build.Plugin.simple_android)
 }
 
+android {
+    dataBinding { isEnabled = true }
+}
+
 dependencies {
     library(Starrit.Library.core)
     library(Starrit.Library.view)

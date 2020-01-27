@@ -23,12 +23,12 @@ class Feed internal constructor(
         object Home : Type(HOME)
         object Popular : Type(POPULAR)
         object All : Type(ALL)
-        class Subreddit(name: String) : Type("/r/$name", false) {
+        class Subreddit(name: String = "subreddit") : Type("/r/$name", false) {
             override fun equals(other: Any?) = other is Subreddit && path == other.path
             override fun hashCode() = createHashCode(path)
         }
 
-        override fun toString(): String = this::class.simpleName ?: path
+        override fun toString(): String = path.substring(3)
 
         internal fun asParameter() = if (this is Home) "" else path
     }
@@ -40,7 +40,9 @@ class Feed internal constructor(
         Top,
         Rising;
 
-        internal fun asParameter() = name.toLowerCase(Locale.ENGLISH)
+        override fun toString(): String = name.toLowerCase(Locale.ENGLISH)
+
+        internal fun asParameter() = toString()
     }
 
 }

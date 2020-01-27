@@ -1,7 +1,7 @@
-package orwir.starrit.feature.feed.internal.adapter
+package orwir.starrit.content.internal.post
 
 import androidx.recyclerview.widget.DiffUtil
-import orwir.starrit.listing.feed.Post
+import orwir.starrit.content.post.Post
 
 internal object PostDiffCallback : DiffUtil.ItemCallback<Post>() {
 

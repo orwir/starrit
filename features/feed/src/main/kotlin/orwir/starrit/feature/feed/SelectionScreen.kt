@@ -11,12 +11,11 @@ import kotlinx.android.synthetic.main.fragment_selection.*
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import orwir.starrit.content.feed.Feed.*
 import orwir.starrit.core.livedata.LiveEvent
 import orwir.starrit.core.livedata.combineLiveData
 import orwir.starrit.feature.feed.databinding.FragmentSelectionBinding
-import orwir.starrit.feature.feed.internal.adapter.SearchAdapter
-import orwir.starrit.listing.feed.Feed.Sort
-import orwir.starrit.listing.feed.Feed.Type
+import orwir.starrit.feature.feed.internal.SearchAdapter
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.binding.setVisibleOrGone
@@ -61,11 +60,12 @@ class SelectionFragment : BaseFragment<FragmentSelectionBinding>() {
             search_layout.setVisibleOrGone(type is Type.Subreddit)
             if (search.text.isNotBlank() && type !is Type.Subreddit) {
                 viewModel.resetSubreddit()
+                search.clearListSelection()
                 search.setText("", true)
             }
         }
 
-        observe(search.selection<String>()) {
+        observe(search.selection<String>(false)) {
             search.hideKeyboard()
             dropdown_type.setText(it, false)
             viewModel.updateSubreddit(it)

@@ -1,4 +1,4 @@
-package orwir.starrit.content.post
+package orwir.starrit.content.internal.post
 
 import android.content.Intent
 import android.view.View
@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.transform.CircleCropTransformation
 import coil.transform.Transformation
 import orwir.starrit.content.R
-import orwir.starrit.content.internal.post.PostContentBinder
-import orwir.starrit.content.internal.post.PostViewWrapper
+import orwir.starrit.content.post.Post
 
 internal class PostViewHolder(
     private val bindingWrapper: PostViewWrapper,
@@ -15,7 +14,12 @@ internal class PostViewHolder(
 ) : RecyclerView.ViewHolder(bindingWrapper.root) {
 
     fun bind(post: Post) {
-        bindingWrapper.setViewModel(PostViewModel(post, ::clickHandler))
+        bindingWrapper.setViewModel(
+            PostViewModel(
+                post,
+                ::clickHandler
+            )
+        )
         bindingWrapper.content.removeAllViews()
         contentBinder.inflate(post, bindingWrapper.content)
     }

@@ -10,7 +10,6 @@ include(
     ":libraries:core",
     ":libraries:view",
     ":libraries:access",
-    ":libraries:listing",
     ":libraries:content",
 
     ":widgets:videoplayer",

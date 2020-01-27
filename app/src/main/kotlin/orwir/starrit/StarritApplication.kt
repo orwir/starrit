@@ -4,11 +4,11 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import orwir.starrit.access.libraryAccessModule
+import orwir.starrit.content.libraryContentModule
 import orwir.starrit.core.KoinLogger
 import orwir.starrit.feature.feed.featureFeedModule
 import orwir.starrit.feature.login.featureLoginModule
 import orwir.starrit.feature.splash.featureSplashModule
-import orwir.starrit.listing.libraryListingModule
 import orwir.starrit.view.libraryViewModule
 import timber.log.Timber
 
@@ -28,7 +28,7 @@ class StarritApplication : Application() {
                 applicationModule,
 
                 libraryAccessModule,
-                libraryListingModule,
+                libraryContentModule,
                 libraryViewModule,
 
                 featureSplashModule,

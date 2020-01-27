@@ -4,13 +4,14 @@ import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.navigation.NavController
+import orwir.starrit.content.feed.Feed.*
+import orwir.starrit.content.feed.FeedPreferences
+import orwir.starrit.content.post.Post
 import orwir.starrit.feature.feed.FeedNavigation
-import orwir.starrit.feature.feed.FeedPreferences
 import orwir.starrit.feature.login.LoginFragmentDirections
 import orwir.starrit.feature.login.LoginNavigation
 import orwir.starrit.feature.splash.SplashFragmentDirections
 import orwir.starrit.feature.splash.SplashNavigation
-import orwir.starrit.listing.feed.Feed
 
 class Navigator(
     private val context: Context,
@@ -37,11 +38,16 @@ class Navigator(
     }
 
     override fun openHomeFeed() {
-        val direction = LoginFragmentDirections.toFeed(Feed.Type.Home, Feed.Sort.Best)
+        val direction = LoginFragmentDirections.toFeed(Type.Home, Sort.Best)
         controller.navigate(direction)
     }
 
     override fun openAuthorization() {
         controller.navigate(NavGraphDirections.toAuthorization())
     }
+
+    override fun openFullscreen(post: Post) {
+        TODO("not implemented")
+    }
+
 }

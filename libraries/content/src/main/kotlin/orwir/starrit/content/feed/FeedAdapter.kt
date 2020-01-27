@@ -1,19 +1,22 @@
-package orwir.starrit.feature.feed.internal.adapter
+package orwir.starrit.content.feed
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import orwir.starrit.content.databinding.ViewNetworkStateBinding
+import orwir.starrit.content.internal.feed.NetworkStateViewHolder
+import orwir.starrit.content.internal.post.PostContentBinder
+import orwir.starrit.content.internal.post.PostDiffCallback
+import orwir.starrit.content.internal.post.PostViewHolder
+import orwir.starrit.content.internal.post.PostViewWrapper
+import orwir.starrit.content.post.Post
 import orwir.starrit.core.model.NetworkState
-import orwir.starrit.feature.feed.databinding.ViewNetworkStateBinding
-import orwir.starrit.feature.feed.internal.content.PostContentBinder
-import orwir.starrit.listing.feed.Feed
-import orwir.starrit.listing.feed.Post
 
 private const val POST_VIEW = 1
 private const val NETWORK_VIEW = 2
 
-internal class FeedAdapter(
+class FeedAdapter(
     private val type: Feed.Type,
     private val contentBinder: PostContentBinder,
     private val retryHandler: () -> Unit
@@ -59,7 +62,7 @@ internal class FeedAdapter(
     private fun hasExtraRow() = networkState != null && networkState !is NetworkState.Success
 
     private fun createPostViewHolder(parent: ViewGroup) =
-        PostViewHolder(PostBindingWrapper(LayoutInflater.from(parent.context), parent, false, type), contentBinder)
+        PostViewHolder(PostViewWrapper(LayoutInflater.from(parent.context), parent, false, type), contentBinder)
 
     private fun createNetworkStateViewHolder(parent: ViewGroup) = ViewNetworkStateBinding
         .inflate(LayoutInflater.from(parent.context), parent, false)

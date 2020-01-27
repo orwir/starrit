@@ -36,10 +36,10 @@
             app:popUpToInclusive="true">
             <argument
                 android:name="type"
-                app:argType="orwir.starrit.listing.feed.Feed$Type" />
+                app:argType="orwir.starrit.content.feed.Feed$Type" />
             <argument
                 android:name="sort"
-                app:argType="orwir.starrit.listing.feed.Feed$Sort" />
+                app:argType="orwir.starrit.content.feed.Feed$Sort" />
         </action>
     </fragment>
 
@@ -55,10 +55,10 @@
             app:popUpToInclusive="true">
             <argument
                 android:name="type"
-                app:argType="orwir.starrit.listing.feed.Feed$Type" />
+                app:argType="orwir.starrit.content.feed.Feed$Type" />
             <argument
                 android:name="sort"
-                app:argType="orwir.starrit.listing.feed.Feed$Sort" />
+                app:argType="orwir.starrit.content.feed.Feed$Sort" />
         </action>
     </fragment>
 

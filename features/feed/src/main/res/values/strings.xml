@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Feed Screen -->
-    <string name="post_view_subreddit">r/%1$s</string>
-    <string name="post_view_author">u/%1$s</string>
-    <string name="network_state_button_retry">Retry</string>
-    <string name="text_content_button_show_more">show more</string>
     <string name="feed_toolbar_menu_selection">Selection</string>
     <string name="feed_toolbar_menu_blur_nsfw">Blur NSFW</string>
 
