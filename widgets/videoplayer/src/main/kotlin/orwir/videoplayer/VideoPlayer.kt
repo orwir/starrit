@@ -156,6 +156,7 @@ class VideoPlayer @JvmOverloads constructor(
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             if (playbackState == Player.STATE_ENDED) {
                 showHUD(show = true, state = false)
+                player.playWhenReady = false
                 started = false
             }
         }
@@ -172,6 +173,7 @@ class VideoPlayer @JvmOverloads constructor(
             if (!canceled) {
                 player.seekTo(position)
                 timeBar.setPosition(position)
+                started = (player.duration - position) >= 1000
             }
         }
 
