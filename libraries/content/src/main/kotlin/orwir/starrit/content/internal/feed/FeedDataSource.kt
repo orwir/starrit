@@ -33,14 +33,14 @@ internal class FeedDataSourceFactory(
 
     override fun create(): DataSource<String, Post> =
         FeedDataSource(
-            type,
-            sort,
-            scope,
-            networkState,
-            retry,
-            listingService,
-            userAccess,
-            postResolver
+            type = type,
+            sort = sort,
+            scope = scope,
+            networkState = networkState,
+            retry = retry,
+            listingService = listingService,
+            userAccess = userAccess,
+            postResolver = postResolver
         )
 
 }
@@ -55,6 +55,8 @@ internal class FeedDataSource(
     private val userAccess: AccessRepository,
     private val postResolver: PostResolver
 ) : PageKeyedDataSource<String, Post>() {
+
+    private var cachedFeed: List<Post>? = null
 
     override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<String, Post>) {
         load(limit = params.requestedLoadSize) { posts, before, after ->
@@ -98,8 +100,11 @@ internal class FeedDataSource(
                 ).apply {
                     retry.action = null
                     networkState.postValue(NetworkState.Success)
+                    cachedFeed = data.children
+                        .map { postResolver.resolve(it.data) }
+                        .filter { cachedFeed?.contains(it) != true } //get rid of duplicates
                     callback(
-                        data.children.map { postResolver.resolve(it.data) },
+                        cachedFeed!!,
                         data.before,
                         data.after
                     )
