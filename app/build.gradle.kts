@@ -1,4 +1,3 @@
-import orwir.gradle.extension.feature
 import orwir.gradle.extension.library
 
 plugins {
@@ -28,10 +27,6 @@ dependencies {
     library(Starrit.Library.view)
     library(Starrit.Library.access)
     library(Starrit.Library.content)
-
-    feature(Starrit.Feature.splash)
-    feature(Starrit.Feature.login)
-    feature(Starrit.Feature.feed)
 
     implementation(Library.AndroidX.browser)
     implementation(Library.Squareup.okhttp)

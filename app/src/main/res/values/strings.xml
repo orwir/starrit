@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Main -->
     <string name="app_name">Stare It</string>
+    <string name="bottom_navigation_feed">Feed</string>
+    <string name="bottom_navigation_saved">Saved</string>
+    <string name="bottom_navigation_collections">Collections</string>
+    <string name="bottom_navigation_search">Search</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_developed_label">Developed by</string>
+    <string name="splash_developed_author" translatable="false">orwir</string>
+
+    <!-- Login Screen -->
+
+    <!-- Content Screen -->
 </resources>

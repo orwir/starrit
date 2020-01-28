@@ -6,6 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: assemble
+    - name: :app:assemble
       run: ./gradlew assemble -PclientID=${{ secrets.clientID }}
       shell: bash

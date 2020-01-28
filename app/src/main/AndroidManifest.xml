@@ -9,7 +9,7 @@
         android:theme="@style/MyTheme.DayNight">
 
         <activity
-            android:name="orwir.starrit.MainActivity"
+            android:name="orwir.starrit.main.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
 

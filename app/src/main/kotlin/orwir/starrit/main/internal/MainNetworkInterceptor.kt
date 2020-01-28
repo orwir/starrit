@@ -1,8 +1,9 @@
-package orwir.starrit
+package orwir.starrit.main.internal
 
 import okhttp3.Interceptor
+import orwir.starrit.BuildConfig
 
-internal class ApplicationInterceptor : Interceptor {
+internal class MainNetworkInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain) = chain
         .request()
         .newBuilder()

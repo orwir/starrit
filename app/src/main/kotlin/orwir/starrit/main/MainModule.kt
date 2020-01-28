@@ -1,7 +1,7 @@
-package orwir.starrit
+package orwir.starrit.main
 
 import android.app.Application
-import androidx.navigation.findNavController
+import android.content.SharedPreferences
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.squareup.moshi.Moshi
@@ -11,20 +11,20 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
+import orwir.starrit.BuildConfig
 import orwir.starrit.access.AccessInterceptor
 import orwir.starrit.content.internal.adapter.FeedTypeAdapter
 import orwir.starrit.content.internal.adapter.KindAdapter
 import orwir.starrit.content.internal.adapter.VoteAdapter
-import orwir.starrit.content.post.PostNavigation
-import orwir.starrit.feature.feed.FeedNavigation
-import orwir.starrit.feature.login.LoginNavigation
-import orwir.starrit.feature.splash.SplashNavigation
+import orwir.starrit.main.internal.MainNavigator
+import orwir.starrit.main.internal.MainNetworkInterceptor
+import orwir.starrit.splash.SplashNavigation
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-val applicationModule = module {
+val mainModule = module {
 
-    single {
+    single<SharedPreferences> {
         val app: Application = get()
         app.getSharedPreferences(app::class.qualifiedName, Application.MODE_PRIVATE)
     }
@@ -38,7 +38,7 @@ val applicationModule = module {
     single {
         OkHttpClient.Builder()
             .apply {
-                addInterceptor(ApplicationInterceptor())
+                addInterceptor(MainNetworkInterceptor())
                 addInterceptor(get<AccessInterceptor>())
                 if (BuildConfig.DEBUG) {
                     addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
@@ -65,14 +65,8 @@ val applicationModule = module {
     }
 
     scope(named<MainActivity>()) {
-        scoped {
-            val activity = get<MainActivity>()
-            Navigator(activity, activity.findNavController(R.id.navhost), get())
-        } binds arrayOf(
-            SplashNavigation::class,
-            LoginNavigation::class,
-            FeedNavigation::class,
-            PostNavigation::class
+        scoped { MainNavigator(get(), get()) } binds arrayOf(
+            SplashNavigation::class
         )
     }
 
