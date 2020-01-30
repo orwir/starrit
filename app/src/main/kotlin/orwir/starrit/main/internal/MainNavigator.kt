@@ -1,8 +1,13 @@
 package orwir.starrit.main.internal
 
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import orwir.starrit.NavMainDirections
 import orwir.starrit.R
+import orwir.starrit.authorization.AuthorizationNavigation
 import orwir.starrit.content.feed.FeedPreferences
 import orwir.starrit.main.MainActivity
 import orwir.starrit.splash.SplashNavigation
@@ -10,11 +15,29 @@ import orwir.starrit.splash.SplashNavigation
 internal class MainNavigator(
     private val activity: MainActivity,
     private val feedPreferences: FeedPreferences
-) : SplashNavigation {
+) : SplashNavigation, AuthorizationNavigation {
 
-    private val navigator: NavController by lazy { activity.findNavController(R.navigation.graph_main) }
+    private val navigator: NavController by lazy { activity.findNavController(R.id.navhost) }
 
-    override fun openAuthorization() {
+    override fun openBrowser(uri: Uri) {
+        CustomTabsIntent.Builder()
+            .build()
+            .launchUrl(activity, uri)
+    }
+
+    override fun openAuthorization(clear: Boolean) {
+        val direction = NavMainDirections.openAuthorization()
+        val options = NavOptions.Builder()
+            .apply {
+                if (clear) {
+                    setPopUpTo(R.id.nav_main, true)
+                }
+            }
+            .build()
+        navigator.navigate(direction, options)
+    }
+
+    override fun openDefaultFeed() {
 
     }
 

@@ -12,6 +12,9 @@
     <string name="splash_developed_author" translatable="false">orwir</string>
 
     <!-- Login Screen -->
+    <string name="authorization_description">You can connect your <font color="#FFFF4500">Reddit</font> account\nor stay anonymous</string>
+    <string name="authorization_connect">Connect</string>
+    <string name="authorization_anonymous">Anonymous</string>
 
     <!-- Content Screen -->
 </resources>

@@ -12,8 +12,6 @@ object Starrit {
     }
 
     object Feature {
-        const val splash = "splash"
-        const val login = "login"
         const val feed = "feed"
     }
 

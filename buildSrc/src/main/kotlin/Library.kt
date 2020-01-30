@@ -8,7 +8,7 @@ object Library {
 
     object AndroidX {
         private const val v_lifecycle = "2.2.0-rc03"
-        private const val v_navigation = "2.2.0-rc04"
+        private const val v_navigation = "2.2.0"
         private const val v_fragment = "1.2.0-rc05"
 
         const val core = "androidx.core:core-ktx:1.2.0-rc01"

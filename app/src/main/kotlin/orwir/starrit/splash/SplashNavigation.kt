@@ -1,6 +1,6 @@
 package orwir.starrit.splash
 
 interface SplashNavigation {
-    fun openAuthorization()
+    fun openAuthorization(clear: Boolean = true)
     fun openLatestFeed()
 }

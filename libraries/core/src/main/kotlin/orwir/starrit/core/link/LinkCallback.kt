@@ -11,7 +11,7 @@ class LinkCallbackBuilder {
         this.filter = filter
     }
 
-    fun onLinkReceived(callback: (uri: Uri) -> Unit) {
+    fun callback(callback: (uri: Uri) -> Unit) {
         this.callback = callback
     }
 
@@ -19,7 +19,4 @@ class LinkCallbackBuilder {
 
 }
 
-data class LinkCallback(
-    val test: (uri: Uri) -> Boolean,
-    val onReceived: (uri: Uri) -> Unit
-)
+internal data class LinkCallback(val test: (uri: Uri) -> Boolean, val onReceived: (uri: Uri) -> Unit)

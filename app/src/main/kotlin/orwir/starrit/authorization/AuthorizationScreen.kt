@@ -1,31 +1,32 @@
-package orwir.starrit.feature.login
+package orwir.starrit.authorization
 
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.*
-import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_authorization.*
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.starrit.access.AuthorizationRepository
-import orwir.starrit.access.BuildConfig.REDIRECT_URI
+import orwir.starrit.access.BuildConfig
 import orwir.starrit.access.isAccessDenied
 import orwir.starrit.access.model.Step
 import orwir.starrit.access.showAccessDenied
-import orwir.starrit.feature.login.databinding.FragmentLoginBinding
+import orwir.starrit.databinding.FragmentAuthorizationBinding
 import orwir.starrit.view.BaseFragment
 import orwir.starrit.view.FragmentInflater
 import orwir.starrit.view.extension.launchWhenResumed
 import orwir.starrit.view.extension.observe
 import orwir.starrit.view.extension.showSnackbar
 
-class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLoginBinding>() {
+class AuthorizationFragment(
+    private val navigation: AuthorizationNavigation
+) : BaseFragment<FragmentAuthorizationBinding>() {
 
-    override val inflate: FragmentInflater<FragmentLoginBinding> = FragmentLoginBinding::inflate
-    private val viewModel: LoginViewModel by viewModel()
-    private val navigation by navigation
+    override val inflate: FragmentInflater<FragmentAuthorizationBinding> = FragmentAuthorizationBinding::inflate
+    private val viewModel: AuthorizationViewModel by viewModel()
 
-    override fun onBindView(binding: FragmentLoginBinding) {
+    override fun onBindView(binding: FragmentAuthorizationBinding) {
         binding.viewModel = viewModel
     }
 
@@ -33,14 +34,14 @@ class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLo
         super.onViewCreated(view, savedInstanceState)
 
         onLinkDispatched {
-            filter { it.toString().startsWith(REDIRECT_URI) }
-            onLinkReceived { viewModel.authorize(it) }
+            filter { it.toString().startsWith(BuildConfig.REDIRECT_URI) }
+            callback { viewModel.authorize(it) }
         }
 
         observe(viewModel.state) {
             when (it) {
                 is Step.Start -> navigation.openBrowser(it.uri)
-                is Step.Success -> navigation.openHomeFeed()
+                is Step.Success -> navigation.openDefaultFeed()
                 is Step.Failure -> handleFailure(it.exception)
             }
         }
@@ -53,10 +54,7 @@ class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLo
 
     private fun handleFailure(exception: Exception) {
         if (exception.isAccessDenied()) {
-            showAccessDenied(
-                requireContext(),
-                viewModel::authorize
-            )
+            showAccessDenied(requireContext(), viewModel::authorize)
         } else {
             root.showSnackbar(exception)
         }
@@ -71,7 +69,7 @@ class LoginFragment(navigation: Lazy<LoginNavigation>) : BaseFragment<FragmentLo
 
 }
 
-internal class LoginViewModel(private val authorization: AuthorizationRepository) : ViewModel() {
+internal class AuthorizationViewModel(private val authorization: AuthorizationRepository) : ViewModel() {
 
     val state: LiveData<Step> = authorization
         .flow()
