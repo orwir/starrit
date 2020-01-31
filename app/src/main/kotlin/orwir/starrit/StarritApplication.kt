@@ -5,7 +5,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import orwir.starrit.access.libraryAccessModule
 import orwir.starrit.connect.featureConnectModule
-import orwir.starrit.container.featureContentModule
+import orwir.starrit.container.featureContainerModule
 import orwir.starrit.content.libraryContentModule
 import orwir.starrit.core.KoinLogger
 import orwir.starrit.main.mainModule
@@ -36,7 +36,7 @@ class StarritApplication : Application() {
 
                     featureSplashModule,
                     featureConnectModule,
-                    featureContentModule
+                    featureContainerModule
                 )
             )
         }

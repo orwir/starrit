@@ -15,8 +15,8 @@
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
-            android:id="@+id/openContentScreen"
-            app:destination="@id/contentScreen"
+            android:id="@+id/openFeed"
+            app:destination="@id/containerScreen"
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit" />
     </fragment>
@@ -27,17 +27,26 @@
         android:label="AuthorizationFragment"
         tools:layout="@layout/fragment_connect">
         <action
-            android:id="@+id/openContentScreen"
-            app:destination="@id/contentScreen"
+            android:id="@+id/openFeed"
+            app:destination="@id/containerScreen"
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit" />
     </fragment>
 
     <fragment
-        android:id="@+id/contentScreen"
-        android:name="orwir.starrit.container.ContentFragment"
-        android:label="ContentFragment"
-        tools:layout="@layout/fragment_content" />
+        android:id="@+id/containerScreen"
+        android:name="orwir.starrit.container.ContainerFragment"
+        android:label="ContainerFragment"
+        tools:layout="@layout/fragment_container">
+        <argument
+            android:name="type"
+            app:argType="orwir.starrit.content.feed.Feed$Type"
+            app:nullable="false" />
+        <argument
+            android:name="sort"
+            app:argType="orwir.starrit.content.feed.Feed$Sort"
+            app:nullable="false" />
+    </fragment>
 
 
     <!--    <fragment-->

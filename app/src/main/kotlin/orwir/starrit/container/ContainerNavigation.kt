@@ -1,3 +1,3 @@
 package orwir.starrit.container
 
-interface ContentNavigation
+interface ContainerNavigation

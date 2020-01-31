@@ -11,14 +11,17 @@ import orwir.starrit.NavMainDirections
 import orwir.starrit.R
 import orwir.starrit.connect.ConnectFragmentDirections
 import orwir.starrit.connect.ConnectNavigation
-import orwir.starrit.container.ContentNavigation
+import orwir.starrit.container.ContainerNavigation
+import orwir.starrit.content.feed.Feed
+import orwir.starrit.content.feed.FeedPreferences
 import orwir.starrit.main.MainActivity
 import orwir.starrit.splash.SplashFragmentDirections
 import orwir.starrit.splash.SplashNavigation
 
 internal class MainNavigator(
-    private val activity: MainActivity
-) : SplashNavigation, ConnectNavigation, ContentNavigation {
+    private val activity: MainActivity,
+    private val feedPrefs: FeedPreferences
+) : SplashNavigation, ConnectNavigation, ContainerNavigation {
 
     private val navigator: NavController by lazy { activity.findNavController(R.id.navhost) }
 
@@ -43,42 +46,12 @@ internal class MainNavigator(
     }
 
     override fun openDefaultFeed() {
-        navigator.navigate(ConnectFragmentDirections.openContentScreen())
+        navigator.navigate(ConnectFragmentDirections.openFeed(Feed.Type.Home, Feed.Sort.Best))
     }
 
     override fun openLatestFeed() {
-        navigator.navigate(SplashFragmentDirections.openContentScreen())
+        val direction = SplashFragmentDirections.openFeed(feedPrefs.latestType, feedPrefs.latestSort)
+        navigator.navigate(direction)
     }
-
-    //    override fun openBrowser(uri: Uri) {
-//        CustomTabsIntent
-//            .Builder()
-//            .build()
-//            .launchUrl(context, uri)
-//    }
-//
-//    override fun openLastFeed() {
-//        val type = feedPreferences.latestType
-//        val sort = feedPreferences.latestSort
-//        val direction = SplashFragmentDirections.toFeed(type, sort)
-//        controller.navigate(direction)
-//    }
-//
-//    override fun openLogin() {
-//        controller.navigate(SplashFragmentDirections.toLoginFragment())
-//    }
-//
-//    override fun openHomeFeed() {
-//        val direction = LoginFragmentDirections.toFeed(Type.Home, Sort.Best)
-//        controller.navigate(direction)
-//    }
-//
-//    override fun openAuthorization() {
-//        controller.navigate(NavGraphDirections.toAuthorization())
-//    }
-//
-//    override fun openFullscreen(post: Post) {
-//        // todo: #45
-//    }
 
 }
