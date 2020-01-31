@@ -13,13 +13,31 @@
         android:id="@+id/splashScreen"
         android:name="orwir.starrit.splash.SplashFragment"
         android:label="SplashFragment"
-        tools:layout="@layout/fragment_splash" />
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/openContentScreen"
+            app:destination="@id/contentScreen"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
+    </fragment>
 
     <fragment
         android:id="@+id/connectScreen"
         android:name="orwir.starrit.connect.ConnectFragment"
         android:label="AuthorizationFragment"
-        tools:layout="@layout/fragment_connect" />
+        tools:layout="@layout/fragment_connect">
+        <action
+            android:id="@+id/openContentScreen"
+            app:destination="@id/contentScreen"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/contentScreen"
+        android:name="orwir.starrit.container.ContentFragment"
+        android:label="ContentFragment"
+        tools:layout="@layout/fragment_content" />
 
 
     <!--    <fragment-->

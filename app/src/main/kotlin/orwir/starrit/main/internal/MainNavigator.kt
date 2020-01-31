@@ -9,15 +9,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import orwir.starrit.NavMainDirections
 import orwir.starrit.R
+import orwir.starrit.connect.ConnectFragmentDirections
 import orwir.starrit.connect.ConnectNavigation
-import orwir.starrit.content.feed.FeedPreferences
+import orwir.starrit.container.ContentNavigation
 import orwir.starrit.main.MainActivity
+import orwir.starrit.splash.SplashFragmentDirections
 import orwir.starrit.splash.SplashNavigation
 
 internal class MainNavigator(
-    private val activity: MainActivity,
-    private val feedPreferences: FeedPreferences
-) : SplashNavigation, ConnectNavigation {
+    private val activity: MainActivity
+) : SplashNavigation, ConnectNavigation, ContentNavigation {
 
     private val navigator: NavController by lazy { activity.findNavController(R.id.navhost) }
 
@@ -42,11 +43,11 @@ internal class MainNavigator(
     }
 
     override fun openDefaultFeed() {
-
+        navigator.navigate(ConnectFragmentDirections.openContentScreen())
     }
 
     override fun openLatestFeed() {
-
+        navigator.navigate(SplashFragmentDirections.openContentScreen())
     }
 
     //    override fun openBrowser(uri: Uri) {
