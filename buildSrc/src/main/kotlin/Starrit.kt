@@ -13,6 +13,8 @@ object Starrit {
 
     object Feature {
         const val feed = "feed"
+        const val saved = "saved"
+        const val collections = "collections"
     }
 
     object Library {

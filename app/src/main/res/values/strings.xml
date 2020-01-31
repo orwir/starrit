@@ -12,7 +12,7 @@
     <string name="authorization_connect">Connect</string>
     <string name="authorization_anonymous">Anonymous</string>
 
-    <!-- Content Screen -->
+    <!-- Content Container Screen -->
     <string name="bottom_navigation_feed">Feed</string>
     <string name="bottom_navigation_saved">Saved</string>
     <string name="bottom_navigation_collections">Collections</string>
