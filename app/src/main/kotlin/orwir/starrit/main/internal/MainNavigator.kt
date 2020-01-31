@@ -9,14 +9,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import orwir.starrit.NavMainDirections
 import orwir.starrit.R
-import orwir.starrit.connect.ConnectFragmentDirections
-import orwir.starrit.connect.ConnectNavigation
-import orwir.starrit.container.ContainerNavigation
+import orwir.starrit.feature.connect.ConnectFragmentDirections
+import orwir.starrit.feature.connect.ConnectNavigation
+import orwir.starrit.feature.container.ContainerNavigation
 import orwir.starrit.content.feed.Feed
 import orwir.starrit.content.feed.FeedPreferences
 import orwir.starrit.main.MainActivity
-import orwir.starrit.splash.SplashFragmentDirections
-import orwir.starrit.splash.SplashNavigation
+import orwir.starrit.feature.splash.SplashFragmentDirections
+import orwir.starrit.feature.splash.SplashNavigation
 
 internal class MainNavigator(
     private val activity: MainActivity,

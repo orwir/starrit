@@ -1,4 +1,4 @@
-package orwir.starrit.connect
+package orwir.starrit.feature.connect
 
 import android.net.Uri
 import android.os.Bundle

@@ -1,3 +1,0 @@
-package orwir.starrit.container
-
-interface ContainerNavigation

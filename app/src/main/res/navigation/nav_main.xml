@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/splashScreen"
-        android:name="orwir.starrit.splash.SplashFragment"
+        android:name="orwir.starrit.feature.splash.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/connectScreen"
-        android:name="orwir.starrit.connect.ConnectFragment"
+        android:name="orwir.starrit.feature.connect.ConnectFragment"
         android:label="AuthorizationFragment"
         tools:layout="@layout/fragment_connect">
         <action
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/containerScreen"
-        android:name="orwir.starrit.container.ContainerFragment"
+        android:name="orwir.starrit.feature.container.ContainerFragment"
         android:label="ContainerFragment"
         tools:layout="@layout/fragment_container">
         <argument
@@ -48,57 +48,4 @@
             app:nullable="false" />
     </fragment>
 
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/splashFragment"-->
-    <!--        android:name="orwir.starrit.feature.splash.SplashFragment"-->
-    <!--        android:label="SplashFragment"-->
-    <!--        tools:layout="@layout/fragment_splash">-->
-    <!--        <action-->
-    <!--            android:id="@+id/to_loginFragment"-->
-    <!--            app:destination="@id/loginFragment"-->
-    <!--            app:enterAnim="@android:anim/fade_in"-->
-    <!--            app:exitAnim="@android:anim/fade_out"-->
-    <!--            app:popEnterAnim="@android:anim/fade_in"-->
-    <!--            app:popExitAnim="@android:anim/fade_out"-->
-    <!--            app:popUpTo="@id/nav_graph"-->
-    <!--            app:popUpToInclusive="true" />-->
-    <!--        <action-->
-    <!--            android:id="@+id/to_feed"-->
-    <!--            app:destination="@id/graph_feed"-->
-    <!--            app:enterAnim="@android:anim/fade_in"-->
-    <!--            app:exitAnim="@android:anim/fade_out"-->
-    <!--            app:popEnterAnim="@android:anim/fade_in"-->
-    <!--            app:popExitAnim="@android:anim/fade_out"-->
-    <!--            app:popUpTo="@id/nav_graph"-->
-    <!--            app:popUpToInclusive="true">-->
-    <!--            <argument-->
-    <!--                android:name="type"-->
-    <!--                app:argType="orwir.starrit.content.feed.Feed$Type" />-->
-    <!--            <argument-->
-    <!--                android:name="sort"-->
-    <!--                app:argType="orwir.starrit.content.feed.Feed$Sort" />-->
-    <!--        </action>-->
-    <!--    </fragment>-->
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/loginFragment"-->
-    <!--        android:name="orwir.starrit.feature.login.LoginFragment"-->
-    <!--        android:label="LoginFragment"-->
-    <!--        tools:layout="@layout/fragment_login">-->
-    <!--        <action-->
-    <!--            android:id="@+id/to_feed"-->
-    <!--            app:destination="@id/graph_feed"-->
-    <!--            app:popUpTo="@id/nav_graph"-->
-    <!--            app:popUpToInclusive="true">-->
-    <!--            <argument-->
-    <!--                android:name="type"-->
-    <!--                app:argType="orwir.starrit.content.feed.Feed$Type" />-->
-    <!--            <argument-->
-    <!--                android:name="sort"-->
-    <!--                app:argType="orwir.starrit.content.feed.Feed$Sort" />-->
-    <!--        </action>-->
-    <!--    </fragment>-->
-
-    <!--    <include app:graph="@navigation/graph_feed" />-->
 </navigation>

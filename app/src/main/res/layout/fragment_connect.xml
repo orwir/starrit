@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="orwir.starrit.connect.ConnectViewModel" />
+            type="orwir.starrit.feature.connect.ConnectViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

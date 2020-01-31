@@ -1,4 +1,4 @@
-package orwir.starrit.container
+package orwir.starrit.feature.container
 
 import androidx.lifecycle.ViewModel
 import orwir.starrit.databinding.FragmentContainerBinding

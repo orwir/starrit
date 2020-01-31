@@ -1,4 +1,4 @@
-package orwir.starrit.splash
+package orwir.starrit.feature.splash
 
 import android.view.View
 

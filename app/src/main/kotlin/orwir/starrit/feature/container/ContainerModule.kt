@@ -1,4 +1,4 @@
-package orwir.starrit.container
+package orwir.starrit.feature.container
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

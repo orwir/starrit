@@ -1,4 +1,4 @@
-package orwir.starrit.splash
+package orwir.starrit.feature.splash
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

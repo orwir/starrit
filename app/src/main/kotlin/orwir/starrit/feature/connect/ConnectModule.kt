@@ -1,4 +1,4 @@
-package orwir.starrit.connect
+package orwir.starrit.feature.connect
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
