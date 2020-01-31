@@ -3,6 +3,7 @@ package orwir.starrit.splash
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModel
+import kotlinx.android.synthetic.main.fragment_splash.*
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import orwir.starrit.access.AccessRepository
@@ -19,11 +20,11 @@ class SplashFragment(private val navigation: SplashNavigation) : BaseFragment<Fr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         launchWhenResumed {
-            delay(200)
+            delay(400)
             if (viewModel.hasAccess()) {
                 navigation.openLatestFeed()
             } else {
-                navigation.openAuthorization()
+                navigation.openAuthorization(true, logo to "logo")
             }
         }
     }

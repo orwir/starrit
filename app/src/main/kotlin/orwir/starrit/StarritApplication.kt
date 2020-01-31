@@ -4,7 +4,7 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import orwir.starrit.access.libraryAccessModule
-import orwir.starrit.authorization.featureAuthorizationModule
+import orwir.starrit.connect.featureConnectModule
 import orwir.starrit.content.libraryContentModule
 import orwir.starrit.core.KoinLogger
 import orwir.starrit.main.mainModule
@@ -34,7 +34,7 @@ class StarritApplication : Application() {
                     libraryViewModule,
 
                     featureSplashModule,
-                    featureAuthorizationModule
+                    featureConnectModule
                 )
             )
         }

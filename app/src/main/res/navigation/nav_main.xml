@@ -7,7 +7,7 @@
 
     <action
         android:id="@+id/openAuthorization"
-        app:destination="@id/authorizationScreen" />
+        app:destination="@id/connectScreen" />
 
     <fragment
         android:id="@+id/splashScreen"
@@ -16,10 +16,10 @@
         tools:layout="@layout/fragment_splash" />
 
     <fragment
-        android:id="@+id/authorizationScreen"
-        android:name="orwir.starrit.authorization.AuthorizationFragment"
+        android:id="@+id/connectScreen"
+        android:name="orwir.starrit.connect.ConnectFragment"
         android:label="AuthorizationFragment"
-        tools:layout="@layout/fragment_authorization" />
+        tools:layout="@layout/fragment_connect" />
 
 
     <!--    <fragment-->

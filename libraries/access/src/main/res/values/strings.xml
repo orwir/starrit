@@ -5,7 +5,7 @@
     <string name="banner_access_proposal_secondary_action">Anonymous</string>
     <string name="banner_access_revoked_message">Authorization was revoked. Please authorize again.</string>
     <string name="banner_access_revoked_primary_action">Authorize</string>
-    <string name="dialog_access_denied_title">Authorization required!</string>
-    <string name="dialog_access_denied_message">To proceed as authorized you should allow connection to Reddit.</string>
-    <string name="dialog_access_denied_positive_action">Open</string>
+    <string name="dialog_access_denied_title">Connection required!</string>
+    <string name="dialog_access_denied_message">You have to allow connection to Reddit if you want to personalize your experience in this app.</string>
+    <string name="dialog_access_denied_positive_action">Got it</string>
 </resources>

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="orwir.starrit.authorization.AuthorizationViewModel" />
+            type="orwir.starrit.connect.ConnectViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_launcher_round"
+                android:transitionName="logo"
                 app:layout_constraintBottom_toTopOf="@id/description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,7 @@
                 android:layout_marginStart="@dimen/spaceX2"
                 android:layout_marginTop="@dimen/space"
                 android:layout_marginEnd="@dimen/spaceX2"
-                android:gravity="end"
+                android:gravity="center"
                 android:text="@string/authorization_description"
                 app:layout_constraintBottom_toTopOf="@id/buttons_group"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +61,7 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/description">
 
                 <com.google.android.material.button.MaterialButton
