@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Pretty Date -->
-    <string name="pretty_date_now">now</string>
-    <string name="pretty_date_today">%1$dh ago</string>
-    <string name="pretty_date_yesterday">\'yesterday\' HH:mm</string>
-    <string name="pretty_date_this_year">dd.MM HH:mm</string>
-    <string name="pretty_date_fulldate">dd.MM.yyyy HH:mm</string>
-</resources>
