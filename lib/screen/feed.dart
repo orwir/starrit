@@ -11,24 +11,13 @@ class FeedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
-      converter: (store) => _ViewModel.fromState(feed, store.state),
+    return StoreConnector<AppState, List<Post>>(
+      converter: (store) => store.state.posts,
       builder: (context, viewModel) => Scaffold(
         appBar: AppBar(
-          title: Text('${viewModel.feed}'),
+          title: Text('$feed'),
         ),
       ),
     );
   }
-}
-
-@immutable
-class _ViewModel {
-  final Feed feed;
-  final List<Post> posts;
-
-  _ViewModel(this.feed, this.posts);
-
-  _ViewModel.fromState(Feed feed, AppState state)
-      : this(feed, state.feeds[feed].posts);
 }

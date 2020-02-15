@@ -7,7 +7,7 @@ class Feed {
 
   Feed({this.subreddit, this.sort});
 
-  Feed.home() : this(subreddit: '/r/home', sort: '/best');
+  Feed.home() : this(subreddit: '', sort: '/best');
 
   @override
   String toString() => '$subreddit$sort';

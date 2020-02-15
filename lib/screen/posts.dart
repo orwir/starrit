@@ -42,8 +42,9 @@ class PostsScreenState extends State<PostsScreen> {
     switch (index) {
       case 0:
         return StoreConnector<AppState, Feed>(
+          distinct: true,
           builder: (context, feed) => FeedScreen(feed),
-          converter: (store) => store.state.latestFeed,
+          converter: (store) => store.state.feed,
         );
       case 1:
         return SavedScreen();

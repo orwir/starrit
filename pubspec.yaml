@@ -14,11 +14,12 @@ description: An ordinary Reddit client.
 version: 1.0.0+13
 
 environment:
-  sdk: '>=2.3.0 <3.0.0'
+  sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
+  
   redux: ^4.0.0
   flutter_redux: ^0.6.0
   http: ^0.12.0
