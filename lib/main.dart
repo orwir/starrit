@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:starrit/middleware/main.dart';
+import 'package:starrit/middleware/feed.dart';
 import 'package:starrit/model/state.dart';
-import 'package:starrit/reducer/main.dart';
+import 'package:starrit/reducer/feed.dart';
+import 'package:starrit/repository/feed.dart';
 import 'package:starrit/screen/posts.dart';
 import 'package:starrit/screen/splash.dart';
 
@@ -13,10 +14,12 @@ main() {
 }
 
 class StarritApp extends StatelessWidget {
+  static final FeedRepository feedRepository = FeedRepository();
+
   final store = Store<AppState>(
-    reducer,
+    combineReducers(createFeedReducers()),
     initialState: AppState(),
-    middleware: [fetchLatestFeed],
+    middleware: [...createFeedMiddlewares(feedRepository)],
   );
 
   @override

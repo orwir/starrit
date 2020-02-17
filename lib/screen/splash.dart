@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:starrit/action/main.dart';
+import 'package:starrit/action/feed.dart';
 import 'package:starrit/model/state.dart';
 
 class SplashScreen extends StatelessWidget {
