@@ -8,12 +8,12 @@ class Post {
   final String id;
   final Subreddit subreddit;
   final Author author;
-  final int created;
+  final String created;
   final String title;
   final bool nsfw;
   final bool spoiler;
-  final int comments;
-  final int score;
+  final String comments;
+  final String score;
   final String domain;
   final String postUrl;
   final String contentUrl;
@@ -42,20 +42,20 @@ class Post {
   Post.fromJson(Map<String, dynamic> json)
       : this(
           id: json['name'] as String,
-          subreddit: null, //todo: implement it
-          author: null, //todo: implement it
-          created: (json['created_utc'] as double).toInt(),
+          subreddit: Subreddit.fromJson(json),
+          author: Author.fromJson(json),
+          created: _prettyCreatedDate((json['created_utc'] as double).toInt()),
           title: json['title'] as String,
           nsfw: json['nsfw'] as bool,
           spoiler: json['spoiler'] as bool,
-          comments: json['num_comments'] as int,
-          score: json['score'] as int,
+          comments: _prettyNumber(json['num_comments'] as int),
+          score: _prettyNumber(json['score'] as int),
           domain: json['domain'] as String,
           postUrl: json['permalink'] as String,
           contentUrl: json['url'] as String,
-          imagePreview: null, //todo: implement it
-          imageSource: null, //todo: implement it
-          imageBlurred: null, //todo: implement it
+          imagePreview: _findImagePreview(json),
+          imageSource: _findImageSource(json),
+          imageBlurred: _findImageBlurred(json),
         );
 
   @override
@@ -71,9 +71,9 @@ class Post {
       domain.hashCode ^
       postUrl.hashCode ^
       contentUrl.hashCode ^
-      imagePreview.hashCode ^
-      imageSource.hashCode ^
-      imageBlurred.hashCode;
+      (imagePreview?.hashCode ?? 0) ^
+      (imageSource?.hashCode ?? 0) ^
+      (imageBlurred?.hashCode ?? 0);
 
   @override
   bool operator ==(Object other) =>
@@ -94,4 +94,57 @@ class Post {
           imagePreview == other.imagePreview &&
           imageSource == other.imageSource &&
           imageBlurred == other.imageBlurred;
+}
+
+String _prettyCreatedDate(int ms) {
+  //TODO: implement it
+  return ms.toString();
+}
+
+String _prettyNumber(int number) {
+  //TODO: implement it
+  return number.toString();
+}
+
+ImageData _findImagePreview(Map<String, dynamic> json) {
+  //TODO: implement it
+  /*
+  submission.preview
+        ?.images
+        ?.firstOrNull()
+        ?.resolutions
+        ?.firstOrNull()
+        ?: Image("", 0, 0)
+  */
+  return null;
+}
+
+ImageData _findImageSource(Map<String, dynamic> json) {
+  //TODO: implement it
+  /*
+  submission.preview
+        ?.images
+        ?.firstOrNull()
+        ?.source
+        ?: Image("", 0, 0)
+
+  */
+  return null;
+}
+
+ImageData _findImageBlurred(Map<String, dynamic> json) {
+  //TODO: implement it
+  /*
+  submission
+        .preview
+        ?.images
+        ?.firstOrNull()
+        ?.variants
+        ?.nsfw
+        ?.resolutions
+        ?.firstOrNull()
+        ?: Image("", 0, 0)
+
+  */
+  return null;
 }

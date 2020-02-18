@@ -7,6 +7,12 @@ class Author {
 
   Author({@required this.id, @required this.name});
 
+  Author.fromJson(Map<String, dynamic> json)
+      : this(
+          id: json['author_fullname'] as String,
+          name: json['author'] as String,
+        );
+
   @override
   String toString() => '{id: "$id", name: "$name"}';
 

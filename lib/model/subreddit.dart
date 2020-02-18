@@ -8,6 +8,13 @@ class Subreddit {
 
   Subreddit({@required this.name, @required this.icon, @required this.banner});
 
+  Subreddit.fromJson(Map<String, dynamic> json)
+      : this(
+          name: null,
+          icon: null,
+          banner: null,
+        );
+
   @override
   String toString() => '{name: "$name", icon: "$icon", banner: "$banner"}';
 
