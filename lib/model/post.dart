@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
-
-import 'subreddit.dart';
-import 'image.dart';
+import 'package:starrit/model/author.dart';
+import 'package:starrit/model/image.dart';
+import 'package:starrit/model/subreddit.dart';
 
 @immutable
 class Post {
   final String id;
   final Subreddit subreddit;
-  final String author;
+  final Author author;
   final int created;
   final String title;
   final bool nsfw;
@@ -41,10 +41,10 @@ class Post {
 
   Post.fromJson(Map<String, dynamic> json)
       : this(
-          id: json['id'] as String,
+          id: json['name'] as String,
           subreddit: null, //todo: implement it
-          author: json['author'] as String,
-          created: json['created_utc'] as int,
+          author: null, //todo: implement it
+          created: (json['created_utc'] as double).toInt(),
           title: json['title'] as String,
           nsfw: json['nsfw'] as bool,
           spoiler: json['spoiler'] as bool,
@@ -58,22 +58,40 @@ class Post {
           imageBlurred: null, //todo: implement it
         );
 
-  Post.empty()
-      : this(
-          id: null,
-          subreddit: null,
-          author: null,
-          created: null,
-          title: null,
-          nsfw: null,
-          spoiler: null,
-          comments: null,
-          score: null,
-          domain: null,
-          postUrl: null,
-          contentUrl: null,
-          imagePreview: null,
-          imageSource: null,
-          imageBlurred: null,
-        );
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      subreddit.hashCode ^
+      author.hashCode ^
+      created.hashCode ^
+      title.hashCode ^
+      nsfw.hashCode ^
+      spoiler.hashCode ^
+      comments.hashCode ^
+      domain.hashCode ^
+      postUrl.hashCode ^
+      contentUrl.hashCode ^
+      imagePreview.hashCode ^
+      imageSource.hashCode ^
+      imageBlurred.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Post &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          subreddit == other.subreddit &&
+          author == other.author &&
+          created == other.created &&
+          title == other.title &&
+          nsfw == other.nsfw &&
+          spoiler == other.spoiler &&
+          comments == other.comments &&
+          domain == other.domain &&
+          postUrl == other.postUrl &&
+          contentUrl == other.contentUrl &&
+          imagePreview == other.imagePreview &&
+          imageSource == other.imageSource &&
+          imageBlurred == other.imageBlurred;
 }

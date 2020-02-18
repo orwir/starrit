@@ -10,7 +10,7 @@ class Feed {
   Feed.home() : this(subreddit: '', sort: '/best');
 
   @override
-  String toString() => '$subreddit$sort';
+  String toString() => '{subreddit: "$subreddit", sort: "$sort"}';
 
   @override
   bool operator ==(Object other) =>
