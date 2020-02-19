@@ -16,7 +16,7 @@ AppState reducer(AppState state, dynamic action) {
     return state.copyWith(
       feedState: FeedState.loaded(
         feed: action.feed,
-        posts: action.posts,
+        posts: [...?state.feedState?.posts, ...action.posts],
       ),
     );
   }
