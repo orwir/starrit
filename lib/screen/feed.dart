@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -15,6 +16,7 @@ class FeedScreenState extends State<FeedScreen> {
   Feed feed = Feed.home();
   List<Post> posts = <Post>[];
   bool loading = false;
+  Exception error;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -29,17 +31,23 @@ class FeedScreenState extends State<FeedScreen> {
             } else if (position > posts.length) {
               return null;
             } else {
-              final post = posts[position];
-              return Card(
-                child: Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(post.title),
-                ),
-              );
+              return _buildPost(context, posts[position]);
             }
           },
         ),
       );
+
+  Widget _buildPost(BuildContext context, Post post) {
+    ThemeData theme = Theme.of(context);
+    return Card(
+      child: Container(
+          padding: EdgeInsets.all(16),
+          child: Text(
+            post.title,
+            style: theme.textTheme.title,
+          )),
+    );
+  }
 
   void _requestPosts() async {
     if (loading) {
@@ -63,7 +71,11 @@ class FeedScreenState extends State<FeedScreen> {
         loading = false;
       });
     } else {
-      throw 'Http error: ${response.statusCode}';
+      setState(() {
+        error =
+            HttpException('Request failed with code: ${response.statusCode}');
+        loading = false;
+      });
     }
   }
 }

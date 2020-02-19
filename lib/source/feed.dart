@@ -20,7 +20,7 @@ Future<Response> listing({
   return await client.get(url);
 }
 
-Future<Response> searchRedditNames({
+Future<Response> suggestions({
   @required Client client,
   @required String domain,
   @required String query,
