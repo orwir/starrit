@@ -16,7 +16,8 @@ class Subreddit {
         );
 
   @override
-  String toString() => '{name: "$name", icon: "$icon", banner: "$banner"}';
+  String toString() =>
+      '{$runtimeType: {name: "$name", icon: "$icon", banner: "$banner"}}';
 
   @override
   int get hashCode => name.hashCode ^ icon.hashCode ^ banner.hashCode;

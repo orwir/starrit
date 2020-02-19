@@ -8,12 +8,20 @@ class AppState {
 
   AppState({this.feedState});
 
+  AppState.initial()
+      : this(
+          feedState: FeedState.loaded(
+            feed: Feed.home(),
+            posts: const <Post>[],
+          ),
+        );
+
   AppState copyWith({FeedState feedState}) => AppState(
         feedState: feedState ?? this.feedState,
       );
 
   @override
-  String toString() => '{feedState: $feedState}';
+  String toString() => '{$runtimeType: {feedState: $feedState}}';
 
   @override
   int get hashCode => feedState?.hashCode ?? 0;
@@ -36,7 +44,7 @@ class FeedState {
   FeedState({
     @required this.feed,
     @required this.loading,
-    this.posts,
+    this.posts = const <Post>[],
     this.error,
   });
 

@@ -1,41 +1,39 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+import 'package:starrit/action/feed.dart';
 import 'package:starrit/model/feed.dart';
 import 'package:starrit/model/post.dart';
-import 'package:starrit/service/feed.dart';
+import 'package:starrit/model/state.dart';
 
-class FeedScreen extends StatefulWidget {
+class FeedScreen extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => FeedScreenState();
-}
-
-class FeedScreenState extends State<FeedScreen> {
-  Feed feed = Feed.home();
-  List<Post> posts = <Post>[];
-  bool loading = false;
-  Exception error;
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(feed.asTitle),
-        ),
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, _ViewModel>(
+      onInit: (store) => {},
+      converter: (store) => _ViewModel.fromStore(store),
+      builder: (context, viewModel) => Scaffold(
+        appBar: AppBar(title: Text(viewModel.title)),
         body: ListView.builder(
-          itemBuilder: (BuildContext context, int position) {
-            if (position == posts.length) {
-              _requestPosts();
-              return LinearProgressIndicator();
-            } else if (position > posts.length) {
-              return null;
-            } else {
-              return _buildPost(context, posts[position]);
+          itemBuilder: (context, index) {
+            if (index > viewModel.postsCount - 10 && !viewModel.loading) {
+              viewModel.loadMore();
             }
+            if (index < viewModel.postsCount) {
+              return _buildPost(context, viewModel.posts[index]);
+            }
+            if (index == viewModel.postsCount && viewModel.loading) {
+              return LinearProgressIndicator();
+            }
+            if (index == viewModel.postsCount && viewModel.error != null) {
+              // TODO: show error
+            }
+            return null;
           },
         ),
-      );
+      ),
+    );
+  }
 
   Widget _buildPost(BuildContext context, Post post) {
     ThemeData theme = Theme.of(context);
@@ -48,34 +46,39 @@ class FeedScreenState extends State<FeedScreen> {
           )),
     );
   }
+}
 
-  void _requestPosts() async {
-    if (loading) {
-      return;
-    }
-    loading = true;
-    final after = posts.isEmpty ? null : posts[posts.length - 1].id;
-    final response = await listing(
-      client: Client(),
-      domain: 'reddit.com',
-      feed: feed,
-      after: after,
-    );
-    if (response.statusCode == 200) {
-      final result = jsonDecode(response.body);
-      final posts = (result['data']['children'] as List<dynamic>)
-          .map((json) => Post.fromJson(json['data']))
-          .toList();
-      setState(() {
-        this.posts.addAll(posts);
-        loading = false;
-      });
-    } else {
-      setState(() {
-        error =
-            HttpException('Request failed with code: ${response.statusCode}');
-        loading = false;
-      });
-    }
+@immutable
+class _ViewModel {
+  final Feed feed;
+  final bool loading;
+  final List<Post> posts;
+  final Exception error;
+  final Function dispatch;
+
+  _ViewModel({
+    this.feed,
+    this.loading,
+    this.posts,
+    this.error,
+    this.dispatch,
+  });
+
+  _ViewModel.fromStore(Store<AppState> store)
+      : this(
+          feed: store.state.feedState.feed,
+          loading: store.state.feedState.loading,
+          posts: store.state.feedState.posts,
+          error: store.state.feedState.error,
+          dispatch: (dynamic action) => store.dispatch(action),
+        );
+
+  String get title => feed.asTitle;
+
+  int get postsCount => posts.length;
+
+  void loadMore() {
+    String after = posts.length > 0 ? posts[posts.length - 1].id : null;
+    dispatch(loadPosts(feed, after));
   }
 }

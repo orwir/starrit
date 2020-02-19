@@ -14,7 +14,7 @@ class Author {
         );
 
   @override
-  String toString() => '{id: "$id", name: "$name"}';
+  String toString() => '{$runtimeType: {id: "$id", name: "$name"}}';
 
   @override
   int get hashCode => id.hashCode ^ name.hashCode;

@@ -3,7 +3,6 @@ import 'package:http/http.dart';
 import 'package:starrit/model/feed.dart';
 
 Future<Response> listing({
-  @required Client client,
   @required String domain,
   @required Feed feed,
   String after,
@@ -17,11 +16,10 @@ Future<Response> listing({
       '&include_categories=true'
       '&sr_detail=true'
       '&raw_json=1';
-  return await client.get(url);
+  return await get(url);
 }
 
 Future<Response> suggestions({
-  @required Client client,
   @required String domain,
   @required String query,
 }) async {
@@ -29,5 +27,5 @@ Future<Response> suggestions({
       '?query=$query'
       '&include_over_18=true'
       '&include_unadvertisable=true';
-  return await client.get(url);
+  return await get(url);
 }

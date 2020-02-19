@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
+import 'package:starrit/middleware/main.dart';
 import 'package:starrit/model/state.dart';
 import 'package:starrit/reducer/main.dart';
 import 'package:starrit/screen/feed.dart';
@@ -13,8 +15,8 @@ main() {
 class StarritApp extends StatelessWidget {
   final Store<AppState> store = Store(
     reducer,
-    initialState: AppState(),
-    middleware: [],
+    initialState: AppState.initial(),
+    middleware: [thunkMiddleware, logger],
   );
 
   @override
@@ -24,7 +26,10 @@ class StarritApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
-        home: FeedScreen(),
+        routes: {
+          '/feed': (context) => FeedScreen(),
+        },
+        initialRoute: '/feed',
       ),
     );
   }

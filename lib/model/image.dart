@@ -9,7 +9,8 @@ class ImageData {
   ImageData({@required this.url, @required this.width, @required this.height});
 
   @override
-  String toString() => '{url: "$url", width: "$width", height: "$height"}';
+  String toString() =>
+      '{$runtimeType: {url: "$url", width: "$width", height: "$height"}}';
 
   @override
   int get hashCode => url.hashCode ^ width.hashCode ^ height.hashCode;
