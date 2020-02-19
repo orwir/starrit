@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:starrit/model/feed.dart';
 import 'package:starrit/model/post.dart';
-import 'package:starrit/source/feed.dart';
+import 'package:starrit/service/feed.dart';
 
 class FeedScreen extends StatefulWidget {
   @override
