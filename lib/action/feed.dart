@@ -3,13 +3,13 @@ import 'package:starrit/model/feed.dart';
 import 'package:starrit/model/post.dart';
 
 @immutable
-class LoadPostsAction {
+class PostsLoadingStartAction {
   final Feed feed;
   final String after;
   final String before;
   final int limit;
 
-  LoadPostsAction(
+  PostsLoadingStartAction(
     this.feed, {
     @required this.after,
     @required this.before,
@@ -22,22 +22,22 @@ class LoadPostsAction {
 }
 
 @immutable
-class LoadPostsSuccessAction {
+class PostsLoadingSuccessAction {
   final Feed feed;
   final List<Post> posts;
 
-  LoadPostsSuccessAction(this.feed, this.posts);
+  PostsLoadingSuccessAction(this.feed, this.posts);
 
   @override
   String toString() => '{feed: $feed, posts: ${posts.length}}';
 }
 
 @immutable
-class LoadPostsFailureAction {
+class PostsLoadingFailureAction {
   final Feed feed;
   final Exception error;
 
-  LoadPostsFailureAction(this.feed, this.error);
+  PostsLoadingFailureAction(this.feed, this.error);
 
   @override
   String toString() => '{feed: $feed, error: "$error"}';

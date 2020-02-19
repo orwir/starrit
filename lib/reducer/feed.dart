@@ -3,7 +3,7 @@ import 'package:starrit/model/post.dart';
 import 'package:starrit/model/state.dart';
 
 AppState reducer(AppState state, dynamic action) {
-  if (action is LoadPostsAction) {
+  if (action is PostsLoadingStartAction) {
     return state.copyWith(
       feedState: FeedState.loading(
         feed: action.feed,
@@ -12,7 +12,7 @@ AppState reducer(AppState state, dynamic action) {
     );
   }
 
-  if (action is LoadPostsSuccessAction) {
+  if (action is PostsLoadingSuccessAction) {
     return state.copyWith(
       feedState: FeedState.loaded(
         feed: action.feed,
@@ -21,7 +21,7 @@ AppState reducer(AppState state, dynamic action) {
     );
   }
 
-  if (action is LoadPostsFailureAction) {
+  if (action is PostsLoadingFailureAction) {
     return state.copyWith(
       feedState: FeedState.failed(
         feed: action.feed,
