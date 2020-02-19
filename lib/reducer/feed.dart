@@ -11,6 +11,7 @@ AppState reducer(AppState state, dynamic action) {
       ),
     );
   }
+
   if (action is LoadPostsSuccessAction) {
     return state.copyWith(
       feedState: FeedState.loaded(
@@ -19,14 +20,16 @@ AppState reducer(AppState state, dynamic action) {
       ),
     );
   }
+
   if (action is LoadPostsFailureAction) {
     return state.copyWith(
       feedState: FeedState.failed(
         feed: action.feed,
-        posts: state.feedState.posts,
+        posts: state.feedState?.posts ?? const <Post>[],
         error: action.error,
       ),
     );
   }
+
   return state;
 }

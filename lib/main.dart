@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:starrit/model/state.dart';
 import 'package:starrit/reducer/main.dart';
 import 'package:starrit/screen/feed.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 
 main() {
   runApp(StarritApp());

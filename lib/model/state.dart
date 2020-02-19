@@ -11,6 +11,19 @@ class AppState {
   AppState copyWith({FeedState feedState}) => AppState(
         feedState: feedState ?? this.feedState,
       );
+
+  @override
+  String toString() => '{feedState: $feedState}';
+
+  @override
+  int get hashCode => feedState?.hashCode ?? 0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AppState &&
+          runtimeType == other.runtimeType &&
+          feedState == other.feedState;
 }
 
 @immutable
@@ -50,4 +63,25 @@ class FeedState {
           loading: false,
           error: error,
         );
+
+  @override
+  String toString() =>
+      '{feed: $feed, posts: ${posts.length}, loading: $loading, error: "$error"}';
+
+  @override
+  int get hashCode =>
+      feed.hashCode ^
+      posts.hashCode ^
+      loading.hashCode ^
+      (error?.hashCode ?? 0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FeedState &&
+          runtimeType == other.runtimeType &&
+          feed == other.feed &&
+          loading == other.loading &&
+          posts == other.posts &&
+          error == other.error;
 }
