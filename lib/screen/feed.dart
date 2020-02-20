@@ -13,11 +13,12 @@ class FeedScreen extends StatelessWidget {
       converter: _ViewModel.fromStore,
       builder: (context, viewModel) => Scaffold(
         appBar: AppBar(title: Text(viewModel.title)),
-        body: ListView.builder(
+        body: ListView.separated(
+          itemCount: viewModel.postsCount + (viewModel.showFooter ? 1 : 0),
+          separatorBuilder: (context, index) => Divider(),
           itemBuilder: (context, index) {
-            if (index > viewModel.postsCount - 10 && !viewModel.loading) {
-              viewModel.loadMore();
-            }
+            if (viewModel.shouldLoadMore(index)) viewModel.loadMore();
+
             if (index < viewModel.postsCount) {
               return _buildPost(context, viewModel.posts[index]);
             }
@@ -25,7 +26,7 @@ class FeedScreen extends StatelessWidget {
               return LinearProgressIndicator();
             }
             if (index == viewModel.postsCount && viewModel.error != null) {
-              // TODO: show error
+              return _buildFooter(viewModel);
             }
             return null;
           },
@@ -36,13 +37,34 @@ class FeedScreen extends StatelessWidget {
 
   Widget _buildPost(BuildContext context, Post post) {
     ThemeData theme = Theme.of(context);
-    return Card(
-      child: Container(
-          padding: EdgeInsets.all(16),
-          child: Text(
-            post.title,
-            style: theme.textTheme.title,
-          )),
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Text(
+        post.title,
+        style: theme.textTheme.title,
+      ),
+    );
+  }
+
+  Widget _buildFooter(_ViewModel viewModel) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              viewModel.errorMessage,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          FlatButton(
+            onPressed: () => viewModel.loadMore(),
+            textTheme: ButtonTextTheme.primary,
+            child: Text('RETRY'),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -51,6 +73,7 @@ class FeedScreen extends StatelessWidget {
 class _ViewModel {
   final FeedState _state;
   final Function _dispatch;
+  final int _loadThreshold = 10;
 
   _ViewModel._(this._state, this._dispatch);
 
@@ -67,8 +90,14 @@ class _ViewModel {
   int get postsCount => _state.posts.length;
   Post get lastPost => postsCount > 0 ? posts[postsCount - 1] : null;
   Exception get error => _state.error;
+  String get errorMessage => _state.error.toString();
+  bool get showFooter => _state.error != null || _state.loading;
+
+  bool shouldLoadMore(int position) {
+    return position > postsCount - _loadThreshold && !loading && error == null;
+  }
 
   void loadMore() {
-    _dispatch(loadPosts(_state.feed, lastPost?.id));
+    if (!loading) _dispatch(loadPosts(_state.feed, lastPost?.id));
   }
 }

@@ -44,20 +44,24 @@ class PostsLoadingFailureAction {
 ThunkAction<AppState> loadPosts(Feed feed, String after) {
   return (Store<AppState> store) async {
     store.dispatch(PostsLoadingStartAction(feed));
-    final response = await listing(
-      domain: 'reddit.com',
-      feed: feed,
-      after: after,
-    );
-    if (response.statusCode == 200) {
-      final result = jsonDecode(response.body);
-      final posts = (result['data']['children'] as List<dynamic>)
-          .map((json) => Post.fromJson(json['data']))
-          .toList();
-      store.dispatch(PostsLoadingSuccessAction(feed, posts));
-    } else {
-      final error =
-          HttpException('request failed with code: ${response.statusCode}');
+    try {
+      final response = await listing(
+        domain: 'reddit.com',
+        feed: feed,
+        after: after,
+      );
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        final posts = (result['data']['children'] as List<dynamic>)
+            .map((json) => Post.fromJson(json['data']))
+            .toList();
+        store.dispatch(PostsLoadingSuccessAction(feed, posts));
+      } else {
+        final error =
+            HttpException('request failed with code: ${response.statusCode}');
+        store.dispatch(PostsLoadingFailureAction(feed, error));
+      }
+    } catch (error) {
       store.dispatch(PostsLoadingFailureAction(feed, error));
     }
   };
