@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:starrit/action/feed.dart';
-import 'package:starrit/model/feed.dart';
 import 'package:starrit/model/post.dart';
 import 'package:starrit/model/state.dart';
 
@@ -11,7 +10,7 @@ class FeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       onInit: (store) => {},
-      converter: (store) => _ViewModel.fromStore(store),
+      converter: _ViewModel.fromStore,
       builder: (context, viewModel) => Scaffold(
         appBar: AppBar(title: Text(viewModel.title)),
         body: ListView.builder(
@@ -50,35 +49,26 @@ class FeedScreen extends StatelessWidget {
 
 @immutable
 class _ViewModel {
-  final Feed feed;
-  final bool loading;
-  final List<Post> posts;
-  final Exception error;
-  final Function dispatch;
+  final FeedState _state;
+  final Function _dispatch;
 
-  _ViewModel({
-    this.feed,
-    this.loading,
-    this.posts,
-    this.error,
-    this.dispatch,
-  });
+  _ViewModel._(this._state, this._dispatch);
 
-  _ViewModel.fromStore(Store<AppState> store)
-      : this(
-          feed: store.state.feedState.feed,
-          loading: store.state.feedState.loading,
-          posts: store.state.feedState.posts,
-          error: store.state.feedState.error,
-          dispatch: (dynamic action) => store.dispatch(action),
-        );
+  static _ViewModel fromStore(Store<AppState> store) {
+    return _ViewModel._(
+      store.state.feedState,
+      (dynamic action) => store.dispatch(action),
+    );
+  }
 
-  String get title => feed.asTitle;
-
-  int get postsCount => posts.length;
+  String get title => _state.feed.asTitle;
+  bool get loading => _state.loading;
+  List<Post> get posts => _state.posts;
+  int get postsCount => _state.posts.length;
+  Post get lastPost => postsCount > 0 ? posts[postsCount - 1] : null;
+  Exception get error => _state.error;
 
   void loadMore() {
-    String after = posts.length > 0 ? posts[posts.length - 1].id : null;
-    dispatch(loadPosts(feed, after));
+    _dispatch(loadPosts(_state.feed, lastPost?.id));
   }
 }

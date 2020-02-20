@@ -21,7 +21,7 @@ class AppState {
       );
 
   @override
-  String toString() => '{$runtimeType: {feedState: $feedState}}';
+  String toString() => '$runtimeType[$feedState]';
 
   @override
   int get hashCode => feedState?.hashCode ?? 0;
@@ -74,7 +74,7 @@ class FeedState {
 
   @override
   String toString() =>
-      '{feed: $feed, posts: ${posts.length}, loading: $loading, error: "$error"}';
+      '$runtimeType[feed=$feed, posts=${posts.length}, loading=$loading, error=$error]';
 
   @override
   int get hashCode =>

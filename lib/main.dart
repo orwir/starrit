@@ -26,10 +26,7 @@ class StarritApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
-        routes: {
-          '/feed': (context) => FeedScreen(),
-        },
-        initialRoute: '/feed',
+        home: FeedScreen(),
       ),
     );
   }

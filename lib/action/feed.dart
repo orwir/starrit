@@ -16,7 +16,7 @@ class PostsLoadingStartAction {
   PostsLoadingStartAction(this.feed);
 
   @override
-  String toString() => '{$runtimeType: {feed: $feed}}';
+  String toString() => '$runtimeType[$feed]';
 }
 
 @immutable
@@ -27,7 +27,7 @@ class PostsLoadingSuccessAction {
   PostsLoadingSuccessAction(this.feed, this.posts);
 
   @override
-  String toString() => '{$runtimeType: {feed: $feed, posts: ${posts.length}}}';
+  String toString() => '$runtimeType[$feed, posts=${posts.length}]';
 }
 
 @immutable
@@ -38,7 +38,7 @@ class PostsLoadingFailureAction {
   PostsLoadingFailureAction(this.feed, this.error);
 
   @override
-  String toString() => '{$runtimeType: {feed: $feed, error: "$error"}}';
+  String toString() => '$runtimeType[$feed, error=$error]';
 }
 
 ThunkAction<AppState> loadPosts(Feed feed, String after) {

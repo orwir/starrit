@@ -14,8 +14,7 @@ class Feed {
   String get asTitle => '${subreddit.isEmpty ? "/home" : subreddit}$sort';
 
   @override
-  String toString() =>
-      '{$runtimeType: {subreddit: "$subreddit", sort: "$sort"}}';
+  String toString() => '$runtimeType[${this.asParameter}]';
 
   @override
   bool operator ==(Object other) =>
