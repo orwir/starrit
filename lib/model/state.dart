@@ -44,11 +44,11 @@ class FeedState {
   FeedState({
     @required this.feed,
     @required this.loading,
-    this.posts = const <Post>[],
+    this.posts,
     this.error,
   });
 
-  FeedState.loading({Feed feed, List<Post> posts})
+  FeedState.loading({@required Feed feed, @required List<Post> posts})
       : this(
           feed: feed,
           posts: posts,
@@ -56,7 +56,7 @@ class FeedState {
           error: null,
         );
 
-  FeedState.loaded({Feed feed, List<Post> posts})
+  FeedState.loaded({@required Feed feed, @required List<Post> posts})
       : this(
           feed: feed,
           posts: posts,
@@ -64,8 +64,11 @@ class FeedState {
           error: null,
         );
 
-  FeedState.failed({Feed feed, List<Post> posts, Exception error})
-      : this(
+  FeedState.failed({
+    @required Feed feed,
+    @required List<Post> posts,
+    @required Exception error,
+  }) : this(
           feed: feed,
           posts: posts,
           loading: false,

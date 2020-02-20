@@ -41,7 +41,7 @@ class PostsLoadingFailureAction {
   String toString() => '$runtimeType[$feed, error=$error]';
 }
 
-ThunkAction<AppState> loadPosts(Feed feed, String after) {
+ThunkAction<AppState> loadPosts(Feed feed, {String after}) {
   return (Store<AppState> store) async {
     store.dispatch(PostsLoadingStartAction(feed));
     try {

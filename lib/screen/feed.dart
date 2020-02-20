@@ -9,7 +9,12 @@ class FeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-      onInit: (store) => {},
+      onInit: (store) {
+        final state = store.state.feedState;
+        if (!state.loading && state.posts.isEmpty) {
+          store.dispatch(loadPosts(state.feed));
+        }
+      },
       converter: _ViewModel.fromStore,
       builder: (context, viewModel) => Scaffold(
         appBar: AppBar(title: Text(viewModel.title)),
@@ -22,26 +27,12 @@ class FeedScreen extends StatelessWidget {
             if (index < viewModel.postsCount) {
               return _buildPost(context, viewModel.posts[index]);
             }
-            if (index == viewModel.postsCount && viewModel.loading) {
-              return LinearProgressIndicator();
-            }
-            if (index == viewModel.postsCount && viewModel.error != null) {
+            if (viewModel.error != null) {
               return _buildFooter(viewModel);
             }
-            return null;
+            return LinearProgressIndicator();
           },
         ),
-      ),
-    );
-  }
-
-  Widget _buildPost(BuildContext context, Post post) {
-    ThemeData theme = Theme.of(context);
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Text(
-        post.title,
-        style: theme.textTheme.title,
       ),
     );
   }
@@ -50,7 +41,6 @@ class FeedScreen extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Expanded(
             child: Text(
@@ -64,6 +54,17 @@ class FeedScreen extends StatelessWidget {
             child: Text('RETRY'),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPost(BuildContext context, Post post) {
+    ThemeData theme = Theme.of(context);
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Text(
+        post.title,
+        style: theme.textTheme.title,
       ),
     );
   }
@@ -98,6 +99,6 @@ class _ViewModel {
   }
 
   void loadMore() {
-    if (!loading) _dispatch(loadPosts(_state.feed, lastPost?.id));
+    if (!loading) _dispatch(loadPosts(_state.feed, after: lastPost?.id));
   }
 }
