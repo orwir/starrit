@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:starrit/action/feed.dart';
 import 'package:starrit/model/post.dart';
 import 'package:starrit/model/state.dart';
+import 'package:starrit/widget/post.dart';
 
 class FeedScreen extends StatelessWidget {
   @override
@@ -20,12 +21,12 @@ class FeedScreen extends StatelessWidget {
         appBar: AppBar(title: Text(viewModel.title)),
         body: ListView.separated(
           itemCount: viewModel.postsCount + (viewModel.showFooter ? 1 : 0),
-          separatorBuilder: (context, index) => Divider(),
+          separatorBuilder: (context, index) => Divider(height: 1),
           itemBuilder: (context, index) {
             if (viewModel.shouldLoadMore(index)) viewModel.loadMore();
 
             if (index < viewModel.postsCount) {
-              return _buildPost(context, viewModel.posts[index]);
+              return PostView(viewModel.posts[index]);
             }
             if (viewModel.error != null) {
               return _buildFooter(viewModel);
@@ -54,17 +55,6 @@ class FeedScreen extends StatelessWidget {
             child: Text('RETRY'),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildPost(BuildContext context, Post post) {
-    ThemeData theme = Theme.of(context);
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Text(
-        post.title,
-        style: theme.textTheme.title,
       ),
     );
   }
