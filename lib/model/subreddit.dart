@@ -10,9 +10,11 @@ class Subreddit {
 
   Subreddit.fromJson(Map<String, dynamic> json)
       : this(
-          name: null,
-          icon: null,
-          banner: null,
+          name: json['sr_detail']['display_name'],
+          icon: json['sr_detail']['community_icon'] ??
+              json['sr_detail']['icon_img'],
+          banner: json['sr_detail']['banner_img'] ??
+              json['sr_detail']['header_img'],
         );
 
   @override

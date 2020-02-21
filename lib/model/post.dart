@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:starrit/model/author.dart';
 import 'package:starrit/model/image.dart';
 import 'package:starrit/model/subreddit.dart';
+import 'package:starrit/util/json.dart';
 
 @immutable
 class Post {
@@ -53,47 +54,50 @@ class Post {
           domain: json['domain'] as String,
           postUrl: json['permalink'] as String,
           contentUrl: json['url'] as String,
-          imagePreview: _findImagePreview(json),
-          imageSource: _findImageSource(json),
-          imageBlurred: _findImageBlurred(json),
+          imagePreview: _image(json, 'preview.images[0].resolutions[0]'),
+          imageSource: _image(json, 'preview.images[0].source'),
+          imageBlurred:
+              _image(json, 'preview.images[0].variants.nsfw.resolutions[0]'),
         );
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      subreddit.hashCode ^
-      author.hashCode ^
-      created.hashCode ^
-      title.hashCode ^
-      nsfw.hashCode ^
-      spoiler.hashCode ^
-      comments.hashCode ^
-      domain.hashCode ^
-      postUrl.hashCode ^
-      contentUrl.hashCode ^
-      (imagePreview?.hashCode ?? 0) ^
-      (imageSource?.hashCode ?? 0) ^
-      (imageBlurred?.hashCode ?? 0);
+  int get hashCode {
+    return id.hashCode ^
+        subreddit.hashCode ^
+        author.hashCode ^
+        created.hashCode ^
+        title.hashCode ^
+        nsfw.hashCode ^
+        spoiler.hashCode ^
+        comments.hashCode ^
+        domain.hashCode ^
+        postUrl.hashCode ^
+        contentUrl.hashCode ^
+        (imagePreview?.hashCode ?? 0) ^
+        (imageSource?.hashCode ?? 0) ^
+        (imageBlurred?.hashCode ?? 0);
+  }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Post &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          subreddit == other.subreddit &&
-          author == other.author &&
-          created == other.created &&
-          title == other.title &&
-          nsfw == other.nsfw &&
-          spoiler == other.spoiler &&
-          comments == other.comments &&
-          domain == other.domain &&
-          postUrl == other.postUrl &&
-          contentUrl == other.contentUrl &&
-          imagePreview == other.imagePreview &&
-          imageSource == other.imageSource &&
-          imageBlurred == other.imageBlurred;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is Post &&
+            runtimeType == other.runtimeType &&
+            id == other.id &&
+            subreddit == other.subreddit &&
+            author == other.author &&
+            created == other.created &&
+            title == other.title &&
+            nsfw == other.nsfw &&
+            spoiler == other.spoiler &&
+            comments == other.comments &&
+            domain == other.domain &&
+            postUrl == other.postUrl &&
+            contentUrl == other.contentUrl &&
+            imagePreview == other.imagePreview &&
+            imageSource == other.imageSource &&
+            imageBlurred == other.imageBlurred;
+  }
 }
 
 String _prettyCreatedDate(int ms) {
@@ -106,45 +110,7 @@ String _prettyNumber(int number) {
   return number.toString();
 }
 
-ImageData _findImagePreview(Map<String, dynamic> json) {
-  //TODO: implement it
-  /*
-  submission.preview
-        ?.images
-        ?.firstOrNull()
-        ?.resolutions
-        ?.firstOrNull()
-        ?: Image("", 0, 0)
-  */
-  return null;
-}
-
-ImageData _findImageSource(Map<String, dynamic> json) {
-  //TODO: implement it
-  /*
-  submission.preview
-        ?.images
-        ?.firstOrNull()
-        ?.source
-        ?: Image("", 0, 0)
-
-  */
-  return null;
-}
-
-ImageData _findImageBlurred(Map<String, dynamic> json) {
-  //TODO: implement it
-  /*
-  submission
-        .preview
-        ?.images
-        ?.firstOrNull()
-        ?.variants
-        ?.nsfw
-        ?.resolutions
-        ?.firstOrNull()
-        ?: Image("", 0, 0)
-
-  */
-  return null;
+ImageData _image(Map<String, dynamic> json, String path) {
+  final jsonImage = json.path(path);
+  return jsonImage != null ? ImageData.fromJson(jsonImage) : null;
 }

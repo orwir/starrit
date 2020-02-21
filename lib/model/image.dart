@@ -8,6 +8,13 @@ class ImageData {
 
   ImageData({@required this.url, @required this.width, @required this.height});
 
+  ImageData.fromJson(Map<String, dynamic> json)
+      : this(
+          url: json['url'],
+          width: json['width'],
+          height: json['height'],
+        );
+
   @override
   String toString() => '$runtimeType[url=$url, size:${width}x$height]';
 
