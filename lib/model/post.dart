@@ -56,7 +56,10 @@ class Post {
           id: submission.get('name'),
           subreddit: Subreddit.fromJson(submission),
           author: Author.fromJson(submission),
-          created: submission.created,
+          created: DateTime.fromMillisecondsSinceEpoch(
+            submission.get<double>('created_utc').toInt() * 1000,
+            isUtc: true,
+          ),
           title: submission.get('title'),
           nsfw: submission.get('nsfw') ?? false,
           spoiler: submission.get('spoiler') ?? false,

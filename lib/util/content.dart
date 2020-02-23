@@ -19,11 +19,6 @@ const _imageExtensions = [
 ];
 
 extension ContentExtensions on Map<String, dynamic> {
-  DateTime get created => DateTime.fromMillisecondsSinceEpoch(
-        get<double>('created_utc').toInt() * 1000,
-        isUtc: true,
-      );
-
   bool get isSelfDomain => domain.startsWith('self.');
 
   String get domain => get<String>('domain');
