@@ -3,6 +3,7 @@ import 'package:starrit/model/author.dart';
 import 'package:starrit/model/image.dart';
 import 'package:starrit/model/subreddit.dart';
 import 'package:starrit/util/json.dart';
+import 'package:starrit/util/content.dart';
 
 @immutable
 class Post {
@@ -19,9 +20,13 @@ class Post {
   final bool selfDomain;
   final String postUrl;
   final String contentUrl;
+  final Type type;
   final ImageData imagePreview;
   final ImageData imageSource;
   final ImageData imageBlurred;
+  final String text;
+  final String gif;
+  final String video;
 
   Post({
     @required this.id,
@@ -37,35 +42,39 @@ class Post {
     @required this.selfDomain,
     @required this.postUrl,
     @required this.contentUrl,
+    @required this.type,
     @required this.imagePreview,
     @required this.imageSource,
     @required this.imageBlurred,
+    @required this.text,
+    @required this.gif,
+    @required this.video,
   });
 
-  Post.fromJson(Map<String, dynamic> json)
+  Post.fromJson(Map<String, dynamic> submission)
       : this(
-          id: json['name'] as String,
-          subreddit: Subreddit.fromJson(json),
-          author: Author.fromJson(json),
-          created: DateTime.fromMillisecondsSinceEpoch(
-            (json['created_utc'] as double).toInt() * 1000,
-            isUtc: true,
-          ),
-          title: json['title'] as String,
-          nsfw: json['nsfw'] as bool ?? false,
-          spoiler: json['spoiler'] as bool ?? false,
-          comments: json['num_comments'] as int,
-          score: json['score'] as int,
-          domain: json['domain'] as String,
-          selfDomain: (json['domain'] as String).startsWith('self.'),
-          postUrl: json['permalink'] as String,
-          contentUrl: json['url'] as String,
-          imagePreview: _image(json, 'preview.images[0].resolutions[0]'),
-          imageSource: _image(json, 'preview.images[0].source'),
-          imageBlurred: _image(
-            json,
+          id: submission.get('name'),
+          subreddit: Subreddit.fromJson(submission),
+          author: Author.fromJson(submission),
+          created: submission.created,
+          title: submission.get('title'),
+          nsfw: submission.get('nsfw') ?? false,
+          spoiler: submission.get('spoiler') ?? false,
+          comments: submission.get('num_comments'),
+          score: submission.get('score'),
+          domain: submission.domain,
+          selfDomain: submission.isSelfDomain,
+          postUrl: submission.get('permalink'),
+          contentUrl: submission.url,
+          type: submission.contentType,
+          imagePreview: submission.image('preview.images[0].resolutions[0]'),
+          imageSource: submission.image('preview.images[0].source'),
+          imageBlurred: submission.image(
             'preview.images[0].variants.nsfw.resolutions[0]',
           ),
+          text: submission.text,
+          gif: submission.gif,
+          video: submission.video,
         );
 
   @override
@@ -106,9 +115,4 @@ class Post {
             imageSource == other.imageSource &&
             imageBlurred == other.imageBlurred;
   }
-}
-
-ImageData _image(Map<String, dynamic> json, String path) {
-  final jsonImage = json.path(path);
-  return jsonImage != null ? ImageData.fromJson(jsonImage) : null;
 }

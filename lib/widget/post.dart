@@ -121,26 +121,22 @@ class PostView extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.arrow_drop_up),
-            iconSize: 32,
+            icon: Icon(Icons.arrow_drop_up, size: 32),
             onPressed: null,
           ),
           Text(numberFormat.format(post.score)),
           IconButton(
-            icon: Icon(Icons.arrow_drop_down),
-            iconSize: 32,
+            icon: Icon(Icons.arrow_drop_down, size: 32),
             onPressed: null,
           ),
           IconButton(
             icon: Icon(Icons.comment),
-            iconSize: 20,
             onPressed: null,
           ),
           Text(numberFormat.format(post.comments)),
           Spacer(),
           IconButton(
             icon: Icon(Icons.share),
-            iconSize: 20,
             onPressed: null,
           ),
           IconButton(
