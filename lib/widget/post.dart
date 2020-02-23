@@ -19,7 +19,7 @@ class PostView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _header(context),
-        _content(context),
+        //_content(context),
         _toolbar(context),
       ],
     );
@@ -37,7 +37,6 @@ class PostView extends StatelessWidget {
   }
 
   Widget _simpleHeader(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
       child: Column(
