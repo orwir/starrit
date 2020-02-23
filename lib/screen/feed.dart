@@ -5,7 +5,7 @@ import 'package:starrit/action/feed.dart';
 import 'package:starrit/model/post.dart';
 import 'package:starrit/model/state.dart';
 import 'package:starrit/widget/post.dart';
-import 'package:starrit/i18n/message.dart' as T;
+import 'package:starrit/i18n/text.dart' as T;
 
 class FeedScreen extends StatelessWidget {
   @override

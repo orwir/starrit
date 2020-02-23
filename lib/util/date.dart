@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:starrit/i18n/message.dart' as T;
+import 'package:starrit/i18n/text.dart' as T;
 
 extension TimeAgo on DateTime {
   String asTimeAgo() {
