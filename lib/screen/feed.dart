@@ -5,6 +5,7 @@ import 'package:starrit/action/feed.dart';
 import 'package:starrit/model/post.dart';
 import 'package:starrit/model/state.dart';
 import 'package:starrit/widget/post.dart';
+import 'package:starrit/i18n/message.dart' as T;
 
 class FeedScreen extends StatelessWidget {
   @override
@@ -52,7 +53,7 @@ class FeedScreen extends StatelessWidget {
           FlatButton(
             onPressed: () => viewModel.loadMore(),
             textTheme: ButtonTextTheme.primary,
-            child: Text('RETRY'),
+            child: Text(T.retry),
           ),
         ],
       ),

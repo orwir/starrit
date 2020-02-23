@@ -1,17 +1,18 @@
 import 'package:intl/intl.dart';
+import 'package:starrit/i18n/message.dart' as T;
 
 extension TimeAgo on DateTime {
   String asTimeAgo() {
     final now = DateTime.now();
     final diff = now.difference(this);
     if (diff.inHours < 1) {
-      return 'now';
+      return T.now;
     }
     if (diff.inDays < 1) {
-      return '${diff.inHours}h ago';
+      return T.hoursAgo(diff.inHours);
     }
     if (diff.inDays == 1) {
-      return 'yesterday $hour:$minute';
+      return T.yesterdayAt(this);
     }
     if (year == now.year) {
       final thisYear = DateFormat('dd.MM HH:mm');
