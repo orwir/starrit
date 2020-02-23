@@ -9,13 +9,14 @@ class Post {
   final String id;
   final Subreddit subreddit;
   final Author author;
-  final String created;
+  final DateTime created;
   final String title;
   final bool nsfw;
   final bool spoiler;
-  final String comments;
-  final String score;
+  final int comments;
+  final int score;
   final String domain;
+  final bool selfDomain;
   final String postUrl;
   final String contentUrl;
   final ImageData imagePreview;
@@ -33,6 +34,7 @@ class Post {
     @required this.comments,
     @required this.score,
     @required this.domain,
+    @required this.selfDomain,
     @required this.postUrl,
     @required this.contentUrl,
     @required this.imagePreview,
@@ -45,19 +47,25 @@ class Post {
           id: json['name'] as String,
           subreddit: Subreddit.fromJson(json),
           author: Author.fromJson(json),
-          created: _prettyCreatedDate((json['created_utc'] as double).toInt()),
+          created: DateTime.fromMillisecondsSinceEpoch(
+            (json['created_utc'] as double).toInt() * 1000,
+            isUtc: true,
+          ),
           title: json['title'] as String,
           nsfw: json['nsfw'] as bool ?? false,
           spoiler: json['spoiler'] as bool ?? false,
-          comments: _prettyNumber(json['num_comments'] as int),
-          score: _prettyNumber(json['score'] as int),
+          comments: json['num_comments'] as int,
+          score: json['score'] as int,
           domain: json['domain'] as String,
+          selfDomain: (json['domain'] as String).startsWith('self.'),
           postUrl: json['permalink'] as String,
           contentUrl: json['url'] as String,
           imagePreview: _image(json, 'preview.images[0].resolutions[0]'),
           imageSource: _image(json, 'preview.images[0].source'),
-          imageBlurred:
-              _image(json, 'preview.images[0].variants.nsfw.resolutions[0]'),
+          imageBlurred: _image(
+            json,
+            'preview.images[0].variants.nsfw.resolutions[0]',
+          ),
         );
 
   @override
@@ -98,16 +106,6 @@ class Post {
             imageSource == other.imageSource &&
             imageBlurred == other.imageBlurred;
   }
-}
-
-String _prettyCreatedDate(int ms) {
-  //TODO: implement it
-  return ms.toString();
-}
-
-String _prettyNumber(int number) {
-  //TODO: implement it
-  return number.toString();
 }
 
 ImageData _image(Map<String, dynamic> json, String path) {
