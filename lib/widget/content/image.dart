@@ -8,16 +8,6 @@ class ImageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      alignment: Alignment.center,
-      child: Text(
-        'Image Content',
-        style: Theme.of(context).textTheme.body2.copyWith(
-              color: Colors.red[700],
-              fontWeight: FontWeight.bold,
-            ),
-      ),
-    );
+    return Image.network(post.images.source.url);
   }
 }

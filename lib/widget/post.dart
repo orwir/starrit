@@ -71,7 +71,7 @@ class PostView extends StatelessWidget {
             children: <Widget>[
               if (post.subreddit.icon != null)
                 Padding(
-                  padding: EdgeInsets.only(right: 16),
+                  padding: EdgeInsets.only(right: 8),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
