@@ -49,7 +49,7 @@ extension PostContentJson on Map<String, dynamic> {
       return url.replaceAll('http://', 'https://').replaceAll('.gifv', '.mp4');
     }
     if (domain == 'v.redd.it') {
-      const path = 'secure_media.reddit_video.hls';
+      const path = 'secure_media.reddit_video.hls_url';
       return this.path<String>(path) ??
           this.path<String>('crosspost_parent_list[0].$path');
     }
