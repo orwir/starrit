@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:starrit/model/post.dart';
 
 class GifContent extends StatelessWidget {
-  final String gif;
+  final Post post;
 
-  GifContent(this.gif);
+  GifContent(this.post);
 
   @override
   Widget build(BuildContext context) {

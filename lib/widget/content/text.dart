@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:starrit/model/post.dart';
 
 class TextContent extends StatelessWidget {
-  final String text;
+  final Post post;
 
-  TextContent(this.text);
+  TextContent(this.post);
 
   @override
   Widget build(BuildContext context) {
-    if (text == null) {
+    if (post.text == null) {
       return Container();
     }
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Text(text),
+      child: Text(post.text),
     );
   }
 }

@@ -30,3 +30,31 @@ class ImageData {
           width == other.width &&
           height == other.height;
 }
+
+@immutable
+class ImagePack {
+  final ImageData preview;
+  final ImageData source;
+  final ImageData blurred;
+
+  ImagePack({
+    @required this.preview,
+    @required this.source,
+    @required this.blurred,
+  });
+
+  @override
+  int get hashCode =>
+      (preview?.hashCode ?? 0) ^
+      (source?.hashCode ?? 0) ^
+      (blurred?.hashCode ?? 0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ImagePack &&
+          runtimeType == other.runtimeType &&
+          preview == other.preview &&
+          source == other.source &&
+          blurred == other.blurred;
+}

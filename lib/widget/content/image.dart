@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:starrit/model/image.dart';
+import 'package:starrit/model/post.dart';
 
 class ImageContent extends StatelessWidget {
-  final ImageData preview;
-  final ImageData source;
+  final Post post;
 
-  ImageContent({
-    @required this.preview,
-    @required this.source,
-  });
+  ImageContent(this.post);
 
   @override
   Widget build(BuildContext context) {

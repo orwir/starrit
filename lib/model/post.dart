@@ -21,9 +21,7 @@ class Post {
   final String postUrl;
   final String contentUrl;
   final ContentType type;
-  final ImageData imagePreview;
-  final ImageData imageSource;
-  final ImageData imageBlurred;
+  final ImagePack images;
   final String text;
   final String gif;
   final String video;
@@ -43,9 +41,7 @@ class Post {
     @required this.postUrl,
     @required this.contentUrl,
     @required this.type,
-    @required this.imagePreview,
-    @required this.imageSource,
-    @required this.imageBlurred,
+    @required this.images,
     @required this.text,
     @required this.gif,
     @required this.video,
@@ -70,10 +66,12 @@ class Post {
           postUrl: submission.get('permalink'),
           contentUrl: submission.url,
           type: submission.contentType,
-          imagePreview: submission.image('preview.images[0].resolutions[0]'),
-          imageSource: submission.image('preview.images[0].source'),
-          imageBlurred: submission.image(
-            'preview.images[0].variants.nsfw.resolutions[0]',
+          images: ImagePack(
+            preview: submission.image('preview.images[0].resolutions[0]'),
+            source: submission.image('preview.images[0].source'),
+            blurred: submission.image(
+              'preview.images[0].variants.nsfw.resolutions[0]',
+            ),
           ),
           text: submission.text,
           gif: submission.gif,
@@ -91,11 +89,13 @@ class Post {
         spoiler.hashCode ^
         comments.hashCode ^
         domain.hashCode ^
+        type.hashCode ^
         postUrl.hashCode ^
         contentUrl.hashCode ^
-        (imagePreview?.hashCode ?? 0) ^
-        (imageSource?.hashCode ?? 0) ^
-        (imageBlurred?.hashCode ?? 0);
+        images.hashCode ^
+        (text?.hashCode ?? 0) ^
+        (gif?.hashCode ?? 0) ^
+        (video?.hashCode ?? 0);
   }
 
   @override
@@ -114,8 +114,9 @@ class Post {
             domain == other.domain &&
             postUrl == other.postUrl &&
             contentUrl == other.contentUrl &&
-            imagePreview == other.imagePreview &&
-            imageSource == other.imageSource &&
-            imageBlurred == other.imageBlurred;
+            type == other.type &&
+            text == other.text &&
+            gif == other.gif &&
+            video == other.video;
   }
 }

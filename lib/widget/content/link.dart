@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:starrit/model/image.dart';
+import 'package:starrit/model/post.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LinkContent extends StatelessWidget {
-  final String link;
-  final String displayText;
-  final ImageData cover;
+  final Post post;
 
-  LinkContent(this.link, {this.displayText, this.cover});
+  LinkContent(this.post);
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +16,10 @@ class LinkContent extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          if (cover != null)
+          if (post.images.source != null)
             Positioned.fill(
               child: Image.network(
-                cover.url,
+                post.images.source.url,
                 fit: BoxFit.cover,
               ),
             ),
@@ -37,7 +35,7 @@ class LinkContent extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Text(
-                    displayText,
+                    post.domain,
                     style: theme.textTheme.title,
                   ),
                   Spacer(),
@@ -50,7 +48,7 @@ class LinkContent extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () => launch(link),
+                onTap: () => launch(post.contentUrl),
               ),
             ),
           ),

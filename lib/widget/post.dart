@@ -111,22 +111,15 @@ class PostView extends StatelessWidget {
   Widget _content(BuildContext context) {
     switch (post.type) {
       case ContentType.video:
-        return VideoContent(post.video);
+        return VideoContent(post);
       case ContentType.gif:
-        return GifContent(post.gif);
+        return GifContent(post);
       case ContentType.image:
-        return ImageContent(
-          preview: post.imagePreview,
-          source: post.imageSource,
-        );
+        return ImageContent(post);
       case ContentType.text:
-        return TextContent(post.text);
+        return TextContent(post);
       default:
-        return LinkContent(
-          post.contentUrl,
-          displayText: post.domain,
-          cover: post.imageSource,
-        );
+        return LinkContent(post);
     }
   }
 

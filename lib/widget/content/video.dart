@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:starrit/model/post.dart';
 
 class VideoContent extends StatelessWidget {
-  final String video;
+  final Post post;
 
-  VideoContent(this.video);
+  VideoContent(this.post);
 
   @override
   Widget build(BuildContext context) {
