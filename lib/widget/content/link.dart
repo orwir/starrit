@@ -12,6 +12,7 @@ class LinkContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    ColorScheme colors = theme.colorScheme;
     return Container(
       height: 120,
       child: Stack(
@@ -32,6 +33,7 @@ class LinkContent extends StatelessWidget {
               height: 40,
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.symmetric(horizontal: 16),
+              color: colors.surface.withOpacity(.6),
               child: Row(
                 children: <Widget>[
                   Text(

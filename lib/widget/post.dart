@@ -199,7 +199,7 @@ class PostView extends StatelessWidget {
             child: Icon(
               Icons.visibility_off,
               size: 16,
-              color: theme.primaryColor,
+              color: theme.colorScheme.primary,
             ),
           ),
         if (post.spoiler)
@@ -208,7 +208,7 @@ class PostView extends StatelessWidget {
             child: Icon(
               Icons.warning,
               size: 16,
-              color: theme.primaryColor,
+              color: theme.colorScheme.primary,
             ),
           ),
       ],
