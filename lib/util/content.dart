@@ -34,10 +34,7 @@ extension PostContentJson on Map<String, dynamic> {
   }
 
   String get text {
-    takeIfNotEmpty(String str) => str?.isNotEmpty ?? false ? str : null;
-
-    return takeIfNotEmpty(get<String>('selftext_html')) ??
-        takeIfNotEmpty(get<String>('selftext'));
+    return nonEmpty('selftext_html') ?? nonEmpty('selftext');
   }
 
   ImageData image(String path) {

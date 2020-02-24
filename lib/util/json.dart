@@ -24,4 +24,9 @@ extension JsonMap on Map<String, dynamic> {
     }
     return element as T ?? def;
   }
+
+  String nonEmpty(String path) {
+    final value = this.path(path);
+    return (value is String && value.isNotEmpty) ? value : null;
+  }
 }

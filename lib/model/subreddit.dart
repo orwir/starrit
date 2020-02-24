@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:starrit/util/json.dart';
 
 @immutable
 class Subreddit {
@@ -10,11 +11,11 @@ class Subreddit {
 
   Subreddit.fromJson(Map<String, dynamic> json)
       : this(
-          name: json['sr_detail']['display_name'],
-          icon: json['sr_detail']['community_icon'] ??
-              json['sr_detail']['icon_img'],
-          banner: json['sr_detail']['banner_img'] ??
-              json['sr_detail']['header_img'],
+          name: json.path('sr_detail.display_name'),
+          icon: json.nonEmpty('sr_detail.community_icon') ??
+              json.nonEmpty('sr_detail.icon_img'),
+          banner: json.nonEmpty('sr_detail.banner_img') ??
+              json.nonEmpty('sr_detail.header_img'),
         );
 
   @override
