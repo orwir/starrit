@@ -7,7 +7,7 @@ import 'package:starrit/middlewares/logger.dart';
 import 'package:starrit/models/state.dart';
 import 'package:starrit/reducers/main.dart';
 import 'package:starrit/screens/feed/feed.dart';
-import 'package:starrit/theme/styles.dart';
+import 'package:starrit/styles.dart';
 
 main() {
   runApp(StarritApp());

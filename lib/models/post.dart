@@ -121,7 +121,7 @@ extension _ on Map<String, dynamic> {
 
   String get domain => string('domain');
 
-  bool get selfDomain => domain.startsWith('.self');
+  bool get selfDomain => domain.startsWith('self.');
 
   String get url => string('url');
 

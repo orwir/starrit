@@ -70,6 +70,6 @@ class ImagePack {
 
 extension _ on Map<String, dynamic> {
   ImageData image(String key) {
-    return string(key)?.into((json) => ImageData.fromJson(json));
+    return get<Object>(key)?.into((json) => ImageData.fromJson(json));
   }
 }

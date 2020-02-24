@@ -57,12 +57,13 @@ ThunkAction<AppState> fetchPosts(Feed feed, {String after}) {
             .toList();
         store.dispatch(PostsLoadingSuccessAction(feed, posts));
       } else {
-        final error =
-            HttpException('request failed with code: ${response.statusCode}');
-        store.dispatch(PostsLoadingFailureAction(feed, error));
+        store.dispatch(PostsLoadingFailureAction(
+          feed,
+          HttpException('request failed with code: ${response.statusCode}'),
+        ));
       }
-    } catch (error) {
-      store.dispatch(PostsLoadingFailureAction(feed, error));
+    } on Exception catch (e) {
+      store.dispatch(PostsLoadingFailureAction(feed, e));
     }
   };
 }
