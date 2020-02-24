@@ -1,4 +1,4 @@
-extension JsonExtensions on Map<String, dynamic> {
+extension JsonMap on Map<String, dynamic> {
   T get<T>(String key) => this[key] as T;
 
   T path<T>(String path, {T def}) {

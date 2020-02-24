@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:starrit/model/post.dart';
+import 'package:starrit/util/content.dart';
 import 'package:starrit/util/date.dart';
+import 'package:starrit/widget/content/gif.dart';
+import 'package:starrit/widget/content/image.dart';
+import 'package:starrit/widget/content/link.dart';
+import 'package:starrit/widget/content/text.dart';
+import 'package:starrit/widget/content/video.dart';
 
 enum Header { simple, extended }
 
@@ -19,7 +25,7 @@ class PostView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _header(context),
-        //_content(context),
+        _content(context),
         _toolbar(context),
       ],
     );
@@ -103,19 +109,30 @@ class PostView extends StatelessWidget {
   }
 
   Widget _content(BuildContext context) {
-    return Container(
-      color: Colors.grey[200],
-      child: Stack(
-        children: <Widget>[
-          if (post.imageSource != null) Image.network(post.imageSource.url),
-        ],
-      ),
-    );
+    switch (post.type) {
+      case ContentType.video:
+        return VideoContent(post.video);
+      case ContentType.gif:
+        return GifContent(post.gif);
+      case ContentType.image:
+        return ImageContent(
+          preview: post.imagePreview,
+          source: post.imageSource,
+        );
+      case ContentType.text:
+        return TextContent(post.text);
+      default:
+        return LinkContent(
+          post.contentUrl,
+          displayText: post.domain,
+          cover: post.imageSource,
+        );
+    }
   }
 
   Widget _toolbar(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,

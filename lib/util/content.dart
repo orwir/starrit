@@ -1,7 +1,7 @@
 import 'package:starrit/model/image.dart';
 import 'package:starrit/util/json.dart';
 
-enum Type { link, text, image, gif, video }
+enum ContentType { link, text, image, gif, video }
 
 const _imageExtensions = [
   'bmp',
@@ -18,19 +18,19 @@ const _imageExtensions = [
   'cur',
 ];
 
-extension ContentExtensions on Map<String, dynamic> {
+extension PostContentJson on Map<String, dynamic> {
   bool get isSelfDomain => domain.startsWith('self.');
 
   String get domain => get<String>('domain');
 
   String get url => get<String>('url');
 
-  Type get contentType {
-    if (_hasText) return Type.text;
-    if (_hasVideo) return Type.video;
-    if (_hasGif) return Type.gif;
-    if (_hasImage) return Type.image;
-    return isSelfDomain ? Type.text : Type.link;
+  ContentType get contentType {
+    if (_hasText) return ContentType.text;
+    if (_hasVideo) return ContentType.video;
+    if (_hasGif) return ContentType.gif;
+    if (_hasImage) return ContentType.image;
+    return isSelfDomain ? ContentType.text : ContentType.link;
   }
 
   String get text {

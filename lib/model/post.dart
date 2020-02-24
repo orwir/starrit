@@ -20,7 +20,7 @@ class Post {
   final bool selfDomain;
   final String postUrl;
   final String contentUrl;
-  final Type type;
+  final ContentType type;
   final ImageData imagePreview;
   final ImageData imageSource;
   final ImageData imageBlurred;
