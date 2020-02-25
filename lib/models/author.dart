@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:starrit/extensions/object.dart';
 
 @immutable
 class Author {
@@ -17,7 +18,7 @@ class Author {
   String toString() => '$runtimeType[id=$id, name=$name]';
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode;
+  int get hashCode => hash([id, name]);
 
   @override
   bool operator ==(Object other) =>

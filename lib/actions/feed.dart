@@ -10,40 +10,47 @@ import 'package:starrit/models/state.dart';
 import 'package:starrit/services/feed.dart';
 
 @immutable
-class PostsLoadingStartAction {
+class StartLoadingPostsAction {
   final Feed feed;
 
-  PostsLoadingStartAction(this.feed);
+  StartLoadingPostsAction(this.feed);
 
   @override
   String toString() => '$runtimeType[$feed]';
 }
 
 @immutable
-class PostsLoadingSuccessAction {
+class LoadingPostsSuccessAction {
   final Feed feed;
   final List<Post> posts;
 
-  PostsLoadingSuccessAction(this.feed, this.posts);
+  LoadingPostsSuccessAction(this.feed, this.posts);
 
   @override
   String toString() => '$runtimeType[$feed, posts=${posts.length}]';
 }
 
 @immutable
-class PostsLoadingFailureAction {
+class LoadingPostsFailureAction {
   final Feed feed;
-  final Exception error;
+  final Exception exception;
 
-  PostsLoadingFailureAction(this.feed, this.error);
+  LoadingPostsFailureAction(this.feed, this.exception);
 
   @override
-  String toString() => '$runtimeType[$feed, error=$error]';
+  String toString() => '$runtimeType[$feed, error=$exception]';
 }
 
-ThunkAction<AppState> fetchPosts(Feed feed, {String after}) {
+@immutable
+class ChangeBlurNsfwAction {
+  final bool blurNsfw;
+
+  ChangeBlurNsfwAction(this.blurNsfw);
+}
+
+ThunkAction<AppState> loadPosts(Feed feed, {String after}) {
   return (Store<AppState> store) async {
-    store.dispatch(PostsLoadingStartAction(feed));
+    store.dispatch(StartLoadingPostsAction(feed));
     try {
       final response = await listing(
         domain: 'reddit.com',
@@ -55,15 +62,15 @@ ThunkAction<AppState> fetchPosts(Feed feed, {String after}) {
         final posts = (result['data']['children'] as List<dynamic>)
             .map((json) => Post.fromJson(json['data']))
             .toList();
-        store.dispatch(PostsLoadingSuccessAction(feed, posts));
+        store.dispatch(LoadingPostsSuccessAction(feed, posts));
       } else {
-        store.dispatch(PostsLoadingFailureAction(
+        store.dispatch(LoadingPostsFailureAction(
           feed,
           HttpException('request failed with code: ${response.statusCode}'),
         ));
       }
     } on Exception catch (e) {
-      store.dispatch(PostsLoadingFailureAction(feed, e));
+      store.dispatch(LoadingPostsFailureAction(feed, e));
     }
   };
 }

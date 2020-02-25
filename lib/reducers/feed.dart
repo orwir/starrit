@@ -1,33 +1,32 @@
 import 'package:starrit/actions/feed.dart';
-import 'package:starrit/models/post.dart';
 import 'package:starrit/models/state.dart';
 
 AppState reducer(AppState state, dynamic action) {
-  if (action is PostsLoadingStartAction) {
+  if (action is StartLoadingPostsAction) {
     return state.copyWith(
-      feedState: FeedState.loading(
-        feed: action.feed,
-        posts: state.feedState?.posts ?? const <Post>[],
-      ),
+      loading: true,
+      exception: null,
     );
   }
 
-  if (action is PostsLoadingSuccessAction) {
+  if (action is LoadingPostsSuccessAction) {
     return state.copyWith(
-      feedState: FeedState.loaded(
-        feed: action.feed,
-        posts: [...?state.feedState?.posts, ...action.posts],
-      ),
+      loading: false,
+      posts: [...?state.posts, ...action.posts],
+      exception: null,
     );
   }
 
-  if (action is PostsLoadingFailureAction) {
+  if (action is LoadingPostsFailureAction) {
     return state.copyWith(
-      feedState: FeedState.failed(
-        feed: action.feed,
-        posts: state.feedState?.posts ?? const <Post>[],
-        error: action.error,
-      ),
+      loading: false,
+      exception: action.exception,
+    );
+  }
+
+  if (action is ChangeBlurNsfwAction) {
+    return state.copyWith(
+      blurNsfw: action.blurNsfw,
     );
   }
 

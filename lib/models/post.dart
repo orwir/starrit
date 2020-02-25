@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:starrit/extensions/json.dart';
+import 'package:starrit/extensions/object.dart';
 import 'subreddit.dart';
 import 'author.dart';
 import 'image.dart';
@@ -71,24 +72,24 @@ class Post {
         );
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        subreddit.hashCode ^
-        author.hashCode ^
-        created.hashCode ^
-        title.hashCode ^
-        nsfw.hashCode ^
-        spoiler.hashCode ^
-        comments.hashCode ^
-        domain.hashCode ^
-        type.hashCode ^
-        postUrl.hashCode ^
-        contentUrl.hashCode ^
-        images.hashCode ^
-        (text?.hashCode ?? 0) ^
-        (gif?.hashCode ?? 0) ^
-        (video?.hashCode ?? 0);
-  }
+  int get hashCode => hash([
+        id,
+        subreddit,
+        author,
+        created,
+        title,
+        nsfw,
+        spoiler,
+        comments,
+        domain,
+        postUrl,
+        contentUrl,
+        type,
+        images,
+        text,
+        gif,
+        video,
+      ]);
 
   @override
   bool operator ==(Object other) {

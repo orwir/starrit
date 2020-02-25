@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:starrit/extensions/object.dart';
 
 @immutable
 class Feed {
@@ -17,13 +18,13 @@ class Feed {
   String toString() => '$runtimeType[${this.asParameter}]';
 
   @override
+  int get hashCode => hash([subreddit, sort]);
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Feed &&
-          this.runtimeType == other.runtimeType &&
+          runtimeType == other.runtimeType &&
           subreddit == other.subreddit &&
           sort == other.sort;
-
-  @override
-  int get hashCode => subreddit.hashCode ^ sort.hashCode;
 }

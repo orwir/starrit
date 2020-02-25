@@ -10,16 +10,25 @@ class FeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-      distinct: true,
       onInit: (store) {
-        final state = store.state.feedState;
-        if (!state.loading && state.posts.isEmpty) {
-          store.dispatch(fetchPosts(state.feed));
+        if (!store.state.loading && store.state.posts.isEmpty) {
+          store.dispatch(loadPosts(store.state.feed));
         }
       },
       converter: _ViewModel.fromStore,
       builder: (context, viewModel) => Scaffold(
-        appBar: AppBar(title: Text(viewModel.title)),
+        appBar: AppBar(
+          title: Text(viewModel.title),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.search), onPressed: null),
+            IconButton(
+              icon: Icon(
+                viewModel.blurNsfw ? Icons.visibility_off : Icons.visibility,
+              ),
+              onPressed: viewModel.toggleBlurNsfw,
+            ),
+          ],
+        ),
         body: ListView.separated(
           itemCount: viewModel.postsCount + (viewModel.showFooter ? 1 : 0),
           separatorBuilder: (context, index) => Divider(height: 1),
@@ -63,7 +72,7 @@ class FeedScreen extends StatelessWidget {
 
 @immutable
 class _ViewModel {
-  final FeedState _state;
+  final AppState _state;
   final Function _dispatch;
   final int _loadThreshold = 10;
 
@@ -71,7 +80,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel._(
-      store.state.feedState,
+      store.state,
       (dynamic action) => store.dispatch(action),
     );
   }
@@ -81,25 +90,20 @@ class _ViewModel {
   List<Post> get posts => _state.posts;
   int get postsCount => _state.posts.length;
   Post get lastPost => postsCount > 0 ? posts[postsCount - 1] : null;
-  Exception get error => _state.error;
-  String get errorMessage => _state.error.toString();
-  bool get showFooter => _state.error != null || _state.loading;
+  Exception get error => _state.exception;
+  String get errorMessage => _state.exception.toString();
+  bool get showFooter => _state.exception != null || _state.loading;
+  bool get blurNsfw => _state.blurNsfw;
 
   bool shouldLoadMore(int position) {
     return position > postsCount - _loadThreshold && !loading && error == null;
   }
 
   void loadMore() {
-    if (!loading) _dispatch(fetchPosts(_state.feed, after: lastPost?.id));
+    if (!loading) _dispatch(loadPosts(_state.feed, after: lastPost?.id));
   }
 
-  @override
-  int get hashCode => _state.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          _state == other._state;
+  void toggleBlurNsfw() {
+    _dispatch(ChangeBlurNsfwAction(!blurNsfw));
+  }
 }

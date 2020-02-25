@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:starrit/extensions/json.dart';
+import 'package:starrit/extensions/object.dart';
 
 @immutable
 class Subreddit {
@@ -22,7 +23,7 @@ class Subreddit {
   String toString() => '$runtimeType[name=$name, icon=$icon, banner=$banner]';
 
   @override
-  int get hashCode => name.hashCode ^ icon.hashCode ^ banner.hashCode;
+  int get hashCode => hash([name, icon, banner]);
 
   @override
   bool operator ==(Object other) =>

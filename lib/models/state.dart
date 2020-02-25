@@ -1,98 +1,64 @@
 import 'package:flutter/foundation.dart';
+import 'package:starrit/extensions/object.dart';
+
 import 'feed.dart';
 import 'post.dart';
 
 @immutable
 class AppState {
-  final FeedState feedState;
+  final Feed feed;
+  final bool loading;
+  final bool blurNsfw;
+  final List<Post> posts;
+  final Exception exception;
 
-  AppState({this.feedState});
+  AppState({
+    @required this.feed,
+    @required this.loading,
+    @required this.blurNsfw,
+    @required this.posts,
+    @required this.exception,
+  });
 
   AppState.initial()
       : this(
-          feedState: FeedState.loaded(
-            feed: Feed.home(),
-            posts: const <Post>[],
-          ),
+          feed: Feed.home(),
+          loading: false,
+          blurNsfw: false,
+          posts: const <Post>[],
+          exception: null,
         );
 
-  AppState copyWith({FeedState feedState}) => AppState(
-        feedState: feedState ?? this.feedState,
+  AppState copyWith({
+    Feed feed,
+    bool loading,
+    bool blurNsfw,
+    List<Post> posts,
+    Exception exception,
+  }) =>
+      AppState(
+        feed: feed ?? this.feed,
+        loading: loading ?? this.loading,
+        blurNsfw: blurNsfw ?? this.blurNsfw,
+        posts: posts ?? this.posts,
+        exception: exception ?? this.exception,
       );
 
   @override
-  String toString() => '$runtimeType[$feedState]';
+  String toString() =>
+      '$runtimeType[feed=$feed, loading=$loading, blurNsfw=$blurNsfw, posts=${posts.length}, exception=$exception]';
 
   @override
-  int get hashCode => feedState?.hashCode ?? 0;
+  int get hashCode => hash([feed, loading, blurNsfw, posts, exception]);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is AppState &&
           runtimeType == other.runtimeType &&
-          feedState == other.feedState;
-}
-
-@immutable
-class FeedState {
-  final Feed feed;
-  final List<Post> posts;
-  final bool loading;
-  final Exception error;
-
-  FeedState({
-    @required this.feed,
-    @required this.loading,
-    this.posts,
-    this.error,
-  });
-
-  FeedState.loading({@required Feed feed, @required List<Post> posts})
-      : this(
-          feed: feed,
-          posts: posts,
-          loading: true,
-          error: null,
-        );
-
-  FeedState.loaded({@required Feed feed, @required List<Post> posts})
-      : this(
-          feed: feed,
-          posts: posts,
-          loading: false,
-          error: null,
-        );
-
-  FeedState.failed({
-    @required Feed feed,
-    @required List<Post> posts,
-    @required Exception error,
-  }) : this(
-          feed: feed,
-          posts: posts,
-          loading: false,
-          error: error,
-        );
-
-  @override
-  String toString() =>
-      '$runtimeType[feed=$feed, posts=${posts.length}, loading=$loading, error=$error]';
-
-  @override
-  int get hashCode =>
-      feed.hashCode ^
-      posts.hashCode ^
-      loading.hashCode ^
-      (error?.hashCode ?? 0);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FeedState &&
-          runtimeType == other.runtimeType &&
           feed == other.feed &&
           loading == other.loading &&
+          blurNsfw == other.blurNsfw &&
           posts == other.posts &&
-          error == other.error;
+          exception == other.exception;
 }

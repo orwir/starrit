@@ -21,7 +21,7 @@ class ImageData {
   String toString() => '$runtimeType[url=$url, size:${width}x$height]';
 
   @override
-  int get hashCode => url.hashCode ^ width.hashCode ^ height.hashCode;
+  int get hashCode => hash([url, width, height]);
 
   @override
   bool operator ==(Object other) =>
@@ -53,10 +53,7 @@ class ImagePack {
         );
 
   @override
-  int get hashCode =>
-      (preview?.hashCode ?? 0) ^
-      (source?.hashCode ?? 0) ^
-      (blurred?.hashCode ?? 0);
+  int get hashCode => hash([preview, source, blurred]);
 
   @override
   bool operator ==(Object other) =>
