@@ -5,16 +5,16 @@ import 'package:starrit/extensions/object.dart';
 @immutable
 class ImageData {
   final String url;
-  final int width;
-  final int height;
+  final double width;
+  final double height;
 
   ImageData({@required this.url, @required this.width, @required this.height});
 
   ImageData.fromJson(Map<String, dynamic> json)
       : this(
           url: json['url'],
-          width: json['width'],
-          height: json['height'],
+          width: json.get<int>('width').toDouble(),
+          height: json.get<int>('height').toDouble(),
         );
 
   @override

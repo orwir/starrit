@@ -56,7 +56,7 @@ class Post {
           author: Author.fromJson(json),
           created: json.created,
           title: json['title'],
-          nsfw: json['nsfw'] ?? false,
+          nsfw: json['over_18'] ?? false,
           spoiler: json['spoiler'] ?? false,
           comments: json['num_comments'],
           score: json['score'],
