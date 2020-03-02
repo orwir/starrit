@@ -9,7 +9,7 @@ Future<Response> listing({
   String before,
   int limit,
 }) async {
-  final url = 'https://$domain${feed.asParameter}.json'
+  final url = 'https://$domain$feed.json'
       '?after=$after'
       '&before=$before'
       '&limit=$limit'
@@ -19,7 +19,7 @@ Future<Response> listing({
   return await get(url);
 }
 
-Future<Response> suggestions({
+Future<Response> suggestedSubreddits({
   @required String domain,
   @required String query,
 }) async {
@@ -28,4 +28,16 @@ Future<Response> suggestions({
       '&include_over_18=true'
       '&include_unadvertisable=true';
   return await get(url);
+}
+
+Future<Response> subreddits({
+  @required String domain,
+  @required String query,
+}) async {
+  final url = 'https://$domain/api/search_subreddits.json'
+      '?query=$query'
+      '&include_over_18=true'
+      '&include_unadvertisable=true'
+      '&raw_json=1';
+  return await post(url);
 }

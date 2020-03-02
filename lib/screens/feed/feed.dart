@@ -4,7 +4,8 @@ import 'package:redux/redux.dart';
 import 'package:starrit/actions/feed.dart';
 import 'package:starrit/models/post.dart';
 import 'package:starrit/models/state.dart';
-import 'package:starrit/screens/feed/components/post/main.dart';
+import 'package:starrit/screens/feed/components/post.dart';
+import 'package:starrit/screens/feed/components/search.dart';
 
 class FeedScreen extends StatelessWidget {
   @override
@@ -18,9 +19,21 @@ class FeedScreen extends StatelessWidget {
       converter: _ViewModel.fromStore,
       builder: (context, viewModel) => Scaffold(
         appBar: AppBar(
-          title: Text(viewModel.title),
+          title: InkWell(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(viewModel.title),
+                SizedBox(width: 4, height: 36),
+                Icon(Icons.arrow_drop_down),
+              ],
+            ),
+            onTap: () {
+              showSearch(context: context, delegate: FeedSearch());
+            },
+          ),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.search), onPressed: null),
             IconButton(
               icon: Icon(
                 viewModel.blurNsfw ? Icons.visibility_off : Icons.visibility,
@@ -39,7 +52,7 @@ class FeedScreen extends StatelessWidget {
               return PostView(viewModel.posts[index]);
             }
             if (viewModel.error != null) {
-              return _buildFooter(viewModel);
+              return _buildListFooter(viewModel);
             }
             return LinearProgressIndicator();
           },
@@ -48,7 +61,7 @@ class FeedScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFooter(_ViewModel viewModel) {
+  Widget _buildListFooter(_ViewModel viewModel) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -85,7 +98,7 @@ class _ViewModel {
     );
   }
 
-  String get title => _state.feed.asTitle;
+  String get title => _state.feed.label;
   bool get loading => _state.loading;
   List<Post> get posts => _state.posts;
   int get postsCount => _state.posts.length;
@@ -106,4 +119,14 @@ class _ViewModel {
   void toggleBlurNsfw() {
     _dispatch(ChangeBlurNsfwAction(!blurNsfw));
   }
+
+  @override
+  int get hashCode => _state.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          _state == other._state;
 }
