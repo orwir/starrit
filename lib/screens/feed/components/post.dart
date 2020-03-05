@@ -263,6 +263,9 @@ class _ImageContent extends StatelessWidget {
       converter: (store) => store.state.blurNsfw,
       builder: (context, blurNsfw) {
         final image = _resolveImage(blurNsfw);
+        if (image == null) {
+          return Container(); // TODO: FIXME #84
+        }
         return AspectRatio(
           aspectRatio: image.width / image.height,
           child: Image.network(

@@ -15,6 +15,7 @@ class FeedScreen extends StatelessWidget {
   FeedScreen(this.feed);
 
   final Feed feed;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +34,13 @@ class FeedScreen extends StatelessWidget {
           title: Text(viewModel.title),
           actions: <Widget>[
             IconButton(
+              icon: Icon(Icons.arrow_upward),
+              onPressed: () {
+                _scrollController.jumpTo(0);
+                viewModel.resetFeed();
+              },
+            ),
+            IconButton(
               icon: Icon(
                 viewModel.blurNsfw ? Icons.visibility_off : Icons.visibility,
               ),
@@ -45,6 +53,7 @@ class FeedScreen extends StatelessWidget {
           ],
         ),
         body: ListView.separated(
+          controller: _scrollController,
           itemCount: viewModel.postsCount + (viewModel.showFooter ? 1 : 0),
           separatorBuilder: (context, index) => Divider(height: 1),
           itemBuilder: (context, index) {
@@ -113,6 +122,10 @@ class _ViewModel {
 
   void loadMore() {
     if (!loading) _dispatch(fetchPosts(_state.feed, after: lastPost?.id));
+  }
+
+  void resetFeed() {
+    if (!loading) _dispatch(fetchPosts(_state.feed, reset: true));
   }
 
   void toggleBlurNsfw() {

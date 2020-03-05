@@ -10,7 +10,7 @@ AppState reducer(AppState state, dynamic action) {
           feed: action.feed,
           loading: true,
           exception: null,
-          posts: [...?state[action.feed]?.posts],
+          posts: [if (!action.reset) ...?state[action.feed]?.posts],
         ),
       },
     );

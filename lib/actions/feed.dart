@@ -12,12 +12,13 @@ import 'package:starrit/utils/json.dart';
 
 @immutable
 class FeedRequestAction {
-  FeedRequestAction(this.feed);
+  FeedRequestAction(this.feed, {this.reset = false});
 
   final Feed feed;
+  final bool reset;
 
   @override
-  String toString() => '{type:$runtimeType, feed:$feed}';
+  String toString() => '{type:$runtimeType, feed:$feed, reset:$reset}';
 }
 
 @immutable
@@ -52,9 +53,9 @@ class FeedResponseFailureAction {
   String toString() => '{type:$runtimeType, feed:$feed, exception:$exception}';
 }
 
-ThunkAction<AppState> fetchPosts(Feed feed, {String after}) {
+ThunkAction<AppState> fetchPosts(Feed feed, {String after, bool reset}) {
   return (Store<AppState> store) async {
-    store.dispatch(FeedRequestAction(feed));
+    store.dispatch(FeedRequestAction(feed, reset: reset ?? false));
     try {
       final response = await listing(
         domain: 'reddit.com',
