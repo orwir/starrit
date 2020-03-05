@@ -1,13 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/extensions/json.dart';
-import 'package:starrit/extensions/object.dart';
+import 'package:starrit/utils/json.dart';
+import 'package:starrit/utils/object.dart';
 
 @immutable
 class Subreddit {
-  final String name;
-  final String icon;
-  final String banner;
-
   Subreddit({@required this.name, @required this.icon, @required this.banner});
 
   Subreddit.fromJson(Map<String, dynamic> json)
@@ -19,8 +15,12 @@ class Subreddit {
               json.string('sr_detail.header_img'),
         );
 
+  final String name;
+  final String icon;
+  final String banner;
+
   @override
-  String toString() => '$runtimeType[name=$name, icon=$icon, banner=$banner]';
+  String toString() => '{name:$name, icon:$icon, banner:$banner}';
 
   @override
   int get hashCode => hash([name, icon, banner]);

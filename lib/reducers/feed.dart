@@ -2,35 +2,53 @@ import 'package:starrit/actions/feed.dart';
 import 'package:starrit/models/state.dart';
 
 AppState reducer(AppState state, dynamic action) {
-  if (action is StartLoadingPostsAction) {
+  if (action is FeedRequestAction) {
     return state.copyWith(
-      feed: action.feed,
-      posts: state.feed == action.feed ? state.posts : const [],
-      loading: true,
-      exception: null,
+      feeds: {
+        ...state.feeds,
+        action.feed: FeedState(
+          feed: action.feed,
+          loading: true,
+          exception: null,
+          posts: [...?state[action.feed]?.posts],
+        ),
+      },
     );
   }
 
-  if (action is LoadingPostsSuccessAction) {
+  if (action is FeedDisposeAction) {
     return state.copyWith(
-      feed: action.feed,
-      loading: false,
-      posts: [...?state.posts, ...action.posts],
-      exception: null,
+      feeds: Map.fromEntries(
+        state.feeds.entries.where((entry) => entry.key != action.feed),
+      ),
     );
   }
 
-  if (action is LoadingPostsFailureAction) {
+  if (action is FeedResponseSuccessAction) {
     return state.copyWith(
-      feed: action.feed,
-      loading: false,
-      exception: action.exception,
+      feeds: {
+        ...state.feeds,
+        action.feed: FeedState(
+          feed: action.feed,
+          loading: false,
+          exception: null,
+          posts: [...?state[action.feed]?.posts, ...action.posts],
+        ),
+      },
     );
   }
 
-  if (action is ChangeBlurNsfwAction) {
+  if (action is FeedResponseFailureAction) {
     return state.copyWith(
-      blurNsfw: action.blurNsfw,
+      feeds: {
+        ...state.feeds,
+        action.feed: FeedState(
+          feed: action.feed,
+          loading: false,
+          exception: action.exception,
+          posts: state[action.feed].posts,
+        ),
+      },
     );
   }
 

@@ -8,49 +8,53 @@ import 'package:starrit/models/feed.dart';
 import 'package:starrit/models/post.dart';
 import 'package:starrit/models/state.dart';
 import 'package:starrit/services/feed.dart';
+import 'package:starrit/utils/json.dart';
 
 @immutable
-class StartLoadingPostsAction {
+class FeedRequestAction {
+  FeedRequestAction(this.feed);
+
   final Feed feed;
 
-  StartLoadingPostsAction(this.feed);
-
   @override
-  String toString() => '$runtimeType[$feed]';
+  String toString() => '{type:$runtimeType, feed:$feed}';
 }
 
 @immutable
-class LoadingPostsSuccessAction {
-  final Feed feed;
-  final List<Post> posts;
+class FeedDisposeAction {
+  FeedDisposeAction(this.feed);
 
-  LoadingPostsSuccessAction(this.feed, this.posts);
+  final Feed feed;
 
   @override
-  String toString() => '$runtimeType[$feed, posts=${posts.length}]';
+  String toString() => '{type:$runtimeType, feed:$feed}';
 }
 
 @immutable
-class LoadingPostsFailureAction {
+class FeedResponseSuccessAction {
+  FeedResponseSuccessAction(this.feed, this.posts);
+
+  final Feed feed;
+  final Iterable<Post> posts;
+
+  @override
+  String toString() => '{type:$runtimeType, feed:$feed, posts:${posts.length}}';
+}
+
+@immutable
+class FeedResponseFailureAction {
+  FeedResponseFailureAction(this.feed, this.exception);
+
   final Feed feed;
   final Exception exception;
 
-  LoadingPostsFailureAction(this.feed, this.exception);
-
   @override
-  String toString() => '$runtimeType[$feed, error=$exception]';
+  String toString() => '{type:$runtimeType, feed:$feed, exception:$exception}';
 }
 
-@immutable
-class ChangeBlurNsfwAction {
-  final bool blurNsfw;
-
-  ChangeBlurNsfwAction(this.blurNsfw);
-}
-
-ThunkAction<AppState> loadPosts(Feed feed, {String after}) {
+ThunkAction<AppState> fetchPosts(Feed feed, {String after}) {
   return (Store<AppState> store) async {
-    store.dispatch(StartLoadingPostsAction(feed));
+    store.dispatch(FeedRequestAction(feed));
     try {
       final response = await listing(
         domain: 'reddit.com',
@@ -58,19 +62,20 @@ ThunkAction<AppState> loadPosts(Feed feed, {String after}) {
         after: after,
       );
       if (response.statusCode == 200) {
-        final result = jsonDecode(response.body);
-        final posts = (result['data']['children'] as List<dynamic>)
+        final Map<String, dynamic> result = jsonDecode(response.body);
+        final posts = result
+            .get<List>('data.children')
             .map((json) => Post.fromJson(json['data']))
             .toList();
-        store.dispatch(LoadingPostsSuccessAction(feed, posts));
+        store.dispatch(FeedResponseSuccessAction(feed, posts));
       } else {
-        store.dispatch(LoadingPostsFailureAction(
+        store.dispatch(FeedResponseFailureAction(
           feed,
           HttpException('request failed with code: ${response.statusCode}'),
         ));
       }
     } on Exception catch (e) {
-      store.dispatch(LoadingPostsFailureAction(feed, e));
+      store.dispatch(FeedResponseFailureAction(feed, e));
     }
   };
 }

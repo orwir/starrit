@@ -19,7 +19,7 @@ Future<Response> listing({
   return await get(url);
 }
 
-Future<Response> suggestedSubreddits({
+Future<Response> subreddits({
   @required String domain,
   @required String query,
 }) async {
@@ -30,14 +30,14 @@ Future<Response> suggestedSubreddits({
   return await get(url);
 }
 
-Future<Response> subreddits({
-  @required String domain,
-  @required String query,
-}) async {
-  final url = 'https://$domain/api/search_subreddits.json'
-      '?query=$query'
-      '&include_over_18=true'
-      '&include_unadvertisable=true'
-      '&raw_json=1';
-  return await post(url);
-}
+// Future<Response> subreddits({
+//   @required String domain,
+//   @required String query,
+// }) async {
+//   final url = 'https://$domain/api/search_subreddits.json'
+//       '?query=$query'
+//       '&include_over_18=true'
+//       '&include_unadvertisable=true'
+//       '&raw_json=1';
+//   return await post(url);
+// }

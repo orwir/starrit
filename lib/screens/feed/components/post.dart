@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 import 'package:starrit/models/image.dart';
 import 'package:starrit/models/post.dart';
-import 'package:starrit/extensions/date.dart';
+import 'package:starrit/utils/date.dart';
 import 'package:starrit/models/state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -276,10 +276,10 @@ class _ImageContent extends StatelessWidget {
     );
   }
 
-  ImageData _resolveImage(bool blurNsfw) {
+  PostImage _resolveImage(bool blurNsfw) {
     return (post.spoiler || (post.nsfw && blurNsfw))
-        ? post.images.blurred
-        : post.images.source;
+        ? post.imageBlurred
+        : post.imageSource;
   }
 }
 
@@ -297,10 +297,10 @@ class _LinkContent extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          if (post.images.source != null)
+          if (post.imageSource != null)
             Positioned.fill(
               child: Image.network(
-                post.images.source.url,
+                post.imageSource.url,
                 fit: BoxFit.cover,
               ),
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/extensions/json.dart';
-import 'package:starrit/extensions/object.dart';
+import 'package:starrit/utils/json.dart';
+import 'package:starrit/utils/object.dart';
 import 'subreddit.dart';
 import 'author.dart';
 import 'image.dart';
@@ -9,25 +9,6 @@ enum PostType { image, gif, video, text, link }
 
 @immutable
 class Post {
-  final String id;
-  final Subreddit subreddit;
-  final Author author;
-  final DateTime created;
-  final String title;
-  final bool nsfw;
-  final bool spoiler;
-  final int comments;
-  final int score;
-  final String domain;
-  final bool selfDomain;
-  final String postUrl;
-  final String contentUrl;
-  final PostType type;
-  final ImagePack images;
-  final String text;
-  final String gif;
-  final String video;
-
   Post({
     @required this.id,
     @required this.subreddit,
@@ -43,7 +24,9 @@ class Post {
     @required this.postUrl,
     @required this.contentUrl,
     @required this.type,
-    @required this.images,
+    @required this.imagePreview,
+    @required this.imageSource,
+    @required this.imageBlurred,
     @required this.text,
     @required this.gif,
     @required this.video,
@@ -65,11 +48,36 @@ class Post {
           postUrl: json['permalink'],
           contentUrl: json.url,
           type: json.type,
-          images: ImagePack.fromJson(json),
+          imagePreview: json.image('preview.images[0].resolutions[0]'),
+          imageSource: json.image('preview.images[0].source'),
+          imageBlurred: json.image(
+            'preview.images[0].variants.nsfw.resolutions[0]',
+          ),
           text: json.text,
           gif: json.gif,
           video: json.video,
         );
+
+  final String id;
+  final Subreddit subreddit;
+  final Author author;
+  final DateTime created;
+  final String title;
+  final bool nsfw;
+  final bool spoiler;
+  final int comments;
+  final int score;
+  final String domain;
+  final bool selfDomain;
+  final String postUrl;
+  final String contentUrl;
+  final PostType type;
+  final PostImage imagePreview;
+  final PostImage imageSource;
+  final PostImage imageBlurred;
+  final String text;
+  final String gif;
+  final String video;
 
   @override
   int get hashCode => hash([
@@ -85,7 +93,9 @@ class Post {
         postUrl,
         contentUrl,
         type,
-        images,
+        imagePreview,
+        imageSource,
+        imageBlurred,
         text,
         gif,
         video,
@@ -108,6 +118,9 @@ class Post {
             postUrl == other.postUrl &&
             contentUrl == other.contentUrl &&
             type == other.type &&
+            imagePreview == other.imagePreview &&
+            imageSource == other.imageSource &&
+            imageBlurred == other.imageBlurred &&
             text == other.text &&
             gif == other.gif &&
             video == other.video;
@@ -132,6 +145,10 @@ extension _ on Map<String, dynamic> {
     if (gif != null) return PostType.gif;
     if (text != null || selfDomain) return PostType.text;
     return PostType.link;
+  }
+
+  PostImage image(String key) {
+    return get<Object>(key)?.into((json) => PostImage.fromJson(json));
   }
 
   String get text => string('selftext') ?? string('selftext_html');

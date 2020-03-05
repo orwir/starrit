@@ -2,43 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:starrit/actions/feed.dart';
+import 'package:starrit/actions/preference.dart';
+import 'package:starrit/models/feed.dart';
 import 'package:starrit/models/post.dart';
 import 'package:starrit/models/state.dart';
 import 'package:starrit/screens/feed/components/post.dart';
-import 'package:starrit/screens/feed/components/search.dart';
+import 'package:starrit/screens/search/search.dart';
 
 class FeedScreen extends StatelessWidget {
+  static const routeName = '/feed';
+
+  FeedScreen(this.feed);
+
+  final Feed feed;
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
+      distinct: true,
       onInit: (store) {
-        if (!store.state.loading && store.state.posts.isEmpty) {
-          store.dispatch(loadPosts(store.state.feed));
+        final state = store.state[feed];
+        if (state == null || (!state.loading && state.posts.isEmpty)) {
+          store.dispatch(fetchPosts(feed));
         }
       },
-      converter: _ViewModel.fromStore,
+      converter: (store) => _ViewModel.fromStore(feed, store),
       builder: (context, viewModel) => Scaffold(
         appBar: AppBar(
-          title: InkWell(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(viewModel.title),
-                SizedBox(width: 4, height: 36),
-                Icon(Icons.arrow_drop_down),
-              ],
-            ),
-            onTap: () {
-              showSearch(context: context, delegate: FeedSearch());
-            },
-          ),
+          automaticallyImplyLeading: false,
+          title: Text(viewModel.title),
           actions: <Widget>[
             IconButton(
               icon: Icon(
                 viewModel.blurNsfw ? Icons.visibility_off : Icons.visibility,
               ),
               onPressed: viewModel.toggleBlurNsfw,
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () => viewModel.openSearch(context),
             ),
           ],
         ),
@@ -85,39 +87,40 @@ class FeedScreen extends StatelessWidget {
 
 @immutable
 class _ViewModel {
-  final AppState _state;
+  static const _fetchThreshold = 10;
+
+  _ViewModel.fromStore(Feed feed, Store<AppState> store)
+      : blurNsfw = store.state.blurNsfw,
+        _state = store.state[feed],
+        _dispatch = store.dispatch;
+
+  final blurNsfw;
+  final FeedState _state;
   final Function _dispatch;
-  final int _loadThreshold = 10;
-
-  _ViewModel._(this._state, this._dispatch);
-
-  static _ViewModel fromStore(Store<AppState> store) {
-    return _ViewModel._(
-      store.state,
-      (dynamic action) => store.dispatch(action),
-    );
-  }
 
   String get title => _state.feed.label;
   bool get loading => _state.loading;
   List<Post> get posts => _state.posts;
   int get postsCount => _state.posts.length;
-  Post get lastPost => postsCount > 0 ? posts[postsCount - 1] : null;
+  Post get lastPost => posts.isNotEmpty ? posts.last : null;
   Exception get error => _state.exception;
-  String get errorMessage => _state.exception.toString();
+  String get errorMessage => _state.exception?.toString() ?? '';
   bool get showFooter => _state.exception != null || _state.loading;
-  bool get blurNsfw => _state.blurNsfw;
 
   bool shouldLoadMore(int position) {
-    return position > postsCount - _loadThreshold && !loading && error == null;
+    return position > postsCount - _fetchThreshold && !loading && error == null;
   }
 
   void loadMore() {
-    if (!loading) _dispatch(loadPosts(_state.feed, after: lastPost?.id));
+    if (!loading) _dispatch(fetchPosts(_state.feed, after: lastPost?.id));
   }
 
   void toggleBlurNsfw() {
-    _dispatch(ChangeBlurNsfwAction(!blurNsfw));
+    _dispatch(BlurNsfwChangeAction(!blurNsfw));
+  }
+
+  void openSearch(BuildContext context) {
+    Navigator.pushNamed(context, SearchScreen.routeName);
   }
 
   @override
@@ -128,5 +131,6 @@ class _ViewModel {
       identical(this, other) ||
       other is _ViewModel &&
           runtimeType == other.runtimeType &&
+          blurNsfw == other.blurNsfw &&
           _state == other._state;
 }

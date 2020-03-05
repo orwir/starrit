@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:starrit/extensions/object.dart';
+import 'package:starrit/utils/object.dart';
 
 void main() {
   group('Object.takeIf', () {
@@ -15,11 +15,11 @@ void main() {
       expect('value'.into((o) => 42), 42);
     });
   });
-  group('Object.hash', () {
+  group('hash', () {
     test(
       'should return 15312238088285232 when calls hash(["val", 5, 22.4])',
       () {
-        expect('unused'.hash(['val', 5, 22.4]), 15312238088285232);
+        expect(hash(['val', 5, 22.4]), 15312238088285232);
       },
     );
   });

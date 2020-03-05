@@ -9,13 +9,18 @@ import 'package:starrit/reducers/main.dart';
 import 'package:starrit/screens/feed/feed.dart';
 
 import 'styles.dart';
+import 'navigation.dart';
 
 main() => runApp(StarritApp());
 
 class StarritApp extends StatelessWidget {
   final Store<AppState> store = Store(
     reducer,
-    initialState: AppState.initial(),
+    initialState: AppState(
+      blurNsfw: false,
+      search: SearchState.initial(),
+      feeds: {},
+    ),
     middleware: [thunkMiddleware, logger],
   );
 
@@ -26,7 +31,8 @@ class StarritApp extends StatelessWidget {
       child: MaterialApp(
         theme: lightTheme,
         darkTheme: darkTheme,
-        home: FeedScreen(),
+        initialRoute: FeedScreen.routeName,
+        routes: routes,
       ),
     );
   }

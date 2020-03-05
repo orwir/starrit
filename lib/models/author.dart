@@ -1,11 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/extensions/object.dart';
+import 'package:starrit/utils/object.dart';
 
 @immutable
 class Author {
-  final String id;
-  final String name;
-
   Author({@required this.id, @required this.name});
 
   Author.fromJson(Map<String, dynamic> json)
@@ -14,8 +11,11 @@ class Author {
           name: json['author'],
         );
 
+  final String id;
+  final String name;
+
   @override
-  String toString() => '$runtimeType[id=$id, name=$name]';
+  String toString() => '{id:$id, name:$name}';
 
   @override
   int get hashCode => hash([id, name]);

@@ -1,64 +1,139 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/extensions/object.dart';
+import 'package:starrit/utils/object.dart';
 
 import 'feed.dart';
 import 'post.dart';
 
 @immutable
 class AppState {
-  final Feed feed;
-  final bool loading;
-  final bool blurNsfw;
-  final List<Post> posts;
-  final Exception exception;
-
   AppState({
-    @required this.feed,
-    @required this.loading,
     @required this.blurNsfw,
-    @required this.posts,
-    @required this.exception,
+    @required this.search,
+    @required this.feeds,
   });
 
-  AppState.initial()
-      : this(
-          feed: Feed.home(),
-          loading: false,
-          blurNsfw: false,
-          posts: const <Post>[],
-          exception: null,
-        );
+  final bool blurNsfw;
+  final SearchState search;
+  final Map<Feed, FeedState> feeds;
 
   AppState copyWith({
-    Feed feed,
-    bool loading,
-    bool blurNsfw,
-    List<Post> posts,
-    Exception exception,
+    bool blurNfsw,
+    SearchState search,
+    Map<Feed, FeedState> feeds,
   }) =>
       AppState(
-        feed: feed ?? this.feed,
-        loading: loading ?? this.loading,
-        blurNsfw: blurNsfw ?? this.blurNsfw,
-        posts: posts ?? this.posts,
-        exception: exception ?? this.exception,
+        blurNsfw: blurNfsw ?? this.blurNsfw,
+        search: search ?? this.search,
+        feeds: feeds ?? this.feeds,
       );
 
-  @override
-  String toString() =>
-      '$runtimeType[feed=$feed, loading=$loading, blurNsfw=$blurNsfw, posts=${posts.length}, exception=$exception]';
+  FeedState operator [](Feed feed) => feeds != null ? feeds[feed] : null;
 
   @override
-  int get hashCode => hash([feed, loading, blurNsfw, posts, exception]);
+  String toString() => '{blurNsfw:$blurNsfw, search:$search, feeds:$feeds}';
+
+  @override
+  int get hashCode => hash([blurNsfw, search, feeds]);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is AppState &&
           runtimeType == other.runtimeType &&
+          blurNsfw == other.blurNsfw &&
+          search == other.search &&
+          feeds == other.feeds;
+}
+
+@immutable
+class SearchState {
+  SearchState({
+    @required this.query,
+    @required this.sort,
+    @required this.suggestions,
+  });
+
+  SearchState.initial()
+      : this(
+          query: '',
+          sort: Sort.best,
+          suggestions: Type.values,
+        );
+
+  final String query;
+  final Sort sort;
+  final Iterable<Type> suggestions;
+
+  SearchState copyWith({
+    String query,
+    Type type,
+    Sort sort,
+    Iterable<Type> suggestions,
+  }) =>
+      SearchState(
+        query: query ?? this.query,
+        sort: sort ?? this.sort,
+        suggestions: suggestions ?? this.suggestions,
+      );
+
+  @override
+  String toString() =>
+      '{query:$query, sort:$sort, suggestions:${suggestions.length}}';
+
+  @override
+  int get hashCode => hash([query, sort, suggestions]);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SearchState &&
+          runtimeType == other.runtimeType &&
+          query == other.query &&
+          sort == other.sort &&
+          suggestions == other.suggestions;
+}
+
+@immutable
+class FeedState {
+  FeedState({
+    @required this.feed,
+    @required this.loading,
+    @required this.exception,
+    @required this.posts,
+  });
+
+  final Feed feed;
+  final bool loading;
+  final Exception exception;
+  final List<Post> posts;
+
+  FeedState copyWith({
+    Feed feed,
+    bool loading,
+    Exception exception,
+    List<Post> posts,
+  }) =>
+      FeedState(
+        feed: feed ?? this.feed,
+        loading: loading ?? this.loading,
+        exception: exception ?? this.exception,
+        posts: posts ?? this.posts,
+      );
+
+  @override
+  String toString() =>
+      '{loading:$loading, exception:${exception ?? ""}, posts:${posts.length}}';
+
+  @override
+  int get hashCode => hash([feed, loading, exception, posts]);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FeedState &&
+          runtimeType == other.runtimeType &&
           feed == other.feed &&
           loading == other.loading &&
-          blurNsfw == other.blurNsfw &&
-          posts == other.posts &&
-          exception == other.exception;
+          exception == other.exception &&
+          posts == other.posts;
 }

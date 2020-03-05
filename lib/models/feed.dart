@@ -1,17 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/extensions/object.dart';
+import 'package:starrit/utils/object.dart';
 
 @immutable
 class Feed {
-  const Feed.home({Sort sort = Sort.best}) : this._(Type.home, sort);
-  const Feed.popular({Sort sort = Sort.best}) : this._(Type.popular, sort);
-  const Feed.all({Sort sort = Sort.best}) : this._(Type.all, sort);
-  Feed.subreddit(String subreddit, {Sort sort = Sort.best})
-      : this._(
-          Type.subreddit(subreddit),
-          sort,
-        );
-  const Feed._(this.type, this.sort);
+  const Feed(this.type, this.sort);
 
   final Type type;
   final Sort sort;
@@ -52,11 +44,13 @@ class Type {
 
   String get label => this == Type.home ? '/home' : toString();
 
+  Feed operator +(Sort sort) => Feed(this, sort);
+
   @override
   String toString() => path;
 
   @override
-  int get hashCode => path.hashCode;
+  int get hashCode => hash([path]);
 
   @override
   bool operator ==(Object other) =>
@@ -79,7 +73,7 @@ class Sort {
     Sort.newest,
     Sort.top,
     Sort.rising,
-    Sort.controversial,
+    //Sort.controversial,
   ];
 
   const Sort._(this.path);
@@ -88,11 +82,13 @@ class Sort {
 
   String get label => toString();
 
+  Feed operator +(Type type) => Feed(type, this);
+
   @override
   String toString() => path;
 
   @override
-  int get hashCode => path.hashCode;
+  int get hashCode => hash([path]);
 
   @override
   bool operator ==(Object other) =>
