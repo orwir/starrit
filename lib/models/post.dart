@@ -177,13 +177,17 @@ extension _ on Map<String, dynamic> {
   }
 
   bool get isImage {
-    final lastSegment = Uri.parse(string('url')).pathSegments.last;
-    final ext = lastSegment?.substring(lastSegment.lastIndexOf('.') + 1);
-    return _imageExtensions.contains(ext?.toLowerCase());
+    final String url = string('url').into(
+      (String url) {
+        final end = url.lastIndexOf('?').takeIf((i) => i >= 0) ?? url.length;
+        return url.substring(0, end);
+      },
+    );
+    return _imageFormats.firstWhere(url.endsWith, orElse: () => null) != null;
   }
 }
 
-const _imageExtensions = [
+const _imageFormats = [
   'bmp',
   'jpg',
   'jpeg',

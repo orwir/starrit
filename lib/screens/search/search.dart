@@ -63,7 +63,7 @@ class _ViewModel {
   Iterable<Type> get suggestions => _state.suggestions;
 
   void openFeed(BuildContext context, Type type) {
-    Navigator.pushNamed(
+    Navigator.pushReplacementNamed(
       context,
       FeedScreen.routeName,
       arguments: type + sort,
