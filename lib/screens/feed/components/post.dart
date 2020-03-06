@@ -262,27 +262,25 @@ class _ImageContent extends StatelessWidget {
       distinct: true,
       converter: (store) => store.state.blurNsfw,
       builder: (context, blurNsfw) {
-        final image = _resolveImage(blurNsfw);
-        if (image == null) {
-          return Container(); // TODO: FIXME #84
+        if (post.image.hasSize) {
+          return AspectRatio(
+              aspectRatio: post.image.width / post.image.height,
+              child: _buildImage(context, blurNsfw));
         }
-        return AspectRatio(
-          aspectRatio: image.width / image.height,
-          child: Image.network(
-            image.url,
-            fit: BoxFit.fill,
-            width: image.width,
-            height: image.height,
-          ),
-        );
+        return _buildImage(context, blurNsfw);
       },
     );
   }
 
-  PostImage _resolveImage(bool blurNsfw) {
-    return (post.spoiler || (post.nsfw && blurNsfw))
-        ? post.imageBlurred
-        : post.imageSource;
+  Widget _buildImage(BuildContext context, bool blurNsfw) {
+    return Image.network(
+      (post.spoiler || (post.nsfw && blurNsfw))
+          ? post.image.blurred
+          : post.image.source,
+      fit: BoxFit.fill,
+      width: post.image.width,
+      height: post.image.height,
+    );
   }
 }
 
@@ -300,10 +298,10 @@ class _LinkContent extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          if (post.imageSource != null)
+          if (post.image.source != null)
             Positioned.fill(
               child: Image.network(
-                post.imageSource.url,
+                post.image.source,
                 fit: BoxFit.cover,
               ),
             ),

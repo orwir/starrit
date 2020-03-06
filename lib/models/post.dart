@@ -9,6 +9,8 @@ enum PostType { image, gif, video, text, link }
 
 @immutable
 class Post {
+  static Post fromJson(Map<String, dynamic> json) => _parse(json);
+
   Post({
     @required this.id,
     @required this.subreddit,
@@ -24,39 +26,11 @@ class Post {
     @required this.postUrl,
     @required this.contentUrl,
     @required this.type,
-    @required this.imagePreview,
-    @required this.imageSource,
-    @required this.imageBlurred,
+    @required this.image,
     @required this.text,
     @required this.gif,
     @required this.video,
   });
-
-  Post.fromJson(Map<String, dynamic> json)
-      : this(
-          id: json['name'],
-          subreddit: Subreddit.fromJson(json),
-          author: Author.fromJson(json),
-          created: json.created,
-          title: json['title'],
-          nsfw: json['over_18'] ?? false,
-          spoiler: json['spoiler'] ?? false,
-          comments: json['num_comments'],
-          score: json['score'],
-          domain: json.domain,
-          selfDomain: json.selfDomain,
-          postUrl: json['permalink'],
-          contentUrl: json.url,
-          type: json.type,
-          imagePreview: json.image('preview.images[0].resolutions[0]'),
-          imageSource: json.image('preview.images[0].source'),
-          imageBlurred: json.image(
-            'preview.images[0].variants.nsfw.resolutions[0]',
-          ),
-          text: json.text,
-          gif: json.gif,
-          video: json.video,
-        );
 
   final String id;
   final Subreddit subreddit;
@@ -72,9 +46,7 @@ class Post {
   final String postUrl;
   final String contentUrl;
   final PostType type;
-  final PostImage imagePreview;
-  final PostImage imageSource;
-  final PostImage imageBlurred;
+  final PostImage image;
   final String text;
   final String gif;
   final String video;
@@ -93,9 +65,7 @@ class Post {
         postUrl,
         contentUrl,
         type,
-        imagePreview,
-        imageSource,
-        imageBlurred,
+        image,
         text,
         gif,
         video,
@@ -118,76 +88,120 @@ class Post {
             postUrl == other.postUrl &&
             contentUrl == other.contentUrl &&
             type == other.type &&
-            imagePreview == other.imagePreview &&
-            imageSource == other.imageSource &&
-            imageBlurred == other.imageBlurred &&
+            image == other.image &&
             text == other.text &&
             gif == other.gif &&
             video == other.video;
   }
+
+  @override
+  String toString() => '{'
+      'id:$id'
+      ', subreddit:$subreddit'
+      ', author:$author'
+      ', created:$created'
+      ', title:$title'
+      ', nsfw:$nsfw'
+      ', spoiler:$spoiler'
+      ', comments:$comments'
+      ', domain:$domain'
+      ', postUrl:$postUrl'
+      ', contentUrl:$contentUrl'
+      ', type:$type'
+      ', image:$image'
+      ', text:$text'
+      ', gif:$gif'
+      ', video:$video'
+      '}';
 }
 
-extension _ on Map<String, dynamic> {
-  DateTime get created => DateTime.fromMillisecondsSinceEpoch(
-        get<double>('created_utc').toInt() * 1000,
-        isUtc: true,
-      );
+Post _parse(Map<String, dynamic> json) {
+  final String domain = json['domain'];
+  final bool selfDomain = domain.startsWith('self.');
+  final String url = json['url'];
+  final text = json.string('selftext') ?? json.string('selftext_html');
+  final gif = url.takeIf((String url) => url.endsWith('.gif'));
+  final video = extractVideo(json, domain, url);
+  final image = url.takeIf(
+    (String url) {
+      final Uri uri = Uri.parse(url);
+      return _imageExtensions.any(uri.path.endsWith);
+    },
+  );
 
-  String get domain => string('domain');
-
-  bool get selfDomain => domain.startsWith('self.');
-
-  String get url => string('url');
-
-  PostType get type {
-    if (isImage) return PostType.image;
-    if (video != null) return PostType.video;
-    if (gif != null) return PostType.gif;
-    if (text != null || selfDomain) return PostType.text;
-    return PostType.link;
+  var type = PostType.link;
+  if (video != null) {
+    type = PostType.video;
+  } else if (gif != null) {
+    type = PostType.gif;
+  } else if (image != null) {
+    type = PostType.image;
+  } else if (text != null || selfDomain) {
+    type = PostType.text;
   }
 
-  PostImage image(String key) {
-    return get<Object>(key)?.into((json) => PostImage.fromJson(json));
-  }
-
-  String get text => string('selftext') ?? string('selftext_html');
-
-  String get gif => url.endsWith('.gif') ? url : null;
-
-  String get video {
-    if (domain == 'i.imgur.com' && url.endsWith('.gifv')) {
-      return url.replaceAll('http://', 'https://').replaceAll('.gifv', '.mp4');
-    }
-    if (domain == 'v.redd.it') {
-      final key = 'secure_media.reddit_video.hls_url';
-      return string(key) ?? string('crosspost_parent_list[0].$key');
-    }
-    if (domain == 'gfycat.com') {
-      final key = 'secure_media.oembed.thumbnail_url';
-      final url = string(key) ?? string('crosspost_parent_list[0].$key');
-      if (url != null) {
-        return url
-            .replaceAll('thumbs.gfycat.com', 'giant.gfycat.com')
-            .replaceAll('-size_restricted', 'replace')
-            .replaceAll('.gif', '.mp4');
-      }
-    }
-    return null;
-  }
-
-  bool get isImage {
-    final String url = string('url').into(
-      (String url) {
-        final end = url.lastIndexOf('?').takeIf((i) => i >= 0) ?? url.length;
-        return url.substring(0, end);
-      },
-    );
-    return _imageFormats.firstWhere(url.endsWith, orElse: () => null) != null;
-  }
+  return Post(
+    id: json['name'] ?? '',
+    subreddit: Subreddit.fromJson(json),
+    author: Author.fromJson(json),
+    created: json.get<double>('created_utc')?.into(
+              (double seconds) => DateTime.fromMillisecondsSinceEpoch(
+                seconds.toInt() * 1000,
+                isUtc: true,
+              ),
+            ) ??
+        0,
+    title: json['title'] ?? '',
+    nsfw: json['over_18'] ?? false,
+    spoiler: json['spoiler'] ?? false,
+    comments: json['num_comments'] ?? 0,
+    score: json['score'],
+    domain: domain,
+    selfDomain: selfDomain,
+    postUrl: json['permalink'],
+    contentUrl: url,
+    type: type,
+    image: extractPostImage(json, image),
+    text: text,
+    gif: gif,
+    video: video,
+  );
 }
 
-const _imageFormats = [
+String extractVideo(Map<String, dynamic> json, String domain, String url) {
+  if (domain == 'i.imgur.com' && url.endsWith('.gifv')) {
+    return url.replaceAll('http://', 'https://').replaceAll('.gifv', '.mp4');
+  }
+  if (domain == 'v.redd.it') {
+    final key = 'secure_media.reddit_video.hls_url';
+    return json.string(key) ?? json.string('crosspost_parent_list[0].$key');
+  }
+  if (domain == 'gfycat.com') {
+    final key = 'secure_media.oembed.thumbnail_url';
+    return (json.string(key) ?? json.string('crosspost_parent_list[0].$key'))
+        ?.replaceAll('thumbs.gfycat.com', 'giant.gfycat.com')
+        ?.replaceAll('-size_restricted', 'replace')
+        ?.replaceAll('.gif', '.mp4');
+  }
+  return null;
+}
+
+PostImage extractPostImage(Map<String, dynamic> json, String def) {
+  final Map<String, dynamic> source = json.get('preview.images[0].source');
+  final Map<String, dynamic> preview =
+      json.get('preview.images[0].resolutions[0]');
+  final Map<String, dynamic> blurred =
+      json.get('preview.images[0].variants.nsfw.resolutions[0]');
+  return PostImage(
+    source: source?.string('url') ?? def,
+    width: source?.get<int>('width')?.toDouble(),
+    height: source?.get<int>('height')?.toDouble(),
+    preview: preview?.string('url'),
+    blurred: blurred?.string('url'),
+  );
+}
+
+const _imageExtensions = [
   'bmp',
   'jpg',
   'jpeg',

@@ -1,34 +1,39 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/utils/json.dart';
 import 'package:starrit/utils/object.dart';
 
 @immutable
 class PostImage {
-  PostImage({@required this.url, @required this.width, @required this.height});
+  PostImage({
+    @required this.source,
+    this.width,
+    this.height,
+    this.preview,
+    this.blurred,
+  });
 
-  PostImage.fromJson(Map<String, dynamic> json)
-      : this(
-          url: json['url'],
-          width: json.get<int>('width').toDouble(),
-          height: json.get<int>('height').toDouble(),
-        );
-
-  final String url;
   final double width;
   final double height;
+  final String source;
+  final String preview;
+  final String blurred;
+
+  bool get hasSize => width != null && height != null;
 
   @override
-  String toString() => '{url:$url, size:${width}x$height}';
+  String toString() =>
+      '{source=$source, size:${width}x$height, preview:$preview, blurred:$blurred}';
 
   @override
-  int get hashCode => hash([url, width, height]);
+  int get hashCode => hash([width, height, source, preview, blurred]);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PostImage &&
           runtimeType == other.runtimeType &&
-          url == other.url &&
+          source == other.source &&
+          preview == other.preview &&
+          blurred == other.blurred &&
           width == other.width &&
           height == other.height;
 }
