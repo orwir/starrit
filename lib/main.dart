@@ -3,11 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'common/models/state.dart';
+import 'common/redux.dart';
+import 'common/styles.dart';
+import 'common/navigation.dart';
 import 'feed/screen.dart';
-import 'models/state.dart';
-import 'redux.dart';
-import 'styles.dart';
-import 'navigation.dart';
 
 main() => runApp(StarritApp());
 

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:starrit/utils/object.dart';
+import 'package:starrit/common/utils/object.dart';
 
 void main() {
   group('Object.takeIf', () {

@@ -1,5 +1,5 @@
 import 'package:redux_epics/redux_epics.dart';
-import 'package:starrit/models/state.dart';
+import 'package:starrit/common/models/state.dart';
 import 'package:starrit/feed/models/feed.dart';
 
 import 'actions.dart';

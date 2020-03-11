@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:redux_epics/redux_epics.dart';
 import 'package:starrit/feed/services.dart';
-import 'package:starrit/models/state.dart';
-import 'package:starrit/utils/json.dart';
+import 'package:starrit/common/models/state.dart';
+import 'package:starrit/common/utils/json.dart';
 
 import 'actions.dart';
 import 'models/feed.dart';

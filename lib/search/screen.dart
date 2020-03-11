@@ -3,8 +3,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:starrit/feed/models/feed.dart';
 import 'package:starrit/feed/screen.dart';
-import 'package:starrit/models/state.dart';
-import 'package:starrit/utils/object.dart';
+import 'package:starrit/common/models/state.dart';
+import 'package:starrit/common/utils/object.dart';
 
 import 'actions.dart';
 

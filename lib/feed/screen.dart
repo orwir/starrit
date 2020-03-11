@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:starrit/feed/actions.dart';
-import 'package:starrit/models/state.dart';
+import 'package:starrit/common/models/state.dart';
 import 'package:starrit/feed/widgets/post.dart';
 import 'package:starrit/preferences/actions.dart';
 import 'package:starrit/search/screen.dart';

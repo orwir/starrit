@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'feed/models/feed.dart';
-import 'feed/screen.dart';
-import 'search/screen.dart';
+import 'package:starrit/feed/models/feed.dart';
+import 'package:starrit/feed/screen.dart';
+import 'package:starrit/search/screen.dart';
 
 final routes = <String, WidgetBuilder>{
   FeedScreen.routeName: (BuildContext context) {

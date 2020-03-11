@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/utils/object.dart';
+import 'package:starrit/common/utils/object.dart';
 
 import 'models/feed.dart';
 import 'models/post.dart';

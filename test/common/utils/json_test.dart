@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:starrit/utils/json.dart';
+import 'package:starrit/common/utils/json.dart';
 
 void main() {
   group('Json.get', () {

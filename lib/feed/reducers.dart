@@ -1,5 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:starrit/models/state.dart';
+import 'package:starrit/common/models/state.dart';
 
 import 'actions.dart';
 

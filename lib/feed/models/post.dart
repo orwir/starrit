@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:starrit/utils/json.dart';
-import 'package:starrit/utils/object.dart';
+import 'package:starrit/common/utils/json.dart';
+import 'package:starrit/common/utils/object.dart';
 import 'subreddit.dart';
 import 'author.dart';
 import 'image.dart';

@@ -3,8 +3,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 import 'package:starrit/feed/models/post.dart';
-import 'package:starrit/utils/date.dart';
-import 'package:starrit/models/state.dart';
+import 'package:starrit/common/utils/date.dart';
+import 'package:starrit/common/models/state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum HeaderType { simple, extended }
