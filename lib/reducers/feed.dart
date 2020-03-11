@@ -1,56 +1,61 @@
+import 'package:redux/redux.dart';
 import 'package:starrit/actions/feed.dart';
 import 'package:starrit/models/state.dart';
 
-AppState reducer(AppState state, dynamic action) {
-  if (action is FeedRequestAction) {
-    return state.copyWith(
-      feeds: {
-        ...state.feeds,
-        action.feed: FeedState(
+final reducer = combineReducers<AppState>([
+  TypedReducer<AppState, FeedRequestAction>(_requestFeed),
+  TypedReducer<AppState, FeedResponseSuccessAction>(_feedRequestSuccess),
+  TypedReducer<AppState, FeedResponseFailureAction>(_feedRequestFailure),
+  TypedReducer<AppState, FeedDisposeAction>(_disposeFeed),
+]);
+
+AppState _requestFeed(AppState state, FeedRequestAction action) {
+  return state.copyWith(feeds: {
+    ...state.feeds,
+    action.feed: state[action.feed]?.toLoading(reset: action.reset) ??
+        FeedState(
           feed: action.feed,
           loading: true,
-          exception: null,
-          posts: [if (!action.reset) ...?state[action.feed]?.posts],
+          posts: const [],
         ),
-      },
-    );
-  }
+  });
+}
 
-  if (action is FeedDisposeAction) {
-    return state.copyWith(
-      feeds: Map.fromEntries(
-        state.feeds.entries.where((entry) => entry.key != action.feed),
-      ),
-    );
-  }
-
-  if (action is FeedResponseSuccessAction) {
-    return state.copyWith(
-      feeds: {
-        ...state.feeds,
-        action.feed: FeedState(
+AppState _feedRequestSuccess(
+  AppState state,
+  FeedResponseSuccessAction action,
+) {
+  return state.copyWith(feeds: {
+    ...state.feeds,
+    action.feed: state[action.feed]?.toSuccess(action.posts, action.next) ??
+        FeedState(
           feed: action.feed,
           loading: false,
-          exception: null,
-          posts: [...?state[action.feed]?.posts, ...action.posts],
+          posts: action.posts,
+          next: action.next,
         ),
-      },
-    );
-  }
+  });
+}
 
-  if (action is FeedResponseFailureAction) {
-    return state.copyWith(
-      feeds: {
-        ...state.feeds,
-        action.feed: FeedState(
+AppState _feedRequestFailure(
+  AppState state,
+  FeedResponseFailureAction action,
+) {
+  return state.copyWith(feeds: {
+    ...state.feeds,
+    action.feed: state[action.feed]?.toFailure(action.exception) ??
+        FeedState(
           feed: action.feed,
           loading: false,
           exception: action.exception,
-          posts: state[action.feed].posts,
+          posts: const [],
         ),
-      },
-    );
-  }
+  });
+}
 
-  return state;
+AppState _disposeFeed(AppState state, FeedDisposeAction action) {
+  return state.copyWith(
+    feeds: Map.fromEntries(
+        state.feeds.entries.where((entry) => entry.key != action.feed)),
+  );
 }

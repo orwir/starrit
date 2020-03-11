@@ -4,7 +4,7 @@ import 'package:starrit/models/state.dart';
 AppState reducer(AppState state, dynamic action) {
   if (action is BlurNsfwChangeAction) {
     return state.copyWith(
-      blurNfsw: action.blurNsfw,
+      blurNsfw: action.blurNsfw,
     );
   }
 

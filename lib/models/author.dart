@@ -3,7 +3,9 @@ import 'package:starrit/utils/object.dart';
 
 @immutable
 class Author {
-  Author({@required this.id, @required this.name});
+  Author({@required this.id, @required this.name})
+      : assert(id != null),
+        assert(name != null);
 
   Author.fromJson(Map<String, dynamic> json)
       : this(

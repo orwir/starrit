@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:starrit/utils/json.dart';
 import 'package:starrit/utils/object.dart';
@@ -9,8 +11,6 @@ enum PostType { image, gif, video, text, link }
 
 @immutable
 class Post {
-  static Post fromJson(Map<String, dynamic> json) => _parse(json);
-
   Post({
     @required this.id,
     @required this.subreddit,
@@ -21,6 +21,7 @@ class Post {
     @required this.spoiler,
     @required this.comments,
     @required this.score,
+    @required this.hideScore,
     @required this.domain,
     @required this.selfDomain,
     @required this.postUrl,
@@ -30,7 +31,22 @@ class Post {
     @required this.text,
     @required this.gif,
     @required this.video,
-  });
+    this.raw,
+  })  : assert(id != null),
+        assert(subreddit != null),
+        assert(created != null),
+        assert(title != null),
+        assert(spoiler != null),
+        assert(comments != null),
+        assert(score != null),
+        assert(hideScore != null),
+        assert(domain != null),
+        assert(selfDomain != null),
+        assert(postUrl != null),
+        assert(contentUrl != null),
+        assert(type != null);
+
+  factory Post.fromJson(Map<String, dynamic> json) => _parse(json);
 
   final String id;
   final Subreddit subreddit;
@@ -41,6 +57,7 @@ class Post {
   final bool spoiler;
   final int comments;
   final int score;
+  final bool hideScore;
   final String domain;
   final bool selfDomain;
   final String postUrl;
@@ -50,6 +67,7 @@ class Post {
   final String text;
   final String gif;
   final String video;
+  final String raw;
 
   @override
   int get hashCode => hash([
@@ -61,6 +79,8 @@ class Post {
         nsfw,
         spoiler,
         comments,
+        score,
+        hideScore,
         domain,
         postUrl,
         contentUrl,
@@ -84,6 +104,8 @@ class Post {
             nsfw == other.nsfw &&
             spoiler == other.spoiler &&
             comments == other.comments &&
+            score == other.score &&
+            hideScore == other.hideScore &&
             domain == other.domain &&
             postUrl == other.postUrl &&
             contentUrl == other.contentUrl &&
@@ -104,6 +126,8 @@ class Post {
       ', nsfw:$nsfw'
       ', spoiler:$spoiler'
       ', comments:$comments'
+      ', score:$score'
+      ', hideScore:$hideScore'
       ', domain:$domain'
       ', postUrl:$postUrl'
       ', contentUrl:$contentUrl'
@@ -121,7 +145,7 @@ Post _parse(Map<String, dynamic> json) {
   final String url = json['url'];
   final text = json.string('selftext') ?? json.string('selftext_html');
   final gif = url.takeIf((String url) => url.endsWith('.gif'));
-  final video = extractVideo(json, domain, url);
+  final video = _extractVideo(json, domain, url);
   final image = url.takeIf(
     (String url) {
       final Uri uri = Uri.parse(url);
@@ -155,20 +179,22 @@ Post _parse(Map<String, dynamic> json) {
     nsfw: json['over_18'] ?? false,
     spoiler: json['spoiler'] ?? false,
     comments: json['num_comments'] ?? 0,
-    score: json['score'],
+    score: json['score'] ?? 0,
+    hideScore: json['hide_score'] ?? false,
     domain: domain,
     selfDomain: selfDomain,
     postUrl: json['permalink'],
     contentUrl: url,
     type: type,
-    image: extractPostImage(json, image),
+    image: _extractPostImage(json, image),
     text: text,
     gif: gif,
     video: video,
+    raw: kReleaseMode ? null : jsonEncode(json),
   );
 }
 
-String extractVideo(Map<String, dynamic> json, String domain, String url) {
+String _extractVideo(Map<String, dynamic> json, String domain, String url) {
   if (domain == 'i.imgur.com' && url.endsWith('.gifv')) {
     return url.replaceAll('http://', 'https://').replaceAll('.gifv', '.mp4');
   }
@@ -186,8 +212,11 @@ String extractVideo(Map<String, dynamic> json, String domain, String url) {
   return null;
 }
 
-PostImage extractPostImage(Map<String, dynamic> json, String def) {
+PostImage _extractPostImage(Map<String, dynamic> json, String def) {
   final Map<String, dynamic> source = json.get('preview.images[0].source');
+  if (source == null && def == null) {
+    return null;
+  }
   final Map<String, dynamic> preview =
       json.get('preview.images[0].resolutions[0]');
   final Map<String, dynamic> blurred =

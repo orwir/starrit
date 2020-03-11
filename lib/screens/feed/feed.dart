@@ -111,7 +111,6 @@ class _ViewModel {
   bool get loading => _state.loading;
   List<Post> get posts => _state.posts;
   int get postsCount => _state.posts.length;
-  Post get lastPost => posts.isNotEmpty ? posts.last : null;
   Exception get error => _state.exception;
   String get errorMessage => _state.exception?.toString() ?? '';
   bool get showFooter => _state.exception != null || _state.loading;
@@ -121,7 +120,7 @@ class _ViewModel {
   }
 
   void loadMore() {
-    if (!loading) _dispatch(fetchPosts(_state.feed, after: lastPost?.id));
+    if (!loading) _dispatch(fetchPosts(_state.feed, after: _state.next));
   }
 
   void resetFeed() {

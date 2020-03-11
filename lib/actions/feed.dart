@@ -33,13 +33,15 @@ class FeedDisposeAction {
 
 @immutable
 class FeedResponseSuccessAction {
-  FeedResponseSuccessAction(this.feed, this.posts);
+  FeedResponseSuccessAction(this.feed, this.posts, this.next);
 
   final Feed feed;
   final Iterable<Post> posts;
+  final String next;
 
   @override
-  String toString() => '{type:$runtimeType, feed:$feed, posts:${posts.length}}';
+  String toString() =>
+      '{type:$runtimeType, feed:$feed, posts:${posts.length}, next:$next}';
 }
 
 @immutable
@@ -68,7 +70,8 @@ ThunkAction<AppState> fetchPosts(Feed feed, {String after, bool reset}) {
             .get<List>('data.children')
             .map((json) => Post.fromJson(json['data']))
             .toList();
-        store.dispatch(FeedResponseSuccessAction(feed, posts));
+        final next = result.string('data.after');
+        store.dispatch(FeedResponseSuccessAction(feed, posts, next));
       } else {
         store.dispatch(FeedResponseFailureAction(
           feed,

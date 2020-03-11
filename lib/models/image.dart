@@ -9,7 +9,7 @@ class PostImage {
     this.height,
     this.preview,
     this.blurred,
-  });
+  }) : assert(source != null);
 
   final double width;
   final double height;
@@ -17,11 +17,12 @@ class PostImage {
   final String preview;
   final String blurred;
 
-  bool get hasSize => width != null && height != null;
+  bool get hasSize =>
+      width != null && width > 0 && height != null && height > 0;
 
   @override
   String toString() =>
-      '{source=$source, size:${width}x$height, preview:$preview, blurred:$blurred}';
+      '{source=$source, size:${width ?? 0}x${height ?? 0}, preview:$preview, blurred:$blurred}';
 
   @override
   int get hashCode => hash([width, height, source, preview, blurred]);

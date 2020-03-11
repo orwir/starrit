@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
-import 'package:starrit/models/image.dart';
 import 'package:starrit/models/post.dart';
 import 'package:starrit/utils/date.dart';
 import 'package:starrit/models/state.dart';
@@ -206,7 +205,7 @@ class _Toolbar extends StatelessWidget {
             icon: Icon(Icons.arrow_drop_up),
             onPressed: null,
           ),
-          Text(numberFormat.format(post.score)),
+          _buildScore(),
           IconButton(
             icon: Icon(Icons.arrow_drop_down),
             onPressed: null,
@@ -229,6 +228,10 @@ class _Toolbar extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildScore() => post.hideScore
+      ? Icon(Icons.access_time, size: 16)
+      : Text(numberFormat.format(post.score));
 }
 
 class _GifContent extends StatelessWidget {
@@ -274,7 +277,8 @@ class _ImageContent extends StatelessWidget {
 
   Widget _buildImage(BuildContext context, bool blurNsfw) {
     return Image.network(
-      (post.spoiler || (post.nsfw && blurNsfw))
+      // TODO: simplify condition
+      ((post.spoiler || (post.nsfw && blurNsfw)) && post.image.blurred != null)
           ? post.image.blurred
           : post.image.source,
       fit: BoxFit.fill,
@@ -298,7 +302,7 @@ class _LinkContent extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          if (post.image.source != null)
+          if (post.image != null)
             Positioned.fill(
               child: Image.network(
                 post.image.source,

@@ -10,24 +10,25 @@ class AppState {
     @required this.blurNsfw,
     @required this.search,
     @required this.feeds,
-  });
+  })  : assert(blurNsfw != null),
+        assert(feeds != null);
 
   final bool blurNsfw;
   final SearchState search;
   final Map<Feed, FeedState> feeds;
 
   AppState copyWith({
-    bool blurNfsw,
+    bool blurNsfw,
     SearchState search,
     Map<Feed, FeedState> feeds,
   }) =>
       AppState(
-        blurNsfw: blurNfsw ?? this.blurNsfw,
+        blurNsfw: blurNsfw ?? this.blurNsfw,
         search: search ?? this.search,
         feeds: feeds ?? this.feeds,
       );
 
-  FeedState operator [](Feed feed) => feeds != null ? feeds[feed] : null;
+  FeedState operator [](Feed feed) => feeds[feed];
 
   @override
   String toString() => '{blurNsfw:$blurNsfw, search:$search, feeds:$feeds}';
@@ -51,7 +52,9 @@ class SearchState {
     @required this.query,
     @required this.sort,
     @required this.suggestions,
-  });
+  })  : assert(query != null),
+        assert(sort != null),
+        assert(suggestions != null);
 
   SearchState.initial()
       : this(
@@ -62,13 +65,13 @@ class SearchState {
 
   final String query;
   final Sort sort;
-  final Iterable<Type> suggestions;
+  final List<Type> suggestions;
 
   SearchState copyWith({
     String query,
     Type type,
     Sort sort,
-    Iterable<Type> suggestions,
+    List<Type> suggestions,
   }) =>
       SearchState(
         query: query ?? this.query,
@@ -98,34 +101,47 @@ class FeedState {
   FeedState({
     @required this.feed,
     @required this.loading,
-    @required this.exception,
     @required this.posts,
-  });
+    this.next,
+    this.exception,
+  })  : assert(feed != null),
+        assert(loading != null),
+        assert(posts != null);
 
   final Feed feed;
   final bool loading;
-  final Exception exception;
   final List<Post> posts;
+  final String next;
+  final Exception exception;
 
-  FeedState copyWith({
-    Feed feed,
-    bool loading,
-    Exception exception,
-    List<Post> posts,
-  }) =>
-      FeedState(
-        feed: feed ?? this.feed,
-        loading: loading ?? this.loading,
-        exception: exception ?? this.exception,
-        posts: posts ?? this.posts,
+  FeedState toLoading({bool reset = false}) => FeedState(
+        feed: feed,
+        loading: true,
+        posts: reset ? const [] : posts,
+        next: reset ? null : next,
+      );
+
+  FeedState toSuccess(List<Post> posts, String next) => FeedState(
+        feed: feed,
+        loading: false,
+        posts: this.posts + posts,
+        next: next,
+      );
+
+  FeedState toFailure(Exception exception) => FeedState(
+        feed: feed,
+        loading: false,
+        exception: exception,
+        posts: posts,
+        next: next,
       );
 
   @override
   String toString() =>
-      '{loading:$loading, exception:${exception ?? ""}, posts:${posts.length}}';
+      '{loading:$loading${exception != null ? ", exception:$exception" : ""}, posts:${posts.length}, next:$next}';
 
   @override
-  int get hashCode => hash([feed, loading, exception, posts]);
+  int get hashCode => hash([feed, loading, posts, next, exception]);
 
   @override
   bool operator ==(Object other) =>
@@ -134,6 +150,7 @@ class FeedState {
           runtimeType == other.runtimeType &&
           feed == other.feed &&
           loading == other.loading &&
-          exception == other.exception &&
-          posts == other.posts;
+          posts == other.posts &&
+          next == other.next &&
+          exception == other.exception;
 }

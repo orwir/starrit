@@ -3,7 +3,9 @@ import 'package:starrit/utils/object.dart';
 
 @immutable
 class Feed {
-  const Feed(this.type, this.sort);
+  const Feed(this.type, this.sort)
+      : assert(type != null),
+        assert(sort != null);
 
   final Type type;
   final Sort sort;
@@ -37,8 +39,8 @@ class Type {
     Type.all,
   ];
 
-  const Type.subreddit(this.path);
-  const Type._(this.path);
+  const Type.subreddit(this.path) : assert(path != null);
+  const Type._(this.path) : assert(path != null);
 
   final String path;
 
