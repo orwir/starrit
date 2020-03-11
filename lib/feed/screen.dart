@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:starrit/actions/feed.dart';
-import 'package:starrit/actions/preference.dart';
-import 'package:starrit/models/feed.dart';
-import 'package:starrit/models/post.dart';
+import 'package:starrit/feed/actions.dart';
 import 'package:starrit/models/state.dart';
-import 'package:starrit/screens/feed/components/post.dart';
-import 'package:starrit/screens/search/search.dart';
+import 'package:starrit/feed/widgets/post.dart';
+
+import 'models/feed.dart';
+import 'models/post.dart';
 
 class FeedScreen extends StatelessWidget {
   static const routeName = '/feed';
@@ -24,7 +23,7 @@ class FeedScreen extends StatelessWidget {
       onInit: (store) {
         final state = store.state[feed];
         if (state == null || (!state.loading && state.posts.isEmpty)) {
-          store.dispatch(fetchPosts(feed));
+          store.dispatch(FeedRequestAction(feed));
         }
       },
       converter: (store) => _ViewModel.fromStore(feed, store),
@@ -37,7 +36,7 @@ class FeedScreen extends StatelessWidget {
               icon: Icon(Icons.arrow_upward),
               onPressed: () {
                 _scrollController.jumpTo(0);
-                viewModel.resetFeed();
+                viewModel.requestData(reset: true);
               },
             ),
             IconButton(
@@ -54,16 +53,18 @@ class FeedScreen extends StatelessWidget {
         ),
         body: ListView.separated(
           controller: _scrollController,
-          itemCount: viewModel.postsCount + (viewModel.showFooter ? 1 : 0),
+          itemCount: viewModel.itemCount,
           separatorBuilder: (context, index) => Divider(height: 1),
           itemBuilder: (context, index) {
-            if (viewModel.shouldLoadMore(index)) viewModel.loadMore();
+            if (viewModel.shouldLoadMore(index)) {
+              viewModel.requestData(after: viewModel.next);
+            }
 
-            if (index < viewModel.postsCount) {
+            if (index < viewModel.postCount) {
               return PostView(viewModel.posts[index]);
             }
-            if (viewModel.error != null) {
-              return _buildListFooter(viewModel);
+            if (viewModel.hasError) {
+              return _buildErrorItem(viewModel);
             }
             return LinearProgressIndicator();
           },
@@ -72,7 +73,7 @@ class FeedScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildListFooter(_ViewModel viewModel) {
+  Widget _buildErrorItem(_ViewModel viewModel) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -84,7 +85,7 @@ class FeedScreen extends StatelessWidget {
             ),
           ),
           FlatButton(
-            onPressed: () => viewModel.loadMore(),
+            onPressed: () => viewModel.requestData(after: viewModel.next),
             textTheme: ButtonTextTheme.primary,
             child: Text('RETRY'),
           ),
@@ -110,29 +111,33 @@ class _ViewModel {
   String get title => _state.feed.label;
   bool get loading => _state.loading;
   List<Post> get posts => _state.posts;
-  int get postsCount => _state.posts.length;
-  Exception get error => _state.exception;
+  int get postCount => _state.posts.length;
+  int get itemCount => postCount + ((hasError || loading) ? 1 : 0);
+  String get next => _state.next;
+  bool get hasError => _state.exception != null;
   String get errorMessage => _state.exception?.toString() ?? '';
-  bool get showFooter => _state.exception != null || _state.loading;
 
   bool shouldLoadMore(int position) {
-    return position > postsCount - _fetchThreshold && !loading && error == null;
+    return (position > postCount - _fetchThreshold) && !loading && !hasError;
   }
 
-  void loadMore() {
-    if (!loading) _dispatch(fetchPosts(_state.feed, after: _state.next));
-  }
-
-  void resetFeed() {
-    if (!loading) _dispatch(fetchPosts(_state.feed, reset: true));
+  void requestData({bool reset = false, String after}) {
+    if (!loading)
+      _dispatch(FeedRequestAction(
+        _state.feed,
+        reset: reset,
+        after: after,
+      ));
   }
 
   void toggleBlurNsfw() {
-    _dispatch(BlurNsfwChangeAction(!blurNsfw));
+    // TODO:
+    // _dispatch(BlurNsfwChangeAction(!blurNsfw));
   }
 
   void openSearch(BuildContext context) {
-    Navigator.pushNamed(context, SearchScreen.routeName);
+    // TODO:
+    // Navigator.pushNamed(context, SearchScreen.routeName);
   }
 
   @override

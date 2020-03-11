@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:starrit/feed/models/feed.dart';
+import 'package:starrit/feed/models/post.dart';
 import 'package:starrit/utils/object.dart';
-
-import 'feed.dart';
-import 'post.dart';
 
 @immutable
 class AppState {
@@ -48,20 +47,19 @@ class AppState {
 
 @immutable
 class SearchState {
-  SearchState({
+  static const SearchState initial = SearchState(
+    query: '',
+    sort: Sort.best,
+    suggestions: Type.values,
+  );
+
+  const SearchState({
     @required this.query,
     @required this.sort,
     @required this.suggestions,
   })  : assert(query != null),
         assert(sort != null),
         assert(suggestions != null);
-
-  SearchState.initial()
-      : this(
-          query: '',
-          sort: Sort.best,
-          suggestions: Type.values,
-        );
 
   final String query;
   final Sort sort;

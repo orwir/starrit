@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/models/feed.dart';
+import 'package:starrit/feed/models/feed.dart';
 
 @immutable
 class SearchDisposeAction {

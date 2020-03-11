@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:starrit/models/feed.dart';
-import 'package:starrit/screens/feed/feed.dart';
-import 'package:starrit/screens/search/search.dart';
+
+import 'feed/models/feed.dart';
+import 'feed/screen.dart';
+import 'search/screen.dart';
 
 final routes = <String, WidgetBuilder>{
   FeedScreen.routeName: (BuildContext context) {

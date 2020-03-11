@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:starrit/actions/search.dart';
-import 'package:starrit/models/feed.dart';
+import 'package:starrit/feed/models/feed.dart';
+import 'package:starrit/feed/screen.dart';
 import 'package:starrit/models/state.dart';
-import 'package:starrit/screens/feed/feed.dart';
 import 'package:starrit/utils/object.dart';
+
+import 'actions.dart';
 
 class SearchScreen extends StatelessWidget {
   static const routeName = '/search';

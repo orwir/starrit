@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
-import 'package:starrit/middlewares/logger.dart';
-import 'package:starrit/models/state.dart';
-import 'package:starrit/reducers/main.dart';
-import 'package:starrit/screens/feed/feed.dart';
 
+import 'feed/screen.dart';
+import 'models/state.dart';
+import 'redux.dart';
 import 'styles.dart';
 import 'navigation.dart';
 
@@ -18,10 +16,10 @@ class StarritApp extends StatelessWidget {
     reducer,
     initialState: AppState(
       blurNsfw: false,
-      search: SearchState.initial(),
+      search: SearchState.initial,
       feeds: {},
     ),
-    middleware: [thunkMiddleware, logger],
+    middleware: middleware,
   );
 
   @override

@@ -1,6 +1,7 @@
 import 'package:redux/redux.dart';
-import 'package:starrit/actions/feed.dart';
 import 'package:starrit/models/state.dart';
+
+import 'actions.dart';
 
 final reducer = combineReducers<AppState>([
   TypedReducer<AppState, FeedRequestAction>(_requestFeed),
@@ -21,10 +22,7 @@ AppState _requestFeed(AppState state, FeedRequestAction action) {
   });
 }
 
-AppState _feedRequestSuccess(
-  AppState state,
-  FeedResponseSuccessAction action,
-) {
+AppState _feedRequestSuccess(AppState state, FeedResponseSuccessAction action) {
   return state.copyWith(feeds: {
     ...state.feeds,
     action.feed: state[action.feed]?.toSuccess(action.posts, action.next) ??
@@ -37,10 +35,7 @@ AppState _feedRequestSuccess(
   });
 }
 
-AppState _feedRequestFailure(
-  AppState state,
-  FeedResponseFailureAction action,
-) {
+AppState _feedRequestFailure(AppState state, FeedResponseFailureAction action) {
   return state.copyWith(feeds: {
     ...state.feeds,
     action.feed: state[action.feed]?.toFailure(action.exception) ??
