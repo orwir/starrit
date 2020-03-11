@@ -16,7 +16,7 @@ class StarritApp extends StatelessWidget {
     reducer,
     initialState: AppState(
       blurNsfw: false,
-      search: SearchState.initial,
+      search: SearchState.none,
       feeds: {},
     ),
     middleware: middleware,

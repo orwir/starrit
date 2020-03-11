@@ -6,6 +6,7 @@ import 'feed/reducers.dart' as feed;
 import 'feed/epics.dart' as feed;
 import 'preferences/reducers.dart' as preference;
 import 'search/reducers.dart' as search;
+import 'search/epics.dart' as search;
 
 final Reducer<AppState> reducer = combineReducers([
   feed.reducer,
@@ -17,6 +18,7 @@ final middleware = <Middleware<AppState>>[_epicMiddleware, _logger];
 
 final _epicMiddleware = EpicMiddleware(combineEpics<AppState>([
   feed.epic,
+  search.epic,
 ]));
 
 void _logger(Store<AppState> store, dynamic action, NextDispatcher next) {

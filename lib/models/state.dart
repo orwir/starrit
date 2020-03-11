@@ -30,7 +30,8 @@ class AppState {
   FeedState operator [](Feed feed) => feeds[feed];
 
   @override
-  String toString() => '{blurNsfw:$blurNsfw, search:$search, feeds:$feeds}';
+  String toString() =>
+      '{blurNsfw:$blurNsfw${search == SearchState.none ? "" : ", search:$search"}, feeds:$feeds}';
 
   @override
   int get hashCode => hash([blurNsfw, search, feeds]);
@@ -47,10 +48,10 @@ class AppState {
 
 @immutable
 class SearchState {
-  static const SearchState initial = SearchState(
-    query: '',
+  static const SearchState none = SearchState(
+    query: '[null]',
     sort: Sort.best,
-    suggestions: Type.values,
+    suggestions: const [],
   );
 
   const SearchState({

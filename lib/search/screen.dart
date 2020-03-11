@@ -15,7 +15,9 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       distinct: true,
-      onDispose: (store) => store.dispatch(SearchDisposeAction()),
+      onInit: (store) {
+        store.dispatch(SearchSuggestionsRequestAction(''));
+      },
       converter: _ViewModel.fromStore,
       builder: (context, viewModel) => Scaffold(
         appBar: AppBar(
@@ -50,20 +52,22 @@ class SearchScreen extends StatelessWidget {
   }
 }
 
+@immutable
 class _ViewModel {
   static _ViewModel fromStore(Store<AppState> store) =>
       _ViewModel(store.state.search, store.dispatch);
 
-  _ViewModel(this._state, this._dispatcher);
+  _ViewModel(this._state, this._dispatch);
 
   final SearchState _state;
-  final Function _dispatcher;
+  final Function _dispatch;
 
   Sort get sort => _state.sort;
-  set sort(Sort value) => _dispatcher(SortUpdateAction(value));
+  set sort(Sort value) => _dispatch(SearchSortChangeAction(value));
   Iterable<Type> get suggestions => _state.suggestions;
 
   void openFeed(BuildContext context, Type type) {
+    _dispatch(SearchDisposeAction());
     Navigator.pushReplacementNamed(
       context,
       FeedScreen.routeName,

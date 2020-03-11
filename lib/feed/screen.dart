@@ -29,47 +29,53 @@ class FeedScreen extends StatelessWidget {
         }
       },
       converter: (store) => _ViewModel.fromStore(feed, store),
-      builder: (context, viewModel) => Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(viewModel.title),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_upward),
-              onPressed: () {
-                _scrollController.jumpTo(0);
-                viewModel.requestData(reset: true);
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                viewModel.blurNsfw ? Icons.visibility_off : Icons.visibility,
+      builder: (context, viewModel) => WillPopScope(
+        onWillPop: () async {
+          viewModel.dispose();
+          return true;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Text(viewModel.title),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.arrow_upward),
+                onPressed: () {
+                  _scrollController.jumpTo(0);
+                  viewModel.requestData(reset: true);
+                },
               ),
-              onPressed: viewModel.toggleBlurNsfw,
-            ),
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () => viewModel.openSearch(context),
-            ),
-          ],
-        ),
-        body: ListView.separated(
-          controller: _scrollController,
-          itemCount: viewModel.itemCount,
-          separatorBuilder: (context, index) => Divider(height: 1),
-          itemBuilder: (context, index) {
-            if (viewModel.shouldLoadMore(index)) {
-              viewModel.requestData(after: viewModel.next);
-            }
+              IconButton(
+                icon: Icon(
+                  viewModel.blurNsfw ? Icons.visibility_off : Icons.visibility,
+                ),
+                onPressed: viewModel.toggleBlurNsfw,
+              ),
+              IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () => viewModel.openSearch(context),
+              ),
+            ],
+          ),
+          body: ListView.separated(
+            controller: _scrollController,
+            itemCount: viewModel.itemCount,
+            separatorBuilder: (context, index) => Divider(height: 1),
+            itemBuilder: (context, index) {
+              if (viewModel.shouldLoadMore(index)) {
+                viewModel.requestData(after: viewModel.next);
+              }
 
-            if (index < viewModel.postCount) {
-              return PostView(viewModel.posts[index]);
-            }
-            if (viewModel.hasError) {
-              return _buildErrorItem(viewModel);
-            }
-            return LinearProgressIndicator();
-          },
+              if (index < viewModel.postCount) {
+                return PostView(viewModel.posts[index]);
+              }
+              if (viewModel.hasError) {
+                return _buildErrorItem(viewModel);
+              }
+              return LinearProgressIndicator();
+            },
+          ),
         ),
       ),
     );
@@ -138,6 +144,11 @@ class _ViewModel {
 
   void openSearch(BuildContext context) {
     Navigator.pushNamed(context, SearchScreen.routeName);
+  }
+
+  void dispose() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    _dispatch(FeedDisposeAction(_state.feed));
   }
 
   @override
