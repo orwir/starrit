@@ -4,6 +4,8 @@ import 'package:redux/redux.dart';
 import 'package:starrit/feed/actions.dart';
 import 'package:starrit/models/state.dart';
 import 'package:starrit/feed/widgets/post.dart';
+import 'package:starrit/preferences/actions.dart';
+import 'package:starrit/search/screen.dart';
 
 import 'models/feed.dart';
 import 'models/post.dart';
@@ -131,13 +133,11 @@ class _ViewModel {
   }
 
   void toggleBlurNsfw() {
-    // TODO:
-    // _dispatch(BlurNsfwChangeAction(!blurNsfw));
+    _dispatch(BlurNsfwChangeAction(!blurNsfw));
   }
 
   void openSearch(BuildContext context) {
-    // TODO:
-    // Navigator.pushNamed(context, SearchScreen.routeName);
+    Navigator.pushNamed(context, SearchScreen.routeName);
   }
 
   @override

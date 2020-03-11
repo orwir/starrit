@@ -17,7 +17,7 @@ Stream<dynamic> _feedRequestEpic(
   Stream<FeedRequestAction> actions,
   EpicStore<AppState> store,
 ) =>
-    actions.asyncMap((action) async {
+    actions.distinct().asyncMap((action) async {
       try {
         final response = await listing(
           domain: 'reddit.com',
@@ -27,7 +27,7 @@ Stream<dynamic> _feedRequestEpic(
         if (response.statusCode != 200) {
           return FeedResponseFailureAction(
             action.feed,
-            HttpException('Feed data request usuccessful. errorCode=404'),
+            HttpException('Usuccessful request. Code: ${response.statusCode}'),
           );
         }
         final Map<String, dynamic> result = jsonDecode(response.body);
