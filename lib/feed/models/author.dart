@@ -3,9 +3,7 @@ import 'package:starrit/common/utils/object.dart';
 
 @immutable
 class Author {
-  Author({@required this.id, @required this.name})
-      : assert(id != null),
-        assert(name != null);
+  Author({@required this.id, @required this.name}) : assert(name != null);
 
   Author.fromJson(Map<String, dynamic> json)
       : this(
@@ -15,6 +13,8 @@ class Author {
 
   final String id;
   final String name;
+
+  bool get deleted => id == null;
 
   @override
   String toString() => '{id:$id, name:$name}';

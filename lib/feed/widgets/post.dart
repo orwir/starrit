@@ -121,7 +121,7 @@ class _Header extends StatelessWidget {
       children: <Widget>[
         Flexible(
           child: Text(
-            '/u/${post.author.name}',
+            '${post.author.deleted ? "" : "/u/"}${post.author.name}',
             overflow: TextOverflow.fade,
             softWrap: false,
             style: theme.textTheme.body2,

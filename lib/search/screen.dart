@@ -22,9 +22,9 @@ class SearchScreen extends StatelessWidget {
       builder: (context, viewModel) => Scaffold(
         appBar: AppBar(
           title: TextField(
-            autofocus: false,
-            enabled: false,
+            autofocus: true,
             textInputAction: TextInputAction.search,
+            onChanged: (text) => viewModel.search(text),
           ),
           actions: <Widget>[
             DropdownButton<Sort>(
@@ -65,6 +65,10 @@ class _ViewModel {
   Sort get sort => _state.sort;
   set sort(Sort value) => _dispatch(SearchSortChangeAction(value));
   Iterable<Type> get suggestions => _state.suggestions;
+
+  void search(String query) {
+    _dispatch(SearchSuggestionsRequestAction(query));
+  }
 
   void openFeed(BuildContext context, Type type) {
     _dispatch(SearchDisposeAction());

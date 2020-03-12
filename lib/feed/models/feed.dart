@@ -39,7 +39,7 @@ class Type {
     Type.all,
   ];
 
-  const Type.subreddit(this.path) : assert(path != null);
+  const Type.subreddit(String path) : this._('/r/$path');
   const Type._(this.path) : assert(path != null);
 
   final String path;
