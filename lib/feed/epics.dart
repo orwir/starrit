@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:redux_epics/redux_epics.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:starrit/feed/services.dart';
 import 'package:starrit/common/models/state.dart';
 import 'package:starrit/common/utils/json.dart';
@@ -45,6 +46,12 @@ Stream<dynamic> _feedRequestEpic(
 
   return actions
       .distinct()
-      .where((action) => action is FeedRequestAction)
-      .asyncMap((action) => _fetch(action.feed, action.after));
+      .whereType<FeedRequestAction>()
+      .switchMap((request) => Stream.fromFuture(
+            _fetch(request.feed, request.after),
+          ).takeUntil(
+            actions
+                .whereType<FeedDisposeAction>()
+                .where((disposed) => disposed.feed == request.feed),
+          ));
 }
