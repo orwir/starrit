@@ -5,7 +5,7 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:starrit/common/models/state.dart';
 import 'package:starrit/common/utils/json.dart';
-import 'package:starrit/feed/models/feed.dart';
+import 'package:starrit/common/models/feed.dart';
 import 'package:starrit/search/service.dart';
 
 import 'actions.dart';

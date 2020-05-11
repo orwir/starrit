@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:starrit/feed/models/feed.dart';
+import 'package:starrit/common/models/feed.dart';
 import 'package:starrit/feed/screen.dart';
 import 'package:starrit/search/screen.dart';
 

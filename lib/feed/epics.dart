@@ -3,13 +3,12 @@ import 'dart:io';
 
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:starrit/common/models/feed.dart';
+import 'package:starrit/common/models/post.dart';
+import 'package:starrit/feed/actions.dart';
 import 'package:starrit/feed/service.dart';
 import 'package:starrit/common/models/state.dart';
 import 'package:starrit/common/utils/json.dart';
-
-import 'actions.dart';
-import 'models/feed.dart';
-import 'models/post.dart';
 
 final epic = combineEpics<AppState>([
   _feedRequestEpic,

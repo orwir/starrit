@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:starrit/common/models/feed.dart';
+import 'package:starrit/common/models/post.dart';
 import 'package:starrit/common/utils/object.dart';
-
-import 'models/feed.dart';
-import 'models/post.dart';
 
 @immutable
 class FeedRequestAction {

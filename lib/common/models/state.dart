@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/feed/models/feed.dart';
-import 'package:starrit/feed/models/post.dart';
+import 'package:starrit/common/models/feed.dart';
+import 'package:starrit/common/models/post.dart';
 import 'package:starrit/common/utils/object.dart';
 
 @immutable

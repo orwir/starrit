@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
-import 'package:starrit/feed/models/post.dart';
+import 'package:starrit/common/models/post.dart';
 import 'package:starrit/common/utils/date.dart';
 import 'package:starrit/common/models/state.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -56,7 +56,7 @@ class _Header extends StatelessWidget {
         children: <Widget>[
           Text(
             post.title,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
           SizedBox(height: 8),
           _metadata(context),
@@ -93,7 +93,7 @@ class _Header extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       '/r/${post.subreddit.name}',
-                      style: theme.textTheme.subtitle,
+                      style: theme.textTheme.subtitle2,
                     ),
                     SizedBox(height: 8),
                     _metadata(context),
@@ -106,7 +106,7 @@ class _Header extends StatelessWidget {
             padding: EdgeInsets.only(top: 8),
             child: Text(
               post.title,
-              style: theme.textTheme.title,
+              style: theme.textTheme.headline6,
             ),
           )
         ],
@@ -124,7 +124,7 @@ class _Header extends StatelessWidget {
             '${post.author.deleted ? "" : "/u/"}${post.author.name}',
             overflow: TextOverflow.fade,
             softWrap: false,
-            style: theme.textTheme.body2,
+            style: theme.textTheme.bodyText1,
           ),
         ),
         Container(
@@ -245,7 +245,7 @@ class _GifContent extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         'Gif Content',
-        style: Theme.of(context).textTheme.body2.copyWith(
+        style: Theme.of(context).textTheme.bodyText1.copyWith(
               color: Colors.red[700],
               fontWeight: FontWeight.bold,
             ),
@@ -322,7 +322,7 @@ class _LinkContent extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     post.domain,
-                    style: theme.textTheme.title,
+                    style: theme.textTheme.headline6,
                   ),
                   Spacer(),
                   Icon(Icons.open_in_new),
@@ -370,7 +370,7 @@ class _VideoContent extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         'Video Content',
-        style: Theme.of(context).textTheme.body2.copyWith(
+        style: Theme.of(context).textTheme.bodyText1.copyWith(
               color: Colors.red[700],
               fontWeight: FontWeight.bold,
             ),
