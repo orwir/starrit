@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
-import 'package:starrit/common/models/feed.dart';
+import 'package:starrit/feed/model/feed.dart';
 
 Future<Response> listing({
   @required String domain,

@@ -1,8 +1,26 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/common/utils/object.dart';
+import 'package:starrit/common/util/object.dart';
 
+/// Container for posts images.
+/// Keeps high & low res versions with the size of hi-rez image.
+/// For nsfw/spoiler content contains blurred version.
 @immutable
 class PostImage {
+  /// Width of hi-rez image.
+  final int width;
+
+  /// Height of hi-rez image.
+  final int height;
+
+  /// Hi-rez image.
+  final String source;
+
+  /// Low-rez image.
+  final String preview;
+
+  /// Blurred version of NSFW/spoiler image.
+  final String blurred;
+
   PostImage({
     @required this.source,
     this.width,
@@ -11,18 +29,12 @@ class PostImage {
     this.blurred,
   }) : assert(source != null);
 
-  final double width;
-  final double height;
-  final String source;
-  final String preview;
-  final String blurred;
-
   bool get hasSize =>
       width != null && width > 0 && height != null && height > 0;
 
   @override
   String toString() =>
-      '{source=$source, size:${width ?? 0}x${height ?? 0}, preview:$preview, blurred:$blurred}';
+      '{ source:$source, size:${width ?? 0}x${height ?? 0}, preview:$preview, blurred:$blurred }';
 
   @override
   int get hashCode => hash([width, height, source, preview, blurred]);

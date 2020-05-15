@@ -1,16 +1,78 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:starrit/common/utils/json.dart';
-import 'package:starrit/common/utils/object.dart';
+import 'package:starrit/common/util/json.dart';
+import 'package:starrit/common/util/object.dart';
 import 'subreddit.dart';
 import 'author.dart';
 import 'image.dart';
 
+/// Type of a post content.
 enum PostType { image, gif, video, text, link }
 
+/// Keeps information about post.
 @immutable
 class Post {
+  /// ID (fullname)
+  final String id;
+
+  /// Parent subreddit.
+  final Subreddit subreddit;
+
+  /// Author.
+  final Author author;
+
+  /// Post creation date/time.
+  final DateTime created;
+
+  /// Title.
+  final String title;
+
+  /// Whether post content for adult-only.
+  final bool nsfw;
+
+  /// Whether post marked as spoiler.
+  final bool spoiler;
+
+  /// Comments count.
+  final int comments;
+
+  /// Score.
+  final int score;
+
+  /// Whether score should be hidden.
+  final bool hideScore;
+
+  /// Source domain of a content.
+  final String domain;
+
+  /// Whether content originally posted on Reddit.com.
+  final bool selfDomain;
+
+  /// Url to this post on Reddit.com
+  final String postUrl;
+
+  /// Url to original content.
+  final String contentUrl;
+
+  /// Type of post's content.
+  final PostType type;
+
+  /// Post images holder.
+  final PostImage image;
+
+  /// If post is textual contains data.
+  final String text;
+
+  /// If post is a gif contains url.
+  final String gif;
+
+  /// If post is a video contains url.
+  final String video;
+
+  /// For debug purposes only contains original json data.
+  final String raw;
+
   Post({
     @required this.id,
     @required this.subreddit,
@@ -46,28 +108,60 @@ class Post {
         assert(contentUrl != null),
         assert(type != null);
 
-  factory Post.fromJson(Map<String, dynamic> json) => _parse(json);
+  factory Post.fromJson(Map<String, dynamic> json) {
+    final String domain = json['domain'];
+    final bool selfDomain = domain.startsWith('self.');
+    final String url = json['url'];
+    final text = json.string('selftext') ?? json.string('selftext_html');
+    final gif = url.takeIf((String url) => url.endsWith('.gif'));
+    final video = _extractVideo(json, domain, url);
+    final image = url.takeIf(
+      (String url) {
+        final Uri uri = Uri.parse(url);
+        return _imageExtensions.any(uri.path.endsWith);
+      },
+    );
 
-  final String id;
-  final Subreddit subreddit;
-  final Author author;
-  final DateTime created;
-  final String title;
-  final bool nsfw;
-  final bool spoiler;
-  final int comments;
-  final int score;
-  final bool hideScore;
-  final String domain;
-  final bool selfDomain;
-  final String postUrl;
-  final String contentUrl;
-  final PostType type;
-  final PostImage image;
-  final String text;
-  final String gif;
-  final String video;
-  final String raw;
+    var type = PostType.link;
+    if (video != null) {
+      type = PostType.video;
+    } else if (gif != null) {
+      type = PostType.gif;
+    } else if (image != null) {
+      type = PostType.image;
+    } else if (text != null || selfDomain) {
+      type = PostType.text;
+    }
+
+    return Post(
+      id: json['name'] ?? '',
+      subreddit: Subreddit.fromJson(json),
+      author: Author.fromJson(json),
+      created: json.get<double>('created_utc')?.into(
+                (double seconds) => DateTime.fromMillisecondsSinceEpoch(
+                  seconds.toInt() * 1000,
+                  isUtc: true,
+                ),
+              ) ??
+          0,
+      title: json['title'] ?? '',
+      nsfw: json['over_18'] ?? false,
+      spoiler: json['spoiler'] ?? false,
+      comments: json['num_comments'] ?? 0,
+      score: json['score'] ?? 0,
+      hideScore: json['hide_score'] ?? false,
+      domain: domain,
+      selfDomain: selfDomain,
+      postUrl: json['permalink'],
+      contentUrl: url,
+      type: type,
+      image: _extractPostImage(json, image),
+      text: text,
+      gif: gif,
+      video: video,
+      raw: kReleaseMode ? null : jsonEncode(json),
+    );
+  }
 
   @override
   int get hashCode => hash([
@@ -117,7 +211,7 @@ class Post {
   }
 
   @override
-  String toString() => '{'
+  String toString() => '{ '
       'id:$id'
       ', subreddit:$subreddit'
       ', author:$author'
@@ -136,62 +230,7 @@ class Post {
       ', text:$text'
       ', gif:$gif'
       ', video:$video'
-      '}';
-}
-
-Post _parse(Map<String, dynamic> json) {
-  final String domain = json['domain'];
-  final bool selfDomain = domain.startsWith('self.');
-  final String url = json['url'];
-  final text = json.string('selftext') ?? json.string('selftext_html');
-  final gif = url.takeIf((String url) => url.endsWith('.gif'));
-  final video = _extractVideo(json, domain, url);
-  final image = url.takeIf(
-    (String url) {
-      final Uri uri = Uri.parse(url);
-      return _imageExtensions.any(uri.path.endsWith);
-    },
-  );
-
-  var type = PostType.link;
-  if (video != null) {
-    type = PostType.video;
-  } else if (gif != null) {
-    type = PostType.gif;
-  } else if (image != null) {
-    type = PostType.image;
-  } else if (text != null || selfDomain) {
-    type = PostType.text;
-  }
-
-  return Post(
-    id: json['name'] ?? '',
-    subreddit: Subreddit.fromJson(json),
-    author: Author.fromJson(json),
-    created: json.get<double>('created_utc')?.into(
-              (double seconds) => DateTime.fromMillisecondsSinceEpoch(
-                seconds.toInt() * 1000,
-                isUtc: true,
-              ),
-            ) ??
-        0,
-    title: json['title'] ?? '',
-    nsfw: json['over_18'] ?? false,
-    spoiler: json['spoiler'] ?? false,
-    comments: json['num_comments'] ?? 0,
-    score: json['score'] ?? 0,
-    hideScore: json['hide_score'] ?? false,
-    domain: domain,
-    selfDomain: selfDomain,
-    postUrl: json['permalink'],
-    contentUrl: url,
-    type: type,
-    image: _extractPostImage(json, image),
-    text: text,
-    gif: gif,
-    video: video,
-    raw: kReleaseMode ? null : jsonEncode(json),
-  );
+      ' }';
 }
 
 String _extractVideo(Map<String, dynamic> json, String domain, String url) {
@@ -223,8 +262,8 @@ PostImage _extractPostImage(Map<String, dynamic> json, String def) {
       json.get('preview.images[0].variants.nsfw.resolutions[0]');
   return PostImage(
     source: source?.string('url') ?? def,
-    width: source?.get<int>('width')?.toDouble(),
-    height: source?.get<int>('height')?.toDouble(),
+    width: source?.get<int>('width'),
+    height: source?.get<int>('height'),
     preview: preview?.string('url'),
     blurred: blurred?.string('url'),
   );

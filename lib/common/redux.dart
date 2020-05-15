@@ -1,27 +1,30 @@
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
-import 'package:starrit/feed/reducers.dart' as feed;
-import 'package:starrit/feed/epics.dart' as feed;
-import 'package:starrit/preferences/reducers.dart' as preference;
-import 'package:starrit/search/reducers.dart' as search;
-import 'package:starrit/search/epics.dart' as search;
+import 'package:starrit/common/model/state.dart';
+import 'package:starrit/feed/epic.dart';
+import 'package:starrit/feed/reducer.dart';
+import 'package:starrit/search/epic.dart';
+import 'package:starrit/search/reducer.dart';
+import 'package:starrit/settings/epic.dart';
+import 'package:starrit/settings/reducer.dart';
 
-import 'models/state.dart';
+/// Every middleware should be added here.
+final List<Middleware<AppState>> appMiddleware = [_appEpic, _logger];
 
-final Reducer<AppState> reducer = combineReducers([
-  feed.reducer,
-  preference.reducer,
-  search.reducer,
+/// Top-level reducer to rule them all.
+final Reducer<AppState> appReducer = combineReducers([
+  settingsReducer,
+  feedReducer,
+  searchReducer,
 ]);
 
-final middleware = <Middleware<AppState>>[_epicMiddleware, _logger];
-
-final _epicMiddleware = EpicMiddleware(combineEpics<AppState>([
-  feed.epic,
-  search.epic,
+final EpicMiddleware<AppState> _appEpic = EpicMiddleware(combineEpics([
+  settingsEpic,
+  feedEpic,
+  searchEpic,
 ]));
 
 void _logger(Store<AppState> store, dynamic action, NextDispatcher next) {
   next(action);
-  print('action:$action, state:${store.state}');
+  print('> $action\n${store.state}');
 }

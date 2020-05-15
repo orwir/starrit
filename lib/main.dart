@@ -1,37 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+import 'package:starrit/common/model/state.dart';
+import 'package:starrit/common/navigation.dart';
+import 'package:starrit/common/redux.dart';
+import 'package:starrit/settings/actions.dart';
+import 'package:starrit/splash/screen.dart';
 
-import 'common/models/state.dart';
-import 'common/redux.dart';
-import 'common/styles.dart';
-import 'common/navigation.dart';
-import 'feed/screen.dart';
+main() => runApp(StarritApplication());
 
-main() => runApp(StarritApp());
-
-class StarritApp extends StatelessWidget {
-  final Store<AppState> store = Store(
-    reducer,
-    initialState: AppState(
-      blurNsfw: false,
-      search: SearchState.none,
-      feeds: {},
-    ),
-    middleware: middleware,
+/// Starting point of the App.
+class StarritApplication extends StatelessWidget {
+  final Store store = Store<AppState>(
+    appReducer,
+    initialState: AppState.initial(),
+    middleware: appMiddleware,
   );
 
-  @override
-  Widget build(BuildContext context) {
-    return StoreProvider(
-      store: store,
-      child: MaterialApp(
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        initialRoute: FeedScreen.routeName,
-        routes: routes,
-      ),
-    );
+  StarritApplication() {
+    if (store.state.status == StateStatus.initial) {
+      store.dispatch(LoadPreferences());
+    }
   }
+
+  @override
+  Widget build(BuildContext context) => StoreProvider<AppState>(
+        store: store,
+        child: MaterialApp(
+          home: SplashScreen(),
+          navigatorKey: navigatorStore,
+        ),
+      );
 }

@@ -1,71 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:intl/intl.dart';
-import 'package:share/share.dart';
-import 'package:starrit/common/models/post.dart';
-import 'package:starrit/common/utils/date.dart';
-import 'package:starrit/common/models/state.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:starrit/feed/model/post.dart';
+import 'package:starrit/common/util/date.dart';
 
-enum HeaderType { simple, extended }
+enum Header { simple, extended }
 
 class PostView extends StatelessWidget {
   final Post post;
-  final HeaderType header;
+  final Header header;
 
-  PostView(this.post, {this.header = HeaderType.extended});
+  PostView(this.post, {this.header = Header.extended})
+      : assert(post != null),
+        assert(header != null);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        _Header(post, header),
-        _Content(post),
-        _Toolbar(post),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _Header(post, header),
+        ],
+      );
 }
 
 class _Header extends StatelessWidget {
   final Post post;
-  final HeaderType type;
+  final Header type;
 
   _Header(this.post, this.type);
 
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case HeaderType.simple:
-        return _simple(context);
-      case HeaderType.extended:
-        return _extended(context);
+      case Header.simple:
+        return simple(context);
+      case Header.extended:
+        return extended(context);
       default:
-        throw 'Unrecognized type of header [$type]';
+        throw 'Unrecognized type of header { $type }';
     }
   }
 
-  Widget _simple(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            post.title,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          SizedBox(height: 8),
-          _metadata(context),
-        ],
-      ),
-    );
-  }
+  Widget simple(BuildContext context) => Container(
+        padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(post.title, style: Theme.of(context).textTheme.headline6),
+            SizedBox(height: 8),
+            metadata(context),
+          ],
+        ),
+      );
 
-  Widget _extended(BuildContext context) {
+  Widget extended(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
@@ -96,7 +84,7 @@ class _Header extends StatelessWidget {
                       style: theme.textTheme.subtitle2,
                     ),
                     SizedBox(height: 8),
-                    _metadata(context),
+                    metadata(context),
                   ],
                 ),
               ),
@@ -114,7 +102,7 @@ class _Header extends StatelessWidget {
     );
   }
 
-  Widget _metadata(BuildContext context) {
+  Widget metadata(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -164,6 +152,8 @@ class _Header extends StatelessWidget {
     );
   }
 }
+
+/*
 
 class _Content extends StatelessWidget {
   final Post post;
@@ -378,3 +368,5 @@ class _VideoContent extends StatelessWidget {
     );
   }
 }
+
+*/

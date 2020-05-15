@@ -1,23 +1,25 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/common/utils/object.dart';
+import 'package:starrit/common/util/object.dart';
 
+/// Represents author of a post.
 @immutable
 class Author {
-  Author({@required this.id, @required this.name}) : assert(name != null);
+  /// User account ID. (fullname)
+  /// Null means post's author was deleted.
+  final String id;
+
+  /// User name.
+  final String name;
+
+  Author(this.id, this.name) : assert(name != null);
 
   Author.fromJson(Map<String, dynamic> json)
-      : this(
-          id: json['author_fullname'],
-          name: json['author'],
-        );
-
-  final String id;
-  final String name;
+      : this(json['author_fullname'], json['author']);
 
   bool get deleted => id == null;
 
   @override
-  String toString() => '{id:$id, name:$name}';
+  String toString() => '{ id:$id, name:$name }';
 
   @override
   int get hashCode => hash([id, name]);

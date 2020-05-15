@@ -1,91 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:starrit/common/models/feed.dart';
+import 'package:starrit/common/model/state.dart';
+import 'package:starrit/common/navigation.dart';
+import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/screen.dart';
-import 'package:starrit/common/models/state.dart';
-import 'package:starrit/common/utils/object.dart';
-
-import 'actions.dart';
+import 'package:starrit/search/actions.dart';
 
 class SearchScreen extends StatelessWidget {
-  static const routeName = '/search';
-
   @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
-      distinct: true,
-      onInit: (store) {
-        store.dispatch(SearchSuggestionsRequestAction(''));
-      },
-      converter: _ViewModel.fromStore,
-      builder: (context, viewModel) => Scaffold(
-        appBar: AppBar(
-          title: TextField(
-            autofocus: true,
-            textInputAction: TextInputAction.search,
-            onChanged: (text) => viewModel.search(text),
-          ),
-          actions: <Widget>[
-            DropdownButton<Sort>(
-              value: viewModel.sort,
-              items: Sort.values
-                  .map((sort) => DropdownMenuItem(
-                        child: Text(sort.label),
-                        value: sort,
-                      ))
-                  .toList(),
-              onChanged: (sort) => viewModel.sort = sort,
+  Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
+        onInit: (store) => store.dispatch(LoadSuggestions('')),
+        onDispose: (store) => store.dispatch(DisposeSearchData()),
+        converter: _ViewModel.fromStore,
+        builder: (context, viewModel) => Scaffold(
+          appBar: AppBar(
+            title: TextField(
+              autofocus: true,
+              textInputAction: TextInputAction.search,
+              onChanged: viewModel.search,
             ),
-          ],
+            actions: [
+              DropdownButton(
+                value: viewModel.sort,
+                onChanged: (sort) => viewModel.sort = sort,
+                items: [
+                  for (final sort in Sort.values)
+                    DropdownMenuItem(child: Text(sort.label), value: sort)
+                ],
+              ),
+            ],
+          ),
+          body: viewModel.loading
+              ? LinearProgressIndicator()
+              : ListView(
+                  children: [
+                    for (final type in viewModel.suggestions)
+                      ListTile(
+                        title: Text(type.label),
+                        onTap: () =>
+                            viewModel.openFeedScreen(type, viewModel.sort),
+                      ),
+                  ],
+                ),
         ),
-        body: ListView(
-          children: <Widget>[
-            ...viewModel.suggestions.map((type) => ListTile(
-                  title: Text(type.label),
-                  onTap: () => viewModel.openFeed(context, type),
-                ))
-          ],
-        ),
-      ),
-    );
-  }
+      );
 }
 
-@immutable
 class _ViewModel {
-  static _ViewModel fromStore(Store<AppState> store) =>
-      _ViewModel(store.state.search, store.dispatch);
+  static _ViewModel fromStore(Store<AppState> store) => _ViewModel(store);
 
-  _ViewModel(this._state, this._dispatch);
+  final Store<AppState> store;
 
-  final SearchState _state;
-  final Function _dispatch;
+  _ViewModel(this.store);
 
-  Sort get sort => _state.sort;
-  set sort(Sort value) => _dispatch(SearchSortChangeAction(value));
-  Iterable<Type> get suggestions => _state.suggestions;
+  Sort get sort => store.state.search.sort;
+  set sort(Sort value) => store.dispatch(UpdateSort(value));
+  List<Type> get suggestions => store.state.search.suggestions;
+  bool get loading => store.state.search.status == StateStatus.loading;
 
-  void search(String query) {
-    _dispatch(SearchSuggestionsRequestAction(query));
+  void search(String query) => store.dispatch(LoadSuggestions(query));
+
+  void openFeedScreen(Type type, Sort sort) async {
+    navigatorStore.currentState.pushReplacement(
+        MaterialPageRoute(builder: (context) => FeedScreen(type + sort)));
   }
-
-  void openFeed(BuildContext context, Type type) {
-    _dispatch(SearchDisposeAction());
-    Navigator.pushReplacementNamed(
-      context,
-      FeedScreen.routeName,
-      arguments: type + sort,
-    );
-  }
-
-  @override
-  int get hashCode => hash([_state]);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          _state == other._state;
 }

@@ -1,28 +1,38 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/common/utils/object.dart';
+import 'package:starrit/common/util/object.dart';
+import 'package:uuid/uuid.dart';
 
+final _uuid = Uuid();
+
+/// Representation of a reddit feed.
 @immutable
 class Feed {
-  const Feed(this.type, this.sort)
-      : assert(type != null),
-        assert(sort != null);
+  /// Unique ID for linking Data State with UI.
+  final String id;
 
+  /// Subreddit or general thread.
   final Type type;
+
+  /// Sorting order.
   final Sort sort;
 
-  String get label => '${type.label}${sort.label}';
+  Feed(this.type, this.sort)
+      : id = _uuid.v1(),
+        assert(type != null),
+        assert(sort != null);
 
   @override
   String toString() => '$type$sort';
 
   @override
-  int get hashCode => hash([type, sort]);
+  int get hashCode => hash([id, type, sort]);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Feed &&
           runtimeType == other.runtimeType &&
+          id == other.id &&
           type == other.type &&
           sort == other.sort;
 }

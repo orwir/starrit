@@ -1,81 +1,55 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/common/models/feed.dart';
-import 'package:starrit/common/utils/object.dart';
+import 'package:starrit/feed/model/feed.dart';
 
+/// Load feed path suggestions by query.
+/// If query length is less than 3 default (general) paths will be returned.
 @immutable
-class SearchDisposeAction {
-  static const _instance = SearchDisposeAction._();
-
-  factory SearchDisposeAction() => _instance;
-
-  const SearchDisposeAction._();
-
-  @override
-  String toString() => '{type:$runtimeType}';
-}
-
-@immutable
-class SearchSuggestionsRequestAction {
-  SearchSuggestionsRequestAction(this.query) : assert(query != null);
-
+class LoadSuggestions {
   final String query;
 
-  @override
-  String toString() =>
-      '{type:$runtimeType${query.isEmpty ? "" : ", query:$query"}}';
+  LoadSuggestions(this.query) : assert(query != null);
 
   @override
-  int get hashCode => hash([query]);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SearchSuggestionsRequestAction &&
-          runtimeType == other.runtimeType &&
-          query == other.query;
+  String toString() => '$runtimeType { $query }';
 }
 
+/// Successful response with a piece of requested feed data.
 @immutable
-class SearchSuggestionsResponseAction {
-  SearchSuggestionsResponseAction(this.query, this.suggestions)
-      : assert(query != null),
-        assert(suggestions != null);
-
-  final String query;
+class LoadSuggestionsSuccess {
   final List<Type> suggestions;
 
-  @override
-  String toString() =>
-      '{type:$runtimeType, query:$query, suggestions:${suggestions.length}}';
+  LoadSuggestionsSuccess(this.suggestions) : assert(suggestions != null);
 
   @override
-  int get hashCode => hash([query, suggestions]);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SearchSuggestionsResponseAction &&
-          runtimeType == other.runtimeType &&
-          query == other.query &&
-          suggestions == other.suggestions;
+  String toString() => '$runtimeType { ${suggestions.length} }';
 }
 
+/// Unsuccessful reponse with the cause of an error.
 @immutable
-class SearchSortChangeAction {
-  SearchSortChangeAction(this.sort) : assert(sort != null);
+class LoadSuggestionsFailure {
+  final Exception exception;
 
+  LoadSuggestionsFailure(this.exception) : assert(exception != null);
+
+  @override
+  String toString() => '$runtimeType { $exception }';
+}
+
+/// Update sorting order.
+@immutable
+class UpdateSort {
   final Sort sort;
 
-  @override
-  String toString() => '{type:$runtimeType, sort:$sort}';
+  UpdateSort(this.sort) : assert(sort != null);
 
   @override
-  int get hashCode => hash([sort]);
+  String toString() => '$runtimeType { $sort }';
+}
 
+/// Request to delete data from the storage.
+/// Occurs when Feed Screen is closed.
+@immutable
+class DisposeSearchData {
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SearchSortChangeAction &&
-          runtimeType == other.runtimeType &&
-          sort == other.sort;
+  String toString() => '$runtimeType';
 }

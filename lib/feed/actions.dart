@@ -1,102 +1,76 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/common/models/feed.dart';
-import 'package:starrit/common/models/post.dart';
-import 'package:starrit/common/utils/object.dart';
+import 'package:starrit/feed/model/feed.dart';
+import 'package:starrit/feed/model/post.dart';
 
+/// Request feed data.
 @immutable
-class FeedRequestAction {
-  FeedRequestAction(this.feed, {this.reset = false, this.after})
+class LoadFeedData {
+  /// Feed metadata.
+  final Feed feed;
+
+  /// Item ID to get data starting from.
+  final String after;
+
+  /// Whether replace previous data or add.
+  final bool reset;
+
+  LoadFeedData(this.feed, {this.after, this.reset = false})
       : assert(feed != null),
         assert(reset != null);
 
-  final Feed feed;
-  final bool reset;
-  final String after;
-
   @override
   String toString() =>
-      '{type:$runtimeType, feed:$feed, reset:$reset${after != null ? ", after:$after" : ""}}';
-
-  @override
-  int get hashCode => hash([feed, reset, after]);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FeedRequestAction &&
-          runtimeType == other.runtimeType &&
-          feed == other.feed &&
-          reset == other.reset &&
-          after == other.after;
+      '$runtimeType { $feed${after == null ? '' : ', after:$after'}${reset ? ', reset' : ''} }';
 }
 
+/// Successful response with a piece of requested feed data.
 @immutable
-class FeedDisposeAction {
-  FeedDisposeAction(this.feed) : assert(feed != null);
-
+class LoadFeedDataSuccess {
+  /// Feed metadata.
   final Feed feed;
 
-  @override
-  String toString() => '{type:$runtimeType, feed:$feed}';
+  /// Page of requested data.
+  final List<Post> posts;
 
-  @override
-  int get hashCode => hash([feed]);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FeedDisposeAction &&
-          runtimeType == other.runtimeType &&
-          feed == other.feed;
-}
-
-@immutable
-class FeedResponseSuccessAction {
-  FeedResponseSuccessAction(this.feed, this.posts, this.next)
-      : assert(feed != null),
-        assert(posts != null);
-
-  final Feed feed;
-  final Iterable<Post> posts;
+  /// ID to get next chunk of data.
   final String next;
 
+  LoadFeedDataSuccess(this.feed, this.posts, this.next)
+      : assert(feed != null),
+        assert(posts != null),
+        assert(next != null);
+
   @override
   String toString() =>
-      '{type:$runtimeType, feed:$feed, posts:${posts.length}, next:$next}';
-
-  @override
-  int get hashCode => hash([feed, posts, next]);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FeedResponseSuccessAction &&
-          runtimeType == other.runtimeType &&
-          feed == other.feed &&
-          posts == other.posts &&
-          next == other.next;
+      '$runtimeType { $feed, next:$next, posts:${posts.length} }';
 }
 
+/// Unsuccessful reponse with the cause of an error.
 @immutable
-class FeedResponseFailureAction {
-  FeedResponseFailureAction(this.feed, this.exception)
+class LoadFeedDataFailure {
+  /// Feed metadata.
+  final Feed feed;
+
+  /// Error information.
+  final Exception exception;
+
+  LoadFeedDataFailure(this.feed, this.exception)
       : assert(feed != null),
         assert(exception != null);
 
+  @override
+  String toString() => '$runtimeType { $feed, exception:$exception }';
+}
+
+/// Request to delete data from the storage.
+/// Occurs when Feed Screen is closed.
+@immutable
+class DisposeFeedData {
+  /// Feed metadata.
   final Feed feed;
-  final Exception exception;
+
+  DisposeFeedData(this.feed) : assert(feed != null);
 
   @override
-  String toString() => '{type:$runtimeType, feed:$feed, exception:$exception}';
-
-  @override
-  int get hashCode => hash([feed, exception]);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FeedResponseFailureAction &&
-          runtimeType == other.runtimeType &&
-          feed == other.feed &&
-          exception == other.exception;
+  String toString() => '$runtimeType { $feed }';
 }
