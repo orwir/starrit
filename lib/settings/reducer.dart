@@ -18,6 +18,7 @@ AppState _loadPreferencesSuccess(
     state.copyWith(
       status: StateStatus.success,
       latestFeed: action.latestFeed,
+      blurNsfw: action.blurNsfw,
     );
 
 AppState _loadPreferencesFailure(

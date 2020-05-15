@@ -57,3 +57,8 @@ class UpdateBlurNsfw {
   @override
   String toString() => '$runtimeType { $blurNsfw }';
 }
+
+class PreferencesUpdateSuccess {
+  @override
+  String toString() => '$runtimeType';
+}

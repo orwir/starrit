@@ -59,7 +59,7 @@ class AppState {
       'feeds:[${feeds.values.join(',')}]'
       '${latestFeed != null ? ', latestFeed:$latestFeed' : ''}'
       '${blurNsfw ? ', blurNSFW' : ''}'
-      '${status == StateStatus.loading ? ', status:${status.label}' : ''}'
+      '${status == StateStatus.loading ? ', loading' : ''}'
       '${search != SearchState.initial ? ', search:$search' : ''}'
       ' }';
 }

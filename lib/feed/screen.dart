@@ -115,16 +115,19 @@ class _ViewModel {
   /// Might be null.
   final FeedState state;
 
-  _ViewModel(this.store, this.feed, this.state)
+  /// Whether NSFW content should be blurred.
+  final bool blurNsfw;
+
+  _ViewModel(this.store, this.feed, this.state, this.blurNsfw)
       : assert(store != null),
-        assert(feed != null);
+        assert(feed != null),
+        assert(blurNsfw != null);
 
   factory _ViewModel.build(Store<AppState> store, Feed feed) =>
-      _ViewModel(store, feed, store.state.feeds[feed]);
+      _ViewModel(store, feed, store.state.feeds[feed], store.state.blurNsfw);
 
   /// Whether data is loading.
   bool get loading => state?.status == StateStatus.loading;
-  bool get blurNsfw => store.state.blurNsfw;
 
   /// Feed posts.
   List<Post> get posts => state?.posts ?? const [];
@@ -180,13 +183,13 @@ class _ViewModel {
   }
 
   @override
-  int get hashCode => hash([feed, state]);
+  int get hashCode => hash([feed, state, blurNsfw]);
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
       other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          feed == other.feed &&
-          state == other.state;
+      runtimeType == other.runtimeType &&
+      feed == other.feed &&
+      state == other.state &&
+      blurNsfw == other.blurNsfw;
 }

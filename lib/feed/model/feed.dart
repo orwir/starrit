@@ -21,6 +21,11 @@ class Feed {
         assert(type != null),
         assert(sort != null);
 
+  factory Feed.fromJson(Map<String, Object> json) =>
+      Feed(Type._(json['type']), Sort._(json['sort']));
+
+  String toJson() => '{ "type": "$type", "sort": "$sort" }';
+
   @override
   String toString() => '$type$sort';
 
