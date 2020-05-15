@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
+import 'package:starrit/access/epic.dart';
+import 'package:starrit/access/reducer.dart';
 import 'package:starrit/common/model/state.dart';
 import 'package:starrit/feed/epic.dart';
 import 'package:starrit/feed/reducer.dart';
@@ -17,12 +19,14 @@ final Reducer<AppState> appReducer = combineReducers([
   settingsReducer,
   feedReducer,
   searchReducer,
+  accessReducer,
 ]);
 
 final EpicMiddleware<AppState> _appEpic = EpicMiddleware(combineEpics([
   settingsEpic,
   feedEpic,
   searchEpic,
+  accessEpic,
 ]));
 
 void _logger(Store<AppState> store, dynamic action, NextDispatcher next) {

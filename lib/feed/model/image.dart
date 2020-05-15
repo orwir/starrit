@@ -34,7 +34,7 @@ class PostImage {
 
   @override
   String toString() =>
-      '{ source:$source, size:${width ?? 0}x${height ?? 0}, preview:$preview, blurred:$blurred }';
+      '{ source:$source, size:${width}x$height, preview:$preview, blurred:$blurred }';
 
   @override
   int get hashCode => hash([width, height, source, preview, blurred]);

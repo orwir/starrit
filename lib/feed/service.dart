@@ -3,13 +3,13 @@ import 'package:http/http.dart';
 import 'package:starrit/feed/model/feed.dart';
 
 Future<Response> listing({
-  @required String domain,
+  @required String baseUrl,
   @required Feed feed,
   String after,
   String before,
   int limit,
 }) async {
-  final url = 'https://$domain$feed.json'
+  final url = '$baseUrl$feed.json'
       '?after=$after'
       '&before=$before'
       '&limit=$limit'

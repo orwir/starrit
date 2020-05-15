@@ -19,6 +19,8 @@ AppState _loadPreferencesSuccess(
       status: StateStatus.success,
       latestFeed: action.latestFeed,
       blurNsfw: action.blurNsfw,
+      access: action.access,
+      token: action.token,
     );
 
 AppState _loadPreferencesFailure(

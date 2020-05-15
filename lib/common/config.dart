@@ -1,4 +1,7 @@
 class Config {
+  /// Whether account specific features can be enabled.
+  static const hasAccessMode = bool.hasEnvironment('client_id');
+
   /// Client ID for Reddit API. Without it auth features disabled.
   /// To get one you have to:
   /// 1. go to https://github.com/reddit-archive/reddit/wiki/OAuth2 and follow an instruction.

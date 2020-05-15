@@ -26,7 +26,7 @@ class Subreddit {
         );
 
   @override
-  String toString() => '{name:$name, icon:$icon, banner:$banner}';
+  String toString() => '{ name:$name, icon:$icon, banner:$banner }';
 
   @override
   int get hashCode => hash([name, icon, banner]);

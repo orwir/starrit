@@ -54,12 +54,15 @@ class FeedState {
       );
 
   @override
-  String toString() => '{ '
-      'feed:$feed'
-      ', posts:${posts.length}'
-      '${next == null ? '' : ', next:$next'}'
-      '${exception == null ? '' : ', exception:$exception'}'
-      '${status == StateStatus.loading ? ', loading' : ''}'
+  String toString() =>
+      '{ ' +
+      [
+        'feed:$feed',
+        status == StateStatus.loading ? 'loading' : '',
+        next == null ? '' : 'next:$next',
+        'posts:${posts.length}',
+        exception == null ? '' : 'exception:$exception',
+      ].where((line) => line.isNotEmpty).join(', ') +
       ' }';
 
   @override

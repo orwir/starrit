@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 Future<Response> subreddits({
-  @required String domain,
+  @required String baseUrl,
   @required String query,
 }) async {
-  final url = 'https://$domain/api/search_reddit_names.json'
+  final url = '$baseUrl/api/search_reddit_names.json'
       '?query=$query'
       '&include_over_18=true'
       '&include_unadvertisable=true';

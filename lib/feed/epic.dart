@@ -8,6 +8,7 @@ import 'package:starrit/feed/actions.dart';
 import 'package:starrit/feed/model/post.dart';
 import 'package:starrit/feed/service.dart';
 import 'package:starrit/common/util/json.dart';
+import 'package:starrit/access/model/access.dart';
 
 final Epic<AppState> feedEpic = combineEpics([
   _loadData,
@@ -17,7 +18,7 @@ Stream<dynamic> _loadData(Stream<dynamic> actions, EpicStore<AppState> store) {
   Future<dynamic> fetch(LoadFeedData request) async {
     try {
       final response = await listing(
-        domain: 'reddit.com',
+        baseUrl: store.state.access.baseUrl,
         feed: request.feed,
         after: request.after,
       );

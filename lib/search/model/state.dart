@@ -23,10 +23,13 @@ class SearchState {
   });
 
   @override
-  String toString() => '{ '
-      'suggestions:${suggestions.length}'
-      ', sort:$sort'
-      '${exception == null ? '' : ', exception:$exception'}'
-      '${status == StateStatus.loading ? ', loading' : ''}'
+  String toString() =>
+      '{ ' +
+      [
+        status == StateStatus.loading ? 'loading' : '',
+        'suggestions:${suggestions.length}',
+        'sort:$sort',
+        exception == null ? '' : 'exception:$exception',
+      ].where((line) => line.isNotEmpty).join(', ') +
       ' }';
 }

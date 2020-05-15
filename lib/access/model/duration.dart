@@ -1,0 +1,1 @@
+enum Duration { temporary, permanent }

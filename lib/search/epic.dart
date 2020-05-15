@@ -8,6 +8,7 @@ import 'package:starrit/common/util/json.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/search/actions.dart';
 import 'package:starrit/search/service.dart';
+import 'package:starrit/access/model/access.dart';
 
 final Epic<AppState> searchEpic = combineEpics([
   _loadSuggestions,
@@ -22,8 +23,10 @@ Stream<dynamic> _loadSuggestions(
       return LoadSuggestionsSuccess(Type.values);
     }
     try {
-      final response =
-          await subreddits(domain: 'reddit.com', query: request.query);
+      final response = await subreddits(
+        baseUrl: store.state.access.baseUrl,
+        query: request.query,
+      );
       if (response.statusCode != 200) {
         throw HttpException(
           'Usuccessful suggestions request. Code: ${response.statusCode}',

@@ -19,7 +19,7 @@ class Author {
   bool get deleted => id == null;
 
   @override
-  String toString() => '{ id:$id, name:$name }';
+  String toString() => deleted ? '{ deleted }' : '{ id:$id, name:$name }';
 
   @override
   int get hashCode => hash([id, name]);

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:starrit/common/util/object.dart';
 import 'package:uuid/uuid.dart';
@@ -21,8 +23,11 @@ class Feed {
         assert(type != null),
         assert(sort != null);
 
-  factory Feed.fromJson(Map<String, Object> json) =>
-      Feed(Type._(json['type']), Sort._(json['sort']));
+  factory Feed.fromJson(String raw) {
+    if (raw?.isEmpty ?? true) return null;
+    final json = jsonDecode(raw);
+    return Feed(Type._(json['type']), Sort._(json['sort']));
+  }
 
   String toJson() => '{ "type": "$type", "sort": "$sort" }';
 

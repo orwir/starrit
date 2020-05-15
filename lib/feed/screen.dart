@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:starrit/access/banner.dart';
+import 'package:starrit/common/config.dart';
 import 'package:starrit/common/model/state.dart';
 import 'package:starrit/common/navigation.dart';
 import 'package:starrit/common/util/object.dart';
@@ -12,6 +14,7 @@ import 'package:starrit/feed/widget/post.dart';
 import 'package:starrit/search/screen.dart';
 import 'package:starrit/settings/actions.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:starrit/access/model/access.dart';
 
 /// Displays feed data.
 class FeedScreen extends StatelessWidget {
@@ -73,6 +76,9 @@ class FeedScreen extends StatelessWidget {
   Widget _item(BuildContext context, _ViewModel viewModel, int index) {
     if (viewModel.shouldLoad(index)) viewModel.load();
 
+    if (viewModel.shouldChooseAccess && index == 0) {
+      return AccessBanner();
+    }
     if (index < viewModel.postCount) {
       return PostView(viewModel.posts[index]);
     }
@@ -115,16 +121,30 @@ class _ViewModel {
   /// Might be null.
   final FeedState state;
 
+  /// Access status.
+  final Access access;
+
   /// Whether NSFW content should be blurred.
   final bool blurNsfw;
 
-  _ViewModel(this.store, this.feed, this.state, this.blurNsfw)
+  _ViewModel(
+      {@required this.store,
+      @required this.feed,
+      @required this.state,
+      @required this.access,
+      @required this.blurNsfw})
       : assert(store != null),
         assert(feed != null),
+        assert(access != null),
         assert(blurNsfw != null);
 
-  factory _ViewModel.build(Store<AppState> store, Feed feed) =>
-      _ViewModel(store, feed, store.state.feeds[feed], store.state.blurNsfw);
+  factory _ViewModel.build(Store<AppState> store, Feed feed) => _ViewModel(
+        store: store,
+        feed: feed,
+        state: store.state.feeds[feed],
+        access: store.state.access,
+        blurNsfw: store.state.blurNsfw,
+      );
 
   /// Whether data is loading.
   bool get loading => state?.status == StateStatus.loading;
@@ -135,8 +155,11 @@ class _ViewModel {
   /// Total number of items loaded.
   int get postCount => state?.posts?.length ?? 0;
 
-  /// Total number of items loaded + virtual item if has error.
-  int get itemCount => postCount + ((hasError || loading) ? 1 : 0);
+  /// Total number of items loaded + virtual items.
+  int get itemCount =>
+      postCount +
+      ((hasError || loading) ? 1 : 0) +
+      (shouldChooseAccess ? 1 : 0);
 
   /// ID to get next chunk of data.
   String get next => state?.next;
@@ -146,6 +169,8 @@ class _ViewModel {
 
   /// Error message if applicable.
   String get errorMessage => state?.exception?.toString() ?? '';
+
+  bool get shouldChooseAccess => Config.hasAccessMode && !access.stable;
 
   /// Determines is new chunk of data should be requested.
   /// True if:
@@ -183,7 +208,7 @@ class _ViewModel {
   }
 
   @override
-  int get hashCode => hash([feed, state, blurNsfw]);
+  int get hashCode => hash([feed, state, access, blurNsfw]);
 
   @override
   bool operator ==(Object other) =>
@@ -191,5 +216,6 @@ class _ViewModel {
       runtimeType == other.runtimeType &&
       feed == other.feed &&
       state == other.state &&
+      access == other.access &&
       blurNsfw == other.blurNsfw;
 }

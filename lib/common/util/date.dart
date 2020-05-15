@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 extension TimeAgo on DateTime {
-  String asTimeAgo() {
+  String get asTimeAgo {
     final now = DateTime.now();
     final diff = now.difference(this);
 
