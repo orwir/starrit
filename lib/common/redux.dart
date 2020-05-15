@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:starrit/common/model/state.dart';
@@ -26,5 +27,5 @@ final EpicMiddleware<AppState> _appEpic = EpicMiddleware(combineEpics([
 
 void _logger(Store<AppState> store, dynamic action, NextDispatcher next) {
   next(action);
-  print('> $action\n${store.state}');
+  if (kDebugMode) print('> $action\n${store.state}');
 }
