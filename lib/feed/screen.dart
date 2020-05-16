@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -77,7 +79,7 @@ class FeedScreen extends StatelessWidget {
   Widget _item(BuildContext context, _ViewModel viewModel, int index) {
     if (viewModel.shouldLoad(index)) viewModel.load();
 
-    if (viewModel.shouldChooseAccess && index == 0) {
+    if (viewModel.canChooseAccess && index == 0) {
       return AccessBanner();
     }
     if (index < viewModel.postCount) {
@@ -158,9 +160,7 @@ class _ViewModel {
 
   /// Total number of items loaded + virtual items.
   int get itemCount =>
-      postCount +
-      ((hasError || loading) ? 1 : 0) +
-      (shouldChooseAccess ? 1 : 0);
+      postCount + ((hasError || loading) ? 1 : 0) + (canChooseAccess ? 1 : 0);
 
   /// ID to get next chunk of data.
   String get next => state?.next;
@@ -171,7 +171,8 @@ class _ViewModel {
   /// Error message if applicable.
   String get errorMessage => state?.exception?.toString() ?? '';
 
-  bool get shouldChooseAccess => Config.hasAccessMode && !access.stable;
+  bool get canChooseAccess =>
+      Config.hasAccessMode && !access.stable && Platform.isAndroid;
 
   /// Determines is new chunk of data should be requested.
   /// True if:

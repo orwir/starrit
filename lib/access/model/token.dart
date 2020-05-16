@@ -4,6 +4,15 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 class Token {
+  static const Token none = Token._(
+    access: '',
+    type: '',
+    expires: 0,
+    scope: '',
+    refresh: '',
+    obtained: 0,
+  );
+
   final String access;
   final String type;
   final int expires;
@@ -11,31 +20,31 @@ class Token {
   final String refresh;
   final int obtained;
 
-  Token({
+  const Token._({
     @required this.access,
     @required this.type,
     @required this.expires,
     @required this.scope,
     @required this.refresh,
-    String obtained,
-  })  : this.obtained =
-            obtained ?? DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        assert(access != null),
+    @required this.obtained,
+  })  : assert(access != null),
         assert(type != null),
         assert(expires != null),
         assert(scope != null),
-        assert(refresh != null);
+        assert(refresh != null),
+        assert(obtained != null);
 
   factory Token.fromJson(String raw) {
     if (raw?.isEmpty ?? true) return null;
     final json = jsonDecode(raw);
-    return Token(
+    return Token._(
       access: json['access'],
       type: json['type'],
       expires: json['expires'],
       scope: json['scope'],
       refresh: json['refresh'],
-      obtained: json['obtained'],
+      obtained:
+          json['obtained'] ?? DateTime.now().millisecondsSinceEpoch ~/ 1000,
     );
   }
 

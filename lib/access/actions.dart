@@ -21,3 +21,9 @@ class StartAuthorization {
   @override
   String toString() => '$runtimeType';
 }
+
+@immutable
+class AuthorizationSuccess {}
+
+@immutable
+class AuthorizationFailure {}

@@ -14,7 +14,7 @@ class AccessBanner extends StatelessWidget {
         converter: (store) => store,
         builder: (context, store) => MaterialBanner(
           content: Text(
-            'To personalize your experience you can authorize. Or stay as anonymous.',
+            'To personalize your experience you can authorize. Or stay anonymous.',
           ),
           actions: [
             FlatButton(
@@ -23,8 +23,7 @@ class AccessBanner extends StatelessWidget {
             ),
             FlatButton(
               child: Text('Authorize'),
-              onPressed:
-                  null, //() => store.dispatch(StartAuthorization(_uuid.v1())),
+              onPressed: () => store.dispatch(StartAuthorization(_uuid.v1())),
             ),
           ],
         ),

@@ -22,4 +22,5 @@ enum Scope {
 
 extension ScopeExtensions on Scope {
   String get label => toString().split('.')[1];
+  String get parameter => label;
 }

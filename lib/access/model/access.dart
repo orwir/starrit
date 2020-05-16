@@ -3,7 +3,7 @@ enum Access { unspecified, revoked, authorized, anonymous }
 
 extension AccessExtensions on Access {
   /// Resolve base url for data access on Reddit.com
-  String get baseUrl => this == Access.authorized
+  String get baseUrl => this == Access.authorized || this == Access.revoked
       ? 'https://oauth.reddit.com'
       : 'https://www.reddit.com';
 
