@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/common/model/state.dart';
+import 'package:starrit/common/model/status.dart';
 import 'package:starrit/feed/model/feed.dart';
 
 @immutable

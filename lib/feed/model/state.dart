@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:starrit/common/model/state.dart';
+import 'package:starrit/common/model/status.dart';
 import 'package:starrit/common/util/object.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/model/post.dart';
@@ -29,7 +29,8 @@ class FeedState {
     this.next,
     this.exception,
   })  : assert(feed != null),
-        assert(status != null);
+        assert(status != null),
+        assert(posts != null);
 
   FeedState toLoading({bool reset = false}) => FeedState(
         feed: feed,

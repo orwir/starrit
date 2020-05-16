@@ -1,5 +1,6 @@
 import 'package:redux/redux.dart';
 import 'package:starrit/common/model/state.dart';
+import 'package:starrit/common/model/status.dart';
 import 'package:starrit/search/actions.dart';
 import 'package:starrit/search/model/state.dart';
 

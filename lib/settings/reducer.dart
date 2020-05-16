@@ -1,5 +1,6 @@
 import 'package:redux/redux.dart';
 import 'package:starrit/common/model/state.dart';
+import 'package:starrit/common/model/status.dart';
 import 'package:starrit/settings/actions.dart';
 
 final Reducer<AppState> settingsReducer = combineReducers([
@@ -17,10 +18,9 @@ AppState _loadPreferencesSuccess(
         AppState state, LoadPreferencesSuccess action) =>
     state.copyWith(
       status: StateStatus.success,
+      access: action.access,
       latestFeed: action.latestFeed,
       blurNsfw: action.blurNsfw,
-      access: action.access,
-      token: action.token,
     );
 
 AppState _loadPreferencesFailure(

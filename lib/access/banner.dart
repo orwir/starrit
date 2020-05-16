@@ -3,6 +3,9 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:starrit/access/actions.dart';
 import 'package:starrit/common/model/state.dart';
+import 'package:uuid/uuid.dart';
+
+final _uuid = Uuid();
 
 class AccessBanner extends StatelessWidget {
   @override
@@ -20,7 +23,8 @@ class AccessBanner extends StatelessWidget {
             ),
             FlatButton(
               child: Text('Authorize'),
-              onPressed: null,
+              onPressed:
+                  null, //() => store.dispatch(StartAuthorization(_uuid.v1())),
             ),
           ],
         ),

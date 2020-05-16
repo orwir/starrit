@@ -2,7 +2,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starrit/access/model/access.dart';
-import 'package:starrit/access/model/token.dart';
 import 'package:starrit/common/model/state.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/settings/actions.dart';
@@ -20,16 +19,15 @@ Stream<dynamic> _loadPreferences(
 ) {
   Future<dynamic> fetch() async {
     final prefs = await SharedPreferences.getInstance();
-    final blurNsfw = prefs.getBool(Pref.blurNsfw);
-    final latestFeed = Feed.fromJson(prefs.getString(Pref.latestFeed));
+    final blurNsfw = prefs.getBool(Pref.blurNsfw) ?? false;
+    final latestFeed = Feed.fromJson(prefs.getString(Pref.latestFeed)) ??
+        Type.home + Sort.best;
     final access = Access.values[prefs.getInt(Pref.access) ?? 0];
-    final token = Token.fromJson(prefs.getString(Pref.token));
 
     return LoadPreferencesSuccess(
-      latestFeed: latestFeed ?? Type.home + Sort.best,
-      blurNsfw: blurNsfw ?? false,
+      latestFeed: latestFeed,
+      blurNsfw: blurNsfw,
       access: access,
-      token: token,
     );
   }
 

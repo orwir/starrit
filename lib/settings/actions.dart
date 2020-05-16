@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:starrit/access/model/access.dart';
-import 'package:starrit/access/model/token.dart';
 import 'package:starrit/feed/model/feed.dart';
 
 /// Load app preferences.
@@ -17,24 +16,19 @@ class LoadPreferencesSuccess {
   /// Whether show NSFW content blurred.
   final bool blurNsfw;
 
-  /// Access status
+  /// Access status.
   final Access access;
-
-  /// Access token for authorized user.
-  final Token token;
 
   LoadPreferencesSuccess({
     @required this.latestFeed,
     @required this.blurNsfw,
     @required this.access,
-    @required this.token,
   })  : assert(latestFeed != null),
-        assert(blurNsfw != null),
-        assert(access != null);
+        assert(blurNsfw != null);
 
   @override
   String toString() =>
-      '$runtimeType { latestFeed:$latestFeed, blurNsfw:$blurNsfw, access:${access.label}, token:$token }';
+      '$runtimeType { latestFeed:$latestFeed, blurNsfw:$blurNsfw, access:${access.label} }';
 }
 
 /// Preferences loading failed.

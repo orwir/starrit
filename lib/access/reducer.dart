@@ -8,4 +8,4 @@ final Reducer<AppState> accessReducer = combineReducers([
 ]);
 
 AppState _setAnonymousAccess(AppState state, SetAnonymousAccess action) =>
-    state.copyWith(access: Access.anonymous);
+    state.copyWith(access: Access.anonymous); // TODO: remove token

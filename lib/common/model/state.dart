@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:starrit/access/model/access.dart';
-import 'package:starrit/access/model/token.dart';
 import 'package:starrit/common/config.dart';
+import 'package:starrit/common/model/status.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/model/state.dart';
 import 'package:starrit/search/model/state.dart';
@@ -12,11 +12,8 @@ class AppState {
   /// Status of global data like preferences.
   final StateStatus status;
 
-  /// Access status.
+  /// Access state
   final Access access;
-
-  /// Access token if user authorized.
-  final Token token;
 
   /// Latest visible feed to start with on app launch.
   final Feed latestFeed;
@@ -33,9 +30,8 @@ class AppState {
   AppState({
     @required this.status,
     @required this.access,
-    @required this.token,
     @required this.feeds,
-    this.search,
+    @required this.search,
     this.latestFeed,
     this.blurNsfw,
   })  : assert(status != null),
@@ -47,16 +43,14 @@ class AppState {
       : this(
           status: StateStatus.initial,
           access: Access.unspecified,
-          token: null,
-          feeds: const {},
           search: SearchState.initial,
+          feeds: const {},
           blurNsfw: false,
         );
 
   AppState copyWith({
     StateStatus status,
     Access access,
-    Token token,
     Map<Feed, FeedState> feeds,
     SearchState search,
     Feed latestFeed,
@@ -65,11 +59,10 @@ class AppState {
       AppState(
         status: status ?? this.status,
         access: access ?? this.access,
-        token: token ?? this.token,
         feeds: feeds ?? this.feeds,
-        search: search ?? this.search,
         latestFeed: latestFeed ?? this.latestFeed,
         blurNsfw: blurNsfw ?? this.blurNsfw,
+        search: search ?? this.search,
       );
 
   @override
@@ -84,19 +77,4 @@ class AppState {
         'feeds:[${feeds.values.join(',')}]',
       ].where((line) => line.isNotEmpty).join(', ') +
       ' }';
-}
-
-/// Determine status of specific state.
-enum StateStatus {
-  /// Data has never requested.
-  initial,
-
-  /// Started process of data obtaining.
-  loading,
-
-  /// Data successfully obtained.
-  success,
-
-  /// Data obtain completed with an error.
-  failure,
 }

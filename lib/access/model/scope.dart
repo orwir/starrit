@@ -19,3 +19,7 @@ enum Scope {
   wikiedit,
   wikiread,
 }
+
+extension ScopeExtensions on Scope {
+  String get label => toString().split('.')[1];
+}

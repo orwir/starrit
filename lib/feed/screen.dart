@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:starrit/access/banner.dart';
 import 'package:starrit/common/config.dart';
 import 'package:starrit/common/model/state.dart';
+import 'package:starrit/common/model/status.dart';
 import 'package:starrit/common/navigation.dart';
 import 'package:starrit/common/util/object.dart';
 import 'package:starrit/feed/actions.dart';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:starrit/common/model/state.dart';
+import 'package:starrit/common/model/status.dart';
 import 'package:starrit/common/navigation.dart';
 import 'package:starrit/feed/actions.dart';
 import 'package:starrit/feed/model/feed.dart';
@@ -27,7 +28,7 @@ class SplashScreen extends StatelessWidget {
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               Text('Something went wrong. Please try again.'),
               SizedBox(height: 16),
               RaisedButton(
