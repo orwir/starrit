@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:starrit/navigation.dart';
+import 'package:starrit/common/navigation.dart';
 import 'package:starrit/common/model/state.dart';
 import 'package:starrit/common/model/status.dart';
 import 'package:starrit/feed/model/feed.dart';

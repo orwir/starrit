@@ -1,10 +1,10 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:redux_epics/redux_epics.dart';
-import 'package:starrit/common/actions.dart';
-import 'package:starrit/common/functions.dart';
+import 'package:starrit/splash/actions.dart';
+import 'package:starrit/splash/functions.dart';
 import 'package:starrit/common/model/state.dart';
 
-final Epic<AppState> commonEpic = combineEpics([
+final Epic<AppState> splashEpic = combineEpics([
   TypedEpic<AppState, InitApplication>(_initApplication),
 ]);
 

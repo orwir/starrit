@@ -1,10 +1,10 @@
 import 'package:redux/redux.dart';
-import 'package:starrit/common/actions.dart';
 import 'package:starrit/common/model/optional.dart';
 import 'package:starrit/common/model/state.dart';
 import 'package:starrit/common/model/status.dart';
+import 'package:starrit/splash/actions.dart';
 
-final Reducer<AppState> commonReducer = combineReducers([
+final Reducer<AppState> splashReducer = combineReducers([
   TypedReducer<AppState, InitApplicationSuccess>(_initApplicationSuccess),
   TypedReducer<AppState, InitApplicationFailure>(_initApplicationFailure),
 ]);

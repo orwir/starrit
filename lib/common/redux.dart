@@ -2,10 +2,10 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:starrit/access/epic.dart';
 import 'package:starrit/access/reducer.dart';
-import 'package:starrit/common/epic.dart';
+import 'package:starrit/splash/epic.dart';
 import 'package:starrit/common/functions.dart';
 import 'package:starrit/common/model/state.dart';
-import 'package:starrit/common/reducer.dart';
+import 'package:starrit/splash/reducer.dart';
 import 'package:starrit/feed/epic.dart';
 import 'package:starrit/feed/reducer.dart';
 import 'package:starrit/search/epic.dart';
@@ -18,7 +18,7 @@ final List<Middleware<AppState>> appMiddleware = [_appEpic, logger];
 
 /// Reders collector.
 final Reducer<AppState> appReducer = combineReducers([
-  commonReducer,
+  splashReducer,
   settingsReducer,
   feedReducer,
   searchReducer,
@@ -27,7 +27,7 @@ final Reducer<AppState> appReducer = combineReducers([
 
 /// Epics collector.
 final EpicMiddleware<AppState> _appEpic = EpicMiddleware(combineEpics([
-  commonEpic,
+  splashEpic,
   settingsEpic,
   feedEpic,
   searchEpic,
