@@ -118,7 +118,7 @@ class _Header extends StatelessWidget {
         Container(
           padding: EdgeInsets.only(left: 8),
           child: Text(
-            post.created.asTimeAgo,
+            post.created.timeAgo,
             style: theme.textTheme.caption,
           ),
         ),

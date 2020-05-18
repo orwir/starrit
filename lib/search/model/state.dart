@@ -5,14 +5,21 @@ import 'package:starrit/feed/model/feed.dart';
 @immutable
 class SearchState {
   static const SearchState initial = SearchState(
-    status: StateStatus.initial,
-    suggestions: const [],
+    status: StateStatus.success,
+    suggestions: Type.values,
     sort: Sort.best,
   );
 
+  /// Current status of this state.
   final StateStatus status;
+
+  /// Suggested subreddit by query.
   final List<Type> suggestions;
+
+  /// Chosen sorting order.
   final Sort sort;
+
+  /// Error during previous request.
   final Exception exception;
 
   const SearchState({
@@ -26,7 +33,7 @@ class SearchState {
   String toString() =>
       '{ ' +
       [
-        status == StateStatus.loading ? 'loading' : '',
+        status == StateStatus.processing ? 'loading' : '',
         'suggestions:${suggestions.length}',
         'sort:$sort',
         exception == null ? '' : 'exception:$exception',

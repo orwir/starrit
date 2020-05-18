@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:starrit/common/util/object.dart';
 
-/// Represents author of a post.
+/// Post author.
 @immutable
 class Author {
-  /// User account ID. (fullname)
-  /// Null means post's author was deleted.
+  /// Account ID (fullname).
+  ///
+  /// Null means account was deleted.
   final String id;
 
-  /// User name.
+  /// Displayed name.
   final String name;
 
   Author(this.id, this.name) : assert(name != null);

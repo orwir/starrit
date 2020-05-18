@@ -17,7 +17,7 @@ AppState _loadFeedData(AppState state, LoadFeedData action) {
     action.feed: state.feeds[action.feed]?.toLoading(reset: action.reset) ??
         FeedState(
           feed: action.feed,
-          status: StateStatus.loading,
+          status: StateStatus.processing,
           posts: const [],
         ),
   });

@@ -2,69 +2,67 @@ import 'package:flutter/foundation.dart';
 import 'package:starrit/access/model/access.dart';
 import 'package:starrit/feed/model/feed.dart';
 
-/// Load app preferences.
-class LoadPreferences {
-  @override
-  String toString() => '$runtimeType';
-}
-
-/// Preferences successfully obtained.
+@immutable
 class LoadPreferencesSuccess {
-  /// Latest visible feed.
   final Feed latestFeed;
-
-  /// Whether show NSFW content blurred.
   final bool blurNsfw;
-
-  /// Access status.
   final Access access;
 
-  LoadPreferencesSuccess({
-    @required this.latestFeed,
-    @required this.blurNsfw,
-    @required this.access,
-  })  : assert(latestFeed != null),
-        assert(blurNsfw != null);
+  LoadPreferencesSuccess({this.latestFeed, this.blurNsfw, this.access});
 
   @override
   String toString() =>
-      '$runtimeType { latestFeed:$latestFeed, blurNsfw:$blurNsfw, access:${access.label} }';
+      '$runtimeType { lastestFeed:$latestFeed, blurNsfw:$blurNsfw, access:$access }';
 }
 
-/// Preferences loading failed.
+@immutable
 class LoadPreferencesFailure {
-  /// Cause of failed loading.
   final Exception exception;
 
-  LoadPreferencesFailure(this.exception) : assert(exception != null);
+  LoadPreferencesFailure(this.exception);
 
   @override
   String toString() => '$runtimeType { $exception }';
 }
 
-/// Save latest feed to preferences.
-class UpdateLatestFeed {
-  /// Latest visible feed.
-  final Feed feed;
-
-  UpdateLatestFeed(this.feed) : assert(feed != null);
-
-  @override
-  String toString() => '$runtimeType { $feed }';
-}
-
-/// Change state of Blur NSFW flag
-class UpdateBlurNsfw {
-  /// Whether show NSFW content blurred.
+@immutable
+class UpdatePreference {
   final bool blurNsfw;
+  final Feed latestFeed;
 
-  UpdateBlurNsfw(this.blurNsfw) : assert(blurNsfw != null);
+  UpdatePreference({this.blurNsfw, this.latestFeed});
 
   @override
-  String toString() => '$runtimeType { $blurNsfw }';
+  String toString() =>
+      '$runtimeType { ' +
+      [
+        blurNsfw != null ? 'blurNsfw:$blurNsfw' : '',
+        latestFeed != null ? 'latestFeed:$latestFeed' : '',
+      ].where((line) => line.isNotEmpty).join(', ') +
+      ' }';
 }
 
-class PreferencesUpdateSuccess {
+class UpdatePreferenceSuccess {
+  final bool blurNsfw;
+  final Feed latestFeed;
+
+  UpdatePreferenceSuccess({this.blurNsfw, this.latestFeed});
+
   @override
-  String toString() => '$runtimeType';
+  String toString() =>
+      '$runtimeType { ' +
+      [
+        blurNsfw != null ? 'blurNsfw:$blurNsfw' : '',
+        latestFeed != null ? 'latestFeed:$latestFeed' : '',
+      ].where((line) => line.isNotEmpty).join(', ') +
+      ' }';
+}
+
+class UpdatePreferenceFailure {
+  final Exception exception;
+
+  UpdatePreferenceFailure(this.exception) : assert(exception != null);
+
+  @override
+  String toString() => '$runtimeType { $exception }';
 }

@@ -2,16 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:starrit/common/util/json.dart';
 import 'package:starrit/common/util/object.dart';
 
-/// Information about subreddit.
+/// Subreddit information.
 @immutable
 class Subreddit {
-  /// Name of a subreddit.
   final String name;
-
-  /// Icon url.
   final String icon;
-
-  /// Banner url.
   final String banner;
 
   Subreddit({@required this.name, @required this.icon, @required this.banner});

@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:starrit/common/actions.dart';
 import 'package:starrit/common/model/state.dart';
 import 'package:starrit/common/model/status.dart';
 import 'package:starrit/common/navigation.dart';
-import 'package:starrit/feed/actions.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/screen.dart';
-import 'package:starrit/settings/actions.dart';
 
-/// Displays placeholder while app state intializing.
-/// After AppState initialized prefetches data for the first FeedScreen
-/// and then opens it.
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
         converter: _ViewModel.fromStore,
         onInitialBuild: _onStateUpdate,
         onDidChange: _onStateUpdate,
-        builder: (context, viewModel) => viewModel.stateLoadFailed
+        builder: (context, viewModel) => viewModel.initStateFailure
             ? _buildFailureView(context, viewModel)
             : _buildLoadingView(context, viewModel),
       );
@@ -29,7 +25,7 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Something went wrong. Please try again.'),
+              Text(viewModel.errorMessage),
               SizedBox(height: 16),
               RaisedButton(
                 child: Text('Retry'),
@@ -44,13 +40,7 @@ class SplashScreen extends StatelessWidget {
       Scaffold(body: Center(child: CircularProgressIndicator()));
 
   void _onStateUpdate(_ViewModel viewModel) {
-    if (viewModel.stateLoadSucceed) {
-      if (viewModel.dataPrefetched) {
-        viewModel.openFeedScreen();
-      } else if (!viewModel.dataPrefetchStarted) {
-        viewModel.prefetchFeedData();
-      }
-    }
+    if (viewModel.initStateSuccess) viewModel.openFeedScreen();
   }
 }
 
@@ -62,35 +52,19 @@ class _ViewModel {
 
   _ViewModel(this.store);
 
-  /// Whether initial state loading failed.
-  bool get stateLoadFailed => store.state.status == StateStatus.failure;
+  bool get initStateSuccess => store.state?.status == StateStatus.success;
 
-  /// Whether initial state loaded successfully.
-  bool get stateLoadSucceed => store.state.status == StateStatus.success;
+  bool get initStateFailure => store.state?.status == StateStatus.failure;
 
-  /// Latest feed stored in the preferences.
   Feed get latestFeed => store.state.latestFeed;
 
-  /// Whether data state for latest feed exists in the storage.
-  bool get dataPrefetchStarted => store.state.feeds[latestFeed] != null;
+  String get errorMessage => store.state.exception?.toString() ?? '';
 
-  /// Whether data for Feed Screen loaded. No matter successfully or not.
-  bool get dataPrefetched => [StateStatus.success, StateStatus.failure]
-      .contains(store.state.feeds[latestFeed]?.status);
+  void retry() => store.dispatch(InitApplication());
 
-  /// Try to load initial state.
-  void retry() {
-    store.dispatch(LoadPreferences());
-  }
-
-  /// Request data prefetch.
-  void prefetchFeedData() {
-    store.dispatch(LoadFeedData(latestFeed));
-  }
-
-  /// Open Feed Screen and link it with prefetched data.
   void openFeedScreen() {
-    navigatorStore.currentState.pushReplacement(
-        MaterialPageRoute(builder: (context) => FeedScreen(latestFeed)));
+    Nav.state.pushReplacement(
+      MaterialPageRoute(builder: (context) => FeedScreen(latestFeed)),
+    );
   }
 }

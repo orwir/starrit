@@ -6,10 +6,9 @@ import 'package:uuid/uuid.dart';
 
 final _uuid = Uuid();
 
-/// Representation of a reddit feed.
 @immutable
 class Feed {
-  /// Unique ID for linking Data State with UI.
+  /// Unique ID to bind State with UI.
   final String id;
 
   /// Subreddit or general thread.
@@ -47,6 +46,7 @@ class Feed {
           sort == other.sort;
 }
 
+/// Contains name of a subreddit.
 @immutable
 class Type {
   static const home = Type._('');
@@ -59,7 +59,8 @@ class Type {
     Type.all,
   ];
 
-  const Type.subreddit(String path) : this._('/r/$path');
+  static Type subreddit(String path) => Type._('/r/$path');
+
   const Type._(this.path) : assert(path != null);
 
   final String path;
@@ -80,6 +81,7 @@ class Type {
       other is Type && runtimeType == other.runtimeType && path == other.path;
 }
 
+/// Contains sorting order.
 @immutable
 class Sort {
   static const best = Sort._('/best');

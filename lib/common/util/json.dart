@@ -1,6 +1,10 @@
 import 'object.dart';
 
 extension JsonMap on Map<String, dynamic> {
+  /// Obtains string value by [path].
+  ///
+  /// Returns null if value not found or it doesn't contains any 'word char'
+  /// and [nonBlank] is true.
   String string(String key, {bool nonBlank = true}) {
     bool isNotBlank(String value) {
       return !nonBlank || value.trim().isNotEmpty;
@@ -9,9 +13,16 @@ extension JsonMap on Map<String, dynamic> {
     return get<String>(key)?.takeIf(isNotBlank);
   }
 
-  T get<T>(String key, {T def}) {
+  /// Obtains value from json by path.
+  ///
+  /// [path] - sequence of keys separated by dot.
+  /// Can access arrays with [#] syntax.
+  /// E.q.: `preview.images[0].resolutions[0]`
+  ///
+  /// [def] - optional default value if value is not present.
+  T get<T>(String path, {T def}) {
     Object element = this;
-    for (var segment in key.split('.')) {
+    for (var segment in path.split('.')) {
       var index = -1;
       if (segment[segment.length - 1] == ']') {
         index = int.parse(segment[segment.length - 2]);

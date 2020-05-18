@@ -19,9 +19,8 @@ import 'package:starrit/settings/actions.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:starrit/access/model/access.dart';
 
-/// Displays feed data.
 class FeedScreen extends StatelessWidget {
-  /// Specific feed to show data for.
+  /// Shows data for this feed.
   final Feed feed;
 
   final ScrollController _scrollController = ScrollController();
@@ -79,7 +78,7 @@ class FeedScreen extends StatelessWidget {
   Widget _item(BuildContext context, _ViewModel viewModel, int index) {
     if (viewModel.shouldLoad(index)) viewModel.load();
 
-    if (viewModel.canChooseAccess && index == 0) {
+    if (viewModel.maybeUpdateAccess && index == 0) {
       return AccessBanner();
     }
     if (index < viewModel.postCount) {
@@ -111,17 +110,16 @@ class FeedScreen extends StatelessWidget {
 
 @immutable
 class _ViewModel {
-  /// Determines how many items left unseen before request new chunk.
+  /// Determines how many items may left unseen before request new chunk.
   static const loadThreshold = 10;
 
   /// Redux-store.
   final Store<AppState> store;
 
-  /// Feed metadata.
+  /// Data belongs to this feed.
   final Feed feed;
 
-  /// Current feed state.
-  /// Might be null.
+  /// Current feed state. Nullable.
   final FeedState state;
 
   /// Access status.
@@ -149,18 +147,21 @@ class _ViewModel {
         blurNsfw: store.state.blurNsfw,
       );
 
-  /// Whether data is loading.
-  bool get loading => state?.status == StateStatus.loading;
+  /// Whether new chunk of data is loading.
+  bool get loading => state?.status == StateStatus.processing;
 
-  /// Feed posts.
+  /// Collection of posts.
   List<Post> get posts => state?.posts ?? const [];
 
-  /// Total number of items loaded.
+  /// Real number of posts.
   int get postCount => state?.posts?.length ?? 0;
 
-  /// Total number of items loaded + virtual items.
+  /// Returns number of posts + virtual items.
+  ///
+  /// * +1 if shows access banner.
+  /// * +1 if shows error or progress bar.
   int get itemCount =>
-      postCount + ((hasError || loading) ? 1 : 0) + (canChooseAccess ? 1 : 0);
+      postCount + ((hasError || loading) ? 1 : 0) + (maybeUpdateAccess ? 1 : 0);
 
   /// ID to get next chunk of data.
   String get next => state?.next;
@@ -171,19 +172,20 @@ class _ViewModel {
   /// Error message if applicable.
   String get errorMessage => state?.exception?.toString() ?? '';
 
-  bool get canChooseAccess =>
-      Config.hasAccessMode && !access.stable && Platform.isAndroid;
+  bool get maybeUpdateAccess =>
+      Config.supportAuthorization && !access.stable && Platform.isAndroid;
 
-  /// Determines is new chunk of data should be requested.
-  /// True if:
-  /// * no [FeedState] found
-  /// * Unseen items count is less than [loadThreshold] and not in a loading or failure state.
+  /// Whether new chunk of data shoulddd be requested.
+  ///
+  /// Valid reasons:
+  /// * No [FeedState] found for this [Feed].
+  /// * Unseen items count is less than [loadThreshold] and not in a processing or failure state.
   bool shouldLoad(int position) {
     return state == null ||
         (position > postCount - loadThreshold && !loading && !hasError);
   }
 
-  /// Request new chunk of data.
+  /// Requests new chunk of data.
   void load({bool reset = false}) {
     if (!loading) {
       store.dispatch(LoadFeedData(
@@ -195,18 +197,19 @@ class _ViewModel {
   }
 
   /// On / Off NFSW content blur.
-  void toggleBlurNsfw() => store.dispatch(UpdateBlurNsfw(!blurNsfw));
+  void toggleBlurNsfw() =>
+      store.dispatch(UpdatePreference(blurNsfw: !blurNsfw));
 
+  /// Updates latest feed when parent Screen comes to foreground.
   void updateLatestFeed(VisibilityInfo info) {
     if (info.visibleFraction == 1) {
-      store.dispatch(UpdateLatestFeed(feed));
+      store.dispatch(UpdatePreference(latestFeed: feed));
     }
   }
 
   /// Opens Search Screen.
   void openSearchScreen() {
-    navigatorStore.currentState
-        .push(MaterialPageRoute(builder: (context) => SearchScreen()));
+    Nav.state.push(MaterialPageRoute(builder: (context) => SearchScreen()));
   }
 
   @override

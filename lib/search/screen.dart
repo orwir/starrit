@@ -11,7 +11,6 @@ import 'package:starrit/search/actions.dart';
 class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
-        onInit: (store) => store.dispatch(LoadSuggestions('')),
         onDispose: (store) => store.dispatch(DisposeSearchData()),
         converter: _ViewModel.fromStore,
         builder: (context, viewModel) => Scaffold(
@@ -58,12 +57,13 @@ class _ViewModel {
   Sort get sort => store.state.search.sort;
   set sort(Sort value) => store.dispatch(UpdateSort(value));
   List<Type> get suggestions => store.state.search.suggestions;
-  bool get loading => store.state.search.status == StateStatus.loading;
+  bool get loading => store.state.search.status == StateStatus.processing;
 
   void search(String query) => store.dispatch(LoadSuggestions(query));
 
   void openFeedScreen(Type type, Sort sort) async {
-    navigatorStore.currentState.pushReplacement(
-        MaterialPageRoute(builder: (context) => FeedScreen(type + sort)));
+    Nav.state.pushReplacement(
+      MaterialPageRoute(builder: (context) => FeedScreen(type + sort)),
+    );
   }
 }

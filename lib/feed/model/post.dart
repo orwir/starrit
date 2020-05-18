@@ -10,10 +10,10 @@ import 'image.dart';
 /// Type of a post content.
 enum PostType { image, gif, video, text, link }
 
-/// Keeps information about post.
+/// Post information.
 @immutable
 class Post {
-  /// ID (fullname)
+  /// ID (fullname).
   final String id;
 
   /// Parent subreddit.
@@ -28,7 +28,7 @@ class Post {
   /// Title.
   final String title;
 
-  /// Whether post content for adult-only.
+  /// Whether post content marked as adults-only.
   final bool nsfw;
 
   /// Whether post marked as spoiler.
@@ -58,7 +58,7 @@ class Post {
   /// Type of post's content.
   final PostType type;
 
-  /// Post images holder.
+  /// Post images.
   final PostImage image;
 
   /// If post is textual contains data.
@@ -121,7 +121,6 @@ class Post {
         return _imageExtensions.any(uri.path.endsWith);
       },
     );
-
     var type = PostType.link;
     if (video != null) {
       type = PostType.video;

@@ -4,14 +4,14 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 class Token {
-  static const Token none = Token._(
-    access: '',
-    type: '',
-    expires: 0,
-    scope: '',
-    refresh: '',
-    obtained: 0,
-  );
+  // static const Token none = Token._(
+  //   access: '',
+  //   type: '',
+  //   expires: 0,
+  //   scope: '',
+  //   refresh: '',
+  //   obtained: 0,
+  // );
 
   final String access;
   final String type;

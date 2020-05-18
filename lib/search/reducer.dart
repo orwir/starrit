@@ -15,7 +15,7 @@ final Reducer<AppState> searchReducer = combineReducers([
 AppState _loadSuggestions(AppState state, LoadSuggestions action) =>
     state.copyWith(
       search: SearchState(
-        status: StateStatus.loading,
+        status: StateStatus.processing,
         suggestions: state.search.suggestions,
         sort: state.search.sort,
       ),

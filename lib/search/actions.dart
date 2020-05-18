@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:starrit/feed/model/feed.dart';
 
-/// Load feed path suggestions by query.
-/// If query length is less than 3 default (general) paths will be returned.
+/// Request suggestion.
 @immutable
 class LoadSuggestions {
+  /// keyword for lookup.
   final String query;
 
   LoadSuggestions(this.query) : assert(query != null);
@@ -13,7 +13,7 @@ class LoadSuggestions {
   String toString() => '$runtimeType { $query }';
 }
 
-/// Successful response with a piece of requested feed data.
+/// Successful response with relevant suggestions.
 @immutable
 class LoadSuggestionsSuccess {
   final List<Type> suggestions;
@@ -24,7 +24,7 @@ class LoadSuggestionsSuccess {
   String toString() => '$runtimeType { ${suggestions.length} }';
 }
 
-/// Unsuccessful reponse with the cause of an error.
+/// Unsuccessful reponse.
 @immutable
 class LoadSuggestionsFailure {
   final Exception exception;
@@ -35,7 +35,7 @@ class LoadSuggestionsFailure {
   String toString() => '$runtimeType { $exception }';
 }
 
-/// Update sorting order.
+/// Update for sorting order.
 @immutable
 class UpdateSort {
   final Sort sort;
@@ -46,8 +46,7 @@ class UpdateSort {
   String toString() => '$runtimeType { $sort }';
 }
 
-/// Request to delete data from the storage.
-/// Occurs when Feed Screen is closed.
+/// Restores initial [SearchState].
 @immutable
 class DisposeSearchData {
   @override

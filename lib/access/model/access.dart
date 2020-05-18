@@ -1,5 +1,19 @@
-/// Determine access state of user.
-enum Access { unspecified, revoked, authorized, anonymous }
+/// Determine access status.
+enum Access {
+  ///  A user hasn't made a decision yet or app
+  /// doesn't support authorization functionality:
+  /// [Config.supportAuthorization] == false.
+  unspecified,
+
+  /// A user passed authorization but for a reason nullified it.
+  revoked,
+
+  /// A user successfully authorized and has a valid auth token.
+  authorized,
+
+  /// A user made a decision to stay anonymous.
+  anonymous,
+}
 
 extension AccessExtensions on Access {
   /// Resolve base url for data access on Reddit.com

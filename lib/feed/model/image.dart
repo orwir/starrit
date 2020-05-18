@@ -1,24 +1,26 @@
 import 'package:flutter/foundation.dart';
 import 'package:starrit/common/util/object.dart';
 
-/// Container for posts images.
-/// Keeps high & low res versions with the size of hi-rez image.
-/// For nsfw/spoiler content contains blurred version.
+/// Post images container.
+///
+/// Keeps [preview], [source], [blurred] version as well a size of a hi-rez image.
 @immutable
 class PostImage {
-  /// Width of hi-rez image.
+  /// Source image width.
   final int width;
 
-  /// Height of hi-rez image.
+  /// Source image height.
   final int height;
 
-  /// Hi-rez image.
+  /// Original (hi-rez) image.
   final String source;
 
   /// Low-rez image.
   final String preview;
 
-  /// Blurred version of NSFW/spoiler image.
+  /// Blurred image.
+  ///
+  /// Non-null if the post marked as NSFW/SPOILER.
   final String blurred;
 
   PostImage({
@@ -34,10 +36,10 @@ class PostImage {
 
   @override
   String toString() =>
-      '{ source:$source, size:${width}x$height, preview:$preview, blurred:$blurred }';
+      '{ source:$source${hasSize ? ', size:${width}x$height' : ''}, preview:$preview, blurred:$blurred }';
 
   @override
-  int get hashCode => hash([width, height, source, preview, blurred]);
+  int get hashCode => hash([source, width, height, preview, blurred]);
 
   @override
   bool operator ==(Object other) =>
@@ -45,8 +47,8 @@ class PostImage {
       other is PostImage &&
           runtimeType == other.runtimeType &&
           source == other.source &&
-          preview == other.preview &&
-          blurred == other.blurred &&
           width == other.width &&
-          height == other.height;
+          height == other.height &&
+          preview == other.preview &&
+          blurred == other.blurred;
 }

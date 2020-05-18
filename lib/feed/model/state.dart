@@ -10,16 +10,16 @@ class FeedState {
   /// Feed metadata.
   final Feed feed;
 
-  /// Current status of data obtaining process.
+  /// Current status of this state.
   final StateStatus status;
 
-  /// Page of requested data.
+  /// Collection of posts.
   final List<Post> posts;
 
-  /// ID to get next chunk of data.
+  /// ID to start with to obtain next chunk of posts.
   final String next;
 
-  /// Error information.
+  /// Error information if prev action was unsuccessful.
   final Exception exception;
 
   FeedState({
@@ -34,8 +34,8 @@ class FeedState {
 
   FeedState toLoading({bool reset = false}) => FeedState(
         feed: feed,
-        status: StateStatus.loading,
-        posts: reset ? const [] : posts,
+        status: StateStatus.processing,
+        posts: reset ? [] : posts,
         next: reset ? null : next,
       );
 
@@ -48,7 +48,7 @@ class FeedState {
 
   FeedState toFailure(Exception exception) => FeedState(
         feed: feed,
-        status: StateStatus.success,
+        status: StateStatus.failure,
         exception: exception,
         posts: posts,
         next: next,
@@ -59,7 +59,7 @@ class FeedState {
       '{ ' +
       [
         'feed:$feed',
-        status == StateStatus.loading ? 'loading' : '',
+        status == StateStatus.processing ? 'loading' : '',
         next == null ? '' : 'next:$next',
         'posts:${posts.length}',
         exception == null ? '' : 'exception:$exception',

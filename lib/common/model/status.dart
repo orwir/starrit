@@ -1,14 +1,11 @@
-/// Determine status of specific state.
+/// Determines status of a state.
 enum StateStatus {
-  /// Data has never requested.
-  initial,
+  /// Loading, waiting, doing something.
+  processing,
 
-  /// Started process of data obtaining.
-  loading,
-
-  /// Data successfully obtained.
+  /// Process successfully completed.
   success,
 
-  /// Data obtain completed with an error.
+  /// Process completed with an error.
   failure,
 }
