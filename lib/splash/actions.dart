@@ -15,7 +15,7 @@ class InitApplicationSuccess {
   /// Access status.
   final Access access;
 
-  /// If authorized contains token.
+  /// Contains authorization token if user authorized.
   final AuthState auth;
 
   /// Whether show NSFW content blurred.

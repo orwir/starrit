@@ -12,15 +12,17 @@ final Reducer<AppState> splashReducer = combineReducers([
 AppState _initApplicationSuccess(
         AppState state, InitApplicationSuccess action) =>
     state.copyWith(
-        status: StateStatus.success,
-        access: action.access,
-        auth: action.auth?.optional,
-        blurNsfw: action.blurNsfw,
-        latestFeed: action.feed,
-        feeds: {
-          ...state.feeds,
-          action.feed: action.feedState,
-        });
+      status: StateStatus.success,
+      access: action.access,
+      auth: action.auth?.optional,
+      blurNsfw: action.blurNsfw,
+      latestFeed: action.feed,
+      feeds: {
+        ...state.feeds,
+        action.feed: action.feedState,
+      },
+      exception: Optional(null),
+    );
 
 AppState _initApplicationFailure(
         AppState state, InitApplicationFailure action) =>
