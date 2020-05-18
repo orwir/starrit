@@ -11,6 +11,15 @@ import 'package:starrit/search/model/state.dart';
 /// Snapshot of the data used across the App.
 @immutable
 class AppState {
+  static AppState initial = AppState(
+    status: StateStatus.processing,
+    access: Access.unspecified,
+    latestFeed: Type.home + Sort.best,
+    blurNsfw: false,
+    feeds: const {},
+    search: SearchState.initial,
+  );
+
   /// Current status of this state.
   final StateStatus status;
 
@@ -62,16 +71,6 @@ class AppState {
         assert(blurNsfw != null),
         assert(feeds != null),
         assert(search != null);
-
-  AppState.initial()
-      : this(
-          status: StateStatus.processing,
-          access: Access.unspecified,
-          latestFeed: Type.home + Sort.best,
-          blurNsfw: false,
-          feeds: const {},
-          search: SearchState.initial,
-        );
 
   AppState copyWith({
     StateStatus status,
