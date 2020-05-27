@@ -15,8 +15,18 @@ Stream<dynamic> _loadData(Stream<dynamic> actions, EpicStore<AppState> store) {
             (action is DisposeFeedData && action.feed == request.feed),
       );
 
-  Stream<dynamic> invoke(LoadFeedData request) =>
-      loadFeedData(request, store.state.access)
+  Stream<dynamic> invoke(LoadFeedData request) => loadFeedChunk(
+        request.feed,
+        store.state.access,
+        after: request.after,
+        token: null, //store.state.auth?.token,
+      )
+          .then((value) => LoadFeedDataSuccess(
+                request.feed,
+                value.posts,
+                value.next,
+              ))
+          .catchError((error) => LoadFeedDataFailure(request.feed, error))
           .asStream()
           .takeUntil(dispose(request));
 

@@ -1,12 +1,6 @@
 import 'package:flutter/foundation.dart';
 
 @immutable
-class AccessUpdateSuccess {
-  @override
-  String toString() => '$runtimeType';
-}
-
-@immutable
 class SetAnonymousAccess {
   @override
   String toString() => '$runtimeType';
@@ -22,8 +16,14 @@ class StartAuthorization {
   String toString() => '$runtimeType';
 }
 
-@immutable
-class AuthorizationSuccess {}
+// @immutable
+// class AccessUpdateSuccess {
+//   @override
+//   String toString() => '$runtimeType';
+// }
 
-@immutable
-class AuthorizationFailure {}
+// @immutable
+// class AuthorizationSuccess {}
+
+// @immutable
+// class AuthorizationFailure {}

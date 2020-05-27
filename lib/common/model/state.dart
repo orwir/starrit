@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:starrit/access/model/access.dart';
 import 'package:starrit/access/model/state.dart';
-import 'package:starrit/common/config.dart';
+import 'package:starrit/access/model/token.dart';
 import 'package:starrit/common/model/optional.dart';
 import 'package:starrit/common/model/status.dart';
+import 'package:starrit/env.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/model/state.dart';
 import 'package:starrit/search/model/state.dart';
@@ -24,17 +25,12 @@ class AppState {
   final StateStatus status;
 
   /// Access type.
-  ///
-  /// States:
-  /// * [Access.unspecified] - a user hasn't made a decision yet or
-  ///   app doesn't support authorization functionality -
-  ///   [Config.supportAuthorization] == false.
-  /// * [Access.anonymous] - a user made a decision to stay anonymous.
-  /// * [Access.authorized] - a user passed authorization process
-  ///   and has valid auth token.
-  /// * [Access.revoked] - a user passed authorization but
-  ///   for a reason nullified it.
   final Access access;
+
+  /// Authorization token.
+  ///
+  /// Should be non-null if [access] is [Access.authorized] or [Access.revoked].
+  final Token token;
 
   /// Whether blur NSFW images and video previews.
   final bool blurNsfw;
@@ -64,6 +60,7 @@ class AppState {
     @required this.blurNsfw,
     @required this.feeds,
     @required this.search,
+    this.token,
     this.auth,
     this.exception,
   })  : assert(access != null),

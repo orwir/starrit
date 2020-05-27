@@ -17,6 +17,8 @@ Stream<dynamic> _loadSuggestions(
 
   Stream<dynamic> invoke(LoadSuggestions request) =>
       loadSuggestions(request, store.state.access)
+          .then((value) => LoadSuggestionsSuccess(value))
+          .catchError((error) => LoadSuggestionsFailure(error))
           .asStream()
           .takeUntil(dispose);
 

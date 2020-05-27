@@ -3,6 +3,7 @@ import 'package:starrit/access/model/access.dart';
 import 'package:starrit/access/model/state.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/model/state.dart';
+import 'package:starrit/splash/model/initial.dart';
 
 @immutable
 class InitApplication {
@@ -12,42 +13,26 @@ class InitApplication {
 
 @immutable
 class InitApplicationSuccess {
-  /// Access status.
-  final Access access;
+  final Initial _data;
 
-  /// Contains authorization token if user authorized.
-  final AuthState auth;
+  InitApplicationSuccess(this._data);
 
-  /// Whether show NSFW content blurred.
-  final bool blurNsfw;
-
-  /// Latest visible feed.
-  final Feed feed;
-
-  /// Prefetched latest feed data.
-  final FeedState feedState;
-
-  InitApplicationSuccess({
-    this.access,
-    this.auth,
-    this.blurNsfw,
-    this.feed,
-    this.feedState,
-  })  : assert(feed != null),
-        assert(blurNsfw != null),
-        assert(access != null),
-        assert(feedState != null);
+  Access get access => _data.access;
+  AuthState get auth => _data.auth;
+  bool get blurNsfw => _data.blurNsfw;
+  Feed get feed => _data.feed.feed;
+  FeedState get feedState => _data.feed;
 
   @override
-  String toString() => '$runtimeType';
+  String toString() => '$runtimeType { $_data }';
 }
 
 @immutable
 class InitApplicationFailure {
   final Exception exception;
 
-  InitApplicationFailure(this.exception) : assert(exception != null);
+  InitApplicationFailure(this.exception);
 
   @override
-  String toString() => '$runtimeType';
+  String toString() => '$runtimeType { $exception }';
 }

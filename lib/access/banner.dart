@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:starrit/access/actions.dart';
+import 'package:starrit/access/thunks.dart';
 import 'package:starrit/common/model/state.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,11 +19,11 @@ class AccessBanner extends StatelessWidget {
           actions: [
             FlatButton(
               child: Text('Anonymous'),
-              onPressed: () => store.dispatch(SetAnonymousAccess()),
+              onPressed: () => store.dispatch(setAnonymousAccess()),
             ),
             FlatButton(
               child: Text('Authorize'),
-              onPressed: () => store.dispatch(StartAuthorization(_uuid.v1())),
+              onPressed: () => store.dispatch(startAuthorization(_uuid.v1())),
             ),
           ],
         ),

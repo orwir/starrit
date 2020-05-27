@@ -1,42 +1,40 @@
+import 'dart:async';
+
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:starrit/common/util/object.dart';
 import 'package:starrit/access/model/access.dart';
+import 'package:starrit/common/util/object.dart';
 import 'package:starrit/feed/model/feed.dart';
-import 'package:starrit/settings/actions.dart';
-import 'package:starrit/settings/model/pref.dart';
+import 'package:starrit/settings/key.dart';
+import 'package:starrit/settings/model/preferences.dart';
 
-Future<dynamic> loadPreferences() async {
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final blurNsfw = prefs.getBool(Pref.blurNsfw);
-    final latestFeed = Feed.fromJson(prefs.getString(Pref.latestFeed));
-    final access = prefs.getInt(Pref.access)?.into((i) => Access.values[i]);
+/// Load saved data from [SharedPreferences].
+Future<Preferences> loadPreferences() async {
+  final prefs = await SharedPreferences.getInstance();
+  final blurNsfw = prefs.getBool(Pref.blurNsfw);
+  final latestFeed = Feed.fromJson(prefs.getString(Pref.latestFeed));
+  final access = prefs.getInt(Pref.access)?.into((i) => Access.values[i]);
 
-    return LoadPreferencesSuccess(
-      latestFeed: latestFeed,
-      blurNsfw: blurNsfw,
-      access: access,
-    );
-  } on Exception catch (e) {
-    return LoadPreferencesFailure(e);
-  }
+  return Preferences(
+    latestFeed: latestFeed,
+    blurNsfw: blurNsfw,
+    access: access,
+  );
 }
 
-Future<dynamic> updatePreference(UpdatePreference update) async {
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    if (update.blurNsfw != null) {
-      await prefs.setBool(Pref.blurNsfw, update.blurNsfw);
-    }
-    if (update.latestFeed != null) {
-      await prefs.setString(Pref.latestFeed, update.latestFeed.toJson());
-    }
+/// Save new value into [SharedPreferences].
+Future<void> saveBlurNsfw(bool blurNsfw) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool(Pref.blurNsfw, blurNsfw);
+}
 
-    return UpdatePreferenceSuccess(
-      latestFeed: update.latestFeed,
-      blurNsfw: update.blurNsfw,
-    );
-  } on Exception catch (e) {
-    return UpdatePreferenceFailure(e);
-  }
+/// Save new value into [SharedPreferences].
+Future<void> saveLatestFeed(Feed feed) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(Pref.latestFeed, feed.toJson());
+}
+
+/// Save new value into [SharedPreferences].
+Future<void> saveAccess(Access access) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt(Pref.access, access.index);
 }

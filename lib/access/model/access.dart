@@ -1,3 +1,5 @@
+import 'package:starrit/env.dart';
+
 /// Determine access status.
 enum Access {
   ///  A user hasn't made a decision yet or app
@@ -17,9 +19,9 @@ enum Access {
 
 extension AccessExtensions on Access {
   /// Resolve base url for data access on Reddit.com
-  String get baseUrl => this == Access.authorized || this == Access.revoked
-      ? 'https://oauth.reddit.com'
-      : 'https://www.reddit.com';
+  String get baseUrl => this == Access.authorized
+      ? Config.baseUrlAuthorized
+      : Config.baseUrlAnonymous;
 
   /// Whether user state is stable (authorized or anonymous).
   bool get stable => this == Access.authorized || this == Access.anonymous;

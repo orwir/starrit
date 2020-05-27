@@ -14,7 +14,7 @@ AppState _initApplicationSuccess(
     state.copyWith(
       status: StateStatus.success,
       access: action.access,
-      auth: action.auth?.optional,
+      auth: Optional(action.auth),
       blurNsfw: action.blurNsfw,
       latestFeed: action.feed,
       feeds: {

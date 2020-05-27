@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:starrit/access/banner.dart';
-import 'package:starrit/common/config.dart';
 import 'package:starrit/common/navigation.dart';
 import 'package:starrit/common/model/state.dart';
 import 'package:starrit/common/model/status.dart';
 import 'package:starrit/common/util/object.dart';
+import 'package:starrit/env.dart';
 import 'package:starrit/feed/actions.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/model/post.dart';
 import 'package:starrit/feed/model/state.dart';
 import 'package:starrit/feed/widget/post.dart';
 import 'package:starrit/search/screen.dart';
-import 'package:starrit/settings/actions.dart';
+import 'package:starrit/settings/thunks.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:starrit/access/model/access.dart';
 
@@ -40,7 +40,7 @@ class FeedScreen extends StatelessWidget {
         },
         builder: (context, viewModel) => VisibilityDetector(
           key: ObjectKey(feed),
-          onVisibilityChanged: viewModel.updateLatestFeed,
+          onVisibilityChanged: viewModel.changeLatestFeed,
           child: Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -197,14 +197,11 @@ class _ViewModel {
   }
 
   /// On / Off NFSW content blur.
-  void toggleBlurNsfw() =>
-      store.dispatch(UpdatePreference(blurNsfw: !blurNsfw));
+  void toggleBlurNsfw() => store.dispatch(updateBlurNsfw(!blurNsfw));
 
   /// Updates latest feed when parent Screen comes to foreground.
-  void updateLatestFeed(VisibilityInfo info) {
-    if (info.visibleFraction == 1) {
-      store.dispatch(UpdatePreference(latestFeed: feed));
-    }
+  void changeLatestFeed(VisibilityInfo info) {
+    if (info.visibleFraction == 1) store.dispatch(updateLatestFeed(feed));
   }
 
   /// Opens Search Screen.
