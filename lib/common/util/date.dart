@@ -20,7 +20,9 @@ extension TimeAgo on DateTime {
 
     if (diff.inDays < 1) return '${diff.inHours}h ago';
 
-    if (diff.inDays == 1) return 'yesterday at $hour:$minute';
+    if (diff.inDays == 1) {
+      return 'yesterday at ${hour.toString().padLeft(2, '0')}:$minute';
+    }
 
     if (year == now.year) return _thisYear.format(this);
 

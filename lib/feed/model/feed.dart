@@ -2,75 +2,100 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:starrit/common/util/object.dart';
+import 'package:starrit/feed/model/post.dart';
 import 'package:uuid/uuid.dart';
 
+/// Generator of unqiue ids to separate similar feeds.
 final _uuid = Uuid();
 
+/// Feed representation.
 @immutable
 class Feed {
-  /// Unique ID to bind State with UI.
-  final String id;
+  /// Metadata ID to make Feed unique even if type and sort are the same.
+  final String _id;
 
-  /// Subreddit or general thread.
-  final Type type;
+  /// Type of the feed (home, all, subreddit, etc).
+  final FeedType type;
 
-  /// Sorting order.
-  final Sort sort;
+  /// Sort order of the feed.
+  final FeedSort sort;
 
   Feed(this.type, this.sort)
-      : id = _uuid.v1(),
-        assert(type != null),
-        assert(sort != null);
+      : assert(type != null),
+        assert(sort != null),
+        _id = _uuid.v1();
 
   factory Feed.fromJson(String raw) {
     if (raw?.isEmpty ?? true) return null;
     final json = jsonDecode(raw);
-    return Feed(Type._(json['type']), Sort._(json['sort']));
+    return Feed(
+      FeedType._fromJson(json['type']),
+      FeedSort._(json['sort']),
+    );
   }
 
-  String toJson() => '{ "type": "$type", "sort": "$sort" }';
+  String toJson() => '{ "type": "${type.path}", "sort": "${sort.path}" }';
+
+  String get path => '${type.path}${sort.path}';
 
   @override
   String toString() => '$type$sort';
 
   @override
-  int get hashCode => hash([id, type, sort]);
+  int get hashCode => hash([_id, type, sort]);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Feed &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          _id == other._id &&
           type == other.type &&
           sort == other.sort;
 }
 
-/// Contains name of a subreddit.
+/// Enum-like wrapper representation of path part of the subreddit for [Feed].
 @immutable
-class Type {
-  static const home = Type._('');
-  static const popular = Type._('/r/popular');
-  static const all = Type._('/r/all');
+class FeedType {
+  /// Main page. Exactly as open reddit.com
+  static const home = FeedType._('', '/home');
 
-  static const Iterable<Type> values = [
-    Type.home,
-    Type.popular,
-    Type.all,
+  /// Popular subreddit.
+  static const popular = FeedType._('/r/popular');
+
+  /// 'All' subreddit.
+  static const all = FeedType._('/r/all');
+
+  /// Specified by [path] subreddit.
+  static FeedType subreddit(String path) => FeedType._('/r/$path');
+
+  /// Enum-like collection of predefined subreddits.
+  static const Iterable<FeedType> values = [
+    FeedType.home,
+    FeedType.popular,
+    FeedType.all,
   ];
 
-  static Type subreddit(String path) => Type._('/r/$path');
-
-  const Type._(this.path) : assert(path != null);
-
+  /// Path part of a URI to get feed data.
   final String path;
 
-  String get label => this == Type.home ? '/home' : toString();
+  /// Text to display on UI.
+  final String label;
 
-  Feed operator +(Sort sort) => Feed(this, sort);
+  const FeedType._(this.path, [String label])
+      : assert(path != null),
+        this.label = label ?? path;
+
+  factory FeedType._fromJson(String raw) {
+    assert(raw != null);
+    for (final type in FeedType.values) {
+      if (type.path == raw) return type;
+    }
+    return FeedType._(raw);
+  }
 
   @override
-  String toString() => path;
+  String toString() => label;
 
   @override
   int get hashCode => hash([path]);
@@ -78,38 +103,41 @@ class Type {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Type && runtimeType == other.runtimeType && path == other.path;
+      other is FeedType &&
+          runtimeType == other.runtimeType &&
+          path == other.path;
 }
 
-/// Contains sorting order.
+/// Enum-like representation of sorting order for [Feed].
 @immutable
-class Sort {
-  static const best = Sort._('/best');
-  static const hot = Sort._('/hot');
-  static const newest = Sort._('/new');
-  static const top = Sort._('/top');
-  static const rising = Sort._('/rising');
-  static const controversial = Sort._('/controversial');
+class FeedSort {
+  static const best = FeedSort._('/best');
+  static const hot = FeedSort._('/hot');
+  static const newest = FeedSort._('/new');
+  static const top = FeedSort._('/top');
+  static const rising = FeedSort._('/rising');
+  static const controversial = FeedSort._('/controversial');
 
-  static const Iterable<Sort> values = [
-    Sort.best,
-    Sort.hot,
-    Sort.newest,
-    Sort.top,
-    Sort.rising,
+  /// Enum-like collection of predefined sort orders.
+  static const Iterable<FeedSort> values = [
+    FeedSort.best,
+    FeedSort.hot,
+    FeedSort.newest,
+    FeedSort.top,
+    FeedSort.rising,
     //Sort.controversial,
   ];
 
-  const Sort._(this.path);
+  /// Path part of a URI to get feed data.
+  final String path;
 
-  final path;
+  const FeedSort._(this.path);
 
-  String get label => toString();
-
-  Feed operator +(Type type) => Feed(type, this);
+  /// Text to display on UI.
+  String get label => path;
 
   @override
-  String toString() => path;
+  String toString() => label;
 
   @override
   int get hashCode => hash([path]);
@@ -117,5 +145,19 @@ class Sort {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Type && runtimeType == other.runtimeType && path == other.path;
+      other is FeedSort &&
+          runtimeType == other.runtimeType &&
+          path == other.path;
+}
+
+/// A single page of feed data.
+@immutable
+class FeedChunk {
+  /// Posts.
+  final List<Post> posts;
+
+  /// ID to request next chunk of data.
+  final String next;
+
+  FeedChunk(this.posts, this.next);
 }

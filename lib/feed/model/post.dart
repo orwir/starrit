@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:starrit/common/util/json.dart';
 import 'package:starrit/common/util/object.dart';
-import 'subreddit.dart';
-import 'author.dart';
-import 'image.dart';
+import 'package:starrit/feed/model/author.dart';
+import 'package:starrit/feed/model/image.dart';
+import 'package:starrit/feed/model/subreddit.dart';
 
 /// Type of a post content.
 enum PostType { image, gif, video, text, link }
@@ -96,8 +96,10 @@ class Post {
     this.raw,
   })  : assert(id != null),
         assert(subreddit != null),
+        assert(author != null),
         assert(created != null),
         assert(title != null),
+        assert(nsfw != null),
         assert(spoiler != null),
         assert(comments != null),
         assert(score != null),
@@ -112,15 +114,13 @@ class Post {
     final String domain = json['domain'];
     final bool selfDomain = domain.startsWith('self.');
     final String url = json['url'];
-    final text = json.string('selftext') ?? json.string('selftext_html');
-    final gif = url.takeIf((String url) => url.endsWith('.gif'));
+    final text = json.string('selftext_html') ?? json.string('selftext');
+    final gif = url.takeIf((url) => url.endsWith('.gif'));
     final video = _extractVideo(json, domain, url);
-    final image = url.takeIf(
-      (String url) {
-        final Uri uri = Uri.parse(url);
-        return _imageExtensions.any(uri.path.endsWith);
-      },
-    );
+    final image = url.takeIf((url) {
+      final Uri uri = Uri.parse(url);
+      return _imageExtensions.any(uri.path.endsWith);
+    });
     var type = PostType.link;
     if (video != null) {
       type = PostType.video;
@@ -136,8 +136,8 @@ class Post {
       id: json['name'] ?? '',
       subreddit: Subreddit.fromJson(json),
       author: Author.fromJson(json),
-      created: json.get<double>('created_utc')?.into(
-                (double seconds) => DateTime.fromMillisecondsSinceEpoch(
+      created: json.get<num>('created_utc')?.into(
+                (seconds) => DateTime.fromMillisecondsSinceEpoch(
                   seconds.toInt() * 1000,
                   isUtc: true,
                 ),
@@ -146,8 +146,8 @@ class Post {
       title: json['title'] ?? '',
       nsfw: json['over_18'] ?? false,
       spoiler: json['spoiler'] ?? false,
-      comments: json['num_comments'] ?? 0,
-      score: json['score'] ?? 0,
+      comments: json['num_comments']?.toInt() ?? 0,
+      score: json['score']?.toInt() ?? 0,
       hideScore: json['hide_score'] ?? false,
       domain: domain,
       selfDomain: selfDomain,

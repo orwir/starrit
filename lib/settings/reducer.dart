@@ -1,14 +1,15 @@
 import 'package:redux/redux.dart';
-import 'package:starrit/common/model/state.dart';
-import 'package:starrit/settings/actions.dart';
+import 'package:starrit/app/state.dart';
+import 'package:starrit/settings/action/blur_nsfw.dart';
+import 'package:starrit/settings/action/last_feed.dart';
 
 final Reducer<AppState> settingsReducer = combineReducers([
-  TypedReducer<AppState, UpdateBlurNsfw>(_upddateBlurNsfw),
-  TypedReducer<AppState, UpdateLatestFeed>(_updateLatestFeed),
+  TypedReducer(_blurNsfw),
+  TypedReducer(_lastFeed),
 ]);
 
-AppState _upddateBlurNsfw(AppState state, UpdateBlurNsfw action) =>
-    state.copyWith(blurNsfw: action.blurNsfw);
+AppState _blurNsfw(AppState state, BlurNsfw action) =>
+    state.rebuild((b) => b..blurNsfw = action.enabled);
 
-AppState _updateLatestFeed(AppState state, UpdateLatestFeed action) =>
-    state.copyWith(latestFeed: action.feed);
+AppState _lastFeed(AppState state, LastFeed action) =>
+    state.rebuild((b) => b..lastFeed = action.feed);

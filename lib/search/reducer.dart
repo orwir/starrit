@@ -1,55 +1,40 @@
 import 'package:redux/redux.dart';
-import 'package:starrit/common/model/state.dart';
+import 'package:starrit/app/state.dart';
 import 'package:starrit/common/model/status.dart';
-import 'package:starrit/search/actions.dart';
-import 'package:starrit/search/model/state.dart';
+import 'package:starrit/feed/model/feed.dart';
+import 'package:starrit/search/action/dispose.dart';
+import 'package:starrit/search/action/load.dart';
+import 'package:starrit/search/action/sort.dart';
 
 final Reducer<AppState> searchReducer = combineReducers([
-  TypedReducer<AppState, LoadSuggestions>(_loadSuggestions),
-  TypedReducer<AppState, LoadSuggestionsSuccess>(_loadSuggestionsSuccess),
-  TypedReducer<AppState, LoadSuggestionsFailure>(_loadSuggestionsFailure),
-  TypedReducer<AppState, UpdateSort>(_updateSort),
-  TypedReducer<AppState, DisposeSearchData>(_disposeSearchData),
+  TypedReducer(_load),
+  TypedReducer(_loadSuccess),
+  TypedReducer(_loadFailure),
+  TypedReducer(_updateSort),
+  TypedReducer(_dispose),
 ]);
 
-AppState _loadSuggestions(AppState state, LoadSuggestions action) =>
-    state.copyWith(
-      search: SearchState(
-        status: StateStatus.processing,
-        suggestions: state.search.suggestions,
-        sort: state.search.sort,
-      ),
-    );
+AppState _load(AppState state, LoadSuggestions action) => state.rebuild((b) => b
+  ..status = Status.processing
+  ..exception = null);
 
-AppState _loadSuggestionsSuccess(
-        AppState state, LoadSuggestionsSuccess action) =>
-    state.copyWith(
-      search: SearchState(
-        status: StateStatus.success,
-        suggestions: action.suggestions,
-        sort: state.search.sort,
-      ),
-    );
+AppState _loadSuccess(AppState state, LoadSuggestionsSuccess action) =>
+    state.rebuild((b) => b
+      ..status = Status.success
+      ..exception = null
+      ..searchSuggestions.replace(action.suggestions));
 
-AppState _loadSuggestionsFailure(
-        AppState state, LoadSuggestionsFailure action) =>
-    state.copyWith(
-      search: SearchState(
-        status: StateStatus.failure,
-        suggestions: state.search.suggestions,
-        sort: state.search.sort,
-        exception: action.exception,
-      ),
-    );
+AppState _loadFailure(AppState state, LoadSuggestionsFailure action) =>
+    state.rebuild((b) => b
+      ..status = Status.failure
+      ..exception = action.exception);
 
-AppState _updateSort(AppState state, UpdateSort action) => state.copyWith(
-      search: SearchState(
-        status: state.search.status,
-        suggestions: state.search.suggestions,
-        sort: action.sort,
-        exception: state.search.exception,
-      ),
-    );
+AppState _updateSort(AppState state, UpdateSort action) =>
+    state.rebuild((b) => b..searchSort = action.sort);
 
-AppState _disposeSearchData(AppState state, DisposeSearchData action) =>
-    state.copyWith(search: SearchState.initial);
+AppState _dispose(AppState state, DisposeSearch action) =>
+    state.rebuild((b) => b
+      ..status = Status.success
+      ..exception = null
+      ..searchSuggestions.replace(FeedType.values)
+      ..searchSort = FeedSort.best);

@@ -1,52 +1,33 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
-import 'package:starrit/access/reducer.dart';
-import 'package:starrit/app.dart';
-import 'package:starrit/common/functions.dart';
-import 'package:starrit/common/middlewares.dart';
-import 'package:starrit/common/model/state.dart';
-import 'package:starrit/feed/reducer.dart';
-import 'package:starrit/search/reducer.dart';
-import 'package:starrit/settings/reducer.dart';
-import 'package:starrit/splash/actions.dart';
-import 'package:starrit/splash/reducer.dart';
+import 'package:starrit/app/action/startup.dart';
+import 'package:starrit/app/app.dart';
+import 'package:starrit/app/middleware/logger.dart';
+import 'package:starrit/app/middleware/startup.dart';
+import 'package:starrit/app/state.dart';
+import 'package:starrit/common/network.dart';
+import 'package:starrit/feed/middleware/feed.dart';
+import 'package:starrit/reducer.dart';
+import 'package:starrit/search/middleware/search.dart';
+import 'package:starrit/settings/middleware/settings.dart';
 
 void main() {
-  final store = Store<AppState>(
-    combineReducers([
-      splashReducer,
-      settingsReducer,
-      accessReducer,
-      feedReducer,
-      searchReducer,
-    ]),
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Store<AppState> store;
+  final network = Network(() => store);
+  store = Store<AppState>(
+    starritReducer,
     initialState: AppState.initial,
     middleware: [
-      thunkMiddleware,
-      /*
-      EpicMiddleware(combineEpics([
-        splashEpic,
-        settingsEpic,
-        accessEpic,
-        feedEpic,
-        searchEpic,
-      ])),
-      */
-      if (kDebugMode)
-        logger,
+      StartupMiddleware(network),
+      SettingsMiddleware(),
+      FeedMiddleware(network),
+      SearchMiddleware(network),
+      LoggerMiddleware(),
     ],
   );
 
-  final links = BasicMessageChannel('starrit/links', StringCodec());
-
+  store.dispatch(Startup());
   runApp(StarritApplication(store));
-
-  store.dispatch(InitApplication());
-  links.setMessageHandler((link) async {
-    handleLink(store, link);
-    return null;
-  });
 }

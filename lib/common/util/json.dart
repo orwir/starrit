@@ -1,4 +1,4 @@
-import 'object.dart';
+import 'package:starrit/common/util/object.dart';
 
 extension JsonMap on Map<String, dynamic> {
   /// Obtains string value by [path].

@@ -1,28 +1,43 @@
-/// Specifies app capabilities, build variables, static config data, etc.
-class Config {
-  /// Whether application (this specific build) supports authorization functionality.
-  static const supportAuthorization = bool.hasEnvironment('client_id');
+import 'package:flutter/foundation.dart';
 
-  /// Client ID for Reddit API.
+/// Build constants.
+class Env {
+  /// Client ID from Reddit.
   ///
-  /// If not present authorization features disabled.
+  /// Follow this [instruction](https://github.com/reddit-archive/reddit/wiki/OAuth2) to get it.
   ///
-  /// To get one you have to:
-  /// 1. Follow an [insturction](https://github.com/reddit-archive/reddit/wiki/OAuth2).
-  /// 2. Pass compile argument 'client_id':
-  ///
-  ///    --dart-define=client_id=<YOUR_CLIENT_ID>
-  /// 3. Enjoy.
-  static const clientID = String.fromEnvironment('client_id');
+  /// Add compile-time arg:
+  /// ```--dart-define=client_id=<YOUR_CLIENT_ID>```
+  static String get clientID =>
+      TestEnv.clientID ??
+      String.fromEnvironment('client_id', defaultValue: null);
+
+  /// True if [clientID] exists.
+  static bool get supportAuthorization => clientID != null;
 
   /// Redirect URI for OAuth request.
-  static const authResponseUri = 'starrit://authorization';
+  ///
+  /// Catched by native iOS and Android envs and forwards to Flutter.
+  static String get authRedirectUri =>
+      TestEnv.authRedirectUri ?? 'starrit://authorization';
 
-  /// Base url to get data from Reddit if user authorized.
-  static const baseUrlAuthorized = 'https://oauth.reddit.com';
+  /// URL to get data from Reddit without authorization.
+  static String get baseAnonymousUrl =>
+      TestEnv.baseAnonymousUrl ?? 'https://reddit.com';
 
-  /// Base url to get data from Reddit if user anonymous.
-  static const baseUrlAnonymous = 'https://www.reddit.com';
+  /// URL to get data from Reddit with authorization.
+  static String get baseAuthorizedUrl =>
+      TestEnv.baseAuthorizedUrl ?? 'https://oauth.reddit.com';
 
-  Config._();
+  Env._();
+}
+
+@visibleForTesting
+class TestEnv {
+  static String clientID;
+  static String authRedirectUri;
+  static String baseAnonymousUrl;
+  static String baseAuthorizedUrl;
+
+  TestEnv._();
 }

@@ -1,31 +1,26 @@
 import 'package:starrit/env.dart';
 
-/// Determine access status.
+/// Determine access status of the user.
 enum Access {
-  ///  A user hasn't made a decision yet or app
-  /// doesn't support authorization functionality:
-  /// [Config.supportAuthorization] == false.
+  /// User hasn't yet specified desired access type.
   unspecified,
 
-  /// A user passed authorization but for a reason nullified it.
+  /// User revoked access to his account.
   revoked,
 
-  /// A user successfully authorized and has a valid auth token.
-  authorized,
-
-  /// A user made a decision to stay anonymous.
+  /// User decided to not connect his Reddit-account.
   anonymous,
+
+  /// User successfully connected his Reddit-account.
+  authorized
 }
 
 extension AccessExtensions on Access {
   /// Resolve base url for data access on Reddit.com
-  String get baseUrl => this == Access.authorized
-      ? Config.baseUrlAuthorized
-      : Config.baseUrlAnonymous;
+  String get baseUrl => this == Access.authorized || this == Access.revoked
+      ? Env.baseAuthorizedUrl
+      : Env.baseAnonymousUrl;
 
   /// Whether user state is stable (authorized or anonymous).
   bool get stable => this == Access.authorized || this == Access.anonymous;
-
-  /// For debug purposes.
-  String get label => toString().split('.')[1];
 }

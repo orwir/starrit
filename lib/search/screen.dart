@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:starrit/common/navigation.dart';
-import 'package:starrit/common/model/state.dart';
+import 'package:starrit/app/state.dart';
 import 'package:starrit/common/model/status.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/screen.dart';
-import 'package:starrit/search/actions.dart';
+import 'package:starrit/search/action/dispose.dart';
+import 'package:starrit/search/action/load.dart';
+import 'package:starrit/search/action/sort.dart';
 
 class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => StoreConnector<AppState, _ViewModel>(
-        onDispose: (store) => store.dispatch(DisposeSearchData()),
+        onDispose: (store) => store.dispatch(DisposeSearch()),
         converter: _ViewModel.fromStore,
         builder: (context, viewModel) => Scaffold(
           appBar: AppBar(
@@ -23,9 +24,9 @@ class SearchScreen extends StatelessWidget {
             actions: [
               DropdownButton(
                 value: viewModel.sort,
-                onChanged: (sort) => viewModel.sort = sort,
+                onChanged: viewModel.changeSort,
                 items: [
-                  for (final sort in Sort.values)
+                  for (final sort in FeedSort.values)
                     DropdownMenuItem(child: Text(sort.label), value: sort)
                 ],
               ),
@@ -38,9 +39,12 @@ class SearchScreen extends StatelessWidget {
                     for (final type in viewModel.suggestions)
                       ListTile(
                         title: Text(type.label),
-                        onTap: () =>
-                            viewModel.openFeedScreen(type, viewModel.sort),
-                      ),
+                        onTap: () => viewModel.openFeedScreen(
+                          context,
+                          type,
+                          viewModel.sort,
+                        ),
+                      )
                   ],
                 ),
         ),
@@ -51,19 +55,27 @@ class _ViewModel {
   static _ViewModel fromStore(Store<AppState> store) => _ViewModel(store);
 
   final Store<AppState> store;
+  final AppState state;
 
-  _ViewModel(this.store);
+  _ViewModel(this.store)
+      : assert(store != null),
+        assert(store.state != null),
+        state = store.state;
 
-  Sort get sort => store.state.search.sort;
-  set sort(Sort value) => store.dispatch(UpdateSort(value));
-  List<Type> get suggestions => store.state.search.suggestions;
-  bool get loading => store.state.search.status == StateStatus.processing;
+  FeedSort get sort => state.searchSort;
+
+  Iterable<FeedType> get suggestions => state.searchSuggestions;
+
+  bool get loading => state.status == Status.processing;
+
+  void changeSort(FeedSort value) => store.dispatch(UpdateSort(value));
 
   void search(String query) => store.dispatch(LoadSuggestions(query));
 
-  void openFeedScreen(Type type, Sort sort) async {
-    Nav.state.pushReplacement(
-      MaterialPageRoute(builder: (context) => FeedScreen(type + sort)),
+  void openFeedScreen(BuildContext context, FeedType type, FeedSort sort) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => FeedScreen(Feed(type, sort))),
     );
   }
 }
