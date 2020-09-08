@@ -34,6 +34,8 @@ class PostImage {
   bool get hasSize =>
       width != null && width > 0 && height != null && height > 0;
 
+  double get ratio => hasSize ? width / height : 1;
+
   @override
   String toString() =>
       '{ source:$source${hasSize ? ', size:${width}x$height' : ''}, '
