@@ -8,7 +8,7 @@ import 'package:starrit/env.dart';
 import 'package:starrit/feed/action/load.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/screen.dart';
-import 'package:starrit/feed/widget/post.dart';
+import 'package:starrit/feed/widget/post/post.dart';
 import 'package:starrit/search/screen.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 

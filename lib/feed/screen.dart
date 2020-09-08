@@ -14,7 +14,7 @@ import 'package:starrit/feed/action/load.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/model/post.dart';
 import 'package:starrit/feed/state.dart';
-import 'package:starrit/feed/widget/post.dart';
+import 'package:starrit/feed/widget/post/post.dart';
 import 'package:starrit/search/screen.dart';
 import 'package:starrit/settings/action/blur_nsfw.dart';
 import 'package:starrit/settings/action/last_feed.dart';

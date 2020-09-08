@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:starrit/feed/model/post.dart';
-import 'package:starrit/feed/widget/post_header.dart';
+import 'package:starrit/feed/widget/post/content.dart';
+import 'package:starrit/feed/widget/post/header.dart';
+import 'package:starrit/feed/widget/post/toolbar.dart';
 
 enum Header { simple, extended }
 
@@ -21,6 +23,8 @@ class PostView extends StatelessWidget {
           header == Header.simple
               ? SimplePostHeader(post)
               : ExtendedPostHeader(post),
+          PostContent(post),
+          PostToolbar(post),
         ],
       );
 }
