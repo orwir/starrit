@@ -12,10 +12,10 @@ import 'package:starrit/app/state.dart';
 /// * Set common headers such as user-agent and authorization.
 /// * Provides functionality to refresh access token when it expires.
 class Network {
-  final Store<AppState> Function() _lazyStore;
-  Store<AppState> get _store => _lazyStore();
+  final Store<AppState> Function() _storeHolder;
+  Store<AppState> get _store => _storeHolder();
 
-  Network(this._lazyStore) : assert(_lazyStore != null);
+  Network(this._storeHolder) : assert(_storeHolder != null);
 
   Future<http.Response> get(dynamic url, {Map<String, String> headers}) async {
     if (url is String && url.startsWith('/')) {
