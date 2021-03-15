@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
-import 'package:starrit/app/state.dart';
+import 'package:starrit/common/model/state.dart';
 
 class LoggerMiddleware extends MiddlewareClass<AppState> {
   @override

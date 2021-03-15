@@ -3,12 +3,13 @@ import 'package:built_value/built_value.dart';
 import 'package:starrit/access/model/access.dart';
 import 'package:starrit/common/model/status.dart';
 import 'package:starrit/feed/model/feed.dart';
-import 'package:starrit/feed/state.dart';
+import 'package:starrit/feed/model/state.dart';
 
 part 'state.g.dart';
 
 /// Top-level state representation.
 abstract class AppState implements Built<AppState, AppStateBuilder> {
+  /// Initial state of application data.
   static final AppState initial = AppState((b) => b
     ..status = Status.processing
     ..access = Access.unspecified
@@ -17,10 +18,13 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
     ..searchSuggestions.replace(FeedType.values)
     ..searchSort = FeedSort.best);
 
-  /// Condition of this [AppState].
+  /// Status after last invoked action.
   Status get status;
 
+  /// Last action exception.
+  ///
   /// If [status] is [Status.failure] contains failure cause.
+  /// Otherwise is null.
   @nullable
   Exception get exception;
 
@@ -32,10 +36,10 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   /// The value is used to reopen on app start last feed user opened.
   Feed get lastFeed;
 
-  /// If true NSFW-content will be blurred by default.
+  /// Controls whether NSFW content should be blurred.
   bool get blurNsfw;
 
-  /// Recently opened feed.
+  /// Recently opened feeds.
   BuiltMap<Feed, FeedState> get feeds;
 
   /// Search Screen suggestions.

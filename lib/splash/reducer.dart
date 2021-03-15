@@ -1,11 +1,10 @@
 import 'package:redux/redux.dart';
-import 'package:starrit/app/action/startup.dart';
-import 'package:starrit/app/state.dart';
 import 'package:starrit/common/model/status.dart';
-import 'package:starrit/feed/state.dart';
+import 'package:starrit/feed/model/state.dart';
+import 'package:starrit/splash/action/startup.dart';
+import 'package:starrit/common/model/state.dart';
 
-/// Collector of all app-level reducers.
-final Reducer<AppState> appReducer = combineReducers([
+final Reducer<AppState> splashReducer = combineReducers([
   TypedReducer(_startup),
   TypedReducer(_startupSuccess),
   TypedReducer(_startupFailure),
@@ -14,19 +13,18 @@ final Reducer<AppState> appReducer = combineReducers([
 AppState _startup(AppState state, Startup action) => AppState.initial;
 
 AppState _startupSuccess(AppState state, StartupSuccess action) =>
-    AppState.initial.rebuild((b) => b
+    state.rebuild((b) => b
       ..status = Status.success
+      ..exception = null
       ..access = action.access
       ..lastFeed = action.feed
       ..blurNsfw = action.blurNsfw
-      ..feeds[action.feed] = FeedState(
-        (fb) => fb
-          ..status = Status.success
-          ..posts.addAll(action.posts)
-          ..next = action.next,
-      ));
+      ..feeds[action.feed] = FeedState((fb) => fb
+        ..status = Status.success
+        ..posts.addAll(action.posts)
+        ..next = action.next));
 
 AppState _startupFailure(AppState state, StartupFailure action) =>
-    AppState.initial.rebuild((b) => b
+    state.rebuild((b) => b
       ..status = Status.failure
       ..exception = action.exception);

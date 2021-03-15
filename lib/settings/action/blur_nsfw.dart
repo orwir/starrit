@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-/// Toggle-action to on/off blur on NSFW content.
+/// Toggle-action to turn on/off blur on NSFW content.
 @immutable
 class BlurNsfw {
   /// Blur if true, orginal image otherwise.

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:mockito/mockito.dart';
 import 'package:redux/redux.dart';
-import 'package:starrit/app/state.dart';
+import 'package:starrit/common/model/state.dart';
 import 'package:starrit/feed/model/author.dart';
 import 'package:starrit/feed/model/post.dart';
 import 'package:starrit/feed/model/subreddit.dart';
@@ -17,11 +17,10 @@ Store<AppState> testStore({
       middleware: middlwares,
     );
 
-Widget testWrapper(Store<AppState> store, Widget target) => MaterialApp(
-      home: StoreProvider<AppState>(
-        store: store,
-        child: target,
-      ),
+Widget testWrapper(Store<AppState> store, Widget target) =>
+    StoreProvider<AppState>(
+      store: store,
+      child: MaterialApp(home: target),
     );
 
 // ignore: must_be_immutable

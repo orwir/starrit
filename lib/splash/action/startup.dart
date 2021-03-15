@@ -3,9 +3,6 @@ import 'package:starrit/access/model/access.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/model/post.dart';
 
-/// Initialization request.
-///
-/// Loads prefrences, pre-fetches feed data for the latest feed.
 class Startup {
   @override
   String toString() => '$runtimeType';

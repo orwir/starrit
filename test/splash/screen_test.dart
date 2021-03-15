@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:starrit/access/model/access.dart';
-import 'package:starrit/app/action/startup.dart';
+import 'package:starrit/splash/action/startup.dart';
 import 'package:starrit/app/app.dart';
 import 'package:starrit/common/model/status.dart';
 import 'package:starrit/feed/model/feed.dart';
@@ -32,7 +32,7 @@ void main() {
       await tester.pumpWidget(StarritApplication(store));
 
       expect(find.text('Exception: Test exception'), findsOneWidget);
-      expect(find.byType(RaisedButton), findsOneWidget);
+      expect(find.byType(ElevatedButton), findsOneWidget);
     },
   );
 

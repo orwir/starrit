@@ -10,11 +10,11 @@ class AccessBanner extends StatelessWidget {
         'To personalize your experience you can authorize. Or stay anonymous.',
       ),
       actions: [
-        FlatButton(
+        TextButton(
           child: Text('Anonymous'),
           onPressed: () => {/* TODO: anonymous access flow */},
         ),
-        FlatButton(
+        TextButton(
           child: Text('Authorize'),
           onPressed: () => {/* TODO: authorized access flow */},
         ),

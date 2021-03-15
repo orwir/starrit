@@ -1,17 +1,18 @@
 import 'package:intl/intl.dart';
 
+final _thisYear = DateFormat('dd.MM HH:mm');
+final _fullDate = DateFormat('dd.MM.yyyy HH:mm');
+
 extension TimeAgo on DateTime {
-  /// Format [DateTime] as 'time ago' to current time point.
+  /// Formats [DateTime] as 'time ago' to current time point.
   ///
-  /// * recently &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  ///   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  ///   less than 1 hour
-  /// * #h ago &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  ///   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  ///   less than 1 day
-  /// * yesterday at HH:mm &nbsp; yesteday
-  /// * dd.MM HH:mm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this year
-  /// * dd.MM.yyyy HH:mm &nbsp; else case
+  ///
+  /// Format rules:
+  /// * less than 1 hour -> recently
+  /// * less than 1 day -> #h ago
+  /// * yesterday -> yesterday
+  /// * this year -> dd.MM HH:mm
+  /// * otherwise -> dd.MM.yyyy HH:mm
   String get timeAgo {
     final now = DateTime.now();
     final diff = now.difference(this);
@@ -29,6 +30,3 @@ extension TimeAgo on DateTime {
     return _fullDate.format(this);
   }
 }
-
-final _thisYear = DateFormat('dd.MM HH:mm');
-final _fullDate = DateFormat('dd.MM.yyyy HH:mm');

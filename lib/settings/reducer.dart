@@ -1,5 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:starrit/app/state.dart';
+import 'package:starrit/common/model/state.dart';
 import 'package:starrit/settings/action/blur_nsfw.dart';
 import 'package:starrit/settings/action/last_feed.dart';
 

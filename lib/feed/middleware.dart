@@ -1,13 +1,13 @@
 import 'package:redux/redux.dart';
-import 'package:starrit/app/state.dart';
-import 'package:starrit/common/network.dart';
+import 'package:starrit/common/model/state.dart';
+import 'package:starrit/common/util/error.dart';
 import 'package:starrit/feed/action/load.dart';
-import 'package:starrit/feed/function/feed.dart';
+import 'package:starrit/feed/service.dart';
 
 class FeedMiddleware extends MiddlewareClass<AppState> {
-  final Network _network;
+  final FeedService _service;
 
-  FeedMiddleware(this._network);
+  FeedMiddleware(this._service) : assert(_service != null);
 
   @override
   void call(Store<AppState> store, dynamic action, NextDispatcher next) {
@@ -17,16 +17,13 @@ class FeedMiddleware extends MiddlewareClass<AppState> {
 
   void _load(Store<AppState> store, LoadFeed action) async {
     try {
-      final chunk = await loadFeedChunk(
-        _network,
+      final chunk = await _service.loadFeedChunk(
         action.feed,
         after: action.after,
       );
-      store.dispatch(
-        LoadFeedSuccess(action.feed, chunk.posts, chunk.next),
-      );
-    } on Exception catch (e) {
-      store.dispatch(LoadFeedFailure(action.feed, e));
+      store.dispatch(LoadFeedSuccess(action.feed, chunk.posts, chunk.next));
+    } catch (e) {
+      store.dispatch(LoadFeedFailure(action.feed, normalize(e)));
     }
   }
 }

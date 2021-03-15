@@ -5,7 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:starrit/access/model/access.dart';
 import 'package:starrit/access/widget/banner.dart';
-import 'package:starrit/app/state.dart';
+import 'package:starrit/common/model/state.dart';
 import 'package:starrit/common/model/status.dart';
 import 'package:starrit/common/util/object.dart';
 import 'package:starrit/env.dart';
@@ -13,7 +13,7 @@ import 'package:starrit/feed/action/dispose.dart';
 import 'package:starrit/feed/action/load.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/feed/model/post.dart';
-import 'package:starrit/feed/state.dart';
+import 'package:starrit/feed/model/state.dart';
 import 'package:starrit/feed/widget/post/post.dart';
 import 'package:starrit/search/screen.dart';
 import 'package:starrit/settings/action/blur_nsfw.dart';
@@ -109,9 +109,8 @@ class _FailureView extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            FlatButton(
+            TextButton(
               onPressed: viewModel.load,
-              textTheme: ButtonTextTheme.primary,
               child: Text('RETRY'),
             ),
           ],

@@ -2,20 +2,20 @@ import 'package:flutter/foundation.dart';
 import 'package:starrit/access/model/access.dart';
 import 'package:starrit/feed/model/feed.dart';
 
-/// Preferences of the app.
+/// The application preferences.
 ///
-/// Used to initialize application.
+/// Uses as transfer object during app initialization process.
 @immutable
 class Preferences {
-  /// User's access status.
+  /// User's access level.
   final Access access;
 
   /// Last visible feed.
   ///
-  /// The value is used to reopen on app start last feed user opened.
+  /// The value is used to reopen this feed on app start up.
   final Feed lastFeed;
 
-  /// If true NSFW-content will be blurred by default.
+  /// Controls whether NSFW content should be blurred.
   final bool blurNsfw;
 
   Preferences({

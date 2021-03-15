@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:starrit/app/state.dart';
+import 'package:starrit/common/model/state.dart';
 import 'package:starrit/feed/model/post.dart';
 import 'package:url_launcher/url_launcher.dart';
 

@@ -1,25 +1,26 @@
 import 'package:starrit/common/util/object.dart';
 
 extension JsonMap on Map<String, dynamic> {
-  /// Obtains string value by [path].
+  /// Obtains a string value from this json by [path].
   ///
-  /// Returns null if value not found or it doesn't contains any 'word char'
+  /// Returns null if a value not found or a value has only "spaces"
   /// and [nonBlank] is true.
-  String string(String key, {bool nonBlank = true}) {
+  String string(String path, {bool nonBlank = true}) {
     bool isNotBlank(String value) {
       return !nonBlank || value.trim().isNotEmpty;
     }
 
-    return get<String>(key)?.takeIf(isNotBlank);
+    return get<String>(path)?.takeIf(isNotBlank);
   }
 
-  /// Obtains value from json by path.
+  /// Obtains a value from this json by [path].
   ///
-  /// [path] - sequence of keys separated by dot.
-  /// Can access arrays with [#] syntax.
-  /// E.q.: `preview.images[0].resolutions[0]`
+  /// [path] - a sequence of keys separated by dots.
   ///
-  /// [def] - optional default value if value is not present.
+  /// To access a specific elements in an arrays uses a syntax similar to
+  /// dart's one. E.q.: `preview.images[0].resolutions[0]`
+  ///
+  /// [def] - an optional default value if a value by [path] does not found.
   T get<T>(String path, {T def}) {
     Object element = this;
     for (var segment in path.split('.')) {

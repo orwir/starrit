@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:starrit/access/model/access.dart';
 import 'package:starrit/access/widget/banner.dart';
-import 'package:starrit/app/action/startup.dart';
+import 'package:starrit/splash/action/startup.dart';
 import 'package:starrit/common/model/status.dart';
 import 'package:starrit/env.dart';
 import 'package:starrit/feed/action/load.dart';

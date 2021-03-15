@@ -1,7 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:starrit/app/action/startup.dart';
-import 'package:starrit/app/state.dart';
+import 'package:starrit/splash/action/startup.dart';
+import 'package:starrit/common/model/state.dart';
 import 'package:starrit/common/model/status.dart';
 import 'package:starrit/feed/model/feed.dart';
 import 'package:starrit/search/action/dispose.dart';

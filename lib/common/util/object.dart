@@ -1,14 +1,16 @@
 extension ChainObject on Object {
-  /// If this value doesn't satisfy [predicate] return null.
+  /// Returns this value if a [predicate] is true.
+  ///
+  /// Otherwise returns null.
   T takeIf<T>(Predicate<T> predicate) => predicate(this) ? this as T : null;
 
-  /// Transforms this object into another by [transformer].
+  /// Transforms this object into another by a [transformer].
   R into<T, R>(Transformer<T, R> transformer) => transformer(this);
 }
 
-/// Makes hash of given [fields].
-int hash(Iterable fields) {
-  return fields.map((e) => e?.hashCode ?? 0).reduce((v, e) => v ^ e);
+/// Calculates a hash of given [values].
+int hash(Iterable values) {
+  return values.map((e) => e?.hashCode ?? 0).reduce((v, e) => v ^ e);
 }
 
 typedef Predicate<T> = bool Function(T value);
